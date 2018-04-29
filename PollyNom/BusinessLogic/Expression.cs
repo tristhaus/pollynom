@@ -7,6 +7,14 @@ namespace PollyNom.BusinessLogic
         public abstract Maybe<double> Evaluate(double input);
     }
 
+    public class InvalidExpression : Expression
+    {
+        public override Maybe<double> Evaluate(double input)
+        {
+            return new None<double>();
+        }
+    }
+
     public class BaseX : Expression
     {
         public override Maybe<double> Evaluate(double input)

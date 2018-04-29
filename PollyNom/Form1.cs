@@ -14,14 +14,18 @@ namespace PollyNom
 
         private void button1_Click(object sender, EventArgs e)
         {
-            Evaluator evaluator = new Evaluator();
+            if(string.IsNullOrWhiteSpace(inputBox.Text))
+            {
+                return;
+            }
+            Evaluator evaluator = new Evaluator(inputBox.Text);
             var list = evaluator.Evaluate();
-            textBox1.Text = string.Empty;
+            outputBox.Text = string.Empty;
             foreach (var value in list)
             {
-                textBox1.Text += $"{value.Item1} {value.Item2} \r\n";
+                outputBox.Text += $"{value.Item1} {value.Item2} \r\n";
             }
-            textBox1.Refresh();
+            outputBox.Refresh();
         }
     }
 }

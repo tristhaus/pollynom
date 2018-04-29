@@ -29,7 +29,8 @@
         private void InitializeComponent()
         {
             this.button1 = new System.Windows.Forms.Button();
-            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.outputBox = new System.Windows.Forms.TextBox();
+            this.inputBox = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // button1
@@ -42,20 +43,28 @@
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
-            // textBox1
+            // outputBox
             // 
-            this.textBox1.Location = new System.Drawing.Point(12, 42);
-            this.textBox1.Multiline = true;
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(801, 422);
-            this.textBox1.TabIndex = 2;
+            this.outputBox.Location = new System.Drawing.Point(12, 42);
+            this.outputBox.Multiline = true;
+            this.outputBox.Name = "outputBox";
+            this.outputBox.Size = new System.Drawing.Size(801, 422);
+            this.outputBox.TabIndex = 2;
+            // 
+            // inputBox
+            // 
+            this.inputBox.Location = new System.Drawing.Point(95, 13);
+            this.inputBox.Name = "inputBox";
+            this.inputBox.Size = new System.Drawing.Size(512, 20);
+            this.inputBox.TabIndex = 3;
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(825, 476);
-            this.Controls.Add(this.textBox1);
+            this.Controls.Add(this.inputBox);
+            this.Controls.Add(this.outputBox);
             this.Controls.Add(this.button1);
             this.Name = "Form1";
             this.Text = "Form1";
@@ -66,7 +75,8 @@
 
         #endregion
         private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.TextBox outputBox;
+        private System.Windows.Forms.TextBox inputBox;
     }
 }
 

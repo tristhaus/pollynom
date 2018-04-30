@@ -1,6 +1,7 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using PollyNom.BusinessLogic;
+using PollyNomTest.Helper;
 
 namespace PollyNomTest
 {
@@ -8,18 +9,29 @@ namespace PollyNomTest
     public class Outputting
     {
         [TestMethod]
-        public void TestMethod1()
+        public void Print01()
         {
             // Arrange
-            Expression konst = new Constant(1.0/3.0);
-            Expression unknown = new BaseX();
-            Expression expr = new Multiply(konst, unknown);
+            Expression expr = TestExpressionBuilder.Expression01();
 
             // Act
-            string result = expr.Print().HasValue() ? expr.Print().Value() : "invalid";
+            string result = ExpressionPrinter.PrintExpression(expr);
 
             // Assert
-            Assert.AreEqual<string>($"{1.0/3.0}*x", result);
+            Assert.AreEqual<string>($"{2.0}*x", result);
+        }
+
+        [TestMethod]
+        public void Print02()
+        {
+            // Arrange
+            Expression expr = TestExpressionBuilder.Expression02();
+
+            // Act
+            string result = ExpressionPrinter.PrintExpression(expr);
+
+            // Assert
+            Assert.AreEqual<string>($"{2}*x^{3}/(x-{2}^x)", result);
         }
     }
 }

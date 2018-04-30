@@ -50,8 +50,10 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="Helper\ExpressionPrinter.cs" />
     <Compile Include="Outputting.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Helper\TestExpressionBuilder.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\PollyNom\PollyNom.csproj">

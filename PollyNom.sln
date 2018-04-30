@@ -5,6 +5,8 @@ VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PollyNom", "PollyNom\PollyNom.csproj", "{054C6FB2-2654-41C8-AC10-C771BBFC8741}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PollyNomTest", "PollyNomTest\PollyNomTest.csproj", "{8D3F929A-889A-401C-8463-6CA33D6B029E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{054C6FB2-2654-41C8-AC10-C771BBFC8741}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{054C6FB2-2654-41C8-AC10-C771BBFC8741}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{054C6FB2-2654-41C8-AC10-C771BBFC8741}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8D3F929A-889A-401C-8463-6CA33D6B029E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8D3F929A-889A-401C-8463-6CA33D6B029E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8D3F929A-889A-401C-8463-6CA33D6B029E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8D3F929A-889A-401C-8463-6CA33D6B029E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

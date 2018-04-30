@@ -5,6 +5,8 @@ namespace PollyNom.BusinessLogic
     public abstract class Expression
     {
         public abstract Maybe<double> Evaluate(double input);
+
+        public abstract Maybe<string> Print();
     }
 
     public class InvalidExpression : Expression
@@ -13,6 +15,11 @@ namespace PollyNom.BusinessLogic
         {
             return new None<double>();
         }
+
+        public override Maybe<string> Print()
+        {
+            return new None<string>();
+        }
     }
 
     public class BaseX : Expression
@@ -20,6 +27,11 @@ namespace PollyNom.BusinessLogic
         public override Maybe<double> Evaluate(double input)
         {
             return new Some<double>(input);
+        }
+
+        public override Maybe<string> Print()
+        {
+            return new Some<string>("x");
         }
     }
 
@@ -35,6 +47,11 @@ namespace PollyNom.BusinessLogic
         public override Maybe<double> Evaluate(double input)
         {
             return new Some<double>(a);
+        }
+
+        public override Maybe<string> Print()
+        {
+            return new Some<string>($"{a}");
         }
     }
 
@@ -59,6 +76,17 @@ namespace PollyNom.BusinessLogic
             }
             return new Some<double>(aValue.Value() + bValue.Value());
         }
+
+        public override Maybe<string> Print()
+        {
+            var aValue = this.a.Print();
+            var bValue = this.b.Print();
+            if (!aValue.HasValue() || !bValue.HasValue())
+            {
+                return new None<string>();
+            }
+            return new Some<string>(aValue.Value() + "+" + bValue.Value());
+        }
     }
 
     public class Subtract : Expression
@@ -81,6 +109,17 @@ namespace PollyNom.BusinessLogic
                 return new None<Double>();
             }
             return new Some<double>(aValue.Value() - bValue.Value());
+        }
+
+        public override Maybe<string> Print()
+        {
+            var aValue = this.a.Print();
+            var bValue = this.b.Print();
+            if (!aValue.HasValue() || !bValue.HasValue())
+            {
+                return new None<string>();
+            }
+            return new Some<string>(aValue.Value() + "-" + bValue.Value());
         }
     }
 
@@ -105,6 +144,17 @@ namespace PollyNom.BusinessLogic
             }
             return new Some<double>(aValue.Value() * bValue.Value());
         }
+
+        public override Maybe<string> Print()
+        {
+            var aValue = this.a.Print();
+            var bValue = this.b.Print();
+            if (!aValue.HasValue() || !bValue.HasValue())
+            {
+                return new None<string>();
+            }
+            return new Some<string>(aValue.Value() + "*" + bValue.Value());
+        }
     }
 
     public class Divide : Expression
@@ -128,6 +178,17 @@ namespace PollyNom.BusinessLogic
             }
             return new Some<double>(aValue.Value() / bValue.Value());
         }
+
+        public override Maybe<string> Print()
+        {
+            var aValue = this.a.Print();
+            var bValue = this.b.Print();
+            if (!aValue.HasValue() || !bValue.HasValue())
+            {
+                return new None<string>();
+            }
+            return new Some<string>(aValue.Value() + "/" + bValue.Value());
+        }
     }
 
     public class Power : Expression
@@ -150,6 +211,17 @@ namespace PollyNom.BusinessLogic
                 return new None<Double>();
             }
             return new Some<double>(Math.Pow(aValue.Value(), bValue.Value()));
+        }
+
+        public override Maybe<string> Print()
+        {
+            var aValue = this.a.Print();
+            var bValue = this.b.Print();
+            if (!aValue.HasValue() || !bValue.HasValue())
+            {
+                return new None<string>();
+            }
+            return new Some<string>(aValue.Value() + "^" + bValue.Value());
         }
     }
 }

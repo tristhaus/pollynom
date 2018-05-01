@@ -86,5 +86,54 @@ namespace PollyNomTest
             Assert.IsTrue(result.HasValue());
             Assert.IsTrue(DoubleComparer.IsApproximatelyEqual(expectedValue, number));
         }
+
+
+        [TestMethod]
+        public void Evaluate06()
+        {
+            // Arrange
+            Expression expr = TestExpressionBuilder.Expression06();
+            double expectedValue = -1.9;
+
+            // Act
+            var result = expr.Evaluate(0.1);
+            double number = result.HasValue() ? result.Value() : 0.0;
+
+            // Assert
+            Assert.IsTrue(result.HasValue());
+            Assert.IsTrue(DoubleComparer.IsApproximatelyEqual(expectedValue, number));
+        }
+
+        [TestMethod]
+        public void Evaluate07()
+        {
+            // Arrange
+            Expression expr = TestExpressionBuilder.Expression07();
+            double expectedValue = 2.1;
+
+            // Act
+            var result = expr.Evaluate(0.1);
+            double number = result.HasValue() ? result.Value() : 0.0;
+
+            // Assert
+            Assert.IsTrue(result.HasValue());
+            Assert.IsTrue(DoubleComparer.IsApproximatelyEqual(expectedValue, number));
+        }
+
+        [TestMethod]
+        public void Evaluate08()
+        {
+            // Arrange
+            Expression expr = TestExpressionBuilder.Expression08();
+            double expectedValue = 4.1;
+
+            // Act
+            var result = expr.Evaluate(0.1);
+            double number = result.HasValue() ? result.Value() : 0.0;
+
+            // Assert
+            Assert.IsTrue(result.HasValue());
+            Assert.IsTrue(DoubleComparer.IsApproximatelyEqual(expectedValue, number));
+        }
     }
 }

@@ -71,5 +71,44 @@ namespace PollyNomTest
             // Assert
             Assert.AreEqual<string>($"(x+{1})^(x/{3})", result);
         }
+
+        [TestMethod]
+        public void Print06()
+        {
+            // Arrange
+            Expression expr = TestExpressionBuilder.Expression06();
+
+            // Act
+            string result = ExpressionPrinter.PrintExpression(expr);
+
+            // Assert
+            Assert.AreEqual<string>($"x-{1}+{2}-{3}", result);
+        }
+
+        [TestMethod]
+        public void Print07()
+        {
+            // Arrange
+            Expression expr = TestExpressionBuilder.Expression07();
+
+            // Act
+            string result = ExpressionPrinter.PrintExpression(expr);
+
+            // Assert
+            Assert.AreEqual<string>($"x+{1}-{2}+{3}", result);
+        }
+
+        [TestMethod]
+        public void Print08()
+        {
+            // Arrange
+            Expression expr = TestExpressionBuilder.Expression08();
+
+            // Act
+            string result = ExpressionPrinter.PrintExpression(expr);
+
+            // Assert
+            Assert.AreEqual<string>($"x+{1}-{4}+{7}", result);
+        }
     }
 }

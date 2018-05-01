@@ -14,6 +14,15 @@ namespace PollyNom.BusinessLogic.Expressions
             this.list.Add(new AddExpression(AddExpression.Signs.Plus, b));
         }
 
+        public Add(params AddExpression[] expressions)
+        {
+            this.list = new List<AddExpression>();
+            foreach(var expression in expressions)
+            {
+                this.list.Add(expression);
+            }
+        }
+
         public override bool IsMonadic
         {
             get

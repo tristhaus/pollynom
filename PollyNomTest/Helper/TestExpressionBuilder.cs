@@ -1,5 +1,6 @@
 ﻿using PollyNom.BusinessLogic;
 using PollyNom.BusinessLogic.Expressions;
+using System.Collections.Generic;
 
 namespace PollyNomTest.Helper
 {
@@ -65,5 +66,59 @@ namespace PollyNomTest.Helper
             return new Power(new Add(new BaseX(), new Constant(1.0)), new Divide(new BaseX(), new Constant(3.0)));
         }
 
+        /// <summary>
+        /// Builds 
+        /// <c>
+        /// x-1+2-3
+        /// </c>
+        /// </summary>
+        /// <returns>An Expression object.</returns>
+        internal static Expression Expression06()
+        {
+            return new Add(
+                new Add.AddExpression(Add.AddExpression.Signs.Plus, new BaseX()), 
+                new Add.AddExpression(Add.AddExpression.Signs.Minus, new Constant(1.0)),
+                new Add.AddExpression(Add.AddExpression.Signs.Plus, new Constant(2.0)),
+                new Add.AddExpression(Add.AddExpression.Signs.Minus, new Constant(3.0))
+                );
+        }
+
+        /// <summary>
+        /// Builds 
+        /// <c>
+        /// x+1-2+3
+        /// </c>
+        /// </summary>
+        /// <returns>An Expression object.</returns>
+        internal static Expression Expression07()
+        {
+            Add.AddExpression[] expressions = {
+                new Add.AddExpression(Add.AddExpression.Signs.Plus, new BaseX()),
+                new Add.AddExpression(Add.AddExpression.Signs.Plus, new Constant(1.0)),
+                new Add.AddExpression(Add.AddExpression.Signs.Minus, new Constant(2.0)),
+                new Add.AddExpression(Add.AddExpression.Signs.Plus, new Constant(3.0))
+            };
+
+            return new Add(expressions);
+        }
+
+        /// <summary>
+        /// Builds 
+        /// <c>
+        /// x+1-4+7
+        /// </c>
+        /// </summary>
+        /// <returns>An Expression object.</returns>
+        internal static Expression Expression08()
+        {
+            List<Add.AddExpression> list = new List<Add.AddExpression>();
+
+            list.Add(new Add.AddExpression(Add.AddExpression.Signs.Plus, new BaseX()));
+            list.Add(new Add.AddExpression(Add.AddExpression.Signs.Plus, new Constant(1.0)));
+            list.Add(new Add.AddExpression(Add.AddExpression.Signs.Minus, new Constant(4.0)));
+            list.Add(new Add.AddExpression(Add.AddExpression.Signs.Plus, new Constant(7.0)));
+
+            return new Add(list.ToArray());
+        }
     }
 }

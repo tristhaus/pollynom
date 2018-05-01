@@ -23,6 +23,13 @@ namespace PollyNom.BusinessLogic.Expressions
             }
         }
 
+        protected Add(AddExpression a, AddExpression b)
+        {
+            this.list = new List<AddExpression>(2);
+            this.list.Add(a);
+            this.list.Add(b);
+        }
+
         public override bool IsMonadic
         {
             get

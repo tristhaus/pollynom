@@ -1,16 +1,33 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace PollyNom.BusinessLogic.Expressions
 {
     public class Multiply : Expression
     {
-        private Expression a;
-        private Expression b;
+        private List<MultiplyExpression> list;
 
         public Multiply(Expression a, Expression b)
         {
-            this.a = a;
-            this.b = b;
+            this.list = new List<MultiplyExpression>(2);
+            this.list.Add(new MultiplyExpression(MultiplyExpression.Signs.Multiply, a));
+            this.list.Add(new MultiplyExpression(MultiplyExpression.Signs.Multiply, b));
+        }
+
+        public Multiply(params MultiplyExpression[] expressions)
+        {
+            this.list = new List<MultiplyExpression>();
+            foreach (var expression in expressions)
+            {
+                this.list.Add(expression);
+            }
+        }
+
+        protected Multiply(MultiplyExpression a, MultiplyExpression b)
+        {
+            this.list = new List<MultiplyExpression>(2);
+            this.list.Add(a);
+            this.list.Add(b);
         }
 
         public override bool IsMonadic
@@ -31,36 +48,81 @@ namespace PollyNom.BusinessLogic.Expressions
 
         public override Maybe<double> Evaluate(double input)
         {
-            var aValue = this.a.Evaluate(input);
-            var bValue = this.b.Evaluate(input);
-            if (!aValue.HasValue() || !bValue.HasValue())
+            double product = 1.0;
+
+            foreach (var expression in this.list)
             {
-                return new None<Double>();
+                var value = expression.Evaluate(input);
+                if (!value.HasValue() || (expression.Sign == MultiplyExpression.Signs.Divide && Math.Abs(value.Value()) < 10e-10))
+                {
+                    return new None<Double>();
+                }
+                product *= expression.Sign == MultiplyExpression.Signs.Multiply ? value.Value() : (1.0 / value.Value());
             }
-            return new Some<double>(aValue.Value() * bValue.Value());
+
+            return new Some<double>(product);
         }
 
         public override Maybe<string> Print()
         {
-            var aValue = this.a.Print();
-            var bValue = this.b.Print();
-            if (!aValue.HasValue() || !bValue.HasValue())
+            string s = "1";
+
+            foreach (var expression in this.list)
             {
-                return new None<string>();
+                var value = expression.Print();
+                if (!value.HasValue())
+                {
+                    return new None<string>();
+                }
+
+                var decoratedValue = value.Value();
+                if (expression.Level == this.Level - 1)
+                {
+                    decoratedValue = "(" + decoratedValue + ")";
+                }
+
+                s += expression.Sign == MultiplyExpression.Signs.Multiply ? "*" + decoratedValue : "/" + decoratedValue;
             }
 
-            var aDecorated = aValue.Value();
-            var bDecorated = bValue.Value();
-            if (a.Level == this.Level - 1)
+            if (s.StartsWith("1*"))
             {
-                aDecorated = "(" + aDecorated + ")";
-            }
-            if (b.Level == this.Level - 1)
-            {
-                bDecorated = "(" + bDecorated + ")";
+                s = s.Remove(0, 2);
             }
 
-            return new Some<string>(aDecorated + "*" + bDecorated);
+            return new Some<string>(s);
+        }
+
+        public class MultiplyExpression : Expression
+        {
+            public enum Signs
+            {
+                Multiply,
+                Divide
+            }
+
+            private Expression expression;
+
+            public MultiplyExpression(Signs sign, Expression expression)
+            {
+                this.expression = expression;
+                this.Sign = sign;
+            }
+
+            public Signs Sign { get; }
+
+            public override bool IsMonadic => expression.IsMonadic;
+
+            public override int Level => expression.Level;
+
+            public override Maybe<double> Evaluate(double input)
+            {
+                return expression.Evaluate(input);
+            }
+
+            public override Maybe<string> Print()
+            {
+                return expression.Print();
+            }
         }
     }
 }

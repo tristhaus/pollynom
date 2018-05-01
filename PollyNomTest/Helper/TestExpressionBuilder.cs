@@ -1,4 +1,5 @@
 ﻿using PollyNom.BusinessLogic;
+using PollyNom.BusinessLogic.Expressions;
 
 namespace PollyNomTest.Helper
 {

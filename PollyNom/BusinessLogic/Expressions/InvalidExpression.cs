@@ -1,12 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace PollyNom.BusinessLogic.Expressions
 {
-    public class InvalidExpression : IExpression
+    public class InvalidExpression : IExpression, IEquatable<InvalidExpression>
     {
         public bool IsMonadic
         {
@@ -22,6 +18,41 @@ namespace PollyNom.BusinessLogic.Expressions
             {
                 return -1;
             }
+        }
+
+        public override bool Equals(object other)
+        {
+            return other.GetType() == typeof(InvalidExpression);
+        }
+
+        public bool Equals(InvalidExpression other)
+        {
+            return true;
+        }
+
+        public static bool operator ==(InvalidExpression x, IExpression y)
+        {
+            return x.Equals(y);
+        }
+
+        public static bool operator !=(InvalidExpression x, IExpression y)
+        {
+            return !(x.Equals(y));
+        }
+
+        public static bool operator ==(InvalidExpression x, InvalidExpression y)
+        {
+            return x.Equals(y);
+        }
+
+        public static bool operator !=(InvalidExpression x, InvalidExpression y)
+        {
+            return !(x.Equals(y));
+        }
+
+        public override int GetHashCode()
+        {
+            return "invalid".GetHashCode();
         }
 
         public Maybe<double> Evaluate(double input)

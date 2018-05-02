@@ -47,7 +47,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BusinessLogic\Evaluator.cs" />
-    <Compile Include="BusinessLogic\Expression.cs" />
+    <Compile Include="BusinessLogic\IExpression.cs" />
     <Compile Include="BusinessLogic\Expressions\Add.cs" />
     <Compile Include="BusinessLogic\Expressions\BaseX.cs" />
     <Compile Include="BusinessLogic\Expressions\Constant.cs" />

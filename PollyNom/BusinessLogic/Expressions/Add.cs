@@ -3,11 +3,11 @@ using System.Collections.Generic;
 
 namespace PollyNom.BusinessLogic.Expressions
 {
-    public class Add : Expression
+    public class Add : IExpression
     {
         private List<AddExpression> list;
 
-        public Add(Expression a, Expression b)
+        public Add(IExpression a, IExpression b)
         {
             this.list = new List<AddExpression>(2);
             this.list.Add(new AddExpression(AddExpression.Signs.Plus, a));
@@ -30,7 +30,7 @@ namespace PollyNom.BusinessLogic.Expressions
             this.list.Add(b);
         }
 
-        public override bool IsMonadic
+        public bool IsMonadic
         {
             get
             {
@@ -38,7 +38,7 @@ namespace PollyNom.BusinessLogic.Expressions
             }
         }
 
-        public override int Level
+        public int Level
         {
             get
             {
@@ -46,7 +46,7 @@ namespace PollyNom.BusinessLogic.Expressions
             }
         }
 
-        public override Maybe<double> Evaluate(double input)
+        public Maybe<double> Evaluate(double input)
         {
             double sum = 0.0;
 
@@ -63,7 +63,7 @@ namespace PollyNom.BusinessLogic.Expressions
             return new Some<double>(sum);
         }
 
-        public override Maybe<string> Print()
+        public Maybe<string> Print()
         {
             string s = string.Empty;
 
@@ -85,7 +85,7 @@ namespace PollyNom.BusinessLogic.Expressions
             return new Some<string>(s);
         }
 
-        public class AddExpression : Expression
+        public class AddExpression : IExpression
         {
             public enum Signs
             {
@@ -93,9 +93,9 @@ namespace PollyNom.BusinessLogic.Expressions
                 Minus
             }
 
-            private Expression expression;
+            private IExpression expression;
 
-            public AddExpression(Signs sign, Expression expression)
+            public AddExpression(Signs sign, IExpression expression)
             {
                 this.expression = expression;
                 this.Sign = sign;
@@ -103,16 +103,16 @@ namespace PollyNom.BusinessLogic.Expressions
 
             public Signs Sign { get; }
 
-            public override bool IsMonadic => expression.IsMonadic;
+            public bool IsMonadic => expression.IsMonadic;
 
-            public override int Level => expression.Level;
+            public int Level => expression.Level;
 
-            public override Maybe<double> Evaluate(double input) 
+            public Maybe<double> Evaluate(double input) 
             {
                 return expression.Evaluate(input);
             }
 
-            public override Maybe<string> Print()
+            public Maybe<string> Print()
             {
                 return expression.Print();
             }

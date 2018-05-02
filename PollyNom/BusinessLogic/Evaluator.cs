@@ -15,7 +15,7 @@ namespace PollyNom.BusinessLogic
 
         public List<Tuple<double, double>> Evaluate()
         {
-            Expression expression = this.BuildExpression();
+            IExpression expression = this.BuildExpression();
             var list = new List<Tuple<double, double>>(100);
             if (ValidateInput())
             {
@@ -31,7 +31,7 @@ namespace PollyNom.BusinessLogic
             return list;
         }
 
-        private Expression BuildExpression()
+        private IExpression BuildExpression()
         {
             BaseX X = new BaseX();
             Power SecondPower = new Power(X, new Constant(2));
@@ -40,13 +40,13 @@ namespace PollyNom.BusinessLogic
             return Addition;
         }
 
-        private Expression Parse()
+        private IExpression Parse()
         {
             if(!ValidateInput())
             {
                 return new InvalidExpression();
             }
-            Expression expression = new Constant(1);
+            IExpression expression = new Constant(1);
 
             return expression;
         }

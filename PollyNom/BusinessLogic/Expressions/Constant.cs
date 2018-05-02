@@ -1,6 +1,6 @@
 ﻿namespace PollyNom.BusinessLogic.Expressions
 {
-    public class Constant : Expression
+    public class Constant : IExpression
     {
         private double a;
 
@@ -9,7 +9,7 @@
             this.a = a;
         }
 
-        public override bool IsMonadic
+        public bool IsMonadic
         {
             get
             {
@@ -17,7 +17,7 @@
             }
         }
 
-        public override int Level
+        public int Level
         {
             get
             {
@@ -25,12 +25,12 @@
             }
         }
 
-        public override Maybe<double> Evaluate(double input)
+        public Maybe<double> Evaluate(double input)
         {
             return new Some<double>(a);
         }
 
-        public override Maybe<string> Print()
+        public Maybe<string> Print()
         {
             return new Some<string>($"{a}");
         }

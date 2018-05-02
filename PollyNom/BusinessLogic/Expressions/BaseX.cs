@@ -1,8 +1,8 @@
 ﻿namespace PollyNom.BusinessLogic.Expressions
 {
-    public class BaseX : Expression
+    public class BaseX : IExpression
     {
-        public override bool IsMonadic
+        public bool IsMonadic
         {
             get
             {
@@ -10,7 +10,7 @@
             }
         }
 
-        public override int Level
+        public int Level
         {
             get
             {
@@ -18,12 +18,12 @@
             }
         }
 
-        public override Maybe<double> Evaluate(double input)
+        public Maybe<double> Evaluate(double input)
         {
             return new Some<double>(input);
         }
 
-        public override Maybe<string> Print()
+        public Maybe<string> Print()
         {
             return new Some<string>("x");
         }

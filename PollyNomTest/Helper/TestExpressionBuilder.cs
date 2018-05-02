@@ -13,7 +13,7 @@ namespace PollyNomTest.Helper
         /// </c>
         /// </summary>
         /// <returns>An Expression object.</returns>
-        internal static Expression Expression01()
+        internal static IExpression Expression01()
         {
             return new Multiply(new Constant(2.0), new BaseX());
         }
@@ -25,7 +25,7 @@ namespace PollyNomTest.Helper
         /// </c>
         /// </summary>
         /// <returns>An Expression object.</returns>
-        internal static Expression Expression02()
+        internal static IExpression Expression02()
         {
             return new Divide(new Multiply(new Constant(2.0), new Power(new BaseX(), new Constant(3.0))), new Subtract(new BaseX(), new Power(new Constant(2.0), new BaseX())));
         }
@@ -37,7 +37,7 @@ namespace PollyNomTest.Helper
         /// </c>
         /// </summary>
         /// <returns>An Expression object.</returns>
-        internal static Expression Expression03()
+        internal static IExpression Expression03()
         {
             return new Multiply(new Constant(2.0), new Add(new BaseX(), new Constant(1.0)));
         }
@@ -49,7 +49,7 @@ namespace PollyNomTest.Helper
         /// </c>
         /// </summary>
         /// <returns>An Expression object.</returns>
-        internal static Expression Expression04()
+        internal static IExpression Expression04()
         {
             return new Power(new Add(new BaseX(), new Constant(1.0)), new Constant(2.0));
         }
@@ -61,7 +61,7 @@ namespace PollyNomTest.Helper
         /// </c>
         /// </summary>
         /// <returns>An Expression object.</returns>
-        internal static Expression Expression05()
+        internal static IExpression Expression05()
         {
             return new Power(new Add(new BaseX(), new Constant(1.0)), new Divide(new BaseX(), new Constant(3.0)));
         }
@@ -73,7 +73,7 @@ namespace PollyNomTest.Helper
         /// </c>
         /// </summary>
         /// <returns>An Expression object.</returns>
-        internal static Expression Expression06()
+        internal static IExpression Expression06()
         {
             return new Add(
                 new Add.AddExpression(Add.AddExpression.Signs.Plus, new BaseX()), 
@@ -90,7 +90,7 @@ namespace PollyNomTest.Helper
         /// </c>
         /// </summary>
         /// <returns>An Expression object.</returns>
-        internal static Expression Expression07()
+        internal static IExpression Expression07()
         {
             Add.AddExpression[] expressions = {
                 new Add.AddExpression(Add.AddExpression.Signs.Plus, new BaseX()),
@@ -109,7 +109,7 @@ namespace PollyNomTest.Helper
         /// </c>
         /// </summary>
         /// <returns>An Expression object.</returns>
-        internal static Expression Expression08()
+        internal static IExpression Expression08()
         {
             List<Add.AddExpression> list = new List<Add.AddExpression>();
 

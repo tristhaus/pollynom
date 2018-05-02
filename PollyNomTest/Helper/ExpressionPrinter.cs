@@ -4,7 +4,7 @@ namespace PollyNomTest.Helper
 {
     internal class ExpressionPrinter
     {
-        public static string PrintExpression(Expression expression)
+        public static string PrintExpression(IExpression expression)
         {
             return expression.Print().HasValue() ? expression.Print().Value() : "invalid";
         }

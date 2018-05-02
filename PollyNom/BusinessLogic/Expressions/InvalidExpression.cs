@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace PollyNom.BusinessLogic.Expressions
 {
-    public class InvalidExpression : Expression
+    public class InvalidExpression : IExpression
     {
-        public override bool IsMonadic
+        public bool IsMonadic
         {
             get
             {
@@ -16,7 +16,7 @@ namespace PollyNom.BusinessLogic.Expressions
             }
         }
 
-        public override int Level
+        public int Level
         {
             get
             {
@@ -24,12 +24,12 @@ namespace PollyNom.BusinessLogic.Expressions
             }
         }
 
-        public override Maybe<double> Evaluate(double input)
+        public Maybe<double> Evaluate(double input)
         {
             return new None<double>();
         }
 
-        public override Maybe<string> Print()
+        public Maybe<string> Print()
         {
             return new None<string>();
         }

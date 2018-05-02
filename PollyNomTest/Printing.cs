@@ -11,7 +11,7 @@ namespace PollyNomTest
         public void Print01()
         {
             // Arrange
-            Expression expr = TestExpressionBuilder.Expression01();
+            IExpression expr = TestExpressionBuilder.Expression01();
 
             // Act
             string result = ExpressionPrinter.PrintExpression(expr);
@@ -24,7 +24,7 @@ namespace PollyNomTest
         public void Print02()
         {
             // Arrange
-            Expression expr = TestExpressionBuilder.Expression02();
+            IExpression expr = TestExpressionBuilder.Expression02();
 
             // Act
             string result = ExpressionPrinter.PrintExpression(expr);
@@ -37,7 +37,7 @@ namespace PollyNomTest
         public void Print03()
         {
             // Arrange
-            Expression expr = TestExpressionBuilder.Expression03();
+            IExpression expr = TestExpressionBuilder.Expression03();
 
             // Act
             string result = ExpressionPrinter.PrintExpression(expr);
@@ -50,7 +50,7 @@ namespace PollyNomTest
         public void Print04()
         {
             // Arrange
-            Expression expr = TestExpressionBuilder.Expression04();
+            IExpression expr = TestExpressionBuilder.Expression04();
 
             // Act
             string result = ExpressionPrinter.PrintExpression(expr);
@@ -63,7 +63,7 @@ namespace PollyNomTest
         public void Print05()
         {
             // Arrange
-            Expression expr = TestExpressionBuilder.Expression05();
+            IExpression expr = TestExpressionBuilder.Expression05();
 
             // Act
             string result = ExpressionPrinter.PrintExpression(expr);
@@ -76,7 +76,7 @@ namespace PollyNomTest
         public void Print06()
         {
             // Arrange
-            Expression expr = TestExpressionBuilder.Expression06();
+            IExpression expr = TestExpressionBuilder.Expression06();
 
             // Act
             string result = ExpressionPrinter.PrintExpression(expr);
@@ -89,7 +89,7 @@ namespace PollyNomTest
         public void Print07()
         {
             // Arrange
-            Expression expr = TestExpressionBuilder.Expression07();
+            IExpression expr = TestExpressionBuilder.Expression07();
 
             // Act
             string result = ExpressionPrinter.PrintExpression(expr);
@@ -102,7 +102,7 @@ namespace PollyNomTest
         public void Print08()
         {
             // Arrange
-            Expression expr = TestExpressionBuilder.Expression08();
+            IExpression expr = TestExpressionBuilder.Expression08();
 
             // Act
             string result = ExpressionPrinter.PrintExpression(expr);

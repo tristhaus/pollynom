@@ -11,7 +11,7 @@ namespace PollyNomTest
         public void Evaluate01()
         {
             // Arrange
-            Expression expr = TestExpressionBuilder.Expression01();
+            IExpression expr = TestExpressionBuilder.Expression01();
             double expectedValue = 0.2;
 
             // Act
@@ -27,7 +27,7 @@ namespace PollyNomTest
         public void Evaluate02()
         {
             // Arrange
-            Expression expr = TestExpressionBuilder.Expression02();
+            IExpression expr = TestExpressionBuilder.Expression02();
             double expectedValue = -0.00205809;
 
             // Act
@@ -43,7 +43,7 @@ namespace PollyNomTest
         public void Evaluate03()
         {
             // Arrange
-            Expression expr = TestExpressionBuilder.Expression03();
+            IExpression expr = TestExpressionBuilder.Expression03();
             double expectedValue = 2.2;
 
             // Act
@@ -59,7 +59,7 @@ namespace PollyNomTest
         public void Evaluate04()
         {
             // Arrange
-            Expression expr = TestExpressionBuilder.Expression04();
+            IExpression expr = TestExpressionBuilder.Expression04();
             double expectedValue = 1.21;
 
             // Act
@@ -75,7 +75,7 @@ namespace PollyNomTest
         public void Evaluate05()
         {
             // Arrange
-            Expression expr = TestExpressionBuilder.Expression05();
+            IExpression expr = TestExpressionBuilder.Expression05();
             double expectedValue = 1.003182058;
 
             // Act
@@ -92,7 +92,7 @@ namespace PollyNomTest
         public void Evaluate06()
         {
             // Arrange
-            Expression expr = TestExpressionBuilder.Expression06();
+            IExpression expr = TestExpressionBuilder.Expression06();
             double expectedValue = -1.9;
 
             // Act
@@ -108,7 +108,7 @@ namespace PollyNomTest
         public void Evaluate07()
         {
             // Arrange
-            Expression expr = TestExpressionBuilder.Expression07();
+            IExpression expr = TestExpressionBuilder.Expression07();
             double expectedValue = 2.1;
 
             // Act
@@ -124,7 +124,7 @@ namespace PollyNomTest
         public void Evaluate08()
         {
             // Arrange
-            Expression expr = TestExpressionBuilder.Expression08();
+            IExpression expr = TestExpressionBuilder.Expression08();
             double expectedValue = 4.1;
 
             // Act

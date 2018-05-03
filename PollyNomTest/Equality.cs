@@ -7,7 +7,7 @@ namespace PollyNomTest
     public class Equality
     {
         [TestMethod]
-        public void TestXInvalidPerMethod()
+        public void XInvalidPerMethod()
         {
             var Xa = new BaseX();
             var Xb = new BaseX();
@@ -26,7 +26,7 @@ namespace PollyNomTest
         }
 
         [TestMethod]
-        public void TestXInvalidPerOperator()
+        public void XInvalidPerOperator()
         {
             var Xa = new BaseX();
             var Xb = new BaseX();
@@ -48,7 +48,7 @@ namespace PollyNomTest
         }
 
         [TestMethod]
-        public void TestConstantEqualPerMethod()
+        public void ConstantEqualPerMethod()
         {
             var a = new Constant(0.5);
             var b = new Constant(0.5);
@@ -59,7 +59,7 @@ namespace PollyNomTest
         }
 
         [TestMethod]
-        public void TestConstantUnequalPerMethod()
+        public void ConstantUnequalPerMethod()
         {
             var a = new Constant(0.5);
             var b = new Constant(0.4);
@@ -69,7 +69,7 @@ namespace PollyNomTest
         }
 
         [TestMethod]
-        public void TestConstantEqualPerOperator()
+        public void ConstantEqualPerOperator()
         {
             var a = new Constant(0.5);
             var b = new Constant(0.5);
@@ -80,13 +80,73 @@ namespace PollyNomTest
         }
 
         [TestMethod]
-        public void TestConstantUnequalPerOperator()
+        public void ConstantUnequalPerOperator()
         {
             var a = new Constant(0.5);
             var b = new Constant(0.4);
 
             Assert.IsTrue(a!=b);
             Assert.IsTrue(b!=a);
+        }
+
+        [TestMethod]
+        public void MultiplyEqualPerOperator()
+        {
+            var a = new Multiply(new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Multiply, new Constant(0.5)), new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Multiply, new Constant(0.3)), new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Multiply, new Constant(1.2)));
+            var b = new Multiply(new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Multiply, new Constant(0.5)), new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Multiply, new Constant(0.3)), new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Multiply, new Constant(1.2)));
+
+            Assert.IsTrue(a == b);
+            Assert.IsTrue(b == a);
+        }
+
+        [TestMethod]
+        public void MultiplyUnequalPerOperator()
+        {
+            var a = new Multiply(new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Multiply, new Constant(0.5)), new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Multiply, new Constant(0.3)), new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Multiply, new Constant(1.2)));
+            var b = new Multiply(new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Multiply, new Constant(0.3)), new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Multiply, new Constant(0.3)), new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Multiply, new Constant(1.2)));
+
+            Assert.IsTrue(a != b);
+            Assert.IsTrue(b != a);
+        }
+
+        [TestMethod]
+        public void MultiplyUnequalSignsPerOperator()
+        {
+            var a = new Multiply(new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Multiply, new Constant(0.5)), new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Multiply, new Constant(0.3)), new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Divide, new Constant(1.2)));
+            var b = new Multiply(new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Divide, new Constant(0.5)), new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Multiply, new Constant(0.3)), new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Multiply, new Constant(1.2)));
+
+            Assert.IsTrue(a != b);
+            Assert.IsTrue(b != a);
+        }
+
+        [TestMethod]
+        public void MultiplyEqualReorderedPerOperator()
+        {
+            var a = new Multiply(new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Multiply, new Constant(0.5)), new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Multiply, new Constant(0.3)), new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Multiply, new Constant(1.2)));
+            var b = new Multiply(new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Multiply, new Constant(0.3)), new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Multiply, new Constant(0.5)), new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Multiply, new Constant(1.2)));
+
+            Assert.IsTrue(a == b);
+            Assert.IsTrue(b == a);
+        }
+
+        [TestMethod]
+        public void MultiplyEqualDuplicatePerOperator()
+        {
+            var a = new Multiply(new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Multiply, new Constant(0.3)), new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Multiply, new Constant(0.3)), new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Multiply, new Constant(1.2)));
+            var b = new Multiply(new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Multiply, new Constant(0.3)), new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Multiply, new Constant(0.3)), new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Multiply, new Constant(1.2)));
+
+            Assert.IsTrue(a == b);
+            Assert.IsTrue(b == a);
+        }
+
+        [TestMethod]
+        public void MultiplyEqualMixedPerOperator()
+        {
+            var a = new Multiply(new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Multiply, new Constant(0.3)), new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Multiply, new BaseX()), new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Multiply, new Constant(1.2)));
+            var b = new Multiply(new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Multiply, new BaseX()), new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Multiply, new Constant(0.3)), new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Multiply, new Constant(1.2)));
+
+            Assert.IsTrue(a == b);
+            Assert.IsTrue(b == a);
         }
     }
 }

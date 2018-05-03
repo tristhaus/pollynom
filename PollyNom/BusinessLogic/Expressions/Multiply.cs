@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace PollyNom.BusinessLogic.Expressions
 {
-    public class Multiply : IExpression
+    public class Multiply : IExpression, IEquatable<Multiply>
     {
         private List<MultiplyExpression> list;
 
@@ -44,6 +45,47 @@ namespace PollyNom.BusinessLogic.Expressions
             {
                 return 2;
             }
+        }
+
+        public override bool Equals(object other)
+        {
+            if (other.GetType() != typeof(Multiply))
+            {
+                return false;
+            }
+            Multiply otherMultiply = (Multiply)other;
+
+            return this.equalityImplementation(otherMultiply);
+        }
+
+        public bool Equals(Multiply other)
+        {
+            return this.equalityImplementation(other);
+        }
+
+        public static bool operator ==(Multiply x, IExpression y)
+        {
+            return x.Equals(y);
+        }
+
+        public static bool operator !=(Multiply x, IExpression y)
+        {
+            return !(x.Equals(y));
+        }
+
+        public static bool operator ==(Multiply x, Multiply y)
+        {
+            return x.Equals(y);
+        }
+
+        public static bool operator !=(Multiply x, Multiply y)
+        {
+            return !(x.Equals(y));
+        }
+
+        public override int GetHashCode()
+        {
+            return list.GetHashCode();
         }
 
         public Maybe<double> Evaluate(double input)
@@ -92,7 +134,42 @@ namespace PollyNom.BusinessLogic.Expressions
             return new Some<string>(s);
         }
 
-        public class MultiplyExpression : IExpression
+        private bool equalityImplementation(Multiply other)
+        {
+            if (this.list.Count != other.list.Count)
+            {
+                return false;
+            }
+
+            var cnt = new Dictionary<MultiplyExpression, int>();
+            foreach (MultiplyExpression s in this.list)
+            {
+                if (cnt.ContainsKey(s))
+                {
+                    cnt[s]++;
+                }
+                else
+                {
+                    cnt.Add(s, 1);
+                }
+            }
+
+            foreach (MultiplyExpression s in other.list)
+            {
+                if (cnt.ContainsKey(s))
+                {
+                    cnt[s]--;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+
+            return cnt.Values.All(c => c == 0);
+        }
+
+        public class MultiplyExpression : IExpression, IEquatable<MultiplyExpression>
         {
             public enum Signs
             {
@@ -113,6 +190,47 @@ namespace PollyNom.BusinessLogic.Expressions
             public bool IsMonadic => expression.IsMonadic;
 
             public int Level => expression.Level;
+
+            public override bool Equals(object other)
+            {
+                if (other.GetType() != typeof(MultiplyExpression))
+                {
+                    return false;
+                }
+                MultiplyExpression otherMultiplyExpression = (MultiplyExpression)other;
+                return this.Sign == otherMultiplyExpression.Sign && this.expression.Equals(otherMultiplyExpression.expression);
+            }
+
+            public bool Equals(MultiplyExpression other)
+            {
+                return this.Sign == other.Sign && this.expression.Equals(other.expression);
+            }
+
+            public static bool operator ==(MultiplyExpression x, IExpression y)
+            {
+                return x.Equals(y);
+            }
+
+            public static bool operator !=(MultiplyExpression x, IExpression y)
+            {
+                return !(x.Equals(y));
+            }
+
+            public static bool operator ==(MultiplyExpression x, MultiplyExpression y)
+            {
+                return x.Equals(y);
+            }
+
+            public static bool operator !=(MultiplyExpression x, MultiplyExpression y)
+            {
+                return !(x.Equals(y));
+            }
+
+            public override int GetHashCode()
+            {
+                int hc = Sign.GetHashCode() ^ expression.GetHashCode();
+                return hc;
+            }
 
             public Maybe<double> Evaluate(double input)
             {

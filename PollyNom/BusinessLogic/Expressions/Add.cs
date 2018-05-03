@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace PollyNom.BusinessLogic.Expressions
 {
-    public class Add : IExpression
+    public class Add : IExpression, IEquatable<Add>
     {
         private List<AddExpression> list;
 
@@ -46,6 +47,47 @@ namespace PollyNom.BusinessLogic.Expressions
             }
         }
 
+        public override bool Equals(object other)
+        {
+            if (other.GetType() != typeof(Add))
+            {
+                return false;
+            }
+            Add otherAdd = (Add)other;
+
+            return this.equalityImplementation(otherAdd);
+        }
+
+        public bool Equals(Add other)
+        {
+            return this.equalityImplementation(other);
+        }
+
+        public static bool operator ==(Add x, IExpression y)
+        {
+            return x.Equals(y);
+        }
+
+        public static bool operator !=(Add x, IExpression y)
+        {
+            return !(x.Equals(y));
+        }
+
+        public static bool operator ==(Add x, Add y)
+        {
+            return x.Equals(y);
+        }
+
+        public static bool operator !=(Add x, Add y)
+        {
+            return !(x.Equals(y));
+        }
+
+        public override int GetHashCode()
+        {
+            return list.GetHashCode();
+        }
+
         public Maybe<double> Evaluate(double input)
         {
             double sum = 0.0;
@@ -85,12 +127,47 @@ namespace PollyNom.BusinessLogic.Expressions
             return new Some<string>(s);
         }
 
-        public class AddExpression : IExpression
+        private bool equalityImplementation(Add other)
+        {
+            if (this.list.Count != other.list.Count)
+            {
+                return false;
+            }
+
+            var cnt = new Dictionary<AddExpression, int>();
+            foreach (AddExpression s in this.list)
+            {
+                if (cnt.ContainsKey(s))
+                {
+                    cnt[s]++;
+                }
+                else
+                {
+                    cnt.Add(s, 1);
+                }
+            }
+
+            foreach (AddExpression s in other.list)
+            {
+                if (cnt.ContainsKey(s))
+                {
+                    cnt[s]--;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+
+            return cnt.Values.All(c => c == 0);
+        }
+
+        public class AddExpression : IExpression, IEquatable<AddExpression>
         {
             public enum Signs
             {
-                Plus,
-                Minus
+                Plus = 1,
+                Minus = 2
             }
 
             private IExpression expression;
@@ -106,6 +183,46 @@ namespace PollyNom.BusinessLogic.Expressions
             public bool IsMonadic => expression.IsMonadic;
 
             public int Level => expression.Level;
+
+            public override bool Equals(object other)
+            {
+                if (other.GetType() != typeof(AddExpression))
+                {
+                    return false;
+                }
+                AddExpression otherAddExpression = (AddExpression)other;
+                return this.Sign == otherAddExpression.Sign && this.expression.Equals(otherAddExpression.expression);
+            }
+
+            public bool Equals(AddExpression other)
+            {
+                return this.Sign == other.Sign && this.expression.Equals(other.expression);
+            }
+
+            public static bool operator ==(AddExpression x, IExpression y)
+            {
+                return x.Equals(y);
+            }
+
+            public static bool operator !=(AddExpression x, IExpression y)
+            {
+                return !(x.Equals(y));
+            }
+
+            public static bool operator ==(AddExpression x, AddExpression y)
+            {
+                return x.Equals(y);
+            }
+
+            public static bool operator !=(AddExpression x, AddExpression y)
+            {
+                return !(x.Equals(y));
+            }
+
+            public override int GetHashCode()
+            {
+                return Sign.GetHashCode() ^ expression.GetHashCode();
+            }
 
             public Maybe<double> Evaluate(double input) 
             {

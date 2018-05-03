@@ -2,15 +2,15 @@
 
 namespace PollyNom.BusinessLogic.Expressions
 {
-    public class Power : IExpression
+    public class Power : IExpression, IEquatable<Power>
     {
-        private IExpression a;
-        private IExpression b;
+        private IExpression basis;
+        private IExpression exponent;
 
         public Power(IExpression a, IExpression b)
         {
-            this.a = a;
-            this.b = b;
+            this.basis = a;
+            this.exponent = b;
         }
 
         public bool IsMonadic
@@ -29,10 +29,57 @@ namespace PollyNom.BusinessLogic.Expressions
             }
         }
 
+        public override bool Equals(object other)
+        {
+            if (other.GetType() != typeof(Power))
+            {
+                return false;
+            }
+            Power otherPower = (Power)other;
+
+            return this.equalityImplementation(otherPower);
+        }
+
+        public bool Equals(Power other)
+        {
+            return this.equalityImplementation(other);
+        }
+
+        public static bool operator ==(Power x, IExpression y)
+        {
+            return x.Equals(y);
+        }
+
+        public static bool operator !=(Power x, IExpression y)
+        {
+            return !(x.Equals(y));
+        }
+
+        public static bool operator ==(Power x, Power y)
+        {
+            return x.Equals(y);
+        }
+
+        public static bool operator !=(Power x, Power y)
+        {
+            return !(x.Equals(y));
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                int hash = 17;
+                    hash = hash * 23 + basis.GetHashCode();
+                    hash = hash * 23 + exponent.GetHashCode();
+                return hash;
+            }
+        }
+
         public Maybe<double> Evaluate(double input)
         {
-            var aValue = this.a.Evaluate(input);
-            var bValue = this.b.Evaluate(input);
+            var aValue = this.basis.Evaluate(input);
+            var bValue = this.exponent.Evaluate(input);
             if (!aValue.HasValue() || !bValue.HasValue())
             {
                 return new None<Double>();
@@ -42,8 +89,8 @@ namespace PollyNom.BusinessLogic.Expressions
 
         public Maybe<string> Print()
         {
-            var aValue = this.a.Print();
-            var bValue = this.b.Print();
+            var aValue = this.basis.Print();
+            var bValue = this.exponent.Print();
             if (!aValue.HasValue() || !bValue.HasValue())
             {
                 return new None<string>();
@@ -51,16 +98,21 @@ namespace PollyNom.BusinessLogic.Expressions
 
             var aDecorated = aValue.Value();
             var bDecorated = bValue.Value();
-            if (!a.IsMonadic)
+            if (!basis.IsMonadic)
             {
                 aDecorated = "(" + aDecorated + ")";
             }
-            if (!b.IsMonadic)
+            if (!exponent.IsMonadic)
             {
                 bDecorated = "(" + bDecorated + ")";
             }
 
             return new Some<string>(aDecorated + "^" + bDecorated);
+        }
+
+        private bool equalityImplementation(Power other)
+        {
+            return basis.Equals(other.basis) && exponent.Equals(other.exponent);
         }
     }
 }

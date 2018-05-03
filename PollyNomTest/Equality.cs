@@ -261,5 +261,70 @@ namespace PollyNomTest
             Assert.IsFalse(aa.Equals(b));
             Assert.IsFalse(a.Equals(b));
         }
+
+        [TestMethod]
+        public void PowerEqualPerOperator()
+        {
+            var exponentA = new Multiply(
+                new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Multiply, new BaseX()),
+                new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Divide, new Constant(0.4))
+                );
+            var basisA = new Add(new Add.AddExpression(Add.AddExpression.Signs.Plus, new BaseX()), new Add.AddExpression(Add.AddExpression.Signs.Minus, new Constant(1.0)));
+
+            var exponentB = new Multiply(
+                new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Divide, new Constant(0.4)),
+                new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Multiply, new BaseX())
+                );
+            var basisB = new Add(new Add.AddExpression(Add.AddExpression.Signs.Plus, new BaseX()), new Add.AddExpression(Add.AddExpression.Signs.Minus, new Constant(1.0)));
+
+            var powerA = new Power(basisA, exponentA);
+            var powerB = new Power(basisB, exponentB);
+
+            Assert.IsTrue(powerA == powerB);
+            Assert.IsTrue(powerB == powerA);
+        }
+
+        [TestMethod]
+        public void PowerUnequalPerOperator()
+        {
+            var exponentA = new Multiply(
+                new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Multiply, new BaseX()),
+                new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Divide, new Constant(0.3))
+                );
+            var basisA = new Add(new Add.AddExpression(Add.AddExpression.Signs.Plus, new BaseX()), new Add.AddExpression(Add.AddExpression.Signs.Minus, new Constant(1.0)));
+
+            var exponentB = new Multiply(
+                new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Multiply, new BaseX()),
+                new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Divide, new Constant(0.4))
+                );
+            var basisB = new Add(new Add.AddExpression(Add.AddExpression.Signs.Plus, new BaseX()), new Add.AddExpression(Add.AddExpression.Signs.Minus, new Constant(1.0)));
+
+            var powerA = new Power(basisA, exponentA);
+            var powerB = new Power(basisB, exponentB);
+
+            Assert.IsTrue(powerA != powerB);
+            Assert.IsTrue(powerB != powerA);
+        }
+
+        [TestMethod]
+        public void PowerPerMethod()
+        {
+            var exponentA = new BaseX();
+            var basisA = new Add(new Add.AddExpression(Add.AddExpression.Signs.Plus, new BaseX()), new Add.AddExpression(Add.AddExpression.Signs.Minus, new Constant(1.0)));
+
+            var exponentAA = new BaseX();
+            var basisAA = new Add(new Add.AddExpression(Add.AddExpression.Signs.Plus, new BaseX()), new Add.AddExpression(Add.AddExpression.Signs.Minus, new Constant(1.0)));
+
+            var exponentB = new Constant(1.4);
+            var basisB = new Add(new Add.AddExpression(Add.AddExpression.Signs.Plus, new BaseX()), new Add.AddExpression(Add.AddExpression.Signs.Minus, new Constant(1.0)));
+
+            var powerA = new Power(basisA, exponentA);
+            var powerAA = new Power(basisAA, exponentAA);
+            var powerB = new Power(basisB, exponentB);
+
+            Assert.IsTrue(powerA.Equals(powerAA));
+            Assert.IsFalse(powerB.Equals(powerA));
+            Assert.IsFalse(powerB.Equals(powerAA));
+        }
     }
 }

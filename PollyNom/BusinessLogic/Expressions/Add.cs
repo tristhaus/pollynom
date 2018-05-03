@@ -85,7 +85,15 @@ namespace PollyNom.BusinessLogic.Expressions
 
         public override int GetHashCode()
         {
-            return list.GetHashCode();
+            unchecked
+            {
+                int hash = 17;
+                foreach (var addExpression in list)
+                {
+                    hash = hash * 23 + addExpression.GetHashCode();
+                }
+                return hash;
+            }
         }
 
         public Maybe<double> Evaluate(double input)
@@ -221,7 +229,13 @@ namespace PollyNom.BusinessLogic.Expressions
 
             public override int GetHashCode()
             {
-                return Sign.GetHashCode() ^ expression.GetHashCode();
+                unchecked
+                {
+                    int hash = 17;
+                    hash = hash * 23 + this.Sign.GetHashCode();
+                    hash = hash * 23 + this.expression.GetHashCode();
+                    return hash;
+                }
             }
 
             public Maybe<double> Evaluate(double input) 

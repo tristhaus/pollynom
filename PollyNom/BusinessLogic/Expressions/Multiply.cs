@@ -85,7 +85,15 @@ namespace PollyNom.BusinessLogic.Expressions
 
         public override int GetHashCode()
         {
-            return list.GetHashCode();
+            unchecked
+            {
+                int hash = 17;
+                foreach (var multiplyExpression in list)
+                {
+                    hash = hash * 23 + multiplyExpression.GetHashCode();
+                }
+                return hash;
+            }
         }
 
         public Maybe<double> Evaluate(double input)
@@ -173,8 +181,8 @@ namespace PollyNom.BusinessLogic.Expressions
         {
             public enum Signs
             {
-                Multiply,
-                Divide
+                Multiply = 3,
+                Divide = 4
             }
 
             private IExpression expression;
@@ -228,8 +236,13 @@ namespace PollyNom.BusinessLogic.Expressions
 
             public override int GetHashCode()
             {
-                int hc = Sign.GetHashCode() ^ expression.GetHashCode();
-                return hc;
+                unchecked
+                {
+                    int hash = 17;
+                    hash = hash * 23 + this.Sign.GetHashCode();
+                    hash = hash * 23 + this.expression.GetHashCode();
+                    return hash;
+                }
             }
 
             public Maybe<double> Evaluate(double input)

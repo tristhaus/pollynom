@@ -74,9 +74,9 @@ namespace PollyNomTest
             var a = new Constant(0.5);
             var b = new Constant(0.5);
 
-            Assert.IsTrue(a==a);
-            Assert.IsTrue(a==b);
-            Assert.IsTrue(b==a);
+            Assert.IsTrue(a == a);
+            Assert.IsTrue(a == b);
+            Assert.IsTrue(b == a);
         }
 
         [TestMethod]
@@ -85,8 +85,8 @@ namespace PollyNomTest
             var a = new Constant(0.5);
             var b = new Constant(0.4);
 
-            Assert.IsTrue(a!=b);
-            Assert.IsTrue(b!=a);
+            Assert.IsTrue(a != b);
+            Assert.IsTrue(b != a);
         }
 
         [TestMethod]
@@ -217,12 +217,49 @@ namespace PollyNomTest
                 new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Divide, new BaseX())
                 );
             var b = new Multiply(
+                new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Divide, new BaseX()),
+                new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Multiply, new Add(new Add.AddExpression(Add.AddExpression.Signs.Plus, new BaseX()), new Add.AddExpression(Add.AddExpression.Signs.Plus, new Constant(4.2))))
+                );
+
+            Assert.IsTrue(a == b);
+            Assert.IsTrue(b == a);
+        }
+
+        [TestMethod]
+        public void MultiplyAddUnequalPerOperator()
+        {
+            var a = new Multiply(
                 new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Multiply, new Add(new Add.AddExpression(Add.AddExpression.Signs.Plus, new BaseX()), new Add.AddExpression(Add.AddExpression.Signs.Plus, new Constant(4.2)))),
                 new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Divide, new BaseX())
                 );
+            var b = new Multiply(
+                new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Multiply, new Add(new Add.AddExpression(Add.AddExpression.Signs.Minus, new BaseX()), new Add.AddExpression(Add.AddExpression.Signs.Plus, new Constant(4.2)))),
+                new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Divide, new BaseX())
+                );
 
-        //    Assert.IsTrue(a.Equals(b));
-            Assert.IsTrue(b.Equals(a));
+            Assert.IsFalse(a == b);
+            Assert.IsFalse(b == a);
+        }
+
+        [TestMethod]
+        public void MultiplySignAndOrderPerMethod()
+        {
+            var aa = new Multiply(
+                new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Multiply, new BaseX()),
+                new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Divide, new Constant(0.4))
+                );
+            var a = new Multiply(
+                new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Divide, new Constant(0.4)),
+                new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Multiply, new BaseX())
+                );
+            var b = new Multiply(
+                new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Divide, new Constant(0.5)),
+                new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Multiply, new BaseX())
+                );
+
+            Assert.IsTrue(aa.Equals(a));
+            Assert.IsFalse(aa.Equals(b));
+            Assert.IsFalse(a.Equals(b));
         }
     }
 }

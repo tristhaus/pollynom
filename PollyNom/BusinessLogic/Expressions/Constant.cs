@@ -64,7 +64,10 @@ namespace PollyNom.BusinessLogic.Expressions
 
         public override int GetHashCode()
         {
-            return a.GetHashCode();
+            unchecked
+            {
+                return a.GetHashCode();
+            }
         }
 
         public Maybe<double> Evaluate(double input)

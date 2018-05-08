@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text.RegularExpressions;
 using PollyNom.BusinessLogic.Expressions;
 
 namespace PollyNom.BusinessLogic
@@ -17,15 +16,12 @@ namespace PollyNom.BusinessLogic
         {
             IExpression expression = this.BuildExpression();
             var list = new List<Tuple<double, double>>(100);
-            if (ValidateInput())
+            for (int i = 0; i < 100; i++)
             {
-                for (int i = 0; i < 100; i++)
+                var value = expression.Evaluate(0.1 * i);
+                if (value.HasValue())
                 {
-                    var value = expression.Evaluate(0.1 * i);
-                    if (value.HasValue())
-                    {
-                        list.Add(new Tuple<double, double>(0.1 * i, value.Value()));
-                    }
+                    list.Add(new Tuple<double, double>(0.1 * i, value.Value()));
                 }
             }
             return list;
@@ -38,54 +34,6 @@ namespace PollyNom.BusinessLogic
             Power ThirdPower = new Power(X, new Constant(3));
             Subtract Addition = new Subtract(SecondPower, ThirdPower);
             return Addition;
-        }
-
-        private IExpression Parse()
-        {
-            if(!ValidateInput())
-            {
-                return new InvalidExpression();
-            }
-            IExpression expression = new Constant(1);
-
-            return expression;
-        }
-
-        private bool ValidateInput()
-        {
-            // check unsupported characters 
-            {
-                Regex regex = new Regex("^[-0-9+/*^()xX]+$");
-                if(!regex.IsMatch(this.input)) {
-                    return false;
-                }
-            }
-
-            // check balanced parentheses
-            {
-                int count = 0;
-                foreach (char c in this.input)
-                {
-                    if(c == '(')
-                    {
-                        count++;
-                    }
-                    else if(c == ')')
-                    {
-                        count--;
-                    }
-                    if(count < 0)
-                    {
-                        return false;
-                    }
-                }
-                if(count != 0)
-                {
-                    return false;
-                }
-            }
-
-            return true;
         }
     }
 }

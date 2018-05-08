@@ -60,6 +60,7 @@
     <Compile Include="Printing.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Helper\TestExpressionBuilder.cs" />
+    <Compile Include="ParserTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\PollyNom\PollyNom.csproj">

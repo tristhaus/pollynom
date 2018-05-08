@@ -57,6 +57,7 @@
     <Compile Include="BusinessLogic\Expressions\Power.cs" />
     <Compile Include="BusinessLogic\Expressions\Subtract.cs" />
     <Compile Include="BusinessLogic\Maybe.cs" />
+    <Compile Include="BusinessLogic\Parser.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>

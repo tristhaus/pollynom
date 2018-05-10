@@ -14,7 +14,7 @@ namespace PollyNomTest
             Parser parser = new Parser();
             string x = "X";
             string y = "Y";
-            string number = "030.500";
+            string number = " 030.500 ";
             string invalidNumber = "030.50.0";
             string bracedX = "(X)";
             string doubleBracedX = "((X))";
@@ -34,6 +34,27 @@ namespace PollyNomTest
             Assert.IsTrue(exprInvalidNumber.Equals(new InvalidExpression()));
             Assert.IsTrue(exprBracedX.Equals(new BaseX()));
             Assert.IsTrue(exprDoubleBracedX.Equals(new BaseX()));
+        }
+
+        [TestMethod]
+        public void SimpleAdditionTests()
+        {
+            // Arrange
+            Parser parser = new Parser();
+
+            string TwoAdd = "2.0+3.0";
+            var expectedTwoAdd = new Add(new Constant(2.0), new Constant(3.0));
+
+            string TwoAddBracketed = "(2.0)+(3.0)";
+            var expectedTwoAddBracketed = new Add(new Constant(2.0), new Constant(3.0));
+
+            // Act
+            IExpression exprTwoAdd = parser.Parse(TwoAdd);
+            IExpression exprTwoAddBracketed = parser.Parse(TwoAddBracketed);
+
+            // Assert
+            Assert.IsTrue(exprTwoAdd.Equals(expectedTwoAdd));
+            Assert.IsTrue(exprTwoAddBracketed.Equals(expectedTwoAddBracketed));
         }
     }
 }

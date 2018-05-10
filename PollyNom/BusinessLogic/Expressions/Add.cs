@@ -31,6 +31,11 @@ namespace PollyNom.BusinessLogic.Expressions
             this.list.Add(b);
         }
 
+        public Add(List<AddExpression> finalList)
+        {
+            this.list = finalList;
+        }
+
         public bool IsMonadic
         {
             get

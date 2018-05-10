@@ -1,5 +1,6 @@
 ﻿using PollyNom.BusinessLogic.Expressions;
 using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Text.RegularExpressions;
 
@@ -9,12 +10,12 @@ namespace PollyNom.BusinessLogic
     {
         public IExpression Parse(string S)
         {
+            S = this.PrepareString(S);
             if (!ValidateInput(S))
             {
                 return new InvalidExpression();
             }
 
-            S = this.PrepareString(S);
             return this.InternalParse(S);
         }
 
@@ -33,7 +34,7 @@ namespace PollyNom.BusinessLogic
             }
 
             // deal with a simple case
-            if (Regex.IsMatch(S, @"[0-9].?[0-9]", RegexOptions.Compiled))
+            if (Regex.IsMatch(S, @"^[0-9]*.?[0-9]*$", RegexOptions.Compiled))
             {
                 double result;
                 if (double.TryParse(S, NumberStyles.Any, new CultureInfo("en-US"), out result))
@@ -42,6 +43,70 @@ namespace PollyNom.BusinessLogic
                 }
 
                 return new InvalidExpression();
+            }
+
+            List<int> addList = new List<int>();
+            List<int> multiplyList = new List<int>();
+            List<int> powerList = new List<int>();
+
+            for (int index = 0; index < S.Length; index++)
+            {
+                char c = S[index];
+                switch(c)
+                {
+                    case '(':
+                        index = this.FindMatchingBrace(S, index);
+                        continue;
+
+                    case '^':
+                        powerList.Add(index);
+                        break;
+
+                    case '*':
+                    case '/':
+                        multiplyList.Add(index);
+                        break;
+
+                    case '+':
+                    case '-':
+                        addList.Add(index);
+                        break;
+
+                    default:
+                        break;
+                }
+            }
+
+            if(addList.Count > 0)
+            {
+                List<int> cleanedUpList = new List<int>(addList.Count);
+                foreach(int index in addList)
+                {
+                    if(index > 0 && (S[index - 1] != '*' && S[index - 1] != '/' && S[index - 1] != '^'))
+                    {
+                        cleanedUpList.Add(index);
+                    }
+                }
+
+                if(cleanedUpList.Count > 0)
+                {
+                    cleanedUpList.Add(S.Length);
+                    List<Add.AddExpression> finalList = new List<Add.AddExpression>();
+
+                    int firstIndex = -1;
+                    int secondIndex;
+                    foreach(int index in cleanedUpList)
+                    {
+                        secondIndex = index;
+                        Add.AddExpression.Signs sign = firstIndex == -1 || S[firstIndex] == '+' 
+                            ? Add.AddExpression.Signs.Plus 
+                            : Add.AddExpression.Signs.Minus;
+                        ++firstIndex;
+                        finalList.Add(new Add.AddExpression(sign, this.InternalParse(S.Substring(firstIndex, secondIndex - firstIndex))));
+                        firstIndex = secondIndex;
+                    }
+                    return new Add(finalList);
+                }
             }
 
             return new InvalidExpression();

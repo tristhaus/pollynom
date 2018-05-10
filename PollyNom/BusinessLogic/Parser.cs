@@ -82,7 +82,7 @@ namespace PollyNom.BusinessLogic
                 List<int> cleanedUpList = new List<int>(addList.Count);
                 foreach(int index in addList)
                 {
-                    if(index > 0 && (S[index - 1] != '*' && S[index - 1] != '/' && S[index - 1] != '^'))
+                    if(index == 0 || (index > 0 && S[index - 1] != '*' && S[index - 1] != '/' && S[index - 1] != '^'))
                     {
                         cleanedUpList.Add(index);
                     }
@@ -98,6 +98,13 @@ namespace PollyNom.BusinessLogic
                     foreach(int index in cleanedUpList)
                     {
                         secondIndex = index;
+
+                        if(secondIndex == 0 && firstIndex == -1)
+                        {
+                            firstIndex = secondIndex;
+                            continue;
+                        }
+
                         Add.AddExpression.Signs sign = firstIndex == -1 || S[firstIndex] == '+' 
                             ? Add.AddExpression.Signs.Plus 
                             : Add.AddExpression.Signs.Minus;

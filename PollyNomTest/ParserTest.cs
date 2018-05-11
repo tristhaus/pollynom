@@ -119,5 +119,89 @@ namespace PollyNomTest
             // Assert
             Assert.IsTrue(exprThreeAddWithBrackets.Equals(expectedThreeAddWithBrackets));
         }
+
+        [TestMethod]
+        public void SimpleMultiplication01()
+        {
+            // Arrange
+            Parser parser = new Parser();
+            string TwoMultiply = "2.0*3.0";
+            var expectedTwoMultiply = new Multiply(new Constant(2.0), new Constant(3.0));
+
+            // Act
+            IExpression exprTwoMultiply = parser.Parse(TwoMultiply);
+
+            // Assert
+            Assert.IsTrue(exprTwoMultiply.Equals(expectedTwoMultiply));
+        }
+
+        [TestMethod]
+        public void SimpleMultiplication02()
+        {
+            // Arrange
+            Parser parser = new Parser();
+            string TwoDivide = "2.0/3.0";
+            var expectedTwoDivide = new Multiply(new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Multiply, new Constant(2.0)), new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Divide, new Constant(3.0)));
+
+            // Act
+            IExpression exprTwoDivide = parser.Parse(TwoDivide);
+
+            // Assert
+            Assert.IsTrue(expectedTwoDivide.Equals(exprTwoDivide));
+        }
+
+        [TestMethod]
+        public void SimpleMultiplication03()
+        {
+            // Arrange
+            Parser parser = new Parser();
+            string TwoMultiplyBracketed = "(2.0)*(3.0)";
+            var expectedTwoMultiplyBracketed = new Multiply(new Constant(2.0), new Constant(3.0));
+
+            // Act
+            IExpression exprTwoMultiplyBracketed = parser.Parse(TwoMultiplyBracketed);
+
+            // Assert
+            Assert.IsTrue(exprTwoMultiplyBracketed.Equals(expectedTwoMultiplyBracketed));
+        }
+
+        [TestMethod]
+        public void SimpleMultiplication04()
+        {
+            // Arrange
+            Parser parser = new Parser();
+            string ThreeMultiply = "2.0*3.0/x";
+            var expectedThreeMultiply = new Multiply(new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Multiply, new Constant(2.0)), new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Multiply, new Constant(3.0)), new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Divide, new BaseX()));
+
+            // Act
+            IExpression exprThreeMultiply = parser.Parse(ThreeMultiply);
+
+            // Assert
+            Assert.IsTrue(exprThreeMultiply.Equals(expectedThreeMultiply));
+        }
+
+        [TestMethod]
+        public void SimpleMultiplication05()
+        {
+            // Arrange
+            Parser parser = new Parser();
+            string ThreeMultiplyWithBrackets = "2.0/(3.0*x)*1.0";
+            var expectedThreeMultiplyWithBrackets = new Multiply(
+                new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Multiply, new Constant(2.0)),
+                new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Divide,
+                    new Multiply(
+                        new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Multiply, new Constant(3.0)),
+                        new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Multiply, new BaseX())
+                        )
+                    ),
+                new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Multiply, new Constant(1.0))
+                );
+
+            // Act
+            IExpression exprThreeMultiplyWithBrackets = parser.Parse(ThreeMultiplyWithBrackets);
+
+            // Assert
+            Assert.IsTrue(exprThreeMultiplyWithBrackets.Equals(expectedThreeMultiplyWithBrackets));
+        }
     }
 }

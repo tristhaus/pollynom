@@ -116,6 +116,27 @@ namespace PollyNom.BusinessLogic
                 }
             }
 
+            if (multiplyList.Count > 0)
+            {
+                multiplyList.Add(S.Length);
+                List<Multiply.MultiplyExpression> finalList = new List<Multiply.MultiplyExpression>();
+
+                int firstIndex = -1;
+                int secondIndex;
+                foreach (int index in multiplyList)
+                {
+                    secondIndex = index;
+
+                    Multiply.MultiplyExpression.Signs sign = firstIndex == -1 || S[firstIndex] == '*'
+                        ? Multiply.MultiplyExpression.Signs.Multiply
+                        : Multiply.MultiplyExpression.Signs.Divide;
+                    ++firstIndex;
+                    finalList.Add(new Multiply.MultiplyExpression(sign, this.InternalParse(S.Substring(firstIndex, secondIndex - firstIndex))));
+                    firstIndex = secondIndex;
+                }
+                return new Multiply(finalList);
+            }
+
             return new InvalidExpression();
         }
 

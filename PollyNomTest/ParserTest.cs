@@ -37,47 +37,86 @@ namespace PollyNomTest
         }
 
         [TestMethod]
-        public void SimpleAdditionTests()
+        public void SimpleAddition01()
         {
             // Arrange
             Parser parser = new Parser();
-
             string TwoAdd = "+2.0+3.0";
             var expectedTwoAdd = new Add(new Constant(2.0), new Constant(3.0));
 
+            // Act
+            IExpression exprTwoAdd = parser.Parse(TwoAdd);
+
+            // Assert
+            Assert.IsTrue(exprTwoAdd.Equals(expectedTwoAdd));
+        }
+
+        [TestMethod]
+        public void SimpleAddition02()
+        {
+            // Arrange
+            Parser parser = new Parser();
             string TwoSubtract = "-2.0-3.0";
             var expectedTwoSubtract = new Add(new Add.AddExpression(Add.AddExpression.Signs.Minus, new Constant(2.0)), new Add.AddExpression(Add.AddExpression.Signs.Minus, new Constant(3.0)));
 
+            // Act
+            IExpression exprTwoSubtract = parser.Parse(TwoSubtract);
+
+            // Assert
+            Assert.IsTrue(expectedTwoSubtract.Equals(exprTwoSubtract));
+        }
+
+        [TestMethod]
+        public void SimpleAddition03()
+        {
+            // Arrange
+            Parser parser = new Parser();
             string TwoAddBracketed = "(2.0)+(3.0)";
             var expectedTwoAddBracketed = new Add(new Constant(2.0), new Constant(3.0));
 
+            // Act
+            IExpression exprTwoAddBracketed = parser.Parse(TwoAddBracketed);
+
+            // Assert
+            Assert.IsTrue(exprTwoAddBracketed.Equals(expectedTwoAddBracketed));
+        }
+
+        [TestMethod]
+        public void SimpleAddition04()
+        {
+            // Arrange
+            Parser parser = new Parser();
             string ThreeAdd = "2.0+3.0-x";
             var expectedThreeAdd = new Add(new Add.AddExpression(Add.AddExpression.Signs.Plus, new Constant(2.0)), new Add.AddExpression(Add.AddExpression.Signs.Plus, new Constant(3.0)), new Add.AddExpression(Add.AddExpression.Signs.Minus, new BaseX()));
 
+            // Act
+            IExpression exprThreeAdd = parser.Parse(ThreeAdd);
+
+            // Assert
+            Assert.IsTrue(exprThreeAdd.Equals(expectedThreeAdd));
+        }
+
+        [TestMethod]
+        public void SimpleAddition05()
+        {
+            // Arrange
+            Parser parser = new Parser();
             string ThreeAddWithBrackets = "2.0-(3.0+x)+1.0";
             var expectedThreeAddWithBrackets = new Add(
                 new Add.AddExpression(Add.AddExpression.Signs.Plus, new Constant(2.0)),
-                new Add.AddExpression(Add.AddExpression.Signs.Minus, 
+                new Add.AddExpression(Add.AddExpression.Signs.Minus,
                     new Add(
                         new Add.AddExpression(Add.AddExpression.Signs.Plus, new Constant(3.0)),
                         new Add.AddExpression(Add.AddExpression.Signs.Plus, new BaseX())
                         )
-                    ), 
+                    ),
                 new Add.AddExpression(Add.AddExpression.Signs.Plus, new Constant(1.0))
                 );
 
             // Act
-            IExpression exprTwoAdd = parser.Parse(TwoAdd);
-            IExpression exprTwoSubtract = parser.Parse(TwoSubtract);
-            IExpression exprTwoAddBracketed = parser.Parse(TwoAddBracketed);
-            IExpression exprThreeAdd = parser.Parse(ThreeAdd);
             IExpression exprThreeAddWithBrackets = parser.Parse(ThreeAddWithBrackets);
 
             // Assert
-            Assert.IsTrue(exprTwoAdd.Equals(expectedTwoAdd));
-            Assert.IsTrue(expectedTwoSubtract.Equals(exprTwoSubtract));
-            Assert.IsTrue(exprTwoAddBracketed.Equals(expectedTwoAddBracketed));
-            Assert.IsTrue(exprThreeAdd.Equals(expectedThreeAdd));
             Assert.IsTrue(exprThreeAddWithBrackets.Equals(expectedThreeAddWithBrackets));
         }
     }

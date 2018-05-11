@@ -51,11 +51,9 @@
     <Compile Include="BusinessLogic\Expressions\Add.cs" />
     <Compile Include="BusinessLogic\Expressions\BaseX.cs" />
     <Compile Include="BusinessLogic\Expressions\Constant.cs" />
-    <Compile Include="BusinessLogic\Expressions\Divide.cs" />
     <Compile Include="BusinessLogic\Expressions\InvalidExpression.cs" />
     <Compile Include="BusinessLogic\Expressions\Multiply.cs" />
     <Compile Include="BusinessLogic\Expressions\Power.cs" />
-    <Compile Include="BusinessLogic\Expressions\Subtract.cs" />
     <Compile Include="BusinessLogic\Maybe.cs" />
     <Compile Include="BusinessLogic\Parser.cs" />
     <Compile Include="Form1.cs">

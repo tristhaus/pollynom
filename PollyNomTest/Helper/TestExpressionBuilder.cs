@@ -27,7 +27,16 @@ namespace PollyNomTest.Helper
         /// <returns>An Expression object.</returns>
         internal static IExpression Expression02()
         {
-            return new Divide(new Multiply(new Constant(2.0), new Power(new BaseX(), new Constant(3.0))), new Subtract(new BaseX(), new Power(new Constant(2.0), new BaseX())));
+            return new Multiply(
+                new Multiply.MultiplyExpression(
+                    Multiply.MultiplyExpression.Signs.Multiply,
+                    new Multiply(new Constant(2.0), new Power(new BaseX(), new Constant(3.0)))
+                ),
+                new Multiply.MultiplyExpression(
+                    Multiply.MultiplyExpression.Signs.Divide, 
+                    new Add(new Add.AddExpression(Add.AddExpression.Signs.Plus, new BaseX()), new Add.AddExpression(Add.AddExpression.Signs.Minus, new Power(new Constant(2.0), new BaseX())))
+                )
+                );
         }
 
         /// <summary>
@@ -63,7 +72,7 @@ namespace PollyNomTest.Helper
         /// <returns>An Expression object.</returns>
         internal static IExpression Expression05()
         {
-            return new Power(new Add(new BaseX(), new Constant(1.0)), new Divide(new BaseX(), new Constant(3.0)));
+            return new Power(new Add(new BaseX(), new Constant(1.0)), new Multiply(new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Multiply, new BaseX()), new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Divide, new Constant(3.0))));
         }
 
         /// <summary>

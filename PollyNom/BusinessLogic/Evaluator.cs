@@ -32,7 +32,7 @@ namespace PollyNom.BusinessLogic
             BaseX X = new BaseX();
             Power SecondPower = new Power(X, new Constant(2));
             Power ThirdPower = new Power(X, new Constant(3));
-            Subtract Addition = new Subtract(SecondPower, ThirdPower);
+            Add Addition = new Add(new Add.AddExpression(Add.AddExpression.Signs.Plus, SecondPower), new Add.AddExpression(Add.AddExpression.Signs.Minus, ThirdPower));
             return Addition;
         }
     }

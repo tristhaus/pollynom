@@ -36,13 +36,7 @@ namespace PollyNom.BusinessLogic
             // deal with a simple case
             if (Regex.IsMatch(S, @"^[0-9]*.?[0-9]*$", RegexOptions.Compiled))
             {
-                double result;
-                if (double.TryParse(S, NumberStyles.Any, new CultureInfo("en-US"), out result))
-                {
-                    return new Constant(result);
-                }
-
-                return new InvalidExpression();
+                return ParseToConstant(S);
             }
 
             List<int> addList = new List<int>();
@@ -79,6 +73,12 @@ namespace PollyNom.BusinessLogic
 
             if(addList.Count > 0)
             {
+                // deal with simple constants
+                if(addList.Count == 1 && addList[0] == 0)
+                {
+                    return ParseToConstant(S);
+                }
+
                 List<int> cleanedUpList = new List<int>(addList.Count);
                 foreach(int index in addList)
                 {
@@ -135,6 +135,17 @@ namespace PollyNom.BusinessLogic
                     firstIndex = secondIndex;
                 }
                 return new Multiply(finalList);
+            }
+
+            return new InvalidExpression();
+        }
+
+        private IExpression ParseToConstant(string S)
+        {
+            double result;
+            if (double.TryParse(S, NumberStyles.Any, new CultureInfo("en-US"), out result))
+            {
+                return new Constant(result);
             }
 
             return new InvalidExpression();

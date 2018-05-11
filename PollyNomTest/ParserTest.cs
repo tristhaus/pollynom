@@ -37,6 +37,23 @@ namespace PollyNomTest
         }
 
         [TestMethod]
+        public void SingleAdditionTermAsConstant()
+        {
+            // Arrange
+            Parser parser = new Parser();
+            string positive = "+1.1";
+            string negative = "-2.2";
+
+            // Act
+            IExpression exprPositive = parser.Parse(positive);
+            IExpression exprNegative = parser.Parse(negative);
+
+            // Assert
+            Assert.IsTrue(exprPositive.Equals(new Constant(+1.1)));
+            Assert.IsTrue(exprNegative.Equals(new Constant(-2.2)));
+        }
+
+        [TestMethod]
         public void SimpleAddition01()
         {
             // Arrange

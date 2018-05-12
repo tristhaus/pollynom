@@ -326,5 +326,29 @@ namespace PollyNomTest
             Assert.IsFalse(powerB.Equals(powerA));
             Assert.IsFalse(powerB.Equals(powerAA));
         }
+
+        [TestMethod]
+        public void NontrivialMultiplyAddMix()
+        {
+            var exprA = new Add(
+                            new Add.AddExpression(Add.AddExpression.Signs.Plus, new Multiply(
+                                new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Multiply, new Constant(-2.1)), new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Multiply, new Add(new Add.AddExpression(Add.AddExpression.Signs.Plus, new BaseX()), new Add.AddExpression(Add.AddExpression.Signs.Plus, new Constant(3.1)))))
+                            ),
+                            new Add.AddExpression(Add.AddExpression.Signs.Plus, new Constant(1.1))
+                        );
+
+            var exprB = new Add(
+                            new Add.AddExpression(Add.AddExpression.Signs.Plus, new Multiply(
+                                new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Multiply, new Add(new Add.AddExpression(Add.AddExpression.Signs.Plus, new BaseX()), new Add.AddExpression(Add.AddExpression.Signs.Plus, new Constant(3.1)))), new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Multiply, new Constant(-2.1)))
+                            ),
+                            new Add.AddExpression(Add.AddExpression.Signs.Plus, new Constant(1.1))
+                        );
+
+            double valueA = exprA.Evaluate(1.0).Value();
+            double valueB = exprB.Evaluate(1.0).Value();
+
+            Assert.IsTrue(exprA.Equals(exprB));
+            Assert.IsTrue(exprB.Equals(exprA));
+        }
     }
 }

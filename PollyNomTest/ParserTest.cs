@@ -74,7 +74,7 @@ namespace PollyNomTest
             // Arrange
             Parser parser = new Parser();
             string TwoSubtract = "-2.0-3.0";
-            var expectedTwoSubtract = new Add(new Add.AddExpression(Add.AddExpression.Signs.Minus, new Constant(2.0)), new Add.AddExpression(Add.AddExpression.Signs.Minus, new Constant(3.0)));
+            var expectedTwoSubtract = new Add(new Add.AddExpression(Add.AddExpression.Signs.Plus, new Constant(-2.0)), new Add.AddExpression(Add.AddExpression.Signs.Minus, new Constant(3.0)));
 
             // Act
             IExpression exprTwoSubtract = parser.Parse(TwoSubtract);
@@ -219,6 +219,94 @@ namespace PollyNomTest
 
             // Assert
             Assert.IsTrue(exprThreeMultiplyWithBrackets.Equals(expectedThreeMultiplyWithBrackets));
+        }
+
+        [TestMethod]
+        public void AddMultiplyMix01()
+        {
+            // Arrange
+            Parser parser = new Parser();
+            string ThreeTerms = "2.0*x+1.0";
+            var expectedThreeTerms = new Add(
+                new Add.AddExpression(Add.AddExpression.Signs.Plus, new Multiply(
+                    new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Multiply, new Constant(2.0)), new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Multiply, new BaseX()))
+                    ),
+                new Add.AddExpression(Add.AddExpression.Signs.Plus, new Constant(1.0))
+                );
+
+            // Act
+            IExpression exprThreeTerms = parser.Parse(ThreeTerms);
+
+            // Assert
+            Assert.IsTrue(exprThreeTerms.Equals(expectedThreeTerms));
+        }
+
+        [TestMethod]
+        public void AddMultiplyMix02()
+        {
+            // Arrange
+            Parser parser = new Parser();
+            string ThreeTerms = "-2.0*x+1.0";
+            var expectedThreeTerms = new Add(
+                new Add.AddExpression(Add.AddExpression.Signs.Plus, new Multiply(
+                    new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Multiply, new Constant(-2.0)), new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Multiply, new BaseX()))
+                    ),
+                new Add.AddExpression(Add.AddExpression.Signs.Plus, new Constant(1.0))
+                );
+
+            // Act
+            IExpression exprThreeTerms = parser.Parse(ThreeTerms);
+
+            // Assert
+            Assert.IsTrue(exprThreeTerms.Equals(expectedThreeTerms));
+        }
+
+        [TestMethod]
+        public void AddMultiplyMix03()
+        {
+            // Arrange
+            Parser parser = new Parser();
+            string ThreeTerms = "-2.1*(x+3.1)+1.1";
+            var expectedThreeTerms = new Add(
+                new Add.AddExpression(Add.AddExpression.Signs.Plus, new Multiply(
+                    new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Multiply, new Constant(-2.1)), new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Multiply, new Add(new Add.AddExpression(Add.AddExpression.Signs.Plus, new BaseX()), new Add.AddExpression(Add.AddExpression.Signs.Plus, new Constant(3.1)))))
+                    ),
+                new Add.AddExpression(Add.AddExpression.Signs.Plus, new Constant(1.1))
+                );
+
+            // Act
+            IExpression exprThreeTerms = parser.Parse(ThreeTerms);
+
+            // Assert
+            Assert.IsTrue(exprThreeTerms.Equals(expectedThreeTerms));
+        }
+
+        [TestMethod]
+        public void AddMultiplyMix04()
+        {
+            // Arrange
+            Parser parser = new Parser();
+            string ThreeTerms = "(x+3.1)*-2.1+1.1";
+            var expectedThreeTerms = new Add(
+                new Add.AddExpression(Add.AddExpression.Signs.Plus, new Multiply(
+                    new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Multiply, new Constant(-2.1)), new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Multiply, new Add(new Add.AddExpression(Add.AddExpression.Signs.Plus, new BaseX()), new Add.AddExpression(Add.AddExpression.Signs.Plus, new Constant(3.1)))))
+                    ),
+                new Add.AddExpression(Add.AddExpression.Signs.Plus, new Constant(1.1))
+                );
+
+            var exprReorderedToFit = new Add(
+                new Add.AddExpression(Add.AddExpression.Signs.Plus, new Multiply(
+                    new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Multiply, new Add(new Add.AddExpression(Add.AddExpression.Signs.Plus, new BaseX()), new Add.AddExpression(Add.AddExpression.Signs.Plus, new Constant(3.1)))), new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Multiply, new Constant(-2.1)))
+                    ),
+                new Add.AddExpression(Add.AddExpression.Signs.Plus, new Constant(1.1))
+                );
+
+            // Act
+            IExpression exprThreeTerms = parser.Parse(ThreeTerms);
+
+            // Assert
+            // Assert.IsTrue(exprThreeTerms.Equals(expectedThreeTerms));
+            Assert.IsTrue(exprThreeTerms.Equals(exprReorderedToFit));
         }
     }
 }

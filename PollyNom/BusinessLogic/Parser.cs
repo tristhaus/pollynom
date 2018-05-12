@@ -34,11 +34,123 @@ namespace PollyNom.BusinessLogic
             }
 
             // deal with a simple case
-            if (Regex.IsMatch(S, @"^[0-9]*.?[0-9]*$", RegexOptions.Compiled))
+            if (Regex.IsMatch(S, @"^[+-]?[0-9]*.?[0-9]*$", RegexOptions.Compiled))
             {
                 return ParseToConstant(S);
             }
 
+            // Now, tokenize
+            string token = string.Empty;
+            List<string> tokens = new List<string>();
+            List<string> ops = new List<string>();
+
+            for (int index = 0; index < S.Length; index++)
+            {
+                char c = S[index];
+
+                if (c == '(')
+                {
+                    int EndIndex = this.FindMatchingBrace(S, index);
+                    token += S.Substring(index, EndIndex - index + 1);
+                    index = EndIndex;
+                    continue;
+                }
+
+                if (isOperatorChar(c) && token.Length > 0)
+                {
+                    tokens.Add(token);
+                    token = string.Empty;
+                    ops.Add(c.ToString());
+                    continue;
+                }
+
+                token += c;
+            }
+
+            if(token.Length > 0)
+            {
+                tokens.Add(token);
+                token = string.Empty;
+            }
+
+            // reassemble for recursive parsing
+            if (ops.Contains("+") || ops.Contains("-"))
+            {
+                List<Add.AddExpression> targetList = new List<Add.AddExpression>();
+
+                Add.AddExpression.Signs sign = Add.AddExpression.Signs.Plus;
+
+                token = tokens[0];
+                tokens.RemoveAt(0);
+                foreach(var op in ops)
+                {
+                    if(op == "+" || op == "-")
+                    {
+                        targetList.Add(new Add.AddExpression(sign, this.InternalParse(token)));
+                        token = tokens[0];
+                        tokens.RemoveAt(0);
+                        sign = op == "+" ? Add.AddExpression.Signs.Plus : Add.AddExpression.Signs.Minus;
+                    }
+                    else
+                    {
+                        token += op + tokens[0];
+                        tokens.RemoveAt(0);
+                    }
+                }
+
+                if(tokens.Count == 1)
+                {
+                    token = tokens[0];
+                }
+
+                if (token != string.Empty)
+                {
+                    targetList.Add(new Add.AddExpression(sign, this.InternalParse(token)));
+                    token = string.Empty;
+                }
+
+                return new Add(targetList);
+            }
+
+            if (ops.Contains("*") || ops.Contains("/"))
+            {
+                List<Multiply.MultiplyExpression> targetList = new List<Multiply.MultiplyExpression>();
+
+                Multiply.MultiplyExpression.Signs sign = Multiply.MultiplyExpression.Signs.Multiply;
+
+                token = tokens[0];
+                tokens.RemoveAt(0);
+                foreach (var op in ops)
+                {
+                    if (op == "*" || op == "/")
+                    {
+                        targetList.Add(new Multiply.MultiplyExpression(sign, this.InternalParse(token)));
+                        token = tokens[0];
+                        tokens.RemoveAt(0);
+                        sign = op == "*" ? Multiply.MultiplyExpression.Signs.Multiply : Multiply.MultiplyExpression.Signs.Divide;
+                    }
+                    else
+                    {
+                        token += op + tokens[0];
+                        tokens.RemoveAt(0);
+                    }
+                }
+
+                if (tokens.Count == 1)
+                {
+                    token = tokens[0];
+                }
+
+                if (token != string.Empty)
+                {
+                    targetList.Add(new Multiply.MultiplyExpression(sign, this.InternalParse(token)));
+                    token = string.Empty;
+                }
+
+                return new Multiply(targetList);
+            }
+
+            /*
             List<int> addList = new List<int>();
             List<int> multiplyList = new List<int>();
             List<int> powerList = new List<int>();
@@ -71,7 +183,7 @@ namespace PollyNom.BusinessLogic
                 }
             }
 
-            if(addList.Count > 0)
+            if(addList.Count > 0) // && multiplyList.Count == 0 && powerList.Count == 0
             {
                 // deal with simple constants
                 if(addList.Count == 1 && addList[0] == 0)
@@ -136,8 +248,14 @@ namespace PollyNom.BusinessLogic
                 }
                 return new Multiply(finalList);
             }
+            */
 
             return new InvalidExpression();
+        }
+
+        private bool isOperatorChar(char c)
+        {
+            return c == '-' || c == '+' || c == '*' || c == '/' || c == '^';
         }
 
         private IExpression ParseToConstant(string S)

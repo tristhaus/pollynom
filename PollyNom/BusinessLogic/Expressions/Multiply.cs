@@ -92,12 +92,18 @@ namespace PollyNom.BusinessLogic.Expressions
         {
             unchecked
             {
-                int hash = 17;
+                int finalHash = 17;
+                List<int> hashes = new List<int>(list.Count);
                 foreach (var multiplyExpression in list)
                 {
-                    hash = hash * 23 + multiplyExpression.GetHashCode();
+                    hashes.Add(multiplyExpression.GetHashCode());
                 }
-                return hash;
+                hashes.Sort();
+                foreach(var hash in hashes)
+                {
+                    finalHash = finalHash * 23 + hash;
+                }
+                return finalHash;
             }
         }
 

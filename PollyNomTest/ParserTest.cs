@@ -294,19 +294,11 @@ namespace PollyNomTest
                 new Add.AddExpression(Add.AddExpression.Signs.Plus, new Constant(1.1))
                 );
 
-            var exprReorderedToFit = new Add(
-                new Add.AddExpression(Add.AddExpression.Signs.Plus, new Multiply(
-                    new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Multiply, new Add(new Add.AddExpression(Add.AddExpression.Signs.Plus, new BaseX()), new Add.AddExpression(Add.AddExpression.Signs.Plus, new Constant(3.1)))), new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Multiply, new Constant(-2.1)))
-                    ),
-                new Add.AddExpression(Add.AddExpression.Signs.Plus, new Constant(1.1))
-                );
-
             // Act
             IExpression exprThreeTerms = parser.Parse(ThreeTerms);
 
             // Assert
-            // Assert.IsTrue(exprThreeTerms.Equals(expectedThreeTerms));
-            Assert.IsTrue(exprThreeTerms.Equals(exprReorderedToFit));
+            Assert.IsTrue(exprThreeTerms.Equals(expectedThreeTerms));
         }
     }
 }

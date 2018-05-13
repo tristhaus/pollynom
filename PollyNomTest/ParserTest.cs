@@ -300,5 +300,95 @@ namespace PollyNomTest
             // Assert
             Assert.IsTrue(exprThreeTerms.Equals(expectedThreeTerms));
         }
+
+        [TestMethod]
+        public void SimplePower01()
+        {
+            // Arrange
+            Parser parser = new Parser();
+            string Square = "x^2.0";
+            var expectedSquare = new Power(new BaseX(), new Constant(2.0));
+
+            // Act
+            IExpression exprSquare = parser.Parse(Square);
+
+            // Assert
+            Assert.IsTrue(exprSquare.Equals(expectedSquare));
+        }
+
+        [TestMethod]
+        public void SimplePower02()
+        {
+            // Arrange
+            Parser parser = new Parser();
+            string InvertedSquare = "x^(-2.0)";
+            var expectedInvertedSquare = new Power(new BaseX(), new Constant(-2.0));
+
+            // Act
+            IExpression exprInvertedSquare = parser.Parse(InvertedSquare);
+
+            // Assert
+            Assert.IsTrue(exprInvertedSquare.Equals(expectedInvertedSquare));
+        }
+
+        [TestMethod]
+        public void SimplePower03()
+        {
+            // Arrange
+            Parser parser = new Parser();
+            string InvertedSquareInvalid = "x^-2.0";
+            var expectedInvalid = new InvalidExpression();
+
+            // Act
+            IExpression exprInvalid = parser.Parse(InvertedSquareInvalid);
+
+            // Assert
+            Assert.IsTrue(exprInvalid.Equals(expectedInvalid));
+        }
+
+        [TestMethod]
+        public void SimplePower04()
+        {
+            // Arrange
+            Parser parser = new Parser();
+            string PowerString = "2.0^x";
+            var expectedPower = new Power(new Constant(2.0), new BaseX());
+
+            // Act
+            IExpression exprPower = parser.Parse(PowerString);
+
+            // Assert
+            Assert.IsTrue(exprPower.Equals(expectedPower));
+        }
+
+        [TestMethod]
+        public void SimplePower05()
+        {
+            // Arrange
+            Parser parser = new Parser();
+            string PowerString = "-(2.0^x)";
+            var expectedPower = new Add(new Add.AddExpression(Add.AddExpression.Signs.Minus, new Power(new Constant(2.0), new BaseX())));
+
+            // Act
+            IExpression exprPower = parser.Parse(PowerString);
+
+            // Assert
+            Assert.IsTrue(exprPower.Equals(expectedPower));
+        }
+
+        [TestMethod]
+        public void PowerTower()
+        {
+            // Arrange
+            Parser parser = new Parser();
+            string PowerString = "3.0^x^2.0";
+            var expectedPower = new Power(new Constant(3.0), new Power(new BaseX(), new Constant(2.0)));
+
+            // Act
+            IExpression exprPower = parser.Parse(PowerString);
+
+            // Assert
+            Assert.IsTrue(exprPower.Equals(expectedPower));
+        }
     }
 }

@@ -28,14 +28,9 @@ namespace PollyNomTest.Helper
         internal static IExpression Expression02()
         {
             return new Multiply(
-                new Multiply.MultiplyExpression(
-                    Multiply.MultiplyExpression.Signs.Multiply,
-                    new Multiply(new Constant(2.0), new Power(new BaseX(), new Constant(3.0)))
-                ),
-                new Multiply.MultiplyExpression(
-                    Multiply.MultiplyExpression.Signs.Divide, 
-                    new Add(new Add.AddExpression(Add.AddExpression.Signs.Plus, new BaseX()), new Add.AddExpression(Add.AddExpression.Signs.Minus, new Power(new Constant(2.0), new BaseX())))
-                )
+                new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Multiply, new Constant(2.0)),
+                new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Multiply, new Power(new BaseX(), new Constant(3.0))),
+                new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Divide, new Add(new Add.AddExpression(Add.AddExpression.Signs.Plus, new BaseX()), new Add.AddExpression(Add.AddExpression.Signs.Minus, new Power(new Constant(2.0), new BaseX()))))
                 );
         }
 
@@ -85,7 +80,7 @@ namespace PollyNomTest.Helper
         internal static IExpression Expression06()
         {
             return new Add(
-                new Add.AddExpression(Add.AddExpression.Signs.Plus, new BaseX()), 
+                new Add.AddExpression(Add.AddExpression.Signs.Plus, new BaseX()),
                 new Add.AddExpression(Add.AddExpression.Signs.Minus, new Constant(1.0)),
                 new Add.AddExpression(Add.AddExpression.Signs.Plus, new Constant(2.0)),
                 new Add.AddExpression(Add.AddExpression.Signs.Minus, new Constant(3.0))

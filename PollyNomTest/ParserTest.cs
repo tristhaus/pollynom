@@ -1,6 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using PollyNom.BusinessLogic;
 using PollyNom.BusinessLogic.Expressions;
+using PollyNomTest.Helper;
 
 namespace PollyNomTest
 {
@@ -403,6 +404,126 @@ namespace PollyNomTest
 
             // Assert
             Assert.IsTrue(exprPower.Equals(expectedPower));
+        }
+
+        [TestMethod]
+        public void Complex01()
+        {
+            // Arrange
+            Parser parser = new Parser();
+            IExpression exprExpected = TestExpressionBuilder.Expression01();
+            string printed = ExpressionPrinter.PrintExpression(exprExpected);
+
+            // Act
+            IExpression exprParsed = parser.Parse(printed);
+
+            // Assert
+            Assert.IsTrue(exprExpected.Equals(exprParsed));
+        }
+
+        [TestMethod]
+        public void Complex02()
+        {
+            // Arrange
+            Parser parser = new Parser();
+            IExpression exprExpected = TestExpressionBuilder.Expression02();
+            string printed = ExpressionPrinter.PrintExpression(exprExpected);
+
+            // Act
+            IExpression exprParsed = parser.Parse(printed);
+
+            // Assert
+            Assert.IsTrue(exprExpected.Equals(exprParsed));
+        }
+
+        [TestMethod]
+        public void Complex03()
+        {
+            // Arrange
+            Parser parser = new Parser();
+            IExpression exprExpected = TestExpressionBuilder.Expression03();
+            string printed = ExpressionPrinter.PrintExpression(exprExpected);
+
+            // Act
+            IExpression exprParsed = parser.Parse(printed);
+
+            // Assert
+            Assert.IsTrue(exprExpected.Equals(exprParsed));
+        }
+
+        [TestMethod]
+        public void Complex04()
+        {
+            // Arrange
+            Parser parser = new Parser();
+            IExpression exprExpected = TestExpressionBuilder.Expression04();
+            string printed = ExpressionPrinter.PrintExpression(exprExpected);
+
+            // Act
+            IExpression exprParsed = parser.Parse(printed);
+
+            // Assert
+            Assert.IsTrue(exprExpected.Equals(exprParsed));
+        }
+
+        [TestMethod]
+        public void Complex05()
+        {
+            // Arrange
+            Parser parser = new Parser();
+            IExpression exprExpected = TestExpressionBuilder.Expression05();
+            string printed = ExpressionPrinter.PrintExpression(exprExpected);
+
+            // Act
+            IExpression exprParsed = parser.Parse(printed);
+
+            // Assert
+            Assert.IsTrue(exprExpected.Equals(exprParsed));
+        }
+
+        [TestMethod]
+        public void Complex06()
+        {
+            // Arrange
+            Parser parser = new Parser();
+            IExpression exprExpected = TestExpressionBuilder.Expression06();
+            string printed = ExpressionPrinter.PrintExpression(exprExpected);
+
+            // Act
+            IExpression exprParsed = parser.Parse(printed);
+
+            // Assert
+            Assert.IsTrue(exprExpected.Equals(exprParsed));
+        }
+
+        [TestMethod]
+        public void Complex07()
+        {
+            // Arrange
+            Parser parser = new Parser();
+            IExpression exprExpected = TestExpressionBuilder.Expression07();
+            string printed = ExpressionPrinter.PrintExpression(exprExpected);
+
+            // Act
+            IExpression exprParsed = parser.Parse(printed);
+
+            // Assert
+            Assert.IsTrue(exprExpected.Equals(exprParsed));
+        }
+
+        [TestMethod]
+        public void Complex08()
+        {
+            // Arrange
+            Parser parser = new Parser();
+            IExpression exprExpected = TestExpressionBuilder.Expression08();
+            string printed = ExpressionPrinter.PrintExpression(exprExpected);
+
+            // Act
+            IExpression exprParsed = parser.Parse(printed);
+
+            // Assert
+            Assert.IsTrue(exprExpected.Equals(exprParsed));
         }
     }
 }

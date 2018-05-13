@@ -54,6 +54,20 @@ namespace PollyNomTest
         }
 
         [TestMethod]
+        public void SingleXasAdd()
+        {
+            // Arrange
+            Parser parser = new Parser();
+            string signedX = "-x";
+
+            // Act
+            IExpression exprSignedX = parser.Parse(signedX);
+
+            // Assert
+            Assert.IsTrue(exprSignedX.Equals(new Add(new Add.AddExpression(Add.AddExpression.Signs.Minus, new BaseX()))));
+        }
+
+        [TestMethod]
         public void SimpleAddition01()
         {
             // Arrange

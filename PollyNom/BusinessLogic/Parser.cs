@@ -34,23 +34,9 @@ namespace PollyNom.BusinessLogic
             }
 
             // deal with a simple case
-            if (Regex.IsMatch(S, @"^[+-]?[0-9]*.?[0-9]*$", RegexOptions.Compiled))
+            if (Regex.IsMatch(S, @"^[+-]?[0-9]+.?[0-9]*$", RegexOptions.Compiled))
             {
                 return ParseToConstant(S);
-            }
-
-            // deal with a signed brace
-            if (Regex.IsMatch(S, @"^[+-](.+)$", RegexOptions.Compiled) && S.Length - 1 == this.FindMatchingBrace(S, 1))
-            {
-                string subToken = S.Substring(1, S.Length - 1);
-                Add.AddExpression.Signs sign = S[0] == '+' ? Add.AddExpression.Signs.Plus : Add.AddExpression.Signs.Minus;
-                IExpression bracketedExpression = this.InternalParse(subToken);
-                if (bracketedExpression.Equals(new InvalidExpression()))
-                {
-                    return new InvalidExpression();
-                }
-
-                return new Add(new Add.AddExpression(sign, bracketedExpression));
             }
 
             // Now, tokenize
@@ -85,6 +71,20 @@ namespace PollyNom.BusinessLogic
             {
                 tokens.Add(token);
                 token = string.Empty;
+            }
+
+            // deal with a signed single token
+            if (Regex.IsMatch(S, @"^[+-]", RegexOptions.Compiled) && tokens.Count == 1)
+            {
+                string subToken = S.Substring(1, S.Length - 1);
+                Add.AddExpression.Signs sign = S[0] == '+' ? Add.AddExpression.Signs.Plus : Add.AddExpression.Signs.Minus;
+                IExpression bracketedExpression = this.InternalParse(subToken);
+                if (bracketedExpression.Equals(new InvalidExpression()))
+                {
+                    return new InvalidExpression();
+                }
+
+                return new Add(new Add.AddExpression(sign, bracketedExpression));
             }
 
             // reassemble for recursive parsing

@@ -6,15 +6,19 @@ namespace PollyNom.BusinessLogic
 {
     public class Evaluator
     {
-        string input;
+        private string input;
+        private Parser parser;
+
         public Evaluator(string input)
         {
             this.input = input;
+            this.parser = new Parser();
         }
 
         public List<Tuple<double, double>> Evaluate()
         {
-            IExpression expression = this.BuildExpression();
+            IExpression expression = parser.Parse(this.input);
+
             var list = new List<Tuple<double, double>>(100);
             for (int i = 0; i < 100; i++)
             {
@@ -25,15 +29,6 @@ namespace PollyNom.BusinessLogic
                 }
             }
             return list;
-        }
-
-        private IExpression BuildExpression()
-        {
-            BaseX X = new BaseX();
-            Power SecondPower = new Power(X, new Constant(2));
-            Power ThirdPower = new Power(X, new Constant(3));
-            Add Addition = new Add(new Add.AddExpression(Add.AddExpression.Signs.Plus, SecondPower), new Add.AddExpression(Add.AddExpression.Signs.Minus, ThirdPower));
-            return Addition;
         }
     }
 }

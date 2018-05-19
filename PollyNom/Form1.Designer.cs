@@ -1,6 +1,6 @@
 ﻿namespace PollyNom
 {
-    partial class Form1
+    partial class PollyForm
     {
         /// <summary>
         /// Required designer variable.
@@ -28,55 +28,83 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.button1 = new System.Windows.Forms.Button();
-            this.outputBox = new System.Windows.Forms.TextBox();
-            this.inputBox = new System.Windows.Forms.TextBox();
+            this.helperPanel = new System.Windows.Forms.Panel();
+            this.graphArea = new System.Windows.Forms.UserControl();
+            this.menuStrip = new System.Windows.Forms.MenuStrip();
+            this.inputBox = new System.Windows.Forms.ToolStripTextBox();
+            this.calcButton = new System.Windows.Forms.ToolStripMenuItem();
+            this.helperPanel.SuspendLayout();
+            this.menuStrip.SuspendLayout();
             this.SuspendLayout();
             // 
-            // button1
+            // helperPanel
             // 
-            this.button1.Location = new System.Drawing.Point(13, 13);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 1;
-            this.button1.Text = "Calc!";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.helperPanel.Controls.Add(this.graphArea);
+            this.helperPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.helperPanel.Location = new System.Drawing.Point(0, 27);
+            this.helperPanel.Name = "helperPanel";
+            this.helperPanel.Size = new System.Drawing.Size(825, 449);
+            this.helperPanel.TabIndex = 0;
             // 
-            // outputBox
+            // graphArea
             // 
-            this.outputBox.Location = new System.Drawing.Point(12, 42);
-            this.outputBox.Multiline = true;
-            this.outputBox.Name = "outputBox";
-            this.outputBox.Size = new System.Drawing.Size(801, 422);
-            this.outputBox.TabIndex = 2;
+            this.graphArea.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.graphArea.Location = new System.Drawing.Point(0, 0);
+            this.graphArea.Name = "graphArea";
+            this.graphArea.Size = new System.Drawing.Size(825, 449);
+            this.graphArea.TabIndex = 0;
+            this.graphArea.Paint += new System.Windows.Forms.PaintEventHandler(this.userControl1_Paint);
+            // 
+            // menuStrip
+            // 
+            this.menuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.inputBox,
+            this.calcButton});
+            this.menuStrip.Location = new System.Drawing.Point(0, 0);
+            this.menuStrip.Name = "menuStrip";
+            this.menuStrip.Size = new System.Drawing.Size(825, 27);
+            this.menuStrip.TabIndex = 1;
+            this.menuStrip.Text = "menuStrip1";
             // 
             // inputBox
             // 
-            this.inputBox.Location = new System.Drawing.Point(95, 13);
             this.inputBox.Name = "inputBox";
-            this.inputBox.Size = new System.Drawing.Size(512, 20);
-            this.inputBox.TabIndex = 3;
+            this.inputBox.Size = new System.Drawing.Size(500, 23);
+            this.inputBox.Text = "x^2";
             // 
-            // Form1
+            // calcButton
+            // 
+            this.calcButton.Name = "calcButton";
+            this.calcButton.Size = new System.Drawing.Size(45, 23);
+            this.calcButton.Text = "Calc!";
+            this.calcButton.Click += new System.EventHandler(this.toolStripMenuItem1_Click);
+            // 
+            // PollyForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(825, 476);
-            this.Controls.Add(this.inputBox);
-            this.Controls.Add(this.outputBox);
-            this.Controls.Add(this.button1);
-            this.Name = "Form1";
+            this.Controls.Add(this.helperPanel);
+            this.Controls.Add(this.menuStrip);
+            this.MainMenuStrip = this.menuStrip;
+            this.Name = "PollyForm";
             this.Text = "Form1";
+            this.ResizeEnd += new System.EventHandler(this.Form1_ResizeEnd);
+            this.helperPanel.ResumeLayout(false);
+            this.menuStrip.ResumeLayout(false);
+            this.menuStrip.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
         }
 
         #endregion
-        private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.TextBox outputBox;
-        private System.Windows.Forms.TextBox inputBox;
+
+        private System.Windows.Forms.Panel helperPanel;
+        private System.Windows.Forms.MenuStrip menuStrip;
+        private System.Windows.Forms.ToolStripTextBox inputBox;
+        private System.Windows.Forms.ToolStripMenuItem calcButton;
+        private System.Windows.Forms.UserControl graphArea;
     }
 }
 

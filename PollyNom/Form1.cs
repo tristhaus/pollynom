@@ -3,6 +3,7 @@ using System.Windows.Forms;
 
 using PollyNom.BusinessLogic;
 using System.Drawing;
+using System.Collections.Generic;
 
 namespace PollyNom
 {
@@ -29,13 +30,17 @@ namespace PollyNom
 
         private void userControl1_Paint(object sender, PaintEventArgs e)
         {
-            Single x = -10;
+            Single startX = -10f;
+            Single endX = 10f;
+            Single limits = 1000f;
+
+            Single x = startX;
             Single y = 0;
             Single xold = x;
             Single yold = y;
-            Single scalex = -this.Width / 2;
-            Single scaley = -this.Height / 2;
-            Single incr = 80f / this.Width;
+            Single scaleX = -this.Width / ((endX - startX));
+            Single scaleY = -this.Height / ((endX - startX));
+            Single incr = this.Width / 1000f;
             using (Pen p = new Pen(Color.Black, 2))
             {
                 Graphics g = e.Graphics;
@@ -47,53 +52,59 @@ namespace PollyNom
                 g.DrawLine(Pens.Red, 0, -this.Height, 0, this.Height);
                 // optimize display
                 g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
-            
-                // calc function and draw it
-                if(evaluator != null)
-                {
-                    bool wasInterrupt = false;
-                    for (int i = 0; i < this.Width; i++)
-                    {
-                        var yMaybe = evaluator.Evaluate(Convert.ToDouble(x));
 
-                        x += incr;
+                // calc function and draw it
+                if (evaluator != null)
+                {
+                    List<PointF> points = new List<PointF>();
+
+                    do
+                    {
+                        var yMaybe = evaluator.Evaluate(Convert.ToDouble(-x));
+
                         bool interrupt = true;
                         Single drawX = 0f;
                         Single drawY = 0f;
 
-                        if (yMaybe.HasValue()) {
+                        if (yMaybe.HasValue())
+                        {
                             y = Convert.ToSingle(yMaybe.Value());
-                            try {
-                                drawX = x * scalex;
-                                drawY = y * scaley;
-                                
-                                interrupt = !(-10f <= x && x <= 10f && -10f <= y && y <= 10f);
+                            try
+                            {
+                                drawX = x * scaleX;
+                                drawY = y * scaleY;
+
+                                interrupt = !(-limits <= x && x <= limits && -limits <= y && y <= limits);
                             }
-                            catch(System.OverflowException)
+                            catch (System.OverflowException)
                             {
                             }
-                        } 
+                        }
 
                         if (!interrupt)
                         {
-                            if(!wasInterrupt)
-                            {
-                                g.DrawLine(p, drawX, drawY, xold * scalex, yold * scaley);
-                            }
-                            else
-                            {
-                                g.DrawLine(p, drawX, drawY, drawX, drawY);
-                            }
-                            wasInterrupt = false;
+                            points.Add(new PointF(drawX, drawY));
                         }
                         else
                         {
-                            wasInterrupt = true;
+                            if (points.Count > 0)
+                            {
+                                g.DrawCurve(p, points.ToArray());
+                                points.Clear();
+                            }
                         }
 
                         xold = x;
                         yold = y;
+                        x += incr;
+                    } while (x < endX);
+
+                    if (points.Count > 0)
+                    {
+                        g.DrawCurve(p, points.ToArray());
+                        points.Clear();
                     }
+
                 }
             }
 

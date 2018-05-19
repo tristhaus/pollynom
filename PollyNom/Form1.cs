@@ -29,12 +29,12 @@ namespace PollyNom
 
         private void userControl1_Paint(object sender, PaintEventArgs e)
         {
-            Single x = -40;
+            Single x = -10;
             Single y = 0;
             Single xold = x;
             Single yold = y;
-            Single scalex = this.Width / (2 * x);
-            Single scaley = -(this.Height - 20) / 2;
+            Single scalex = -this.Width / 2;
+            Single scaley = -this.Height / 2;
             Single incr = 80f / this.Width;
             using (Pen p = new Pen(Color.Black, 2))
             {
@@ -51,14 +51,44 @@ namespace PollyNom
                 // calc function and draw it
                 if(evaluator != null)
                 {
+                    bool wasInterrupt = false;
                     for (int i = 0; i < this.Width; i++)
                     {
                         var yMaybe = evaluator.Evaluate(Convert.ToDouble(x));
 
                         x += incr;
+                        bool interrupt = true;
+                        Single drawX = 0f;
+                        Single drawY = 0f;
+
                         if (yMaybe.HasValue()) {
                             y = Convert.ToSingle(yMaybe.Value());
-                            g.DrawLine(p, x * scalex, y * scaley, xold * scalex, yold * scaley);
+                            try {
+                                drawX = x * scalex;
+                                drawY = y * scaley;
+                                
+                                interrupt = !(-10f <= x && x <= 10f && -10f <= y && y <= 10f);
+                            }
+                            catch(System.OverflowException)
+                            {
+                            }
+                        } 
+
+                        if (!interrupt)
+                        {
+                            if(!wasInterrupt)
+                            {
+                                g.DrawLine(p, drawX, drawY, xold * scalex, yold * scaley);
+                            }
+                            else
+                            {
+                                g.DrawLine(p, drawX, drawY, drawX, drawY);
+                            }
+                            wasInterrupt = false;
+                        }
+                        else
+                        {
+                            wasInterrupt = true;
                         }
 
                         xold = x;

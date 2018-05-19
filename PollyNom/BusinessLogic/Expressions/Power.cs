@@ -84,7 +84,14 @@ namespace PollyNom.BusinessLogic.Expressions
             {
                 return new None<Double>();
             }
-            return new Some<double>(Math.Pow(aValue.Value(), bValue.Value()));
+
+            double value = Math.Pow(aValue.Value(), bValue.Value());
+            if (double.IsInfinity(value) || double.IsNaN(value))
+            {
+                return new None<Double>();
+            }
+
+            return new Some<double>(value);
         }
 
         public Maybe<string> Print()

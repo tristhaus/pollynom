@@ -118,7 +118,14 @@ namespace PollyNom.BusinessLogic.Expressions
                 {
                     return new None<Double>();
                 }
-                product *= expression.Sign == MultiplyExpression.Signs.Multiply ? value.Value() : (1.0 / value.Value());
+
+                var finalValue = expression.Sign == MultiplyExpression.Signs.Multiply ? value.Value() : (1.0 / value.Value());
+                if (double.IsInfinity(finalValue) || double.IsNaN(finalValue))
+                {
+                    return new None<Double>();
+                }
+
+                product *= finalValue;
             }
 
             return new Some<double>(product);

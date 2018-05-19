@@ -57,28 +57,13 @@ namespace PollyNom
                 if (evaluator != null)
                 {
                     PointListGenerator pointListGenerator = new PointListGenerator(evaluator, startX, endX, limits);
-                    var pointLists = pointListGenerator.ObtainPoints();
+                    var pointLists = pointListGenerator.ObtainScaledPoints(scaleX, scaleY);
 
                     foreach (var pointList in pointLists)
                     {
-                        List<PointF> displayPoints = new List<PointF>(pointList.Count);
-                        foreach(var point in pointList)
+                        if (pointList.Count > 1)
                         {
-                            try
-                            {
-                                float displayX = point.X * scaleX;
-                                float displayY = point.Y * scaleY;
-
-                                displayPoints.Add(new PointF(displayX, displayY));
-                            }
-                            catch (System.OverflowException)
-                            {
-                            }
-                        }
-
-                        if (displayPoints.Count > 1)
-                        {
-                            g.DrawCurve(p, displayPoints.ToArray());
+                            g.DrawCurve(p, pointList.ToArray());
                         }
                     }
                 }

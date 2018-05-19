@@ -18,12 +18,29 @@ namespace PollyNomTest
             PointListGenerator pointList = new PointListGenerator(evaluator, -1.0, 1.0, 1000.0);
 
             // Act
-            List<List<PointF>> result = pointList.ObtainPoints();
+            List<List<PointF>> result = pointList.ObtainScaledPoints();
 
             // Assert
             Assert.AreEqual(1, result.Count);
             Assert.IsTrue(1 <= result[0].Count);
             Assert.IsTrue(Helper.DoubleComparer.IsApproximatelyEqual(1.3, result[0][0].Y));
+        }
+
+        [TestMethod]
+        public void Constant_HasOneListAndTheCorrectScaledValue()
+        {
+            // Arrange
+            IExpression constant = new Constant(1.3);
+            Evaluator evaluator = new Evaluator(constant);
+            PointListGenerator pointList = new PointListGenerator(evaluator, -1.0, 1.0, 1000.0);
+
+            // Act
+            List<List<PointF>> result = pointList.ObtainScaledPoints(0.5f, 2.0f);
+
+            // Assert
+            Assert.AreEqual(1, result.Count);
+            Assert.IsTrue(1 <= result[0].Count);
+            Assert.IsTrue(Helper.DoubleComparer.IsApproximatelyEqual(2.6, result[0][0].Y));
         }
 
         [TestMethod]
@@ -35,7 +52,7 @@ namespace PollyNomTest
             PointListGenerator pointList = new PointListGenerator(evaluator, -1.0, 1.0, 1000.0);
 
             // Act
-            List<List<PointF>> result = pointList.ObtainPoints();
+            List<List<PointF>> result = pointList.ObtainScaledPoints();
 
             // Assert
             Assert.AreEqual(1, result.Count);
@@ -51,7 +68,7 @@ namespace PollyNomTest
             PointListGenerator pointList = new PointListGenerator(evaluator, -1.0, 1.0, 1000.0);
 
             // Act
-            List<List<PointF>> result = pointList.ObtainPoints();
+            List<List<PointF>> result = pointList.ObtainScaledPoints();
 
             // Assert
             Assert.AreEqual(2, result.Count);
@@ -69,7 +86,7 @@ namespace PollyNomTest
             PointListGenerator pointList = new PointListGenerator(evaluator, -1.0, 1.0, 1000.0);
 
             // Act
-            List<List<PointF>> result = pointList.ObtainPoints();
+            List<List<PointF>> result = pointList.ObtainScaledPoints();
 
             // Assert
             Assert.AreEqual(1, result.Count);

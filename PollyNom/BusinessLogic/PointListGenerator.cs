@@ -6,9 +6,9 @@ namespace PollyNom.BusinessLogic
 {
     public class PointListGenerator
     {
-        private const double epsilon = 1e-6;
-        private const double targetDistance = 1e-4;
-        private const double initialIncrement = 1e-3;
+        private const double epsilon = 1e-4;
+        private const double targetDistance = 5e-3;
+        private const double initialIncrement = 1e-2;
 
         private Evaluator evaluator;
         private double initialX;
@@ -33,7 +33,7 @@ namespace PollyNom.BusinessLogic
             this.limits = limits;
         }
 
-        public List<List<PointF>> ObtainPoints()
+        public List<List<PointF>> ObtainScaledPoints(float scaleX = 1.0f, float scaleY = 1.0f)
         {
             var tupleLists = this.ObtainTuples();
             List<List<PointF>> pointLists = new List<List<PointF>>(tupleLists.Count);
@@ -45,7 +45,7 @@ namespace PollyNom.BusinessLogic
                 {
                     try
                     {
-                        PointF point = new PointF(Convert.ToSingle(tuple.Key), Convert.ToSingle(tuple.Value));
+                        PointF point = new PointF(scaleX*Convert.ToSingle(tuple.Key), scaleY*Convert.ToSingle(tuple.Value));
                         pointList.Add(point);
                     }
                     catch (OverflowException)
@@ -95,9 +95,6 @@ namespace PollyNom.BusinessLogic
                     double squareDist = this.squareDist(x, y, xOld, yOld);
                     if (!hadFirstPoint || squareDist < PointListGenerator.targetDistance || incr < PointListGenerator.epsilon)
                     {
-                        xOld = x;
-                        yOld = y;
-
                         if (squareDist < PointListGenerator.epsilon)
                         {
                             incr *= 2.0;

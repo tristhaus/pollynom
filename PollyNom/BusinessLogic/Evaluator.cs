@@ -13,6 +13,12 @@
             expression = parser.Parse(this.input);
         }
 
+        public Evaluator(IExpression expression)
+        {
+            this.input = string.Empty;
+            this.expression = expression;
+        }
+
         public Maybe<double> Evaluate(double x)
         {
             return expression.Evaluate(x);

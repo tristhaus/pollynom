@@ -70,7 +70,7 @@
             // 
             this.inputBox.Name = "inputBox";
             this.inputBox.Size = new System.Drawing.Size(500, 23);
-            this.inputBox.Text = "x^2";
+            this.inputBox.Text = "8*((x^2)-(x^4))";
             this.inputBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.inputBox_KeyPress);
             // 
             // calcButton

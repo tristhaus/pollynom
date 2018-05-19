@@ -38,13 +38,9 @@ namespace PollyNom
             Single endX = 10f;
             Single limits = 1000f;
 
-            Single x = startX;
-            Single y = 0;
-            Single xold = x;
-            Single yold = y;
             Single scaleX = -this.Width / ((endX - startX));
             Single scaleY = -this.Height / ((endX - startX));
-            Single incr = this.Width / 1000f;
+
             using (Pen p = new Pen(Color.Black, 2))
             {
                 Graphics g = e.Graphics;
@@ -60,55 +56,31 @@ namespace PollyNom
                 // calc function and draw it
                 if (evaluator != null)
                 {
-                    List<PointF> points = new List<PointF>();
+                    PointListGenerator pointListGenerator = new PointListGenerator(evaluator, startX, endX, limits);
+                    var pointLists = pointListGenerator.ObtainPoints();
 
-                    do
+                    foreach (var pointList in pointLists)
                     {
-                        var yMaybe = evaluator.Evaluate(Convert.ToDouble(-x));
-
-                        bool interrupt = true;
-                        Single drawX = 0f;
-                        Single drawY = 0f;
-
-                        if (yMaybe.HasValue())
+                        List<PointF> displayPoints = new List<PointF>(pointList.Count);
+                        foreach(var point in pointList)
                         {
-                            y = Convert.ToSingle(yMaybe.Value());
                             try
                             {
-                                drawX = x * scaleX;
-                                drawY = y * scaleY;
+                                float displayX = point.X * scaleX;
+                                float displayY = point.Y * scaleY;
 
-                                interrupt = !(-limits <= x && x <= limits && -limits <= y && y <= limits);
+                                displayPoints.Add(new PointF(displayX, displayY));
                             }
                             catch (System.OverflowException)
                             {
                             }
                         }
 
-                        if (!interrupt)
+                        if (displayPoints.Count > 1)
                         {
-                            points.Add(new PointF(drawX, drawY));
+                            g.DrawCurve(p, displayPoints.ToArray());
                         }
-                        else
-                        {
-                            if (points.Count > 0)
-                            {
-                                g.DrawCurve(p, points.ToArray());
-                                points.Clear();
-                            }
-                        }
-
-                        xold = x;
-                        yold = y;
-                        x += incr;
-                    } while (x < endX);
-
-                    if (points.Count > 0)
-                    {
-                        g.DrawCurve(p, points.ToArray());
-                        points.Clear();
                     }
-
                 }
             }
 

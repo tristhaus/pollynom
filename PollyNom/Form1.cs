@@ -16,15 +16,19 @@ namespace PollyNom
             this.ResizeRedraw = true;
             InitializeComponent();
         }
-
-        private void toolStripMenuItem1_Click(object sender, EventArgs e)
+        
+        private void RunReadAndEvaluate()
         {
             if (string.IsNullOrWhiteSpace(inputBox.Text))
             {
                 return;
             }
             this.evaluator = new Evaluator(inputBox.Text);
+        }
 
+        private void toolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            this.RunReadAndEvaluate();
             this.Refresh();
         }
 
@@ -114,6 +118,16 @@ namespace PollyNom
         private void Form1_ResizeEnd(object sender, EventArgs e)
         {
             this.Refresh();
+        }
+
+        private void inputBox_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (e.KeyChar == (Char)Keys.Enter)
+            {
+                this.RunReadAndEvaluate();
+                this.Refresh();
+                e.Handled = true;
+            }
         }
     }
 }

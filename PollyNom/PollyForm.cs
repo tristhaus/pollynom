@@ -8,6 +8,10 @@ namespace PollyNom
 {
     public partial class PollyForm : Form
     {
+        const float startX = 11f;
+        const float endX = 11f;
+        const float limits = 1000f;
+
         Evaluator evaluator;
 
         public PollyForm()
@@ -33,32 +37,22 @@ namespace PollyNom
 
         private void userControl1_Paint(object sender, PaintEventArgs e)
         {
-            Single startX = -10f;
-            Single endX = 10f;
-            Single limits = 1000f;
-
             Int32 workingWidth = this.graphArea.Width;
             Int32 workingHeight = this.graphArea.Height;
 
-            Single scaleX = -workingWidth / ((endX - startX));
-            Single scaleY = -workingHeight / ((endX - startX));
+            float scaleX = -workingWidth / ((PollyForm.endX - PollyForm.startX));
+            float scaleY = -workingHeight / ((PollyForm.endX - PollyForm.startX));
 
             using (Pen p = new Pen(Color.Black, 2))
             {
                 Graphics g = e.Graphics;
 
-                // move coordinate system
-                g.TranslateTransform(workingWidth / 2, workingHeight / 2);
-                // draw axes
-                g.DrawLine(Pens.Red, -workingWidth, 0, workingWidth, 0);
-                g.DrawLine(Pens.Red, 0, -workingHeight, 0, workingHeight);
-                // optimize display
-                g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
+                DrawCoordinateSystem(workingWidth, workingHeight, g);
 
                 // calc function and draw it
                 if (evaluator != null)
                 {
-                    PointListGenerator pointListGenerator = new PointListGenerator(evaluator, startX, endX, limits);
+                    PointListGenerator pointListGenerator = new PointListGenerator(evaluator, PollyForm.startX, PollyForm.endX, PollyForm.limits);
                     var pointLists = pointListGenerator.ObtainScaledPoints(-scaleX, scaleY);
 
                     foreach (var pointList in pointLists)
@@ -72,6 +66,17 @@ namespace PollyNom
             }
 
             base.OnPaint(e);
+        }
+
+        private void DrawCoordinateSystem(int workingWidth, int workingHeight, Graphics g)
+        {
+            // move coordinate system
+            g.TranslateTransform(workingWidth / 2, workingHeight / 2);
+            // draw axes
+            g.DrawLine(Pens.Red, -workingWidth, 0, workingWidth, 0);
+            g.DrawLine(Pens.Red, 0, -workingHeight, 0, workingHeight);
+            // optimize display
+            g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
         }
 
         private void Form1_Resize(object sender, EventArgs e)

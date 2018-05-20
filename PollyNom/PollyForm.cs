@@ -8,8 +8,10 @@ namespace PollyNom
 {
     public partial class PollyForm : Form
     {
-        const float startX = 11f;
+        const float startX = -11f;
         const float endX = 11f;
+        const float startY = -11f;
+        const float endY = 11f;
         const float limits = 1000f;
 
         Evaluator evaluator;
@@ -19,7 +21,7 @@ namespace PollyNom
             this.ResizeRedraw = true;
             InitializeComponent();
         }
-        
+
         private void RunReadAndEvaluate()
         {
             if (string.IsNullOrWhiteSpace(inputBox.Text))
@@ -40,8 +42,8 @@ namespace PollyNom
             Int32 workingWidth = this.graphArea.Width;
             Int32 workingHeight = this.graphArea.Height;
 
-            float scaleX = -workingWidth / ((PollyForm.endX - PollyForm.startX));
-            float scaleY = -workingHeight / ((PollyForm.endX - PollyForm.startX));
+            float scaleX = -workingWidth / ((PollyForm.startX - PollyForm.endX));
+            float scaleY = -workingHeight / ((PollyForm.startY - PollyForm.endY));
 
             using (Pen p = new Pen(Color.Black, 2))
             {
@@ -53,7 +55,7 @@ namespace PollyNom
                 if (evaluator != null)
                 {
                     PointListGenerator pointListGenerator = new PointListGenerator(evaluator, PollyForm.startX, PollyForm.endX, PollyForm.limits);
-                    var pointLists = pointListGenerator.ObtainScaledPoints(-scaleX, scaleY);
+                    var pointLists = pointListGenerator.ObtainScaledPoints(scaleX, -scaleY);
 
                     foreach (var pointList in pointLists)
                     {
@@ -68,15 +70,59 @@ namespace PollyNom
             base.OnPaint(e);
         }
 
-        private void DrawCoordinateSystem(int workingWidth, int workingHeight, Graphics g)
+        private void DrawCoordinateSystem(int theWidth, int theHeight, Graphics g)
         {
-            // move coordinate system
-            g.TranslateTransform(workingWidth / 2, workingHeight / 2);
-            // draw axes
-            g.DrawLine(Pens.Red, -workingWidth, 0, workingWidth, 0);
-            g.DrawLine(Pens.Red, 0, -workingHeight, 0, workingHeight);
-            // optimize display
-            g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
+            using (Pen redPen = new Pen(Color.Red))
+            using (Brush redBrush = new SolidBrush(Color.Red))
+            using (FontFamily segoeUIFamily = new FontFamily("Segoe UI"))
+            using (Font segoeUIFont = new Font(segoeUIFamily, 9.0f)) // Segoe UI; 9pt
+            {
+                // move coordinate system
+                g.TranslateTransform(theWidth / 2, theHeight / 2);
+
+                // draw axes
+                g.DrawLine(redPen, -theWidth, 0, theWidth, 0);
+                g.DrawLine(redPen, 0, -theHeight, 0, theHeight);
+
+                // draw ticks
+                const float proportionTick = 1f / 85f;
+                float tickSingleHeight = theHeight * proportionTick;
+                float tickSingleWidth = theWidth * proportionTick;
+                float horizontalUnit = Math.Abs(theWidth / (PollyForm.startX - PollyForm.endX));
+                float verticalUnit = -Math.Abs(theHeight / (PollyForm.startY - PollyForm.endY));
+                for (int i = 1; i < 11; i++)
+                {
+                    float localFactor = 1.0f;
+                    if (i % 10 == 0)
+                    {
+                        localFactor = 1.40f;
+                    }
+                    else if (i % 5 == 0)
+                    {
+                        localFactor = 1.20f;
+                    }
+
+                    g.DrawLine(redPen, +i * horizontalUnit, localFactor * tickSingleHeight, +i * horizontalUnit, -localFactor * tickSingleHeight);
+                    g.DrawLine(redPen, -i * horizontalUnit, localFactor * tickSingleHeight, -i * horizontalUnit, -localFactor * tickSingleHeight);
+                    g.DrawLine(redPen, localFactor * tickSingleWidth, +i * verticalUnit, -localFactor * tickSingleWidth, +i * verticalUnit);
+                    g.DrawLine(redPen, localFactor * tickSingleWidth, -i * verticalUnit, -localFactor * tickSingleWidth, -i * verticalUnit);
+                }
+
+                // draw arrowheads
+                PointF[] xArrowPoints = { new PointF(10.4f * horizontalUnit, tickSingleHeight * 1.20f), new PointF(10.4f * horizontalUnit, -tickSingleHeight * 1.20f), new PointF(10.95f * horizontalUnit, 0.0f) };
+                PointF[] yArrowPoints = { new PointF(tickSingleHeight * 1.20f, 10.4f * verticalUnit), new PointF(-tickSingleWidth * 1.20f, 10.4f * verticalUnit), new PointF(0.0f, 10.95f * verticalUnit) };
+                g.FillPolygon(redBrush, xArrowPoints);
+                g.FillPolygon(redBrush, yArrowPoints);
+
+                // add labels
+                g.DrawString("10", segoeUIFont, redBrush, new PointF(-10.0f * horizontalUnit, tickSingleHeight * 1.5f));
+                g.DrawString("-10", segoeUIFont, redBrush, new PointF(10.0f * horizontalUnit, tickSingleHeight * 1.5f));
+                g.DrawString("-10", segoeUIFont, redBrush, new PointF(tickSingleWidth * 1.5f, -10.0f * verticalUnit));
+                g.DrawString("10", segoeUIFont, redBrush, new PointF(tickSingleWidth * 1.5f, 10.0f * verticalUnit));
+
+                // optimize display
+                g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
+            }
         }
 
         private void Form1_Resize(object sender, EventArgs e)

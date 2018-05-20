@@ -28,30 +28,19 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.helperPanel = new System.Windows.Forms.Panel();
             this.graphArea = new System.Windows.Forms.UserControl();
             this.menuStrip = new System.Windows.Forms.MenuStrip();
             this.inputBox = new System.Windows.Forms.ToolStripTextBox();
             this.calcButton = new System.Windows.Forms.ToolStripMenuItem();
-            this.helperPanel.SuspendLayout();
             this.menuStrip.SuspendLayout();
             this.SuspendLayout();
             // 
-            // helperPanel
-            // 
-            this.helperPanel.Controls.Add(this.graphArea);
-            this.helperPanel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.helperPanel.Location = new System.Drawing.Point(0, 27);
-            this.helperPanel.Name = "helperPanel";
-            this.helperPanel.Size = new System.Drawing.Size(825, 449);
-            this.helperPanel.TabIndex = 0;
-            // 
             // graphArea
             // 
-            this.graphArea.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.graphArea.Location = new System.Drawing.Point(0, 0);
+            this.graphArea.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.graphArea.Location = new System.Drawing.Point(228, 59);
             this.graphArea.Name = "graphArea";
-            this.graphArea.Size = new System.Drawing.Size(825, 449);
+            this.graphArea.Size = new System.Drawing.Size(360, 360);
             this.graphArea.TabIndex = 0;
             this.graphArea.Paint += new System.Windows.Forms.PaintEventHandler(this.userControl1_Paint);
             // 
@@ -85,13 +74,12 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(825, 476);
-            this.Controls.Add(this.helperPanel);
+            this.Controls.Add(this.graphArea);
             this.Controls.Add(this.menuStrip);
             this.MainMenuStrip = this.menuStrip;
             this.Name = "PollyForm";
             this.Text = "Form1";
             this.ResizeEnd += new System.EventHandler(this.Form1_ResizeEnd);
-            this.helperPanel.ResumeLayout(false);
             this.menuStrip.ResumeLayout(false);
             this.menuStrip.PerformLayout();
             this.ResumeLayout(false);
@@ -100,8 +88,6 @@
         }
 
         #endregion
-
-        private System.Windows.Forms.Panel helperPanel;
         private System.Windows.Forms.MenuStrip menuStrip;
         private System.Windows.Forms.ToolStripTextBox inputBox;
         private System.Windows.Forms.ToolStripMenuItem calcButton;

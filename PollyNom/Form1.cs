@@ -38,18 +38,21 @@ namespace PollyNom
             Single endX = 10f;
             Single limits = 1000f;
 
-            Single scaleX = -this.Width / ((endX - startX));
-            Single scaleY = -this.Height / ((endX - startX));
+            Int32 workingWidth = this.graphArea.Width;
+            Int32 workingHeight = this.graphArea.Height;
+
+            Single scaleX = -workingWidth / ((endX - startX));
+            Single scaleY = -workingHeight / ((endX - startX));
 
             using (Pen p = new Pen(Color.Black, 2))
             {
                 Graphics g = e.Graphics;
 
                 // move coordinate system
-                g.TranslateTransform(this.Width / 2, this.Height / 2);
+                g.TranslateTransform(workingWidth / 2, workingHeight / 2);
                 // draw axes
-                g.DrawLine(Pens.Red, -this.Width, 0, this.Width, 0);
-                g.DrawLine(Pens.Red, 0, -this.Height, 0, this.Height);
+                g.DrawLine(Pens.Red, -workingWidth, 0, workingWidth, 0);
+                g.DrawLine(Pens.Red, 0, -workingHeight, 0, workingHeight);
                 // optimize display
                 g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
 
@@ -57,7 +60,7 @@ namespace PollyNom
                 if (evaluator != null)
                 {
                     PointListGenerator pointListGenerator = new PointListGenerator(evaluator, startX, endX, limits);
-                    var pointLists = pointListGenerator.ObtainScaledPoints(scaleX, scaleY);
+                    var pointLists = pointListGenerator.ObtainScaledPoints(-scaleX, scaleY);
 
                     foreach (var pointList in pointLists)
                     {

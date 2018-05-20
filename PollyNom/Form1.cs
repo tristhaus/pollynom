@@ -3,7 +3,6 @@ using System.Windows.Forms;
 
 using PollyNom.BusinessLogic;
 using System.Drawing;
-using System.Collections.Generic;
 
 namespace PollyNom
 {
@@ -75,9 +74,9 @@ namespace PollyNom
             base.OnPaint(e);
         }
 
-        private void Form1_ResizeEnd(object sender, EventArgs e)
+        private void Form1_Resize(object sender, EventArgs e)
         {
-            this.Refresh();
+            this.resizeClient();
         }
 
         private void inputBox_KeyPress(object sender, KeyPressEventArgs e)
@@ -88,6 +87,31 @@ namespace PollyNom
                 this.Refresh();
                 e.Handled = true;
             }
+        }
+
+        private void resizeClient()
+        {
+            // hail mary and resize
+            var rect = this.ClientRectangle;
+            var verticalOffset = this.menuStrip.Height;
+            rect.Size = new Size(rect.Width, rect.Height - verticalOffset);
+
+            if (rect.Height >= rect.Width)
+            {
+                this.graphArea.Size = new Size(rect.Width, rect.Width);
+                var toDistribute = rect.Height - rect.Width;
+                this.graphArea.Left = 0;
+                this.graphArea.Top = verticalOffset + toDistribute / 2;
+            }
+            else
+            {
+                this.graphArea.Size = new Size(rect.Height, rect.Height);
+                var toDistribute = rect.Width - rect.Height;
+                this.graphArea.Left = toDistribute / 2;
+                this.graphArea.Top = verticalOffset;
+            }
+
+            this.Refresh();
         }
     }
 }

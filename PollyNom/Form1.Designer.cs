@@ -38,9 +38,9 @@
             // graphArea
             // 
             this.graphArea.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.graphArea.Location = new System.Drawing.Point(228, 59);
+            this.graphArea.Location = new System.Drawing.Point(0, 30);
             this.graphArea.Name = "graphArea";
-            this.graphArea.Size = new System.Drawing.Size(360, 360);
+            this.graphArea.Size = new System.Drawing.Size(559, 559);
             this.graphArea.TabIndex = 0;
             this.graphArea.Paint += new System.Windows.Forms.PaintEventHandler(this.userControl1_Paint);
             // 
@@ -51,7 +51,7 @@
             this.calcButton});
             this.menuStrip.Location = new System.Drawing.Point(0, 0);
             this.menuStrip.Name = "menuStrip";
-            this.menuStrip.Size = new System.Drawing.Size(825, 27);
+            this.menuStrip.Size = new System.Drawing.Size(559, 27);
             this.menuStrip.TabIndex = 1;
             this.menuStrip.Text = "menuStrip1";
             // 
@@ -73,13 +73,14 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(825, 476);
+            this.ClientSize = new System.Drawing.Size(559, 586);
             this.Controls.Add(this.graphArea);
             this.Controls.Add(this.menuStrip);
             this.MainMenuStrip = this.menuStrip;
+            this.MinimumSize = new System.Drawing.Size(575, 625);
             this.Name = "PollyForm";
             this.Text = "Form1";
-            this.ResizeEnd += new System.EventHandler(this.Form1_ResizeEnd);
+            this.Resize += new System.EventHandler(this.Form1_Resize);
             this.menuStrip.ResumeLayout(false);
             this.menuStrip.PerformLayout();
             this.ResumeLayout(false);

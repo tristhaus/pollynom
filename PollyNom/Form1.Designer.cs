@@ -80,6 +80,8 @@
             this.MinimumSize = new System.Drawing.Size(575, 625);
             this.Name = "PollyForm";
             this.Text = "Form1";
+            this.ResizeBegin += new System.EventHandler(this.PollyForm_ResizeBegin);
+            this.ResizeEnd += new System.EventHandler(this.PollyForm_ResizeEnd);
             this.Resize += new System.EventHandler(this.Form1_Resize);
             this.menuStrip.ResumeLayout(false);
             this.menuStrip.PerformLayout();

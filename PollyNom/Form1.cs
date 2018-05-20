@@ -76,7 +76,9 @@ namespace PollyNom
 
         private void Form1_Resize(object sender, EventArgs e)
         {
+            this.graphArea.Hide();
             this.resizeClient();
+            this.graphArea.Show();
         }
 
         private void inputBox_KeyPress(object sender, KeyPressEventArgs e)
@@ -110,7 +112,16 @@ namespace PollyNom
                 this.graphArea.Left = toDistribute / 2;
                 this.graphArea.Top = verticalOffset;
             }
+        }
 
+        private void PollyForm_ResizeBegin(object sender, EventArgs e)
+        {
+            this.graphArea.Hide();
+        }
+
+        private void PollyForm_ResizeEnd(object sender, EventArgs e)
+        {
+            this.graphArea.Show();
             this.Refresh();
         }
     }

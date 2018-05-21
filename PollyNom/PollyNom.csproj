@@ -47,6 +47,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BusinessLogic\Evaluator.cs" />
+    <Compile Include="BusinessLogic\IDot.cs" />
     <Compile Include="BusinessLogic\IExpression.cs" />
     <Compile Include="BusinessLogic\Expressions\Add.cs" />
     <Compile Include="BusinessLogic\Expressions\BaseX.cs" />
@@ -89,6 +90,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="BusinessLogic\Dots\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

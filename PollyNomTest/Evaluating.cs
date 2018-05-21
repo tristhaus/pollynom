@@ -20,7 +20,7 @@ namespace PollyNomTest
 
             // Assert
             Assert.IsTrue(result.HasValue());
-            Assert.IsTrue(DoubleComparer.IsApproximatelyEqual(expectedValue, number));
+            Assert.IsTrue(DoubleEquality.IsApproximatelyEqual(expectedValue, number));
         }
 
         [TestMethod]
@@ -36,7 +36,7 @@ namespace PollyNomTest
 
             // Assert
             Assert.IsTrue(result.HasValue());
-            Assert.IsTrue(DoubleComparer.IsApproximatelyEqual(expectedValue, number));
+            Assert.IsTrue(DoubleEquality.IsApproximatelyEqual(expectedValue, number));
         }
 
         [TestMethod]
@@ -52,7 +52,7 @@ namespace PollyNomTest
 
             // Assert
             Assert.IsTrue(result.HasValue());
-            Assert.IsTrue(DoubleComparer.IsApproximatelyEqual(expectedValue, number));
+            Assert.IsTrue(DoubleEquality.IsApproximatelyEqual(expectedValue, number));
         }
 
         [TestMethod]
@@ -68,7 +68,7 @@ namespace PollyNomTest
 
             // Assert
             Assert.IsTrue(result.HasValue());
-            Assert.IsTrue(DoubleComparer.IsApproximatelyEqual(expectedValue, number));
+            Assert.IsTrue(DoubleEquality.IsApproximatelyEqual(expectedValue, number));
         }
 
         [TestMethod]
@@ -84,7 +84,7 @@ namespace PollyNomTest
 
             // Assert
             Assert.IsTrue(result.HasValue());
-            Assert.IsTrue(DoubleComparer.IsApproximatelyEqual(expectedValue, number));
+            Assert.IsTrue(DoubleEquality.IsApproximatelyEqual(expectedValue, number));
         }
 
 
@@ -101,7 +101,7 @@ namespace PollyNomTest
 
             // Assert
             Assert.IsTrue(result.HasValue());
-            Assert.IsTrue(DoubleComparer.IsApproximatelyEqual(expectedValue, number));
+            Assert.IsTrue(DoubleEquality.IsApproximatelyEqual(expectedValue, number));
         }
 
         [TestMethod]
@@ -117,7 +117,7 @@ namespace PollyNomTest
 
             // Assert
             Assert.IsTrue(result.HasValue());
-            Assert.IsTrue(DoubleComparer.IsApproximatelyEqual(expectedValue, number));
+            Assert.IsTrue(DoubleEquality.IsApproximatelyEqual(expectedValue, number));
         }
 
         [TestMethod]
@@ -133,7 +133,7 @@ namespace PollyNomTest
 
             // Assert
             Assert.IsTrue(result.HasValue());
-            Assert.IsTrue(DoubleComparer.IsApproximatelyEqual(expectedValue, number));
+            Assert.IsTrue(DoubleEquality.IsApproximatelyEqual(expectedValue, number));
         }
     }
 }

@@ -4,6 +4,9 @@ using System.Collections.Generic;
 
 namespace PollyNomTest.Helper
 {
+    /// <summary>
+    /// Provides a collection of test expressions.
+    /// </summary>
     internal class TestExpressionBuilder
     {
         /// <summary>

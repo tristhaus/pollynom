@@ -23,7 +23,7 @@ namespace PollyNomTest
             // Assert
             Assert.AreEqual(1, result.Count);
             Assert.IsTrue(1 <= result[0].Count);
-            Assert.IsTrue(Helper.DoubleComparer.IsApproximatelyEqual(1.3, result[0][0].Y));
+            Assert.IsTrue(Helper.DoubleEquality.IsApproximatelyEqual(1.3, result[0][0].Y));
         }
 
         [TestMethod]
@@ -40,7 +40,7 @@ namespace PollyNomTest
             // Assert
             Assert.AreEqual(1, result.Count);
             Assert.IsTrue(1 <= result[0].Count);
-            Assert.IsTrue(Helper.DoubleComparer.IsApproximatelyEqual(2.6, result[0][0].Y));
+            Assert.IsTrue(Helper.DoubleEquality.IsApproximatelyEqual(2.6, result[0][0].Y));
         }
 
         [TestMethod]

@@ -15,7 +15,7 @@ namespace PollyNomTest
             double b = 0.1;
 
             // Act
-            bool result = DoubleComparer.IsApproximatelyEqual(a, b);
+            bool result = DoubleEquality.IsApproximatelyEqual(a, b);
 
             // Assert
             Assert.IsTrue(result);
@@ -29,7 +29,7 @@ namespace PollyNomTest
             double b = 0.2;
 
             // Act
-            bool result = DoubleComparer.IsApproximatelyEqual(a, b);
+            bool result = DoubleEquality.IsApproximatelyEqual(a, b);
 
             // Assert
             Assert.IsFalse(result);

@@ -3,9 +3,15 @@ using PollyNom.BusinessLogic.Expressions;
 
 namespace PollyNomTest
 {
+    /// <summary>
+    /// Collects tests for equality of instances of <see cref="IExpression"/>.
+    /// </summary>
     [TestClass]
     public class Equality
     {
+        /// <summary>
+        /// Tests about X and invalid expressions, using the method.
+        /// </summary>
         [TestMethod]
         public void XInvalidPerMethod()
         {
@@ -25,6 +31,9 @@ namespace PollyNomTest
             Assert.IsFalse(InvalidA.Equals(Xa));
         }
 
+        /// <summary>
+        /// Tests about X and invalid expressions, using the operator.
+        /// </summary>
         [TestMethod]
         public void XInvalidPerOperator()
         {
@@ -47,6 +56,9 @@ namespace PollyNomTest
             Assert.IsTrue(InvalidA != Xa);
         }
 
+        /// <summary>
+        /// Tests about constant expressions, using the method.
+        /// </summary>
         [TestMethod]
         public void ConstantEqualPerMethod()
         {
@@ -58,6 +70,9 @@ namespace PollyNomTest
             Assert.IsTrue(b.Equals(a));
         }
 
+        /// <summary>
+        /// Tests about constant expressions, using the method.
+        /// </summary>
         [TestMethod]
         public void ConstantUnequalPerMethod()
         {
@@ -68,6 +83,9 @@ namespace PollyNomTest
             Assert.IsFalse(b.Equals(a));
         }
 
+        /// <summary>
+        /// Tests about constant expressions, using the operator.
+        /// </summary>
         [TestMethod]
         public void ConstantEqualPerOperator()
         {
@@ -79,6 +97,9 @@ namespace PollyNomTest
             Assert.IsTrue(b == a);
         }
 
+        /// <summary>
+        /// Tests about constant expressions, using the operator.
+        /// </summary>
         [TestMethod]
         public void ConstantUnequalPerOperator()
         {
@@ -89,9 +110,13 @@ namespace PollyNomTest
             Assert.IsTrue(b != a);
         }
 
+        /// <summary>
+        /// Tests about addition expressions, using the operator.
+        /// </summary>
         [TestMethod]
         public void AddEqualPerOperator()
         {
+            // 0.5 + 0.3 + 1.2
             var a = new Add(new Add.AddExpression(Add.AddExpression.Signs.Plus, new Constant(0.5)), new Add.AddExpression(Add.AddExpression.Signs.Plus, new Constant(0.3)), new Add.AddExpression(Add.AddExpression.Signs.Plus, new Constant(1.2)));
             var b = new Add(new Add.AddExpression(Add.AddExpression.Signs.Plus, new Constant(0.5)), new Add.AddExpression(Add.AddExpression.Signs.Plus, new Constant(0.3)), new Add.AddExpression(Add.AddExpression.Signs.Plus, new Constant(1.2)));
 
@@ -99,9 +124,13 @@ namespace PollyNomTest
             Assert.IsTrue(b == a);
         }
 
+        /// <summary>
+        /// Tests about addition expressions, using the operator.
+        /// </summary>
         [TestMethod]
         public void AddUnequalPerOperator()
         {
+            // 0.5 + 0.3 + 1.2
             var a = new Add(new Add.AddExpression(Add.AddExpression.Signs.Plus, new Constant(0.5)), new Add.AddExpression(Add.AddExpression.Signs.Plus, new Constant(0.3)), new Add.AddExpression(Add.AddExpression.Signs.Plus, new Constant(1.2)));
             var b = new Add(new Add.AddExpression(Add.AddExpression.Signs.Plus, new Constant(0.3)), new Add.AddExpression(Add.AddExpression.Signs.Plus, new Constant(0.3)), new Add.AddExpression(Add.AddExpression.Signs.Plus, new Constant(1.2)));
 
@@ -109,29 +138,43 @@ namespace PollyNomTest
             Assert.IsTrue(b != a);
         }
 
+        /// <summary>
+        /// Tests about addition expressions involving different <see cref="Add.AddExpression.Signs"/>, using the operator.
+        /// </summary>
         [TestMethod]
         public void AddUnequalSignsPerOperator()
         {
+            // 0.5 + 0.3 - 1.2
             var a = new Add(new Add.AddExpression(Add.AddExpression.Signs.Plus, new Constant(0.5)), new Add.AddExpression(Add.AddExpression.Signs.Plus, new Constant(0.3)), new Add.AddExpression(Add.AddExpression.Signs.Minus, new Constant(1.2)));
+            // -0.5 + 0.3 + 1.2
             var b = new Add(new Add.AddExpression(Add.AddExpression.Signs.Minus, new Constant(0.5)), new Add.AddExpression(Add.AddExpression.Signs.Plus, new Constant(0.3)), new Add.AddExpression(Add.AddExpression.Signs.Plus, new Constant(1.2)));
 
             Assert.IsTrue(a != b);
             Assert.IsTrue(b != a);
         }
 
+        /// <summary>
+        /// Tests about addition expressions involving different order of terms, using the operator.
+        /// </summary>
         [TestMethod]
         public void AddEqualReorderedPerOperator()
         {
+            // 0.5 + 0.3 + 1.2
             var a = new Add(new Add.AddExpression(Add.AddExpression.Signs.Plus, new Constant(0.5)), new Add.AddExpression(Add.AddExpression.Signs.Plus, new Constant(0.3)), new Add.AddExpression(Add.AddExpression.Signs.Plus, new Constant(1.2)));
+            // 0.3 + 0.5 + 1.2
             var b = new Add(new Add.AddExpression(Add.AddExpression.Signs.Plus, new Constant(0.3)), new Add.AddExpression(Add.AddExpression.Signs.Plus, new Constant(0.5)), new Add.AddExpression(Add.AddExpression.Signs.Plus, new Constant(1.2)));
 
             Assert.IsTrue(a == b);
             Assert.IsTrue(b == a);
         }
 
+        /// <summary>
+        /// Tests about addition expressions involving duplicated terms, using the operator.
+        /// </summary>
         [TestMethod]
         public void AddEqualDuplicatePerOperator()
         {
+            // 0.3 + 0.3 + 1.2
             var a = new Add(new Add.AddExpression(Add.AddExpression.Signs.Plus, new Constant(0.3)), new Add.AddExpression(Add.AddExpression.Signs.Plus, new Constant(0.3)), new Add.AddExpression(Add.AddExpression.Signs.Plus, new Constant(1.2)));
             var b = new Add(new Add.AddExpression(Add.AddExpression.Signs.Plus, new Constant(0.3)), new Add.AddExpression(Add.AddExpression.Signs.Plus, new Constant(0.3)), new Add.AddExpression(Add.AddExpression.Signs.Plus, new Constant(1.2)));
 
@@ -139,6 +182,9 @@ namespace PollyNomTest
             Assert.IsTrue(b == a);
         }
 
+        /// <summary>
+        /// Tests about addition expressions involving duplicated terms of different classes, using the operator.
+        /// </summary>
         [TestMethod]
         public void AddEqualMixedPerOperator()
         {
@@ -149,9 +195,13 @@ namespace PollyNomTest
             Assert.IsTrue(b == a);
         }
 
+        /// <summary>
+        /// Tests about multiply expressions, using the operator.
+        /// </summary>
         [TestMethod]
         public void MultiplyEqualPerOperator()
         {
+            // 0.5 * 0.3 * 1.2
             var a = new Multiply(new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Multiply, new Constant(0.5)), new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Multiply, new Constant(0.3)), new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Multiply, new Constant(1.2)));
             var b = new Multiply(new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Multiply, new Constant(0.5)), new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Multiply, new Constant(0.3)), new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Multiply, new Constant(1.2)));
 
@@ -159,39 +209,58 @@ namespace PollyNomTest
             Assert.IsTrue(b == a);
         }
 
+        /// <summary>
+        /// Tests about multiply expressions, using the operator.
+        /// </summary>
         [TestMethod]
         public void MultiplyUnequalPerOperator()
         {
+            // 0.5 * 0.3 * 1.2
             var a = new Multiply(new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Multiply, new Constant(0.5)), new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Multiply, new Constant(0.3)), new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Multiply, new Constant(1.2)));
+            // 0.3 * 0.3 * 1.2
             var b = new Multiply(new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Multiply, new Constant(0.3)), new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Multiply, new Constant(0.3)), new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Multiply, new Constant(1.2)));
 
             Assert.IsTrue(a != b);
             Assert.IsTrue(b != a);
         }
 
+        /// <summary>
+        /// Tests about multiply expressions, using the operator.
+        /// </summary>
         [TestMethod]
         public void MultiplyUnequalSignsPerOperator()
         {
+            // 0.5 * 0.3 / 1.2
             var a = new Multiply(new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Multiply, new Constant(0.5)), new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Multiply, new Constant(0.3)), new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Divide, new Constant(1.2)));
+            // / 0.5 * 0.3 * 1.2
             var b = new Multiply(new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Divide, new Constant(0.5)), new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Multiply, new Constant(0.3)), new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Multiply, new Constant(1.2)));
 
             Assert.IsTrue(a != b);
             Assert.IsTrue(b != a);
         }
 
+        /// <summary>
+        /// Tests about multiply expressions involving different order of terms, using the operator.
+        /// </summary>
         [TestMethod]
         public void MultiplyEqualReorderedPerOperator()
         {
+            // 0.5 * 0.3 * 1.2
             var a = new Multiply(new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Multiply, new Constant(0.5)), new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Multiply, new Constant(0.3)), new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Multiply, new Constant(1.2)));
+            // 0.3 * 0.5 * 1.2
             var b = new Multiply(new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Multiply, new Constant(0.3)), new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Multiply, new Constant(0.5)), new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Multiply, new Constant(1.2)));
 
             Assert.IsTrue(a == b);
             Assert.IsTrue(b == a);
         }
 
+        /// <summary>
+        /// Tests about multiply expressions involving duplicated terms, using the operator.
+        /// </summary>
         [TestMethod]
         public void MultiplyEqualDuplicatePerOperator()
         {
+            // 0.3 * 0.3 * 1.2
             var a = new Multiply(new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Multiply, new Constant(0.3)), new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Multiply, new Constant(0.3)), new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Multiply, new Constant(1.2)));
             var b = new Multiply(new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Multiply, new Constant(0.3)), new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Multiply, new Constant(0.3)), new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Multiply, new Constant(1.2)));
 
@@ -199,23 +268,33 @@ namespace PollyNomTest
             Assert.IsTrue(b == a);
         }
 
+        /// <summary>
+        /// Tests about multiply expressions involving duplicated terms of different classes, using the operator.
+        /// </summary>
         [TestMethod]
         public void MultiplyXEqualPerOperator()
         {
+            // 0.3 * X * 1.2
             var a = new Multiply(new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Multiply, new Constant(0.3)), new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Multiply, new BaseX()), new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Multiply, new Constant(1.2)));
+            // X * 0.3 * 1.2
             var b = new Multiply(new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Multiply, new BaseX()), new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Multiply, new Constant(0.3)), new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Multiply, new Constant(1.2)));
 
             Assert.IsTrue(a == b);
             Assert.IsTrue(b == a);
         }
 
+        /// <summary>
+        /// Tests about multiply and addition expressions involving reordering, using the operator.
+        /// </summary>
         [TestMethod]
         public void MultiplyAddEqualPerOperator()
         {
+            // (X + 4.2) / (X)
             var a = new Multiply(
                 new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Multiply, new Add(new Add.AddExpression(Add.AddExpression.Signs.Plus, new BaseX()), new Add.AddExpression(Add.AddExpression.Signs.Plus, new Constant(4.2)))),
                 new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Divide, new BaseX())
                 );
+            // / (X) * (X + 4.2)
             var b = new Multiply(
                 new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Divide, new BaseX()),
                 new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Multiply, new Add(new Add.AddExpression(Add.AddExpression.Signs.Plus, new BaseX()), new Add.AddExpression(Add.AddExpression.Signs.Plus, new Constant(4.2))))
@@ -225,13 +304,18 @@ namespace PollyNomTest
             Assert.IsTrue(b == a);
         }
 
+        /// <summary>
+        /// Tests about multiply and addition expressions, using the operator.
+        /// </summary>
         [TestMethod]
         public void MultiplyAddUnequalPerOperator()
         {
+            // (X + 4.2) / (X)
             var a = new Multiply(
                 new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Multiply, new Add(new Add.AddExpression(Add.AddExpression.Signs.Plus, new BaseX()), new Add.AddExpression(Add.AddExpression.Signs.Plus, new Constant(4.2)))),
                 new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Divide, new BaseX())
                 );
+            // (-X + 4.2) / (X)
             var b = new Multiply(
                 new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Multiply, new Add(new Add.AddExpression(Add.AddExpression.Signs.Minus, new BaseX()), new Add.AddExpression(Add.AddExpression.Signs.Plus, new Constant(4.2)))),
                 new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Divide, new BaseX())
@@ -241,6 +325,9 @@ namespace PollyNomTest
             Assert.IsFalse(b == a);
         }
 
+        /// <summary>
+        /// Tests about multiply expressions involving reordering, using the method.
+        /// </summary>
         [TestMethod]
         public void MultiplySignAndOrderPerMethod()
         {
@@ -262,6 +349,9 @@ namespace PollyNomTest
             Assert.IsFalse(a.Equals(b));
         }
 
+        /// <summary>
+        /// Test about power expressions, involving reordering, using the operator.
+        /// </summary>
         [TestMethod]
         public void PowerEqualPerOperator()
         {
@@ -277,13 +367,18 @@ namespace PollyNomTest
                 );
             var basisB = new Add(new Add.AddExpression(Add.AddExpression.Signs.Plus, new BaseX()), new Add.AddExpression(Add.AddExpression.Signs.Minus, new Constant(1.0)));
 
+            // (X - 1.0) ^ (X / 0.4)
             var powerA = new Power(basisA, exponentA);
+            // (X - 1.0) ^ (/ 0.4 * X)
             var powerB = new Power(basisB, exponentB);
 
             Assert.IsTrue(powerA == powerB);
             Assert.IsTrue(powerB == powerA);
         }
 
+        /// <summary>
+        /// Test about power expressions, involving different constants, using the operator.
+        /// </summary>
         [TestMethod]
         public void PowerUnequalPerOperator()
         {
@@ -299,13 +394,18 @@ namespace PollyNomTest
                 );
             var basisB = new Add(new Add.AddExpression(Add.AddExpression.Signs.Plus, new BaseX()), new Add.AddExpression(Add.AddExpression.Signs.Minus, new Constant(1.0)));
 
+            // (X - 1.0) ^ (X / 0.3)
             var powerA = new Power(basisA, exponentA);
+            // (X - 1.0) ^ (X / 0.4)
             var powerB = new Power(basisB, exponentB);
 
             Assert.IsTrue(powerA != powerB);
             Assert.IsTrue(powerB != powerA);
         }
 
+        /// <summary>
+        /// Test about power expressions, involving different constants, using the ,method.
+        /// </summary>
         [TestMethod]
         public void PowerPerMethod()
         {
@@ -318,8 +418,11 @@ namespace PollyNomTest
             var exponentB = new Constant(1.4);
             var basisB = new Add(new Add.AddExpression(Add.AddExpression.Signs.Plus, new BaseX()), new Add.AddExpression(Add.AddExpression.Signs.Minus, new Constant(1.0)));
 
+            // (X - 1.0) ^ X
             var powerA = new Power(basisA, exponentA);
+            // (X - 1.0) ^ X
             var powerAA = new Power(basisAA, exponentAA);
+            // (X - 1.0) ^ (1.4)
             var powerB = new Power(basisB, exponentB);
 
             Assert.IsTrue(powerA.Equals(powerAA));
@@ -327,9 +430,13 @@ namespace PollyNomTest
             Assert.IsFalse(powerB.Equals(powerAA));
         }
 
+        /// <summary>
+        /// Test about nontrivial equality, involving recursion (for reordered expression) and hash map challenges.
+        /// </summary>
         [TestMethod]
         public void NontrivialMultiplyAddMix()
         {
+            // ( -2.1 * (X + 3.1) ) + 1.1
             var exprA = new Add(
                             new Add.AddExpression(Add.AddExpression.Signs.Plus, new Multiply(
                                 new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Multiply, new Constant(-2.1)), new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Multiply, new Add(new Add.AddExpression(Add.AddExpression.Signs.Plus, new BaseX()), new Add.AddExpression(Add.AddExpression.Signs.Plus, new Constant(3.1)))))
@@ -337,15 +444,13 @@ namespace PollyNomTest
                             new Add.AddExpression(Add.AddExpression.Signs.Plus, new Constant(1.1))
                         );
 
+            // ( (X + 3.1) * -2.1 ) + 1.1
             var exprB = new Add(
                             new Add.AddExpression(Add.AddExpression.Signs.Plus, new Multiply(
                                 new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Multiply, new Add(new Add.AddExpression(Add.AddExpression.Signs.Plus, new BaseX()), new Add.AddExpression(Add.AddExpression.Signs.Plus, new Constant(3.1)))), new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Multiply, new Constant(-2.1)))
                             ),
                             new Add.AddExpression(Add.AddExpression.Signs.Plus, new Constant(1.1))
                         );
-
-            double valueA = exprA.Evaluate(1.0).Value();
-            double valueB = exprB.Evaluate(1.0).Value();
 
             Assert.IsTrue(exprA.Equals(exprB));
             Assert.IsTrue(exprB.Equals(exprA));

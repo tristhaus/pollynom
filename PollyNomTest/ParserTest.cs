@@ -5,6 +5,9 @@ using PollyNomTest.Helper;
 
 namespace PollyNomTest
 {
+    /// <summary>
+    /// Collects tests related to the parsing of human-readable strings to expressions.
+    /// </summary>
     [TestClass]
     public class ParserTest
     {
@@ -37,6 +40,9 @@ namespace PollyNomTest
             Assert.IsTrue(exprDoubleBracedX.Equals(new BaseX()));
         }
 
+        /// <summary>
+        /// Test whether single addition terms evaluate to Constant, regardless of sign.
+        /// </summary>
         [TestMethod]
         public void SingleAdditionTermAsConstant()
         {
@@ -391,6 +397,9 @@ namespace PollyNomTest
             Assert.IsTrue(exprPower.Equals(expectedPower));
         }
 
+        /// <summary>
+        /// Tests the correct parsing of a power tower - basically, start at the back.
+        /// </summary>
         [TestMethod]
         public void PowerTower()
         {
@@ -406,6 +415,9 @@ namespace PollyNomTest
             Assert.IsTrue(exprPower.Equals(expectedPower));
         }
 
+        /// <summary>
+        /// Roundtrip test on the members of <see cref="Helper.TestExpressionBuilder"/>
+        /// </summary>
         [TestMethod]
         public void Complex01()
         {
@@ -421,6 +433,9 @@ namespace PollyNomTest
             Assert.IsTrue(exprExpected.Equals(exprParsed));
         }
 
+        /// <summary>
+        /// Roundtrip test on the members of <see cref="Helper.TestExpressionBuilder"/>
+        /// </summary>
         [TestMethod]
         public void Complex02()
         {
@@ -436,6 +451,9 @@ namespace PollyNomTest
             Assert.IsTrue(exprExpected.Equals(exprParsed));
         }
 
+        /// <summary>
+        /// Roundtrip test on the members of <see cref="Helper.TestExpressionBuilder"/>
+        /// </summary>
         [TestMethod]
         public void Complex03()
         {
@@ -451,6 +469,9 @@ namespace PollyNomTest
             Assert.IsTrue(exprExpected.Equals(exprParsed));
         }
 
+        /// <summary>
+        /// Roundtrip test on the members of <see cref="Helper.TestExpressionBuilder"/>
+        /// </summary>
         [TestMethod]
         public void Complex04()
         {
@@ -466,6 +487,9 @@ namespace PollyNomTest
             Assert.IsTrue(exprExpected.Equals(exprParsed));
         }
 
+        /// <summary>
+        /// Roundtrip test on the members of <see cref="Helper.TestExpressionBuilder"/>
+        /// </summary>
         [TestMethod]
         public void Complex05()
         {
@@ -481,6 +505,9 @@ namespace PollyNomTest
             Assert.IsTrue(exprExpected.Equals(exprParsed));
         }
 
+        /// <summary>
+        /// Roundtrip test on the members of <see cref="Helper.TestExpressionBuilder"/>
+        /// </summary>
         [TestMethod]
         public void Complex06()
         {
@@ -496,6 +523,9 @@ namespace PollyNomTest
             Assert.IsTrue(exprExpected.Equals(exprParsed));
         }
 
+        /// <summary>
+        /// Roundtrip test on the members of <see cref="Helper.TestExpressionBuilder"/>
+        /// </summary>
         [TestMethod]
         public void Complex07()
         {
@@ -511,6 +541,9 @@ namespace PollyNomTest
             Assert.IsTrue(exprExpected.Equals(exprParsed));
         }
 
+        /// <summary>
+        /// Roundtrip test on the members of <see cref="Helper.TestExpressionBuilder"/>
+        /// </summary>
         [TestMethod]
         public void Complex08()
         {

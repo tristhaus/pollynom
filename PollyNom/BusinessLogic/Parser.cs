@@ -6,8 +6,16 @@ using System.Text.RegularExpressions;
 
 namespace PollyNom.BusinessLogic
 {
+    /// <summary>
+    /// Implements parsing of a human-readable string to an <see cref="IExpression"/>.
+    /// </summary>
     public class Parser
     {
+        /// <summary>
+        /// The parsing operation from string to <see cref="IExpression"/>.
+        /// </summary>
+        /// <param name="S">The string to be parsed.</param>
+        /// <returns>The expression, which can be <see cref="InvalidExpression"/>.</returns>
         public IExpression Parse(string S)
         {
             S = this.PrepareString(S);
@@ -19,6 +27,11 @@ namespace PollyNom.BusinessLogic
             return this.InternalParse(S);
         }
 
+        /// <summary>
+        /// Internal parsing (post validation). Supports recursion when given prepared and validated strings.
+        /// </summary>
+        /// <param name="S">The prepared and validated string to be parsed.</param>
+        /// <returns>The expression, which can be <see cref="InvalidExpression"/>.</returns>
         private IExpression InternalParse(string S)
         {
             // if fully enclosed in braces, we remove them
@@ -87,7 +100,7 @@ namespace PollyNom.BusinessLogic
                 return new Add(new Add.AddExpression(sign, bracketedExpression));
             }
 
-            // reassemble for recursive parsing
+            // reassemble for recursive parsing, three cases. First case: plus and minus
             if (ops.Contains("+") || ops.Contains("-"))
             {
                 List<Add.AddExpression> targetList = new List<Add.AddExpression>();
@@ -136,6 +149,7 @@ namespace PollyNom.BusinessLogic
                 return new Add(targetList);
             }
 
+            // Second case: multiply and divide
             if (ops.Contains("*") || ops.Contains("/"))
             {
                 List<Multiply.MultiplyExpression> targetList = new List<Multiply.MultiplyExpression>();
@@ -184,6 +198,7 @@ namespace PollyNom.BusinessLogic
                 return new Multiply(targetList);
             }
 
+            // Third case: power expressions
             if (ops.Contains("^"))
             {
                 if (ops.Contains("*") || ops.Contains("/") || ops.Contains("+") || ops.Contains("-"))
@@ -219,11 +234,21 @@ namespace PollyNom.BusinessLogic
             return new InvalidExpression();
         }
 
+        /// <summary>
+        /// Checks the character for being a mathemical operator.
+        /// </summary>
+        /// <param name="c">The character to be checked.</param>
+        /// <returns><c>true</c> if character is an operator.</returns>
         private bool isOperatorChar(char c)
         {
             return c == '-' || c == '+' || c == '*' || c == '/' || c == '^';
         }
 
+        /// <summary>
+        /// Parses a <see cref="Constant"/> expression from the input string.
+        /// </summary>
+        /// <param name="S">The input string.</param>
+        /// <returns>The expression, which can be <see cref="InvalidExpression"/>.</returns>
         private IExpression ParseToConstant(string S)
         {
             double result;
@@ -235,6 +260,12 @@ namespace PollyNom.BusinessLogic
             return new InvalidExpression();
         }
 
+        /// <summary>
+        /// Finds the parenthesis in the string matching the one at the given index.
+        /// </summary>
+        /// <param name="S">The string to be worked on.</param>
+        /// <param name="pos">The index of the parenthesis that needs to be matched.</param>
+        /// <returns>The index of the matching parenthesis.</returns>
         private int FindMatchingBrace(string S, int pos)
         {
             if (pos < 0 || pos > S.Length - 1)
@@ -299,6 +330,11 @@ namespace PollyNom.BusinessLogic
             return -1;
         }
 
+        /// <summary>
+        /// Check if the input string is valid to be parsed per business criteria.
+        /// </summary>
+        /// <param name="S">The string to be checked.</param>
+        /// <returns><c>true</c> if valid.</returns>
         private bool ValidateInput(string S)
         {
             // check unsupported characters 
@@ -345,6 +381,11 @@ namespace PollyNom.BusinessLogic
             return true;
         }
 
+        /// <summary>
+        /// Prepare the string for parsing.
+        /// </summary>
+        /// <param name="S">The string to be prepared.</param>
+        /// <returns>The prepared string.</returns>
         private string PrepareString(string S)
         {
             return S.Replace(" ", string.Empty);

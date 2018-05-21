@@ -6,15 +6,46 @@ namespace PollyNom.BusinessLogic
 {
     public class PointListGenerator
     {
+        /// <summary>
+        /// The lower limit for increments etc.
+        /// </summary>
         private const double epsilon = 1e-4;
+
+        /// <summary>
+        /// The x increments should be below this value, but above <see cref="PointListGenerator.epsilon"/>.
+        /// </summary>
         private const double targetDistance = 5e-3;
+
+        /// <summary>
+        /// The starting increment for x.
+        /// </summary>
         private const double initialIncrement = 1e-2;
 
         private Evaluator evaluator;
+
+        /// <summary>
+        /// The inputted start of x.
+        /// </summary>
         private double initialX;
+
+        /// <summary>
+        /// The inputted end of x.
+        /// </summary>
         private double finalX;
+
+        /// <summary>
+        /// The inputted limits.
+        /// </summary>
         private double limits;
 
+        /// <summary>
+        /// Creates a new instance of the <see cref="PointListGenerator"/> class,
+        /// using an evaluator and parameters for the evaluation.
+        /// </summary>
+        /// <param name="evaluator">The evaluator to be used.</param>
+        /// <param name="initialX">The x at which the list shall begin.</param>
+        /// <param name="finalX">The x at which the list shall end.</param>
+        /// <param name="limits">The absolute maximum y-value to be considered.</param>
         public PointListGenerator(Evaluator evaluator, double initialX, double finalX, double limits)
         {
             if (evaluator == null)
@@ -33,6 +64,13 @@ namespace PollyNom.BusinessLogic
             this.limits = limits;
         }
 
+        /// <summary>
+        /// Provides a list of points ready for displaying, 
+        /// that respect the scaling factors provided.
+        /// </summary>
+        /// <param name="scaleX">Horizontal scaling factor.</param>
+        /// <param name="scaleY">Vertical scaling factor.</param>
+        /// <returns>A list of lists of points.</returns>
         public List<List<PointF>> ObtainScaledPoints(float scaleX = 1.0f, float scaleY = 1.0f)
         {
             var tupleLists = this.ObtainTuples();
@@ -59,6 +97,11 @@ namespace PollyNom.BusinessLogic
             return pointLists;
         }
 
+        /// <summary>
+        /// Provides access to a sorted list of points calculated from the expression
+        /// using the member parameters in logical, business units.
+        /// </summary>
+        /// <returns>A list of sorted lists of points.</returns>
         private List<SortedList<double, double>> ObtainTuples()
         {
             List<SortedList<double, double>> retList = new List<SortedList<double, double>>();
@@ -140,6 +183,15 @@ namespace PollyNom.BusinessLogic
             return retList;
         }
 
+        /// <summary>
+        /// Calculates the square of the Euclidean distance between
+        /// two points provided as single coordinates.
+        /// </summary>
+        /// <param name="x1">X-coordinate of the first point.</param>
+        /// <param name="y1">Y-coordinate of the first point.</param>
+        /// <param name="x2">X-coordinate of the second point.</param>
+        /// <param name="y2">Y-coordinate of the second point.</param>
+        /// <returns>The squared distance.</returns>
         private double squareDist(double x1, double y1, double x2, double y2)
         {
             return (x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2);

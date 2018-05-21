@@ -8,20 +8,48 @@ namespace PollyNom
 {
     public partial class PollyForm : Form
     {
-        const float startX = -11f;
-        const float endX = 11f;
-        const float startY = -11f;
-        const float endY = 11f;
-        const float limits = 1000f;
+        /// <summary>
+        /// Dimensions of the coordinate system in business logical units.
+        /// </summary>
+        private const float startX = -11f;
+        private const float endX = 11f;
+        private const float startY = PollyForm.startX;
+        private const float endY = PollyForm.endX;
+        
+        /// <summary>
+        /// When exceeding this absolute limit in terms of y-value, 
+        /// no attempt at using the point is made
+        /// </summary>
+        private const float limits = 1000f;
 
-        Evaluator evaluator;
+        /// <summary>
+        /// The evaluator currently active.
+        /// </summary>
+        private Evaluator evaluator;
 
+        /// <summary>
+        /// Creates a new instance of the <see cref="PollyForm"/> class.
+        /// </summary>
         public PollyForm()
         {
             this.ResizeRedraw = true;
             InitializeComponent();
         }
 
+        /// <summary>
+        /// Handle a click on the <c>Calc!</c> button.
+        /// </summary>
+        /// <param name="sender">Sender, i.e. button.</param>
+        /// <param name="e">EventArgs</param>
+        private void toolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            this.RunReadAndEvaluate();
+            this.Refresh();
+        }
+
+        /// <summary>
+        /// Reads the user input text and sets the appropriate evaluator.
+        /// </summary>
         private void RunReadAndEvaluate()
         {
             if (string.IsNullOrWhiteSpace(inputBox.Text))
@@ -31,12 +59,11 @@ namespace PollyNom
             this.evaluator = new Evaluator(inputBox.Text);
         }
 
-        private void toolStripMenuItem1_Click(object sender, EventArgs e)
-        {
-            this.RunReadAndEvaluate();
-            this.Refresh();
-        }
-
+        /// <summary>
+        /// Handles the refreshing of the coordinate system and contents.
+        /// </summary>
+        /// <param name="sender">?</param>
+        /// <param name="e">?</param>
         private void userControl1_Paint(object sender, PaintEventArgs e)
         {
             Int32 workingWidth = this.graphArea.Width;
@@ -45,32 +72,34 @@ namespace PollyNom
             float scaleX = -workingWidth / ((PollyForm.startX - PollyForm.endX));
             float scaleY = -workingHeight / ((PollyForm.startY - PollyForm.endY));
 
-            using (Pen p = new Pen(Color.Black, 2))
+            Graphics g = e.Graphics;
+
+            DrawCoordinateSystem(g, workingWidth, workingHeight);
+
+            // calc function and draw it
+            if (evaluator != null)
             {
-                Graphics g = e.Graphics;
+                PointListGenerator pointListGenerator = new PointListGenerator(evaluator, PollyForm.startX, PollyForm.endX, PollyForm.limits);
+                var pointLists = pointListGenerator.ObtainScaledPoints(scaleX, -scaleY);
 
-                DrawCoordinateSystem(workingWidth, workingHeight, g);
-
-                // calc function and draw it
-                if (evaluator != null)
+                using (Pen blackPen = new Pen(Color.Black, 2))
                 {
-                    PointListGenerator pointListGenerator = new PointListGenerator(evaluator, PollyForm.startX, PollyForm.endX, PollyForm.limits);
-                    var pointLists = pointListGenerator.ObtainScaledPoints(scaleX, -scaleY);
-
-                    foreach (var pointList in pointLists)
-                    {
-                        if (pointList.Count > 1)
-                        {
-                            g.DrawCurve(p, pointList.ToArray());
-                        }
-                    }
+                    pointLists
+                        .FindAll(pointList => pointList.Count > 1)
+                        .ForEach(nonEmptyPointList => g.DrawCurve(blackPen, nonEmptyPointList.ToArray()));
                 }
             }
 
             base.OnPaint(e);
         }
 
-        private void DrawCoordinateSystem(int theWidth, int theHeight, Graphics g)
+        /// <summary>
+        /// Draw a coordinate system on the <see cref="Graphics"/> <paramref name="g"/>.
+        /// </summary>
+        /// <param name="g">The graphics to be drawn on.</param>
+        /// <param name="theWidth">The width to be used for the drawing.</param>
+        /// <param name="theHeight">The height to be used for the drawing.</param>
+        private void DrawCoordinateSystem(Graphics g, int theWidth, int theHeight)
         {
             using (Pen redPen = new Pen(Color.Red))
             using (Brush redBrush = new SolidBrush(Color.Red))
@@ -125,6 +154,13 @@ namespace PollyNom
             }
         }
 
+        /// <summary>
+        /// Handles the resizing of the entire main form 
+        /// by disabling the coordinate system, resizing it, and
+        /// reenabling it.
+        /// </summary>
+        /// <param name="sender">?</param>
+        /// <param name="e">?</param>
         private void Form1_Resize(object sender, EventArgs e)
         {
             this.graphArea.Hide();
@@ -132,6 +168,13 @@ namespace PollyNom
             this.graphArea.Show();
         }
 
+        /// <summary>
+        /// Handles a key press in the input text box
+        /// by filtering out the enter key, which simulates
+        /// a button press on <c>Calc!</c>.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void inputBox_KeyPress(object sender, KeyPressEventArgs e)
         {
             if (e.KeyChar == (Char)Keys.Enter)
@@ -142,6 +185,9 @@ namespace PollyNom
             }
         }
 
+        /// <summary>
+        /// Resizes the graph area according to <see cref="PollyForm"/> dimensions.
+        /// </summary>
         private void resizeClient()
         {
             // hail mary and resize
@@ -165,11 +211,23 @@ namespace PollyNom
             }
         }
 
+        /// <summary>
+        /// Handles the begin of a resizing on <see cref="PollyForm"/>
+        /// by hiding the coordinate system.
+        /// </summary>
+        /// <param name="sender">?</param>
+        /// <param name="e">?</param>
         private void PollyForm_ResizeBegin(object sender, EventArgs e)
         {
             this.graphArea.Hide();
         }
 
+        /// <summary>
+        /// Handles the end of a resizing on <see cref="PollyForm"/>
+        /// by updating and showing the coordinate system.
+        /// </summary>
+        /// <param name="sender">?</param>
+        /// <param name="e">?</param>
         private void PollyForm_ResizeEnd(object sender, EventArgs e)
         {
             this.graphArea.Show();

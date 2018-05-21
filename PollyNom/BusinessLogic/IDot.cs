@@ -16,7 +16,7 @@ namespace PollyNom.BusinessLogic
         /// <summary>
         /// Gets the radius of the dot in units of the coordinate system.
         /// </summary>
-        double radius { get; }
+        double Radius { get; }
 
         /// <summary>
         /// Indicates whether the provided expression hits the dot.

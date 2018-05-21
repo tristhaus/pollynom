@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Windows.Forms;
 
 using PollyNom.BusinessLogic;
+using PollyNom.BusinessLogic.Dots;
 using System.Drawing;
 
 namespace PollyNom
@@ -15,6 +17,26 @@ namespace PollyNom
         private const float endX = 11f;
         private const float startY = PollyForm.startX;
         private const float endY = PollyForm.endX;
+
+        /// <summary>
+        /// Color chosen for the coordinate system.
+        /// </summary>
+        private readonly Color coordinateSystemColor = Color.Red;
+
+        /// <summary>
+        /// Color chosen for the graph of the function.
+        /// </summary>
+        private readonly Color graphColor = Color.Black;
+
+        /// <summary>
+        /// Color chosen for a good dot that has not been hit.
+        /// </summary>
+        private readonly Color goodDotAsleepColor = Color.LightBlue;
+
+        /// <summary>
+        /// Color chosen for a good dot that has been hit.
+        /// </summary>
+        private readonly Color goodDotHitColor = Color.DarkBlue;
         
         /// <summary>
         /// When exceeding this absolute limit in terms of y-value, 
@@ -28,10 +50,18 @@ namespace PollyNom
         private Evaluator evaluator;
 
         /// <summary>
+        /// A provisional list of good dots.
+        /// </summary>
+        private List<GoodDot> goodDots;
+
+        /// <summary>
         /// Creates a new instance of the <see cref="PollyForm"/> class.
         /// </summary>
         public PollyForm()
         {
+            GoodDotsGenerator generator = new GoodDotsGenerator();
+            this.goodDots = generator.Generate();
+
             this.ResizeRedraw = true;
             InitializeComponent();
         }
@@ -74,7 +104,9 @@ namespace PollyNom
 
             Graphics g = e.Graphics;
 
-            DrawCoordinateSystem(g, workingWidth, workingHeight);
+            this.DrawCoordinateSystem(g, workingWidth, workingHeight);
+
+            this.DrawDots(g, scaleX, scaleY);
 
             // calc function and draw it
             if (evaluator != null)
@@ -82,11 +114,11 @@ namespace PollyNom
                 PointListGenerator pointListGenerator = new PointListGenerator(evaluator, PollyForm.startX, PollyForm.endX, PollyForm.limits);
                 var pointLists = pointListGenerator.ObtainScaledPoints(scaleX, -scaleY);
 
-                using (Pen blackPen = new Pen(Color.Black, 2))
+                using (Pen graphPen = new Pen(this.graphColor, 2))
                 {
                     pointLists
                         .FindAll(pointList => pointList.Count > 1)
-                        .ForEach(nonEmptyPointList => g.DrawCurve(blackPen, nonEmptyPointList.ToArray()));
+                        .ForEach(nonEmptyPointList => g.DrawCurve(graphPen, nonEmptyPointList.ToArray()));
                 }
             }
 
@@ -101,8 +133,8 @@ namespace PollyNom
         /// <param name="theHeight">The height to be used for the drawing.</param>
         private void DrawCoordinateSystem(Graphics g, int theWidth, int theHeight)
         {
-            using (Pen redPen = new Pen(Color.Red))
-            using (Brush redBrush = new SolidBrush(Color.Red))
+            using (Pen coordinatePen = new Pen(this.coordinateSystemColor))
+            using (Brush coordinateBrush = new SolidBrush(this.coordinateSystemColor))
             using (FontFamily segoeUIFamily = new FontFamily("Segoe UI"))
             using (Font segoeUIFont = new Font(segoeUIFamily, 9.0f)) // Segoe UI; 9pt
             {
@@ -110,8 +142,8 @@ namespace PollyNom
                 g.TranslateTransform(theWidth / 2, theHeight / 2);
 
                 // draw axes
-                g.DrawLine(redPen, -theWidth, 0, theWidth, 0);
-                g.DrawLine(redPen, 0, -theHeight, 0, theHeight);
+                g.DrawLine(coordinatePen, -theWidth, 0, theWidth, 0);
+                g.DrawLine(coordinatePen, 0, -theHeight, 0, theHeight);
 
                 // draw ticks
                 const float proportionTick = 1f / 85f;
@@ -131,26 +163,50 @@ namespace PollyNom
                         localFactor = 1.20f;
                     }
 
-                    g.DrawLine(redPen, +i * horizontalUnit, localFactor * tickSingleHeight, +i * horizontalUnit, -localFactor * tickSingleHeight);
-                    g.DrawLine(redPen, -i * horizontalUnit, localFactor * tickSingleHeight, -i * horizontalUnit, -localFactor * tickSingleHeight);
-                    g.DrawLine(redPen, localFactor * tickSingleWidth, +i * verticalUnit, -localFactor * tickSingleWidth, +i * verticalUnit);
-                    g.DrawLine(redPen, localFactor * tickSingleWidth, -i * verticalUnit, -localFactor * tickSingleWidth, -i * verticalUnit);
+                    g.DrawLine(coordinatePen, +i * horizontalUnit, localFactor * tickSingleHeight, +i * horizontalUnit, -localFactor * tickSingleHeight);
+                    g.DrawLine(coordinatePen, -i * horizontalUnit, localFactor * tickSingleHeight, -i * horizontalUnit, -localFactor * tickSingleHeight);
+                    g.DrawLine(coordinatePen, localFactor * tickSingleWidth, +i * verticalUnit, -localFactor * tickSingleWidth, +i * verticalUnit);
+                    g.DrawLine(coordinatePen, localFactor * tickSingleWidth, -i * verticalUnit, -localFactor * tickSingleWidth, -i * verticalUnit);
                 }
 
                 // draw arrowheads
                 PointF[] xArrowPoints = { new PointF(10.4f * horizontalUnit, tickSingleHeight * 1.20f), new PointF(10.4f * horizontalUnit, -tickSingleHeight * 1.20f), new PointF(10.95f * horizontalUnit, 0.0f) };
                 PointF[] yArrowPoints = { new PointF(tickSingleHeight * 1.20f, 10.4f * verticalUnit), new PointF(-tickSingleWidth * 1.20f, 10.4f * verticalUnit), new PointF(0.0f, 10.95f * verticalUnit) };
-                g.FillPolygon(redBrush, xArrowPoints);
-                g.FillPolygon(redBrush, yArrowPoints);
+                g.FillPolygon(coordinateBrush, xArrowPoints);
+                g.FillPolygon(coordinateBrush, yArrowPoints);
 
                 // add labels
-                g.DrawString("10", segoeUIFont, redBrush, new PointF(-10.0f * horizontalUnit, tickSingleHeight * 1.5f));
-                g.DrawString("-10", segoeUIFont, redBrush, new PointF(10.0f * horizontalUnit, tickSingleHeight * 1.5f));
-                g.DrawString("-10", segoeUIFont, redBrush, new PointF(tickSingleWidth * 1.5f, -10.0f * verticalUnit));
-                g.DrawString("10", segoeUIFont, redBrush, new PointF(tickSingleWidth * 1.5f, 10.0f * verticalUnit));
+                g.DrawString("-10", segoeUIFont, coordinateBrush, new PointF(-10.0f * horizontalUnit, tickSingleHeight * 1.5f));
+                g.DrawString("10", segoeUIFont, coordinateBrush, new PointF(10.0f * horizontalUnit, tickSingleHeight * 1.5f));
+                g.DrawString("-10", segoeUIFont, coordinateBrush, new PointF(tickSingleWidth * 1.5f, -10.0f * verticalUnit));
+                g.DrawString("10", segoeUIFont, coordinateBrush, new PointF(tickSingleWidth * 1.5f, 10.0f * verticalUnit));
 
                 // optimize display
                 g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
+            }
+        }
+
+        /// <summary>
+        /// Draw the dots on the <see cref="Graphics"/> <paramref name="g"/>.
+        /// </summary>
+        /// <param name="g">The graphics to be drawn on.</param>
+        /// <param name="scaleX">Horizontal scaling factor.</param>
+        /// <param name="scaleY">Vertical scaling factor.</param>
+        private void DrawDots(Graphics g, float scaleX, float scaleY)
+        {
+            using (Brush goodDotAsleepBrush = new SolidBrush(this.goodDotAsleepColor))
+            using (Brush goodDotHitBrush = new SolidBrush(this.goodDotHitColor))
+            {
+                foreach (var goodDot in this.goodDots)
+                {
+                    g.FillEllipse(
+                        goodDot.IsHit(new BusinessLogic.Expressions.BaseX()) ? goodDotHitBrush : goodDotAsleepBrush, 
+                        (float)(goodDot.Position.Item1 - goodDot.Radius) * (scaleX),
+                        (float)(goodDot.Position.Item2 + goodDot.Radius) * (-scaleY),
+                        (float)(2.0f * goodDot.Radius) * Math.Abs(scaleY), 
+                        (float)(2.0f * goodDot.Radius) * Math.Abs(scaleX)
+                        );
+                }
             }
         }
 

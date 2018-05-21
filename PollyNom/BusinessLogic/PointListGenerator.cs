@@ -65,7 +65,7 @@ namespace PollyNom.BusinessLogic
         }
 
         /// <summary>
-        /// Provides a list of points ready for displaying, 
+        /// Provides a list of points ready for displaying,
         /// that respect the scaling factors provided.
         /// </summary>
         /// <param name="scaleX">Horizontal scaling factor.</param>

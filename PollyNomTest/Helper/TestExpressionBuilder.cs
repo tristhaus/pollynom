@@ -7,7 +7,7 @@ namespace PollyNomTest.Helper
     internal class TestExpressionBuilder
     {
         /// <summary>
-        /// Builds 
+        /// Builds
         /// <c>
         /// 2.0*x
         /// </c>
@@ -19,7 +19,7 @@ namespace PollyNomTest.Helper
         }
 
         /// <summary>
-        /// Builds 
+        /// Builds
         /// <c>
         /// 2.0*x^3.0/(x-2^x)
         /// </c>
@@ -35,7 +35,7 @@ namespace PollyNomTest.Helper
         }
 
         /// <summary>
-        /// Builds 
+        /// Builds
         /// <c>
         /// 2.0*(x+1.0)
         /// </c>
@@ -47,7 +47,7 @@ namespace PollyNomTest.Helper
         }
 
         /// <summary>
-        /// Builds 
+        /// Builds
         /// <c>
         /// (x+1.0)^2.0
         /// </c>
@@ -59,7 +59,7 @@ namespace PollyNomTest.Helper
         }
 
         /// <summary>
-        /// Builds 
+        /// Builds
         /// <c>
         /// (x+1.0)^(x/3.0)
         /// </c>
@@ -71,7 +71,7 @@ namespace PollyNomTest.Helper
         }
 
         /// <summary>
-        /// Builds 
+        /// Builds
         /// <c>
         /// x-1+2-3
         /// </c>
@@ -88,7 +88,7 @@ namespace PollyNomTest.Helper
         }
 
         /// <summary>
-        /// Builds 
+        /// Builds
         /// <c>
         /// x+1-2+3
         /// </c>
@@ -107,7 +107,7 @@ namespace PollyNomTest.Helper
         }
 
         /// <summary>
-        /// Builds 
+        /// Builds
         /// <c>
         /// x+1-4+7
         /// </c>

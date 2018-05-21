@@ -3,7 +3,7 @@
 namespace PollyNom.BusinessLogic
 {
     /// <summary>
-    /// Defines a dot, which can be hit by an expression and 
+    /// Defines a dot, which can be hit by an expression and
     /// gives information relevant to its drawing.
     /// </summary>
     public interface IDot

@@ -337,7 +337,7 @@ namespace PollyNom.BusinessLogic
         /// <returns><c>true</c> if valid.</returns>
         private bool ValidateInput(string S)
         {
-            // check unsupported characters 
+            // check unsupported characters
             {
                 Regex regex = new Regex("^[-0-9.+/*^()xX]+$", RegexOptions.Compiled);
                 if (!regex.IsMatch(S))

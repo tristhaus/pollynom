@@ -118,7 +118,7 @@ namespace PollyNom.BusinessLogic.Expressions
                 {
                     return new None<Double>();
                 }
-                sum += expression.Sign == AddExpression.Signs.Plus ? (+value.Value()) : (-value.Value()); 
+                sum += expression.Sign == AddExpression.Signs.Plus ? (+value.Value()) : (-value.Value());
             }
 
             return new Some<double>(sum);
@@ -249,7 +249,7 @@ namespace PollyNom.BusinessLogic.Expressions
                 }
             }
 
-            public Maybe<double> Evaluate(double input) 
+            public Maybe<double> Evaluate(double input)
             {
                 return expression.Evaluate(input);
             }

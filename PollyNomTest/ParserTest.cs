@@ -397,6 +397,26 @@ namespace PollyNomTest
             Assert.IsTrue(exprPower.Equals(expectedPower));
         }
 
+        [TestMethod]
+        public void LessSimplePower()
+        {
+            // Arrange
+            Parser parser = new Parser();
+            string PowerString = "-((2.0*x)^(x+1.0))";
+            var expectedPower = new Add(new Add.AddExpression(Add.AddExpression.Signs.Minus, 
+                new Power(
+                new Multiply(new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Multiply, new Constant(2.0)), new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Multiply, new BaseX())),
+                new Add(new Add.AddExpression(Add.AddExpression.Signs.Plus, new BaseX()), new Add.AddExpression(Add.AddExpression.Signs.Plus, new Constant(1.0)))
+                )));
+
+            // Act
+            IExpression exprPower = parser.Parse(PowerString);
+
+            // Assert
+            Assert.IsTrue(exprPower.Equals(expectedPower));
+
+        }
+
         /// <summary>
         /// Tests the correct parsing of a power tower - basically, start at the back.
         /// </summary>

@@ -3,20 +3,43 @@ using System.Collections.Generic;
 
 namespace PollyNom.BusinessLogic.Dots
 {
+    /// <summary>
+    /// Represents a dot that should be hit.
+    /// </summary>
     public class GoodDot : IDot
     {
+        /// <summary>
+        /// Random number generator
+        /// </summary>
         private static Random rng = new Random();
 
+        /// <summary>
+        /// Radius of the dot in implied logical business units.
+        /// </summary>
         private const double radius = 0.25;
+        
+        /// <summary>
+        /// X-coordinate of the dot in implied logical business units.
+        /// </summary>
         private readonly double x;
+
+        /// <summary>
+        /// Y-coordinate of the dot in implied logical business units.
+        /// </summary>
         private readonly double y;
 
+        /// <summary>
+        /// Creates a new instance of the <see cref="GoodDot"/> class from the coordinates given.
+        /// </summary>
+        /// <param name="x">X-coordinate of the dot in implied logical business units.</param>
+        /// <param name="y">Y-coordinate of the dot in implied logical business units.</param>
         public GoodDot(double x, double y)
         {
             this.x = x;
             this.y = y;
         }
 
+        /// <inheritdoc />
         public Tuple<double, double> Position
         {
             get
@@ -25,6 +48,7 @@ namespace PollyNom.BusinessLogic.Dots
             }
         }
 
+        /// <inheritdoc />
         public double Radius
         {
             get
@@ -33,6 +57,7 @@ namespace PollyNom.BusinessLogic.Dots
             }
         }
 
+        /// <inheritdoc />
         public bool IsHit(IExpression expression, List<ListPointLogical> tupleLists)
         {
             if(expression.GetType() == typeof(BusinessLogic.Expressions.InvalidExpression))
@@ -52,11 +77,16 @@ namespace PollyNom.BusinessLogic.Dots
             {
                 foreach (var tuple in tupleList.Points)
                 {
-                    if(tuple.X >= this.x - this.Radius && tuple.X <= this.x + this.Radius)
+                    if(tuple.X >= this.x - this.Radius)
                     {
                         if (this.IsInsideCircle(tuple.X, tuple.Y))
                         {
                             retval = true;
+                            break;
+                        }
+
+                        if(tuple.X > this.x + this.Radius)
+                        {
                             break;
                         }
                     }

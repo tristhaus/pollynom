@@ -70,7 +70,7 @@ namespace PollyNomTest
         }
 
         /// <summary>
-        /// Non-trivial cases of singularities
+        /// Non-trivial case of a singularity
         /// </summary>
         [TestMethod]
         public void Singularity1()
@@ -92,7 +92,7 @@ namespace PollyNomTest
         }
 
         /// <summary>
-        /// Non-trivial cases of singularities
+        /// Non-trivial case of a singularity
         /// </summary>
         [TestMethod]
         public void Singularity2()

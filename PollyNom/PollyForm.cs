@@ -78,7 +78,7 @@ namespace PollyNom
         }
 
         /// <summary>
-        /// Reads the user input text and sets the appropriate evaluator.
+        /// Reads the user input text and parses the expression from it.
         /// </summary>
         private void RunReadAndEvaluate()
         {

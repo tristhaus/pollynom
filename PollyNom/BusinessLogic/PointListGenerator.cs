@@ -40,9 +40,9 @@ namespace PollyNom.BusinessLogic
 
         /// <summary>
         /// Creates a new instance of the <see cref="PointListGenerator"/> class,
-        /// using an evaluator and parameters for the evaluation.
+        /// using an <see cref="IExpression"/> and parameters for the evaluation.
         /// </summary>
-        /// <param name="expression">The evaluator to be used.</param>
+        /// <param name="expression">The expression to be used.</param>
         /// <param name="initialX">The x at which the list shall begin.</param>
         /// <param name="finalX">The x at which the list shall end.</param>
         /// <param name="limits">The absolute maximum y-value to be considered.</param>

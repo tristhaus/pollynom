@@ -24,6 +24,6 @@ namespace PollyNom.BusinessLogic
         /// </summary>
         /// <param name="expression">The expression to be evaluated.</param>
         /// <returns><c>true</c> if hit, <c>false</c> otherwise.</returns>
-        bool IsHit(IExpression expression, List<SortedList<double, double>> tupleLists);
+        bool IsHit(IExpression expression, List<ListPointLogical> tupleLists);
     }
 }

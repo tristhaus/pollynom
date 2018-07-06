@@ -57,9 +57,11 @@
     <Compile Include="BusinessLogic\Expressions\InvalidExpression.cs" />
     <Compile Include="BusinessLogic\Expressions\Multiply.cs" />
     <Compile Include="BusinessLogic\Expressions\Power.cs" />
+    <Compile Include="BusinessLogic\ListPointLogical.cs" />
     <Compile Include="BusinessLogic\Maybe.cs" />
     <Compile Include="BusinessLogic\Parser.cs" />
     <Compile Include="BusinessLogic\PointListGenerator.cs" />
+    <Compile Include="BusinessLogic\PointLogical.cs" />
     <Compile Include="PollyForm.cs">
       <SubType>Form</SubType>
     </Compile>

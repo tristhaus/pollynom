@@ -65,45 +65,13 @@ namespace PollyNom.BusinessLogic
         }
 
         /// <summary>
-        /// Provides a list of points ready for displaying,
-        /// that respect the scaling factors provided.
-        /// </summary>
-        /// <param name="scaleX">Horizontal scaling factor.</param>
-        /// <param name="scaleY">Vertical scaling factor.</param>
-        /// <returns>A list of lists of points.</returns>
-        public List<List<PointF>> ConvertToScaledPoints(List<SortedList<double, double>> tupleLists, float scaleX = 1.0f, float scaleY = 1.0f)
-        {
-            List<List<PointF>> pointLists = new List<List<PointF>>(tupleLists.Count);
-
-            foreach (var tupleList in tupleLists)
-            {
-                List<PointF> pointList = new List<PointF>(tupleList.Count);
-                foreach (var tuple in tupleList)
-                {
-                    try
-                    {
-                        PointF point = new PointF(scaleX*Convert.ToSingle(tuple.Key), scaleY*Convert.ToSingle(tuple.Value));
-                        pointList.Add(point);
-                    }
-                    catch (OverflowException)
-                    {
-                    }
-                }
-
-                pointLists.Add(pointList);
-            }
-
-            return pointLists;
-        }
-
-        /// <summary>
         /// Provides access to a sorted list of points calculated from the expression
         /// using the member parameters in logical, business units.
         /// </summary>
         /// <returns>A list of sorted lists of points.</returns>
-        public List<SortedList<double, double>> ObtainTuples()
+        public List<ListPointLogical> ObtainListsOfLogicalsPoints()
         {
-            List<SortedList<double, double>> retList = new List<SortedList<double, double>>();
+            List<ListPointLogical> retList = new List<ListPointLogical>();
             bool hadFirstPoint = false;
             double x = this.initialX;
             double y = 0;
@@ -111,7 +79,7 @@ namespace PollyNom.BusinessLogic
             double yOld = y;
             double incr = PointListGenerator.initialIncrement;
 
-            SortedList<double, double> points = new SortedList<double, double>();
+            ListPointLogical points = new ListPointLogical();
 
             do
             {
@@ -142,7 +110,7 @@ namespace PollyNom.BusinessLogic
                             incr *= 2.0;
                         }
 
-                        points.Add(x, y);
+                        points.Add(new PointLogical(x, y));
                         xOld = x;
                         yOld = y;
                         x += incr;
@@ -158,7 +126,7 @@ namespace PollyNom.BusinessLogic
                     if (points.Count > 0)
                     {
                         retList.Add(points);
-                        points = new SortedList<double, double>();
+                        points = new ListPointLogical();
                     }
                     else
                     {
@@ -176,10 +144,41 @@ namespace PollyNom.BusinessLogic
             if (points.Count > 0)
             {
                 retList.Add(points);
-                points = new SortedList<double, double>();
             }
 
             return retList;
+        }
+
+        /// <summary>
+        /// Provides a list of points ready for displaying,
+        /// that respect the scaling factors provided.
+        /// </summary>
+        /// <param name="scaleX">Horizontal scaling factor.</param>
+        /// <param name="scaleY">Vertical scaling factor.</param>
+        /// <returns>A list of lists of points.</returns>
+        public List<List<PointF>> ConvertToScaledPoints(List<ListPointLogical> pointLogicalLists, float scaleX = 1.0f, float scaleY = 1.0f)
+        {
+            List<List<PointF>> pointLists = new List<List<PointF>>(pointLogicalLists.Count);
+
+            foreach (var pointLogicalList in pointLogicalLists)
+            {
+                List<PointF> pointList = new List<PointF>(pointLogicalList.Count);
+                foreach (var logicalPoint in pointLogicalList.Points)
+                {
+                    try
+                    {
+                        PointF point = new PointF(scaleX*Convert.ToSingle(logicalPoint.X), scaleY*Convert.ToSingle(logicalPoint.Y));
+                        pointList.Add(point);
+                    }
+                    catch (OverflowException)
+                    {
+                    }
+                }
+
+                pointLists.Add(pointList);
+            }
+
+            return pointLists;
         }
     }
 }

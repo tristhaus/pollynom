@@ -33,7 +33,7 @@ namespace PollyNom.BusinessLogic.Dots
             }
         }
 
-        public bool IsHit(IExpression expression, List<SortedList<double, double>> tupleLists)
+        public bool IsHit(IExpression expression, List<ListPointLogical> tupleLists)
         {
             if(expression.GetType() == typeof(BusinessLogic.Expressions.InvalidExpression))
             {
@@ -43,18 +43,18 @@ namespace PollyNom.BusinessLogic.Dots
             return this.HitImplementationListBased(tupleLists) || this.HitImplementationGreedy(expression);
         }
 
-        private bool HitImplementationListBased(List<SortedList<double, double>> tupleLists)
+        private bool HitImplementationListBased(List<ListPointLogical> tupleLists)
         {
             if (tupleLists == null) return false;
 
             bool retval = false;
             foreach (var tupleList in tupleLists)
             {
-                foreach (var tuple in tupleList)
+                foreach (var tuple in tupleList.Points)
                 {
-                    if(tuple.Key >= this.x - this.Radius && tuple.Key <= this.x + this.Radius)
+                    if(tuple.X >= this.x - this.Radius && tuple.X <= this.x + this.Radius)
                     {
-                        if (this.IsInsideCircle(tuple.Key, tuple.Value))
+                        if (this.IsInsideCircle(tuple.X, tuple.Y))
                         {
                             retval = true;
                             break;

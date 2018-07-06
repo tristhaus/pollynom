@@ -17,7 +17,7 @@ namespace PollyNomTest
             PointListGenerator pointList = new PointListGenerator(constant, -1.0, 1.0, 1000.0);
 
             // Act
-            List<List<PointF>> result = pointList.ConvertToScaledPoints(pointList.ObtainTuples());
+            List<List<PointF>> result = pointList.ConvertToScaledPoints(pointList.ObtainListsOfLogicalsPoints());
 
             // Assert
             Assert.AreEqual(1, result.Count);
@@ -33,7 +33,7 @@ namespace PollyNomTest
             PointListGenerator pointList = new PointListGenerator(constant, -1.0, 1.0, 1000.0);
 
             // Act
-            List<List<PointF>> result = pointList.ConvertToScaledPoints(pointList.ObtainTuples(), 0.5f, 2.0f);
+            List<List<PointF>> result = pointList.ConvertToScaledPoints(pointList.ObtainListsOfLogicalsPoints(), 0.5f, 2.0f);
 
             // Assert
             Assert.AreEqual(1, result.Count);
@@ -49,7 +49,7 @@ namespace PollyNomTest
             PointListGenerator pointList = new PointListGenerator(xSquared, -1.0, 1.0, 1000.0);
 
             // Act
-            var result = pointList.ObtainTuples();
+            var result = pointList.ObtainListsOfLogicalsPoints();
 
             // Assert
             Assert.AreEqual(1, result.Count);
@@ -64,7 +64,7 @@ namespace PollyNomTest
             PointListGenerator pointList = new PointListGenerator(oneOverX, -1.0, 1.0, 1000.0);
 
             // Act
-            var result = pointList.ObtainTuples();
+            var result = pointList.ObtainListsOfLogicalsPoints();
 
             // Assert
             Assert.AreEqual(2, result.Count);
@@ -81,7 +81,7 @@ namespace PollyNomTest
             PointListGenerator pointList = new PointListGenerator(RootX, -1.0, 1.0, 1000.0);
 
             // Act
-            var result = pointList.ObtainTuples();
+            var result = pointList.ObtainListsOfLogicalsPoints();
 
             // Assert
             Assert.AreEqual(1, result.Count);

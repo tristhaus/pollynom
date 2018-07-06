@@ -200,7 +200,7 @@ namespace PollyNom
                 foreach (var goodDot in this.goodDots)
                 {
                     g.FillEllipse(
-                        goodDot.IsHit(new BusinessLogic.Expressions.BaseX()) ? goodDotHitBrush : goodDotAsleepBrush, 
+                        goodDot.IsHit(this.evaluator?.Expression ?? new BusinessLogic.Expressions.InvalidExpression()) ? goodDotHitBrush : goodDotAsleepBrush, 
                         (float)(goodDot.Position.Item1 - goodDot.Radius) * (scaleX),
                         (float)(goodDot.Position.Item2 + goodDot.Radius) * (-scaleY),
                         (float)(2.0f * goodDot.Radius) * Math.Abs(scaleY), 

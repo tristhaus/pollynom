@@ -53,6 +53,7 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="DotHitting.cs" />
     <Compile Include="Equality.cs" />
     <Compile Include="Evaluating.cs" />
     <Compile Include="HelperTests.cs" />

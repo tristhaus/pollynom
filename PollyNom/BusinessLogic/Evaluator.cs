@@ -42,6 +42,17 @@
         }
 
         /// <summary>
+        /// Gets the contained expression.
+        /// </summary>
+        public IExpression Expression
+        {
+            get
+            {
+                return inputExpression;
+            }
+        }
+
+        /// <summary>
         /// Evaluates the contained expression at a given x-coordinate <paramref name="x"/>.
         /// </summary>
         /// <param name="x">The x-coordinate.</param>

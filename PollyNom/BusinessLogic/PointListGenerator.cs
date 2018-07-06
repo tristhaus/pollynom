@@ -135,7 +135,7 @@ namespace PollyNom.BusinessLogic
 
                 if (!interrupt)
                 {
-                    double squareDist = this.squareDist(x, y, xOld, yOld);
+                    double squareDist = Helper.MathHelper.SquareDistance(x, y, xOld, yOld);
                     if (!hadFirstPoint || squareDist < PointListGenerator.targetDistance || incr < PointListGenerator.epsilon)
                     {
                         if (squareDist < PointListGenerator.epsilon)
@@ -181,20 +181,6 @@ namespace PollyNom.BusinessLogic
             }
 
             return retList;
-        }
-
-        /// <summary>
-        /// Calculates the square of the Euclidean distance between
-        /// two points provided as single coordinates.
-        /// </summary>
-        /// <param name="x1">X-coordinate of the first point.</param>
-        /// <param name="y1">Y-coordinate of the first point.</param>
-        /// <param name="x2">X-coordinate of the second point.</param>
-        /// <param name="y2">Y-coordinate of the second point.</param>
-        /// <returns>The squared distance.</returns>
-        private double squareDist(double x1, double y1, double x2, double y2)
-        {
-            return (x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2);
         }
     }
 }

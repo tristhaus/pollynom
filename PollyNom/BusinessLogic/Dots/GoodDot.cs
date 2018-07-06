@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace PollyNom.BusinessLogic.Dots
 {
@@ -32,13 +33,38 @@ namespace PollyNom.BusinessLogic.Dots
             }
         }
 
-        public bool IsHit(IExpression expression)
+        public bool IsHit(IExpression expression, List<SortedList<double, double>> tupleLists)
         {
             if(expression.GetType() == typeof(BusinessLogic.Expressions.InvalidExpression))
             {
                 return false;
             }
-            return this.HitImplementationGreedy(expression);
+
+            return this.HitImplementationListBased(tupleLists) || this.HitImplementationGreedy(expression);
+        }
+
+        private bool HitImplementationListBased(List<SortedList<double, double>> tupleLists)
+        {
+            if (tupleLists == null) return false;
+
+            bool retval = false;
+            foreach (var tupleList in tupleLists)
+            {
+                foreach (var tuple in tupleList)
+                {
+                    if(tuple.Key >= this.x - this.Radius && tuple.Key <= this.x + this.Radius)
+                    {
+                        if (this.IsInsideCircle(tuple.Key, tuple.Value))
+                        {
+                            retval = true;
+                            break;
+                        }
+                    }
+                }
+                if (retval) break;
+            }
+
+            return retval;
         }
 
         private bool HitImplementationGreedy(IExpression expression)

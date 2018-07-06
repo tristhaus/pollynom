@@ -106,13 +106,14 @@ namespace PollyNom
 
             this.DrawCoordinateSystem(g, workingWidth, workingHeight);
 
-            this.DrawDots(g, scaleX, scaleY);
+            List<SortedList<double, double>> tupleLists = null;
 
             // calc function and draw it
             if (evaluator != null)
             {
                 PointListGenerator pointListGenerator = new PointListGenerator(evaluator, PollyForm.startX, PollyForm.endX, PollyForm.limits);
-                var pointLists = pointListGenerator.ObtainScaledPoints(scaleX, -scaleY);
+                tupleLists = pointListGenerator.ObtainTuples();
+                List<List<PointF>> pointLists = pointListGenerator.ConvertToScaledPoints(tupleLists, scaleX, -scaleY);
 
                 using (Pen graphPen = new Pen(this.graphColor, 2))
                 {
@@ -121,6 +122,8 @@ namespace PollyNom
                         .ForEach(nonEmptyPointList => g.DrawCurve(graphPen, nonEmptyPointList.ToArray()));
                 }
             }
+
+            this.DrawDots(g, tupleLists, scaleX, scaleY);
 
             base.OnPaint(e);
         }
@@ -192,7 +195,7 @@ namespace PollyNom
         /// <param name="g">The graphics to be drawn on.</param>
         /// <param name="scaleX">Horizontal scaling factor.</param>
         /// <param name="scaleY">Vertical scaling factor.</param>
-        private void DrawDots(Graphics g, float scaleX, float scaleY)
+        private void DrawDots(Graphics g, List<SortedList<double, double>> tupleLists, float scaleX, float scaleY)
         {
             using (Brush goodDotAsleepBrush = new SolidBrush(this.goodDotAsleepColor))
             using (Brush goodDotHitBrush = new SolidBrush(this.goodDotHitColor))
@@ -200,7 +203,7 @@ namespace PollyNom
                 foreach (var goodDot in this.goodDots)
                 {
                     g.FillEllipse(
-                        goodDot.IsHit(this.evaluator?.Expression ?? new BusinessLogic.Expressions.InvalidExpression()) ? goodDotHitBrush : goodDotAsleepBrush, 
+                        goodDot.IsHit(this.evaluator?.Expression ?? new BusinessLogic.Expressions.InvalidExpression(), tupleLists) ? goodDotHitBrush : goodDotAsleepBrush, 
                         (float)(goodDot.Position.Item1 - goodDot.Radius) * (scaleX),
                         (float)(goodDot.Position.Item2 + goodDot.Radius) * (-scaleY),
                         (float)(2.0f * goodDot.Radius) * Math.Abs(scaleY), 

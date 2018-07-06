@@ -4,13 +4,17 @@ using PollyNom.BusinessLogic;
 using PollyNom.BusinessLogic.Dots;
 using PollyNom.BusinessLogic.Expressions;
 using PollyNomTest.Helper;
-
+using System.Collections.Generic;
 
 namespace PollyNomTest
 {
     [TestClass]
     public class DotHitting
     {
+        private const double startX = -1.0;
+        private const double endX = 1.0;
+        private const double limits = 1000.0;
+
         /// <summary>
         /// Tests hitting of a dot at tangential points
         /// </summary>
@@ -43,14 +47,14 @@ namespace PollyNomTest
                 new Add.AddExpression(Add.AddExpression.Signs.Minus, new Constant(500.0)));
 
             // Act
-            bool topResult = originDot.IsHit(top);
-            bool bottomResult = originDot.IsHit(bottom);
-            bool rightResult = originDot.IsHit(right);
-            bool leftResult = originDot.IsHit(left);
-            bool topMissResult = originDot.IsHit(topMiss);
-            bool bottomMissResult = originDot.IsHit(bottomMiss);
-            bool rightMissResult = originDot.IsHit(rightMiss);
-            bool leftMissResult = originDot.IsHit(leftMiss);
+            bool topResult = originDot.IsHit(top, null);
+            bool bottomResult = originDot.IsHit(bottom, null);
+            bool rightResult = originDot.IsHit(right, null);
+            bool leftResult = originDot.IsHit(left, null);
+            bool topMissResult = originDot.IsHit(topMiss, null);
+            bool bottomMissResult = originDot.IsHit(bottomMiss, null);
+            bool rightMissResult = originDot.IsHit(rightMiss, null);
+            bool leftMissResult = originDot.IsHit(leftMiss, null);
 
             // Assert
             Assert.IsTrue(DoubleEquality.IsApproximatelyEqual(originDot.Radius, 0.25));
@@ -69,12 +73,34 @@ namespace PollyNomTest
         /// Non-trivial cases of singularities
         /// </summary>
         [TestMethod]
-        public void Singularities()
+        public void Singularity1()
         {
             // Arrange
             GoodDot originDot = new GoodDot(0.0, 0.0);
 
             IExpression plainOneOverX = new Multiply(new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Multiply, new Constant(1.0)), new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Divide, new BaseX()));
+
+            Evaluator evaluator = new Evaluator(plainOneOverX);
+            PointListGenerator pointListGenerator = new PointListGenerator(evaluator, DotHitting.startX, DotHitting.endX, DotHitting.limits);
+
+            List<SortedList<double, double>> tupleLists = pointListGenerator.ObtainTuples();
+
+            // Act
+            bool plainOneOverXResult = originDot.IsHit(plainOneOverX, tupleLists);
+
+            // Assert
+            Assert.IsFalse(plainOneOverXResult);
+        }
+
+        /// <summary>
+        /// Non-trivial cases of singularities
+        /// </summary>
+        [TestMethod]
+        public void Singularity2()
+        {
+            // Arrange
+            GoodDot originDot = new GoodDot(0.0, 0.0);
+
             IExpression OneOverXMinus10 = new Add(
                 new Add.AddExpression(Add.AddExpression.Signs.Plus,
                     new Multiply(new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Multiply, new Constant(1.0)), new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Divide, new BaseX()))
@@ -82,14 +108,16 @@ namespace PollyNomTest
                 new Add.AddExpression(Add.AddExpression.Signs.Minus, new Constant(10.0))
                 );
 
+            Evaluator evaluator = new Evaluator(OneOverXMinus10);
+            PointListGenerator pointListGenerator = new PointListGenerator(evaluator, DotHitting.startX, DotHitting.endX, DotHitting.limits);
+
+            List<SortedList<double, double>> tupleLists = pointListGenerator.ObtainTuples();
+
             // Act
-            bool plainOneOverXResult = originDot.IsHit(plainOneOverX);
-            bool OneOverXMinus10Result = originDot.IsHit(OneOverXMinus10);
+            bool OneOverXMinus10Result = originDot.IsHit(OneOverXMinus10, tupleLists);
 
             // Assert
-            Assert.IsFalse(plainOneOverXResult);
             Assert.IsTrue(OneOverXMinus10Result);
         }
-
     }
 }

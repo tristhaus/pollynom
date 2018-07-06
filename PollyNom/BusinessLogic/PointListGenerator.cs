@@ -71,9 +71,8 @@ namespace PollyNom.BusinessLogic
         /// <param name="scaleX">Horizontal scaling factor.</param>
         /// <param name="scaleY">Vertical scaling factor.</param>
         /// <returns>A list of lists of points.</returns>
-        public List<List<PointF>> ObtainScaledPoints(float scaleX = 1.0f, float scaleY = 1.0f)
+        public List<List<PointF>> ConvertToScaledPoints(List<SortedList<double, double>> tupleLists, float scaleX = 1.0f, float scaleY = 1.0f)
         {
-            var tupleLists = this.ObtainTuples();
             List<List<PointF>> pointLists = new List<List<PointF>>(tupleLists.Count);
 
             foreach (var tupleList in tupleLists)
@@ -102,7 +101,7 @@ namespace PollyNom.BusinessLogic
         /// using the member parameters in logical, business units.
         /// </summary>
         /// <returns>A list of sorted lists of points.</returns>
-        private List<SortedList<double, double>> ObtainTuples()
+        public List<SortedList<double, double>> ObtainTuples()
         {
             List<SortedList<double, double>> retList = new List<SortedList<double, double>>();
             bool hadFirstPoint = false;

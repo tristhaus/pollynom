@@ -21,7 +21,7 @@ namespace PollyNom.BusinessLogic
         /// </summary>
         private const double initialIncrement = 1e-2;
 
-        private Evaluator evaluator;
+        private IExpression expression;
 
         /// <summary>
         /// The inputted start of x.
@@ -42,15 +42,15 @@ namespace PollyNom.BusinessLogic
         /// Creates a new instance of the <see cref="PointListGenerator"/> class,
         /// using an evaluator and parameters for the evaluation.
         /// </summary>
-        /// <param name="evaluator">The evaluator to be used.</param>
+        /// <param name="expression">The evaluator to be used.</param>
         /// <param name="initialX">The x at which the list shall begin.</param>
         /// <param name="finalX">The x at which the list shall end.</param>
         /// <param name="limits">The absolute maximum y-value to be considered.</param>
-        public PointListGenerator(Evaluator evaluator, double initialX, double finalX, double limits)
+        public PointListGenerator(IExpression expression, double initialX, double finalX, double limits)
         {
-            if (evaluator == null)
+            if (expression == null)
             {
-                throw new ArgumentNullException(nameof(evaluator));
+                throw new ArgumentNullException(nameof(expression));
             }
 
             if (initialX >= finalX)
@@ -58,7 +58,7 @@ namespace PollyNom.BusinessLogic
                 throw new ArgumentException($"{nameof(initialX)} must be smaller than {nameof(finalX)}");
             }
 
-            this.evaluator = evaluator;
+            this.expression = expression;
             this.initialX = initialX;
             this.finalX = finalX;
             this.limits = limits;
@@ -115,7 +115,7 @@ namespace PollyNom.BusinessLogic
 
             do
             {
-                var yMaybe = this.evaluator.Evaluate(Convert.ToDouble(x));
+                var yMaybe = this.expression.Evaluate(Convert.ToDouble(x));
 
                 bool interrupt = true;
                 if (yMaybe.HasValue())

@@ -47,7 +47,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BusinessLogic\Dots\GoodDot.cs" />
-    <Compile Include="BusinessLogic\Evaluator.cs" />
     <Compile Include="BusinessLogic\GoodDotsGenerator.cs" />
     <Compile Include="BusinessLogic\Helper\MathHelper.cs" />
     <Compile Include="BusinessLogic\IDot.cs" />

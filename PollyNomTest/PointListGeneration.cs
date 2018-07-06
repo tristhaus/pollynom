@@ -14,8 +14,7 @@ namespace PollyNomTest
         {
             // Arrange
             IExpression constant = new Constant(1.3);
-            Evaluator evaluator = new Evaluator(constant);
-            PointListGenerator pointList = new PointListGenerator(evaluator, -1.0, 1.0, 1000.0);
+            PointListGenerator pointList = new PointListGenerator(constant, -1.0, 1.0, 1000.0);
 
             // Act
             List<List<PointF>> result = pointList.ConvertToScaledPoints(pointList.ObtainTuples());
@@ -31,8 +30,7 @@ namespace PollyNomTest
         {
             // Arrange
             IExpression constant = new Constant(1.3);
-            Evaluator evaluator = new Evaluator(constant);
-            PointListGenerator pointList = new PointListGenerator(evaluator, -1.0, 1.0, 1000.0);
+            PointListGenerator pointList = new PointListGenerator(constant, -1.0, 1.0, 1000.0);
 
             // Act
             List<List<PointF>> result = pointList.ConvertToScaledPoints(pointList.ObtainTuples(), 0.5f, 2.0f);
@@ -48,8 +46,7 @@ namespace PollyNomTest
         {
             // Arrange
             IExpression xSquared = new Power(new BaseX(), new Constant(2.0));
-            Evaluator evaluator = new Evaluator(xSquared);
-            PointListGenerator pointList = new PointListGenerator(evaluator, -1.0, 1.0, 1000.0);
+            PointListGenerator pointList = new PointListGenerator(xSquared, -1.0, 1.0, 1000.0);
 
             // Act
             var result = pointList.ObtainTuples();
@@ -64,8 +61,7 @@ namespace PollyNomTest
         {
             // Arrange
             IExpression oneOverX = new Multiply(new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Multiply, new Constant(1.0)), new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Divide, new BaseX()));
-            Evaluator evaluator = new Evaluator(oneOverX);
-            PointListGenerator pointList = new PointListGenerator(evaluator, -1.0, 1.0, 1000.0);
+            PointListGenerator pointList = new PointListGenerator(oneOverX, -1.0, 1.0, 1000.0);
 
             // Act
             var result = pointList.ObtainTuples();
@@ -82,8 +78,7 @@ namespace PollyNomTest
         {
             // Arrange
             IExpression RootX = new Power(new BaseX(), new Constant(0.5));
-            Evaluator evaluator = new Evaluator(RootX);
-            PointListGenerator pointList = new PointListGenerator(evaluator, -1.0, 1.0, 1000.0);
+            PointListGenerator pointList = new PointListGenerator(RootX, -1.0, 1.0, 1000.0);
 
             // Act
             var result = pointList.ObtainTuples();

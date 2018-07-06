@@ -80,8 +80,7 @@ namespace PollyNomTest
 
             IExpression plainOneOverX = new Multiply(new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Multiply, new Constant(1.0)), new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Divide, new BaseX()));
 
-            Evaluator evaluator = new Evaluator(plainOneOverX);
-            PointListGenerator pointListGenerator = new PointListGenerator(evaluator, DotHitting.startX, DotHitting.endX, DotHitting.limits);
+            PointListGenerator pointListGenerator = new PointListGenerator(plainOneOverX, DotHitting.startX, DotHitting.endX, DotHitting.limits);
 
             List<SortedList<double, double>> tupleLists = pointListGenerator.ObtainTuples();
 
@@ -108,8 +107,7 @@ namespace PollyNomTest
                 new Add.AddExpression(Add.AddExpression.Signs.Minus, new Constant(10.0))
                 );
 
-            Evaluator evaluator = new Evaluator(OneOverXMinus10);
-            PointListGenerator pointListGenerator = new PointListGenerator(evaluator, DotHitting.startX, DotHitting.endX, DotHitting.limits);
+            PointListGenerator pointListGenerator = new PointListGenerator(OneOverXMinus10, DotHitting.startX, DotHitting.endX, DotHitting.limits);
 
             List<SortedList<double, double>> tupleLists = pointListGenerator.ObtainTuples();
 

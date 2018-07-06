@@ -91,8 +91,9 @@ namespace PollyNomTest
         {
             var a = new Constant(0.5);
             var b = new Constant(0.5);
+            var sameA = a;
 
-            Assert.IsTrue(a == a);
+            Assert.IsTrue(a == sameA);
             Assert.IsTrue(a == b);
             Assert.IsTrue(b == a);
         }

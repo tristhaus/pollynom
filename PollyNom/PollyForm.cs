@@ -45,9 +45,9 @@ namespace PollyNom
         private const float limits = 1000f;
 
         /// <summary>
-        /// The evaluator currently active.
+        /// The expression currently active.
         /// </summary>
-        private Evaluator evaluator;
+        private IExpression expression;
 
         /// <summary>
         /// A provisional list of good dots.
@@ -86,7 +86,7 @@ namespace PollyNom
             {
                 return;
             }
-            this.evaluator = new Evaluator(inputBox.Text);
+            this.expression = new Parser().Parse(inputBox.Text);
         }
 
         /// <summary>
@@ -109,9 +109,9 @@ namespace PollyNom
             List<SortedList<double, double>> tupleLists = null;
 
             // calc function and draw it
-            if (evaluator != null)
+            if (this.expression != null)
             {
-                PointListGenerator pointListGenerator = new PointListGenerator(evaluator, PollyForm.startX, PollyForm.endX, PollyForm.limits);
+                PointListGenerator pointListGenerator = new PointListGenerator(this.expression, PollyForm.startX, PollyForm.endX, PollyForm.limits);
                 tupleLists = pointListGenerator.ObtainTuples();
                 List<List<PointF>> pointLists = pointListGenerator.ConvertToScaledPoints(tupleLists, scaleX, -scaleY);
 
@@ -203,7 +203,7 @@ namespace PollyNom
                 foreach (var goodDot in this.goodDots)
                 {
                     g.FillEllipse(
-                        goodDot.IsHit(this.evaluator?.Expression ?? new BusinessLogic.Expressions.InvalidExpression(), tupleLists) ? goodDotHitBrush : goodDotAsleepBrush, 
+                        goodDot.IsHit(this.expression ?? new BusinessLogic.Expressions.InvalidExpression(), tupleLists) ? goodDotHitBrush : goodDotAsleepBrush, 
                         (float)(goodDot.Position.Item1 - goodDot.Radius) * (scaleX),
                         (float)(goodDot.Position.Item2 + goodDot.Radius) * (-scaleY),
                         (float)(2.0f * goodDot.Radius) * Math.Abs(scaleY), 

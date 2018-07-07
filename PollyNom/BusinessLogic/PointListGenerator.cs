@@ -156,7 +156,7 @@ namespace PollyNom.BusinessLogic
         /// <param name="scaleX">Horizontal scaling factor.</param>
         /// <param name="scaleY">Vertical scaling factor.</param>
         /// <returns>A list of lists of points.</returns>
-        public List<List<PointF>> ConvertToScaledPoints(List<ListPointLogical> pointLogicalLists, float scaleX = 1.0f, float scaleY = 1.0f)
+        public static List<List<PointF>> ConvertToScaledPoints(List<ListPointLogical> pointLogicalLists, float scaleX = 1.0f, float scaleY = 1.0f)
         {
             List<List<PointF>> pointLists = new List<List<PointF>>(pointLogicalLists.Count);
 

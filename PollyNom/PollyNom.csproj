@@ -62,6 +62,10 @@
     <Compile Include="BusinessLogic\Parser.cs" />
     <Compile Include="BusinessLogic\PointListGenerator.cs" />
     <Compile Include="BusinessLogic\PointLogical.cs" />
+    <Compile Include="Controller\DrawDot.cs" />
+    <Compile Include="Controller\DrawDotKind.cs" />
+    <Compile Include="Controller\IDrawDot.cs" />
+    <Compile Include="Controller\PollyController.cs" />
     <Compile Include="PollyForm.cs">
       <SubType>Form</SubType>
     </Compile>

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Windows.Forms;
 
+using PollyNom.Controller;
 using PollyNom.BusinessLogic;
 using PollyNom.BusinessLogic.Dots;
 using System.Drawing;
@@ -52,13 +53,19 @@ namespace PollyNom
         /// <summary>
         /// A provisional list of good dots.
         /// </summary>
-        private List<GoodDot> goodDots;
+        private List<IDot> goodDots;
+
+        /// <summary>
+        /// Controller providing access to data and accepting commands.
+        /// </summary>
+        private PollyController controller;
 
         /// <summary>
         /// Creates a new instance of the <see cref="PollyForm"/> class.
         /// </summary>
         public PollyForm()
         {
+            this.controller = new PollyController();
             GoodDotsGenerator generator = new GoodDotsGenerator();
             this.goodDots = generator.Generate();
 
@@ -73,20 +80,20 @@ namespace PollyNom
         /// <param name="e">EventArgs</param>
         private void toolStripMenuItem1_Click(object sender, EventArgs e)
         {
-            this.RunReadAndEvaluate();
+            this.ReadAndDelegate();
             this.Refresh();
         }
 
         /// <summary>
         /// Reads the user input text and parses the expression from it.
         /// </summary>
-        private void RunReadAndEvaluate()
+        private void ReadAndDelegate()
         {
-            if (string.IsNullOrWhiteSpace(inputBox.Text))
+            if (!string.IsNullOrWhiteSpace(inputBox.Text))
             {
-                return;
+                this.controller.UpdateExpression(inputBox.Text);
+                this.expression = this.controller.PROVISIONAL_GetExpression();
             }
-            this.expression = new Parser().Parse(inputBox.Text);
         }
 
         /// <summary>
@@ -111,9 +118,8 @@ namespace PollyNom
             // calc function and draw it
             if (this.expression != null)
             {
-                PointListGenerator pointListGenerator = new PointListGenerator(this.expression, PollyForm.startX, PollyForm.endX, PollyForm.limits);
-                logicalPointLists = pointListGenerator.ObtainListsOfLogicalsPoints();
-                List<List<PointF>> pointLists = pointListGenerator.ConvertToScaledPoints(logicalPointLists, scaleX, -scaleY);
+                logicalPointLists = this.controller.PROVISIONAL_GetListsOfLogicalPoints();
+                List<List<PointF>> pointLists = PointListGenerator.ConvertToScaledPoints(logicalPointLists, scaleX, -scaleY);
 
                 using (Pen graphPen = new Pen(this.graphColor, 2))
                 {
@@ -200,10 +206,10 @@ namespace PollyNom
             using (Brush goodDotAsleepBrush = new SolidBrush(this.goodDotAsleepColor))
             using (Brush goodDotHitBrush = new SolidBrush(this.goodDotHitColor))
             {
-                foreach (var goodDot in this.goodDots)
+                foreach (var goodDot in this.controller.GetDrawDots())
                 {
                     g.FillEllipse(
-                        goodDot.IsHit(this.expression ?? new BusinessLogic.Expressions.InvalidExpression(), logicalPointLists) ? goodDotHitBrush : goodDotAsleepBrush, 
+                        goodDot.IsHit ? goodDotHitBrush : goodDotAsleepBrush, 
                         (float)(goodDot.Position.Item1 - goodDot.Radius) * (scaleX),
                         (float)(goodDot.Position.Item2 + goodDot.Radius) * (-scaleY),
                         (float)(2.0f * goodDot.Radius) * Math.Abs(scaleY), 
@@ -238,7 +244,7 @@ namespace PollyNom
         {
             if (e.KeyChar == (Char)Keys.Enter)
             {
-                this.RunReadAndEvaluate();
+                this.ReadAndDelegate();
                 this.Refresh();
                 e.Handled = true;
             }

@@ -18,6 +18,7 @@ namespace PollyNom.Controller
         private const float endX = 11f;
         private const float startY = PollyController.startX;
         private const float endY = PollyController.endX;
+        private const float TickInterval = 1f;
 
         /// <summary>
         /// When exceeding this absolute limit in terms of y-value, 
@@ -40,8 +41,16 @@ namespace PollyNom.Controller
         /// </summary>
         private List<ListPointLogical> points = null;
 
-        private List<IDrawDot> drawDots = null;
+        /// <summary>
+        /// The list of logical dots.
+        /// </summary>
         private List<IDot> dots;
+
+        /// <summary>
+        /// The list of drawable dots.
+        /// </summary>
+        private List<IDrawDot> drawDots = null;
+
 
         public PollyController()
         {
@@ -60,12 +69,22 @@ namespace PollyNom.Controller
             }
         }
 
-        public IExpression PROVISIONAL_GetExpression()
+        public CoordinateSystemInfo CoordinateSystemInfo
         {
-            return this.expression ?? new InvalidExpression();
+            get
+            {
+                return new CoordinateSystemInfo()
+                {
+                    StartX = PollyController.startX,
+                    EndX = PollyController.endX,
+                    StartY = PollyController.startY,
+                    EndY = PollyController.endY,
+                    TickInterval = PollyController.TickInterval,
+                };
+            }
         }
 
-        public List<ListPointLogical> PROVISIONAL_GetListsOfLogicalPoints()
+        public List<ListPointLogical> GetListsOfLogicalPoints()
         {
             return points ?? new List<ListPointLogical>(0);
         }
@@ -77,13 +96,17 @@ namespace PollyNom.Controller
 
         private void UpdateData()
         {
+            UpdateGraph();
+            UpdateDots();
+        }
+
+        private void UpdateGraph()
+        {
             if (this.expression != null)
             {
                 PointListGenerator pointListGenerator = new PointListGenerator(this.expression, PollyController.startX, PollyController.endX, PollyController.limits);
                 this.points = pointListGenerator.ObtainListsOfLogicalsPoints();
             }
-
-            UpdateDots();
         }
 
         private void UpdateDots()

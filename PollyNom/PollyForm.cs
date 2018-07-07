@@ -12,12 +12,9 @@ namespace PollyNom
     public partial class PollyForm : Form
     {
         /// <summary>
-        /// Dimensions of the coordinate system in business logical units.
+        /// Controller providing access to data and accepting commands.
         /// </summary>
-        private const float startX = -11f;
-        private const float endX = 11f;
-        private const float startY = PollyForm.startX;
-        private const float endY = PollyForm.endX;
+        private PollyController controller;
 
         /// <summary>
         /// Color chosen for the coordinate system.
@@ -38,27 +35,6 @@ namespace PollyNom
         /// Color chosen for a good dot that has been hit.
         /// </summary>
         private readonly Color goodDotHitColor = Color.DarkBlue;
-        
-        /// <summary>
-        /// When exceeding this absolute limit in terms of y-value, 
-        /// no attempt at using the point is made
-        /// </summary>
-        private const float limits = 1000f;
-
-        /// <summary>
-        /// The expression currently active.
-        /// </summary>
-        private IExpression expression;
-
-        /// <summary>
-        /// A provisional list of good dots.
-        /// </summary>
-        private List<IDot> goodDots;
-
-        /// <summary>
-        /// Controller providing access to data and accepting commands.
-        /// </summary>
-        private PollyController controller;
 
         /// <summary>
         /// Creates a new instance of the <see cref="PollyForm"/> class.
@@ -66,8 +42,6 @@ namespace PollyNom
         public PollyForm()
         {
             this.controller = new PollyController();
-            GoodDotsGenerator generator = new GoodDotsGenerator();
-            this.goodDots = generator.Generate();
 
             this.ResizeRedraw = true;
             InitializeComponent();
@@ -92,7 +66,6 @@ namespace PollyNom
             if (!string.IsNullOrWhiteSpace(inputBox.Text))
             {
                 this.controller.UpdateExpression(inputBox.Text);
-                this.expression = this.controller.PROVISIONAL_GetExpression();
             }
         }
 
@@ -106,8 +79,10 @@ namespace PollyNom
             Int32 workingWidth = this.graphArea.Width;
             Int32 workingHeight = this.graphArea.Height;
 
-            float scaleX = -workingWidth / ((PollyForm.startX - PollyForm.endX));
-            float scaleY = -workingHeight / ((PollyForm.startY - PollyForm.endY));
+            CoordinateSystemInfo coordinateSystemInfo = controller.CoordinateSystemInfo;
+
+            float scaleX = -workingWidth / ((coordinateSystemInfo.StartX - coordinateSystemInfo.EndX));
+            float scaleY = -workingHeight / ((coordinateSystemInfo.StartY - coordinateSystemInfo.EndY));
 
             Graphics g = e.Graphics;
 
@@ -115,18 +90,14 @@ namespace PollyNom
 
             List<ListPointLogical> logicalPointLists = null;
 
-            // calc function and draw it
-            if (this.expression != null)
-            {
-                logicalPointLists = this.controller.PROVISIONAL_GetListsOfLogicalPoints();
-                List<List<PointF>> pointLists = PointListGenerator.ConvertToScaledPoints(logicalPointLists, scaleX, -scaleY);
+            logicalPointLists = this.controller.GetListsOfLogicalPoints();
+            List<List<PointF>> pointLists = PointListGenerator.ConvertToScaledPoints(logicalPointLists, scaleX, -scaleY);
 
-                using (Pen graphPen = new Pen(this.graphColor, 2))
-                {
-                    pointLists
-                        .FindAll(pointList => pointList.Count > 1)
-                        .ForEach(nonEmptyPointList => g.DrawCurve(graphPen, nonEmptyPointList.ToArray()));
-                }
+            using (Pen graphPen = new Pen(this.graphColor, 2))
+            {
+                pointLists
+                    .FindAll(pointList => pointList.Count > 1)
+                    .ForEach(nonEmptyPointList => g.DrawCurve(graphPen, nonEmptyPointList.ToArray()));
             }
 
             this.DrawDots(g, logicalPointLists, scaleX, scaleY);
@@ -147,6 +118,8 @@ namespace PollyNom
             using (FontFamily segoeUIFamily = new FontFamily("Segoe UI"))
             using (Font segoeUIFont = new Font(segoeUIFamily, 9.0f)) // Segoe UI; 9pt
             {
+                CoordinateSystemInfo coordinateSystemInfo = controller.CoordinateSystemInfo;
+
                 // move coordinate system
                 g.TranslateTransform(theWidth / 2, theHeight / 2);
 
@@ -158,8 +131,8 @@ namespace PollyNom
                 const float proportionTick = 1f / 85f;
                 float tickSingleHeight = theHeight * proportionTick;
                 float tickSingleWidth = theWidth * proportionTick;
-                float horizontalUnit = Math.Abs(theWidth / (PollyForm.startX - PollyForm.endX));
-                float verticalUnit = -Math.Abs(theHeight / (PollyForm.startY - PollyForm.endY));
+                float horizontalUnit = Math.Abs(theWidth / (coordinateSystemInfo.StartX - coordinateSystemInfo.EndX));
+                float verticalUnit = -Math.Abs(theHeight / (coordinateSystemInfo.StartY - coordinateSystemInfo.EndY));
                 for (int i = 1; i < 11; i++)
                 {
                     float localFactor = 1.0f;
@@ -209,10 +182,10 @@ namespace PollyNom
                 foreach (var goodDot in this.controller.GetDrawDots())
                 {
                     g.FillEllipse(
-                        goodDot.IsHit ? goodDotHitBrush : goodDotAsleepBrush, 
+                        goodDot.IsHit ? goodDotHitBrush : goodDotAsleepBrush,
                         (float)(goodDot.Position.Item1 - goodDot.Radius) * (scaleX),
                         (float)(goodDot.Position.Item2 + goodDot.Radius) * (-scaleY),
-                        (float)(2.0f * goodDot.Radius) * Math.Abs(scaleY), 
+                        (float)(2.0f * goodDot.Radius) * Math.Abs(scaleY),
                         (float)(2.0f * goodDot.Radius) * Math.Abs(scaleX)
                         );
                 }

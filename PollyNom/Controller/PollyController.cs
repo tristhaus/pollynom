@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using PollyNom.BusinessLogic;
 using PollyNom.BusinessLogic.Dots;
-using PollyNom.BusinessLogic.Expressions;
 
 namespace PollyNom.Controller
 {
@@ -62,11 +57,8 @@ namespace PollyNom.Controller
 
         public void UpdateExpression(string textRepresentation)
         {
-            if (!string.IsNullOrWhiteSpace(textRepresentation))
-            {
-                this.expression = new Parser().Parse(textRepresentation);
-                this.UpdateData();
-            }
+            this.expression = new Parser().Parse(textRepresentation);
+            this.UpdateData();
         }
 
         public CoordinateSystemInfo CoordinateSystemInfo

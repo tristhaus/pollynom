@@ -4,7 +4,6 @@ using System.Windows.Forms;
 
 using PollyNom.Controller;
 using PollyNom.BusinessLogic;
-using PollyNom.BusinessLogic.Dots;
 using System.Drawing;
 
 namespace PollyNom
@@ -63,10 +62,7 @@ namespace PollyNom
         /// </summary>
         private void ReadAndDelegate()
         {
-            if (!string.IsNullOrWhiteSpace(inputBox.Text))
-            {
-                this.controller.UpdateExpression(inputBox.Text);
-            }
+            this.controller.UpdateExpression(inputBox.Text);
         }
 
         /// <summary>

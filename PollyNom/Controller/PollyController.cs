@@ -47,7 +47,14 @@ namespace PollyNom.Controller
         /// </summary>
         private List<IDrawDot> drawDots = null;
 
+        /// <summary>
+        /// The current score.
+        /// </summary>
+        private int score;
 
+        /// <summary>
+        /// Creates a new instance of the <see cref="PollyController"/> class.
+        /// </summary>
         public PollyController()
         {
             this.parser = new Parser();
@@ -56,12 +63,19 @@ namespace PollyNom.Controller
             this.UpdateData();
         }
 
+        /// <summary>
+        /// Updates the expression and triggers the updating of the resulting data.
+        /// </summary>
+        /// <param name="textRepresentation">The textual representation of the expression.</param>
         public void UpdateExpression(string textRepresentation)
         {
             this.expression = new Parser().Parse(textRepresentation);
             this.UpdateData();
         }
 
+        /// <summary>
+        /// Get the information as needed for the drawing of the coordinate system.
+        /// </summary>
         public CoordinateSystemInfo CoordinateSystemInfo
         {
             get
@@ -77,20 +91,42 @@ namespace PollyNom.Controller
             }
         }
 
+        /// <summary>
+        /// Get the lists of plottable points in terms of business logic units.
+        /// </summary>
+        /// <returns>A list of point list, in terms of business logic units.</returns>
         public List<ListPointLogical> GetListsOfLogicalPoints()
         {
             return points ?? new List<ListPointLogical>(0);
         }
 
+        /// <summary>
+        /// Get the drawable dots.
+        /// </summary>
+        /// <returns>A list of drawable dots.</returns>
         public List<IDrawDot> GetDrawDots()
         {
             return drawDots ?? new List<IDrawDot>(0);
         }
 
+        /// <summary>
+        /// Gets the current score.
+        /// </summary>
+        public int Score
+        {
+            get
+            {
+                return score;
+            }
+        }
+
+        /// <summary>
+        /// Drives the updating process by delegating to other private methods.
+        /// </summary>
         private void UpdateData()
         {
             UpdateGraph();
-            UpdateDots();
+            UpdateDotsAndScore();
         }
 
         private void UpdateGraph()
@@ -102,15 +138,27 @@ namespace PollyNom.Controller
             }
         }
 
-        private void UpdateDots()
+        private void UpdateDotsAndScore()
         {
             this.drawDots = new List<IDrawDot>(this.dots.Count);
+            List<int> numbersOfHits = new List<int>(1);
+
+            int countOfHits = 0;
             foreach (var dot in this.dots)
             {
                 bool isHit = dot.IsHit(this.expression ?? new BusinessLogic.Expressions.InvalidExpression(), this.points);
                 DrawDotKind kind = dot.GetType() == typeof(GoodDot) ? DrawDotKind.GoodDot : DrawDotKind.BadDot;
                 drawDots.Add(new DrawDot(dot.Position.Item1, dot.Position.Item2, dot.Radius, isHit, kind));
+
+                if(isHit)
+                {
+                    ++countOfHits;
+                }
             }
+
+            numbersOfHits.Add(countOfHits);
+
+            this.score = ScoreCalculator.CalculateScore(numbersOfHits);
         }
     }
 }

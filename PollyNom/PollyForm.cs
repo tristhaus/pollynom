@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
+using System.Drawing;
 
 using PollyNom.Controller;
 using PollyNom.BusinessLogic;
-using System.Drawing;
 
 namespace PollyNom
 {
@@ -87,7 +87,7 @@ namespace PollyNom
             List<ListPointLogical> logicalPointLists = null;
 
             logicalPointLists = this.controller.GetListsOfLogicalPoints();
-            List<List<PointF>> pointLists = PointListGenerator.ConvertToScaledPoints(logicalPointLists, scaleX, -scaleY);
+            List<List<PointF>> pointLists = PollyFormHelper.ConvertToScaledPoints(logicalPointLists, scaleX, -scaleY);
 
             using (Pen graphPen = new Pen(this.graphColor, 2))
             {

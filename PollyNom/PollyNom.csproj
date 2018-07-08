@@ -73,6 +73,7 @@
     <Compile Include="PollyForm.Designer.cs">
       <DependentUpon>PollyForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="PollyFormHelper.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="PollyForm.resx">

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+
 using PollyNom.BusinessLogic;
 using PollyNom.BusinessLogic.Dots;
 

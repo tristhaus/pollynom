@@ -1,4 +1,5 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using PollyNom;
 using PollyNom.BusinessLogic;
 using PollyNom.BusinessLogic.Expressions;
 using System.Collections.Generic;
@@ -17,7 +18,7 @@ namespace PollyNomTest
             PointListGenerator pointList = new PointListGenerator(constant, -1.0, 1.0, 1000.0);
 
             // Act
-            List<List<PointF>> result = PointListGenerator.ConvertToScaledPoints(pointList.ObtainListsOfLogicalsPoints());
+            List<List<PointF>> result = PollyFormHelper.ConvertToScaledPoints(pointList.ObtainListsOfLogicalsPoints());
 
             // Assert
             Assert.AreEqual(1, result.Count);
@@ -33,7 +34,7 @@ namespace PollyNomTest
             PointListGenerator pointList = new PointListGenerator(constant, -1.0, 1.0, 1000.0);
 
             // Act
-            List<List<PointF>> result = PointListGenerator.ConvertToScaledPoints(pointList.ObtainListsOfLogicalsPoints(), 0.5f, 2.0f);
+            List<List<PointF>> result = PollyFormHelper.ConvertToScaledPoints(pointList.ObtainListsOfLogicalsPoints(), 0.5f, 2.0f);
 
             // Assert
             Assert.AreEqual(1, result.Count);

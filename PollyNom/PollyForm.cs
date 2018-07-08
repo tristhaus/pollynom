@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Windows.Forms;
 using System.Drawing;
+using System.Windows.Forms;
 
 using PollyNom.Controller;
 using PollyNom.BusinessLogic;
@@ -55,6 +55,23 @@ namespace PollyNom
         {
             this.ReadAndDelegate();
             this.Refresh();
+        }
+
+        /// <summary>
+        /// Handles a key press in the input text box
+        /// by filtering out the enter key, which simulates
+        /// a button press on <c>Calc!</c>.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void inputBox_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (e.KeyChar == (Char)Keys.Enter)
+            {
+                this.ReadAndDelegate();
+                this.Refresh();
+                e.Handled = true;
+            }
         }
 
         /// <summary>
@@ -203,20 +220,26 @@ namespace PollyNom
         }
 
         /// <summary>
-        /// Handles a key press in the input text box
-        /// by filtering out the enter key, which simulates
-        /// a button press on <c>Calc!</c>.
+        /// Handles the begin of a resizing on <see cref="PollyForm"/>
+        /// by hiding the coordinate system.
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void inputBox_KeyPress(object sender, KeyPressEventArgs e)
+        /// <param name="sender">?</param>
+        /// <param name="e">?</param>
+        private void PollyForm_ResizeBegin(object sender, EventArgs e)
         {
-            if (e.KeyChar == (Char)Keys.Enter)
-            {
-                this.ReadAndDelegate();
-                this.Refresh();
-                e.Handled = true;
-            }
+            this.graphArea.Hide();
+        }
+
+        /// <summary>
+        /// Handles the end of a resizing on <see cref="PollyForm"/>
+        /// by updating and showing the coordinate system.
+        /// </summary>
+        /// <param name="sender">?</param>
+        /// <param name="e">?</param>
+        private void PollyForm_ResizeEnd(object sender, EventArgs e)
+        {
+            this.graphArea.Show();
+            this.Refresh();
         }
 
         /// <summary>
@@ -243,29 +266,6 @@ namespace PollyNom
                 this.graphArea.Left = toDistribute / 2;
                 this.graphArea.Top = verticalOffset;
             }
-        }
-
-        /// <summary>
-        /// Handles the begin of a resizing on <see cref="PollyForm"/>
-        /// by hiding the coordinate system.
-        /// </summary>
-        /// <param name="sender">?</param>
-        /// <param name="e">?</param>
-        private void PollyForm_ResizeBegin(object sender, EventArgs e)
-        {
-            this.graphArea.Hide();
-        }
-
-        /// <summary>
-        /// Handles the end of a resizing on <see cref="PollyForm"/>
-        /// by updating and showing the coordinate system.
-        /// </summary>
-        /// <param name="sender">?</param>
-        /// <param name="e">?</param>
-        private void PollyForm_ResizeEnd(object sender, EventArgs e)
-        {
-            this.graphArea.Show();
-            this.Refresh();
         }
     }
 }

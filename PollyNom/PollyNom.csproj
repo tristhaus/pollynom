@@ -67,16 +67,16 @@
     <Compile Include="Controller\DrawDotKind.cs" />
     <Compile Include="Controller\IDrawDot.cs" />
     <Compile Include="Controller\PollyController.cs" />
-    <Compile Include="PollyForm.cs">
+    <Compile Include="View\PollyForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="PollyForm.Designer.cs">
+    <Compile Include="View\PollyForm.Designer.cs">
       <DependentUpon>PollyForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="PollyFormHelper.cs" />
+    <Compile Include="View\PollyFormHelper.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="PollyForm.resx">
+    <EmbeddedResource Include="View\PollyForm.resx">
       <DependentUpon>PollyForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">

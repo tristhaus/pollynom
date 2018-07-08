@@ -6,7 +6,7 @@ using System.Windows.Forms;
 using PollyNom.Controller;
 using PollyNom.BusinessLogic;
 
-namespace PollyNom
+namespace PollyNom.View
 {
     public partial class PollyForm : Form
     {

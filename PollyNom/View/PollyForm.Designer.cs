@@ -1,4 +1,4 @@
-﻿namespace PollyNom
+﻿namespace PollyNom.View
 {
     partial class PollyForm
     {

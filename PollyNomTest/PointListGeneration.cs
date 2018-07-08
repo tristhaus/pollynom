@@ -1,9 +1,10 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using PollyNom;
-using PollyNom.BusinessLogic;
-using PollyNom.BusinessLogic.Expressions;
 using System.Collections.Generic;
 using System.Drawing;
+
+using PollyNom.BusinessLogic;
+using PollyNom.BusinessLogic.Expressions;
+using PollyNom.View;
 
 namespace PollyNomTest
 {

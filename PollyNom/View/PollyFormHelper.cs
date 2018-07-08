@@ -4,7 +4,7 @@ using System.Drawing;
 
 using PollyNom.BusinessLogic;
 
-namespace PollyNom
+namespace PollyNom.View
 {
     public static class PollyFormHelper
     {

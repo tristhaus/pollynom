@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace PollyNom
+namespace PollyNom.BusinessLogic
 {
     /// <summary>
     /// Represents a point using implied logical business units.

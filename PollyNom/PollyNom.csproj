@@ -62,6 +62,7 @@
     <Compile Include="BusinessLogic\Parser.cs" />
     <Compile Include="BusinessLogic\PointListGenerator.cs" />
     <Compile Include="BusinessLogic\PointLogical.cs" />
+    <Compile Include="BusinessLogic\ScoreCalculator.cs" />
     <Compile Include="Controller\CoordinateSystemInfo.cs" />
     <Compile Include="Controller\DrawDot.cs" />
     <Compile Include="Controller\DrawDotKind.cs" />

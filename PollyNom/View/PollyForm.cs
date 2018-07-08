@@ -11,6 +11,11 @@ namespace PollyNom.View
     public partial class PollyForm : Form
     {
         /// <summary>
+        /// To be used in the title bar.
+        /// </summary>
+        private const string titlePrefix = "PollyNom - Score: ";
+
+        /// <summary>
         /// Controller providing access to data and accepting commands.
         /// </summary>
         private PollyController controller;
@@ -89,6 +94,13 @@ namespace PollyNom.View
         /// <param name="e">?</param>
         private void userControl1_Paint(object sender, PaintEventArgs e)
         {
+            DrawContents(e);
+
+            base.OnPaint(e);
+        }
+
+        private void DrawContents(PaintEventArgs e)
+        {
             Int32 workingWidth = this.graphArea.Width;
             Int32 workingHeight = this.graphArea.Height;
 
@@ -99,23 +111,21 @@ namespace PollyNom.View
 
             Graphics g = e.Graphics;
 
+            this.UpdateWindowTitle();
+
             this.DrawCoordinateSystem(g, workingWidth, workingHeight);
 
-            List<ListPointLogical> logicalPointLists = null;
+            this.DrawGraph(g, scaleX, scaleY);
 
-            logicalPointLists = this.controller.GetListsOfLogicalPoints();
-            List<List<PointF>> pointLists = PollyFormHelper.ConvertToScaledPoints(logicalPointLists, scaleX, -scaleY);
+            this.DrawDots(g, scaleX, scaleY);
+        }
 
-            using (Pen graphPen = new Pen(this.graphColor, 2))
-            {
-                pointLists
-                    .FindAll(pointList => pointList.Count > 1)
-                    .ForEach(nonEmptyPointList => g.DrawCurve(graphPen, nonEmptyPointList.ToArray()));
-            }
-
-            this.DrawDots(g, logicalPointLists, scaleX, scaleY);
-
-            base.OnPaint(e);
+        /// <summary>
+        /// Updates the window title with the current score.
+        /// </summary>
+        private void UpdateWindowTitle()
+        {
+            this.Text = PollyForm.titlePrefix + $"{this.controller.Score}";
         }
 
         /// <summary>
@@ -182,12 +192,33 @@ namespace PollyNom.View
         }
 
         /// <summary>
+        /// Draw the graph on the <see cref="Graphics"/> <paramref name="g"/>.
+        /// </summary>
+        /// <param name="g">The graphics to be drawn on.</param>
+        /// <param name="scaleX">Horizontal scaling factor.</param>
+        /// <param name="scaleY">Vertical scaling factor.</param>
+        private void DrawGraph(Graphics g, float scaleX, float scaleY)
+        {
+            List<ListPointLogical> logicalPointLists = null;
+
+            logicalPointLists = this.controller.GetListsOfLogicalPoints();
+            List<List<PointF>> pointLists = PollyFormHelper.ConvertToScaledPoints(logicalPointLists, scaleX, -scaleY);
+
+            using (Pen graphPen = new Pen(this.graphColor, 2))
+            {
+                pointLists
+                    .FindAll(pointList => pointList.Count > 1)
+                    .ForEach(nonEmptyPointList => g.DrawCurve(graphPen, nonEmptyPointList.ToArray()));
+            }
+        }
+
+        /// <summary>
         /// Draw the dots on the <see cref="Graphics"/> <paramref name="g"/>.
         /// </summary>
         /// <param name="g">The graphics to be drawn on.</param>
         /// <param name="scaleX">Horizontal scaling factor.</param>
         /// <param name="scaleY">Vertical scaling factor.</param>
-        private void DrawDots(Graphics g, List<ListPointLogical> logicalPointLists, float scaleX, float scaleY)
+        private void DrawDots(Graphics g, float scaleX, float scaleY)
         {
             using (Brush goodDotAsleepBrush = new SolidBrush(this.goodDotAsleepColor))
             using (Brush goodDotHitBrush = new SolidBrush(this.goodDotHitColor))

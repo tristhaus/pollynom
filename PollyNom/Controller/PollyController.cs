@@ -50,7 +50,7 @@ namespace PollyNom.Controller
         /// <summary>
         /// The current score.
         /// </summary>
-        private int score;
+        private int score = 0;
 
         /// <summary>
         /// Creates a new instance of the <see cref="PollyController"/> class.

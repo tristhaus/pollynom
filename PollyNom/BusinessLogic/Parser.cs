@@ -11,6 +11,18 @@ namespace PollyNom.BusinessLogic
     /// </summary>
     public class Parser
     {
+        private readonly InvalidExpression invalidExpressionSample = new InvalidExpression();
+
+        /// <summary>
+        /// Tests the expression for parseability.
+        /// </summary>
+        /// <param name="S">The string to be tested.</param>
+        /// <returns><c>true</c> if string is parseable.</returns>
+        public bool IsParseable(string S)
+        {
+            return !this.Parse(S).Equals(this.invalidExpressionSample);
+        }
+
         /// <summary>
         /// The parsing operation from string to <see cref="IExpression"/>.
         /// </summary>
@@ -21,7 +33,7 @@ namespace PollyNom.BusinessLogic
             S = this.PrepareString(S);
             if (!ValidateInput(S))
             {
-                return new InvalidExpression();
+                return this.invalidExpressionSample;
             }
 
             return this.InternalParse(S);
@@ -92,9 +104,9 @@ namespace PollyNom.BusinessLogic
                 string subToken = S.Substring(1, S.Length - 1);
                 Add.AddExpression.Signs sign = S[0] == '+' ? Add.AddExpression.Signs.Plus : Add.AddExpression.Signs.Minus;
                 IExpression bracketedExpression = this.InternalParse(subToken);
-                if (bracketedExpression.Equals(new InvalidExpression()))
+                if (bracketedExpression.Equals(this.invalidExpressionSample))
                 {
-                    return new InvalidExpression();
+                    return this.invalidExpressionSample;
                 }
 
                 return new Add(new Add.AddExpression(sign, bracketedExpression));
@@ -114,9 +126,9 @@ namespace PollyNom.BusinessLogic
                     if(op == "+" || op == "-")
                     {
                         var expression = this.InternalParse(token);
-                        if (expression.Equals(new InvalidExpression()))
+                        if (expression.Equals(this.invalidExpressionSample))
                         {
-                            return new InvalidExpression();
+                            return this.invalidExpressionSample;
                         }
                         targetList.Add(new Add.AddExpression(sign, expression));
                         token = tokens[0];
@@ -138,9 +150,9 @@ namespace PollyNom.BusinessLogic
                 if (token != string.Empty)
                 {
                     var expression = this.InternalParse(token);
-                    if (expression.Equals(new InvalidExpression()))
+                    if (expression.Equals(this.invalidExpressionSample))
                     {
-                        return new InvalidExpression();
+                        return this.invalidExpressionSample;
                     }
                     targetList.Add(new Add.AddExpression(sign, expression));
                     token = string.Empty;
@@ -163,9 +175,9 @@ namespace PollyNom.BusinessLogic
                     if (op == "*" || op == "/")
                     {
                         var expression = this.InternalParse(token);
-                        if (expression.Equals(new InvalidExpression()))
+                        if (expression.Equals(this.invalidExpressionSample))
                         {
-                            return new InvalidExpression();
+                            return this.invalidExpressionSample;
                         }
                         targetList.Add(new Multiply.MultiplyExpression(sign, expression));
                         token = tokens[0];
@@ -187,9 +199,9 @@ namespace PollyNom.BusinessLogic
                 if (token != string.Empty)
                 {
                     var expression = this.InternalParse(token);
-                    if(expression.Equals(new InvalidExpression()))
+                    if(expression.Equals(this.invalidExpressionSample))
                     {
-                        return new InvalidExpression();
+                        return this.invalidExpressionSample;
                     }
                     targetList.Add(new Multiply.MultiplyExpression(sign, expression));
                     token = string.Empty;
@@ -203,15 +215,15 @@ namespace PollyNom.BusinessLogic
             {
                 if (ops.Contains("*") || ops.Contains("/") || ops.Contains("+") || ops.Contains("-"))
                 {
-                    return new InvalidExpression();
+                    return this.invalidExpressionSample;
                 }
 
                 string baseToken = tokens[0];
                 tokens.RemoveAt(0);
                 IExpression baseExpression = this.InternalParse(baseToken);
-                if (baseExpression.Equals(new InvalidExpression()))
+                if (baseExpression.Equals(this.invalidExpressionSample))
                 {
-                    return new InvalidExpression();
+                    return this.invalidExpressionSample;
                 }
 
                 string exponentToken = tokens[0];
@@ -223,15 +235,15 @@ namespace PollyNom.BusinessLogic
                 }
 
                 IExpression exponentExpression = this.InternalParse(exponentToken);
-                if (exponentExpression.Equals(new InvalidExpression()))
+                if (exponentExpression.Equals(this.invalidExpressionSample))
                 {
-                    return new InvalidExpression();
+                    return this.invalidExpressionSample;
                 }
 
                 return new Power(baseExpression, exponentExpression);
             }
 
-            return new InvalidExpression();
+            return this.invalidExpressionSample;
         }
 
         /// <summary>
@@ -257,7 +269,7 @@ namespace PollyNom.BusinessLogic
                 return new Constant(result);
             }
 
-            return new InvalidExpression();
+            return this.invalidExpressionSample;
         }
 
         /// <summary>

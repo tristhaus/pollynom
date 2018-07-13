@@ -64,12 +64,22 @@ namespace PollyNom.Controller
         }
 
         /// <summary>
+        /// Tests the expression for parseability.
+        /// </summary>
+        /// <param name="textRepresentation">The textual representation of the expression.</param>
+        /// <returns><c>true</c> if string is parseable.</returns>
+        public bool TestExpression(string textRepresentation)
+        {
+            return this.parser.IsParseable(textRepresentation);
+        }
+
+        /// <summary>
         /// Updates the expression and triggers the updating of the resulting data.
         /// </summary>
         /// <param name="textRepresentation">The textual representation of the expression.</param>
         public void UpdateExpression(string textRepresentation)
         {
-            this.expression = new Parser().Parse(textRepresentation);
+            this.expression = this.parser.Parse(textRepresentation);
             this.UpdateData();
         }
 

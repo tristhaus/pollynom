@@ -578,5 +578,37 @@ namespace PollyNomTest
             // Assert
             Assert.IsTrue(exprExpected.Equals(exprParsed));
         }
+
+        [TestMethod]
+        public void SimpleParseabilityTests()
+        {
+            // Arrange
+            Parser parser = new Parser();
+            string x = "X";
+            string xx = "xx";
+            string y = "Y";
+            string number = " 030.500 ";
+            string invalidNumber = "030.50.0";
+            string bracedX = "(X)";
+            string doubleBracedX = "((X))";
+
+            // Act
+            bool resultX = parser.IsParseable(x);
+            bool resultXX = parser.IsParseable(xx);
+            bool resultInvalid = parser.IsParseable(y);
+            bool resultNumber = parser.IsParseable(number);
+            bool resultInvalidNumber = parser.IsParseable(invalidNumber);
+            bool resultBracedX = parser.IsParseable(bracedX);
+            bool resultDoubleBracedX = parser.IsParseable(doubleBracedX);
+
+            // Assert
+            Assert.IsTrue(resultX);
+            Assert.IsFalse(resultXX);
+            Assert.IsFalse(resultInvalid);
+            Assert.IsTrue(resultNumber);
+            Assert.IsFalse(resultInvalidNumber);
+            Assert.IsTrue(resultBracedX);
+            Assert.IsTrue(resultDoubleBracedX);
+        }
     }
 }

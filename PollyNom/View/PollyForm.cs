@@ -63,6 +63,25 @@ namespace PollyNom.View
         }
 
         /// <summary>
+        /// Handles the change of the input text box by evaluating
+        /// whether the text is parseable and changing the text color
+        /// accordingly.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void inputBox_TextChanged(object sender, EventArgs e)
+        {
+            bool isParseable = this.controller.TestExpression(inputBox.Text);
+            var oldColor = inputBox.ForeColor;
+            inputBox.ForeColor = isParseable ? SystemColors.WindowText : Color.Red;
+            var newColor = inputBox.ForeColor;
+            if (!oldColor.Equals(newColor))
+            {
+                this.Refresh();
+            }
+        }
+
+        /// <summary>
         /// Handles a key press in the input text box
         /// by filtering out the enter key, which simulates
         /// a button press on <c>Calc!</c>.
@@ -71,11 +90,12 @@ namespace PollyNom.View
         /// <param name="e"></param>
         private void inputBox_KeyPress(object sender, KeyPressEventArgs e)
         {
-            if (e.KeyChar == (Char)Keys.Enter)
+            if (e.KeyChar == (Char)Keys.Enter && this.controller.TestExpression(this.inputBox.Text))
             {
                 this.ReadAndDelegate();
                 this.Refresh();
                 e.Handled = true;
+                return;
             }
         }
 

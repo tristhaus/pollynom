@@ -7,16 +7,16 @@ namespace PollyNom.Controller
         private readonly double xCoordinate;
         private readonly double yCoordinate;
         private readonly double radius;
-        private readonly bool isHit;
         private readonly DrawDotKind kind;
 
-        public DrawDot(double xCoordinate, double yCoordinate, double radius, bool isHit, DrawDotKind kind)
+        public DrawDot(double xCoordinate, double yCoordinate, double radius, DrawDotKind kind)
         {
             this.xCoordinate = xCoordinate;
             this.yCoordinate = yCoordinate;
             this.radius = radius;
-            this.isHit = isHit;
             this.kind = kind;
+
+            this.IsHit = false;
         }
 
         public Tuple<double, double> Position
@@ -35,13 +35,7 @@ namespace PollyNom.Controller
             }
         }
 
-        public bool IsHit
-        {
-            get
-            {
-                return this.isHit;
-            }
-        }
+        public bool IsHit { get; set; }
 
         public DrawDotKind Kind
         {

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 
 using PollyNom.BusinessLogic;
 using PollyNom.BusinessLogic.Dots;
@@ -30,12 +31,12 @@ namespace PollyNom.Controller
         /// <summary>
         /// The expression currently active.
         /// </summary>
-        private IExpression expression;
+        private List<IExpression> expressions;
 
         /// <summary>
         /// The lists of points.
         /// </summary>
-        private List<ListPointLogical> points = null;
+        private List<List<ListPointLogical>> points;
 
         /// <summary>
         /// The list of logical dots.
@@ -55,10 +56,13 @@ namespace PollyNom.Controller
         /// <summary>
         /// Creates a new instance of the <see cref="PollyController"/> class.
         /// </summary>
-        public PollyController()
+        public PollyController(List<IDot> dots = null)
         {
+            this.expressions = new List<IExpression>(3);
+            this.points = new List<List<ListPointLogical>>(3);
+            this.dots = dots ?? new GoodDotsGenerator().Generate();
+
             this.parser = new Parser();
-            this.dots = new GoodDotsGenerator().Generate();
 
             this.UpdateData();
         }
@@ -79,7 +83,19 @@ namespace PollyNom.Controller
         /// <param name="textRepresentation">The textual representation of the expression.</param>
         public void UpdateExpression(string textRepresentation)
         {
-            this.expression = this.parser.Parse(textRepresentation);
+            if (string.IsNullOrWhiteSpace(textRepresentation))
+            {
+                if (expressions.Count > 0)
+                {
+                    this.expressions.RemoveAt(this.expressions.Count - 1);
+                    this.points.RemoveAt(this.points.Count - 1);
+                }
+            }
+            else
+            {
+                this.expressions.Add(this.parser.Parse(textRepresentation));
+            }
+
             this.UpdateData();
         }
 
@@ -107,7 +123,15 @@ namespace PollyNom.Controller
         /// <returns>A list of point list, in terms of business logic units.</returns>
         public List<ListPointLogical> GetListsOfLogicalPoints()
         {
-            return points ?? new List<ListPointLogical>(0);
+            if(points.Count > 0)
+            {
+               return points[0]; // tbr
+            }
+            else
+            {
+                return new List<ListPointLogical>(0);
+            }
+
         }
 
         /// <summary>
@@ -141,10 +165,10 @@ namespace PollyNom.Controller
 
         private void UpdateGraph()
         {
-            if (this.expression != null)
+            if (this.expressions.Count > 0)
             {
-                PointListGenerator pointListGenerator = new PointListGenerator(this.expression, PollyController.startX, PollyController.endX, PollyController.limits);
-                this.points = pointListGenerator.ObtainListsOfLogicalsPoints();
+                PointListGenerator pointListGenerator = new PointListGenerator(this.expressions[this.expressions.Count - 1], PollyController.startX, PollyController.endX, PollyController.limits);
+                this.points.Add(pointListGenerator.ObtainListsOfLogicalsPoints());
             }
         }
 
@@ -153,20 +177,28 @@ namespace PollyNom.Controller
             this.drawDots = new List<IDrawDot>(this.dots.Count);
             List<int> numbersOfHits = new List<int>(1);
 
-            int countOfHits = 0;
-            foreach (var dot in this.dots)
+            this.dots.ForEach(x => drawDots.Add(new DrawDot(x.Position.Item1, x.Position.Item2, x.Radius, x.GetType() == typeof(GoodDot) ? DrawDotKind.GoodDot : DrawDotKind.BadDot)));
+
+            for (int expressionIndex = 0; expressionIndex < this.expressions.Count; ++expressionIndex)
             {
-                bool isHit = dot.IsHit(this.expression ?? new BusinessLogic.Expressions.InvalidExpression(), this.points);
-                DrawDotKind kind = dot.GetType() == typeof(GoodDot) ? DrawDotKind.GoodDot : DrawDotKind.BadDot;
-                drawDots.Add(new DrawDot(dot.Position.Item1, dot.Position.Item2, dot.Radius, isHit, kind));
+                var expression = this.expressions[expressionIndex];
 
-                if(isHit)
+                int countOfHits = 0;
+                for (int dotIndex = 0; dotIndex < this.drawDots.Count; ++dotIndex)
                 {
-                    ++countOfHits;
+                    DrawDot drawDot = this.drawDots[dotIndex] as DrawDot;
+                    if(!drawDot.IsHit)
+                    {
+                        bool isHit = this.dots[dotIndex].IsHit(expression, this.points[expressionIndex]);
+                        if (isHit)
+                        {
+                            ++countOfHits;
+                            drawDot.IsHit = true;
+                        }
+                    }
                 }
+                numbersOfHits.Add(countOfHits);
             }
-
-            numbersOfHits.Add(countOfHits);
 
             this.score = ScoreCalculator.CalculateScore(numbersOfHits);
         }

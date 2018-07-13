@@ -5,7 +5,7 @@ using PollyNomTest.Helper;
 namespace PollyNomTest
 {
     [TestClass]
-    public class Printing
+    public class PrintingTest
     {
         [TestMethod]
         public void Print01()

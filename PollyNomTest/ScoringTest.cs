@@ -6,7 +6,7 @@ using PollyNom.BusinessLogic;
 namespace PollyNomTest
 {
     [TestClass]
-    public class Scoring
+    public class ScoringTest
     {
         [TestMethod]
         public void SimpleCase()

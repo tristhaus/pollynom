@@ -9,7 +9,7 @@ using System.Collections.Generic;
 namespace PollyNomTest
 {
     [TestClass]
-    public class DotHitting
+    public class DotHittingTest
     {
         private const double startX = -1.0;
         private const double endX = 1.0;
@@ -80,7 +80,7 @@ namespace PollyNomTest
 
             IExpression plainOneOverX = new Multiply(new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Multiply, new Constant(1.0)), new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Divide, new BaseX()));
 
-            PointListGenerator pointListGenerator = new PointListGenerator(plainOneOverX, DotHitting.startX, DotHitting.endX, DotHitting.limits);
+            PointListGenerator pointListGenerator = new PointListGenerator(plainOneOverX, DotHittingTest.startX, DotHittingTest.endX, DotHittingTest.limits);
 
             List<ListPointLogical> logicalPointLists = pointListGenerator.ObtainListsOfLogicalsPoints();
 
@@ -107,7 +107,7 @@ namespace PollyNomTest
                 new Add.AddExpression(Add.AddExpression.Signs.Minus, new Constant(10.0))
                 );
 
-            PointListGenerator pointListGenerator = new PointListGenerator(OneOverXMinus10, DotHitting.startX, DotHitting.endX, DotHitting.limits);
+            PointListGenerator pointListGenerator = new PointListGenerator(OneOverXMinus10, DotHittingTest.startX, DotHittingTest.endX, DotHittingTest.limits);
 
             List<ListPointLogical> logicalPointLists = pointListGenerator.ObtainListsOfLogicalsPoints();
 

@@ -53,18 +53,18 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="DotHitting.cs" />
-    <Compile Include="Equality.cs" />
-    <Compile Include="Evaluating.cs" />
+    <Compile Include="DotHittingTest.cs" />
+    <Compile Include="EqualityTest.cs" />
+    <Compile Include="EvaluatingTest.cs" />
     <Compile Include="HelperTests.cs" />
     <Compile Include="Helper\DoubleComparer.cs" />
     <Compile Include="Helper\ExpressionPrinter.cs" />
-    <Compile Include="PointListGeneration.cs" />
-    <Compile Include="Printing.cs" />
+    <Compile Include="PointListGenerationTest.cs" />
+    <Compile Include="PrintingTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Helper\TestExpressionBuilder.cs" />
     <Compile Include="ParserTest.cs" />
-    <Compile Include="Scoring.cs" />
+    <Compile Include="ScoringTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\PollyNom\PollyNom.csproj">

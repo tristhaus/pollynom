@@ -7,7 +7,7 @@ namespace PollyNomTest
     /// Collects tests for equality of instances of <see cref="IExpression"/>.
     /// </summary>
     [TestClass]
-    public class Equality
+    public class EqualityTest
     {
         /// <summary>
         /// Tests about X and invalid expressions, using the method.

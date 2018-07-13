@@ -9,7 +9,7 @@ using PollyNom.View;
 namespace PollyNomTest
 {
     [TestClass]
-    public class PointListGeneration
+    public class PointListGenerationTest
     {
         [TestMethod]
         public void Constant_HasOneListAndTheCorrectValue()

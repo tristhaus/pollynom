@@ -5,11 +5,17 @@ using System.Windows.Forms;
 
 using PollyNom.Controller;
 using PollyNom.BusinessLogic;
+using System.Linq;
 
 namespace PollyNom.View
 {
     public partial class PollyForm : Form
     {
+        /// <summary>
+        /// The maximum number of graphs supported by this visualizer.
+        /// </summary>
+        private const int maxGraphCount = 5;
+
         /// <summary>
         /// To be used in the title bar.
         /// </summary>
@@ -28,7 +34,7 @@ namespace PollyNom.View
         /// <summary>
         /// Color chosen for the graph of the function.
         /// </summary>
-        private readonly Color graphColor = Color.Black;
+        private readonly Color[] graphColors = { Color.Black, Color.Blue, Color.Green, Color.Pink, Color.Brown };
 
         /// <summary>
         /// Color chosen for a good dot that has not been hit.
@@ -90,7 +96,7 @@ namespace PollyNom.View
         /// <param name="e"></param>
         private void inputBox_KeyPress(object sender, KeyPressEventArgs e)
         {
-            if (e.KeyChar == (Char)Keys.Enter && this.controller.TestExpression(this.inputBox.Text))
+            if (e.KeyChar == (Char)Keys.Enter && (this.controller.TestExpression(this.inputBox.Text) || string.IsNullOrWhiteSpace(this.inputBox.Text)))
             {
                 this.ReadAndDelegate();
                 this.Refresh();
@@ -104,7 +110,10 @@ namespace PollyNom.View
         /// </summary>
         private void ReadAndDelegate()
         {
-            this.controller.UpdateExpression(inputBox.Text);
+            if ((!string.IsNullOrWhiteSpace(inputBox.Text) && this.controller.ExpressionCount < 5) || string.IsNullOrWhiteSpace(inputBox.Text))
+            {
+                this.controller.UpdateExpression(inputBox.Text);
+            }
         }
 
         /// <summary>
@@ -135,7 +144,7 @@ namespace PollyNom.View
 
             this.DrawCoordinateSystem(g, workingWidth, workingHeight);
 
-            this.DrawGraph(g, scaleX, scaleY);
+            this.DrawGraphs(g, scaleX, scaleY);
 
             this.DrawDots(g, scaleX, scaleY);
         }
@@ -217,18 +226,19 @@ namespace PollyNom.View
         /// <param name="g">The graphics to be drawn on.</param>
         /// <param name="scaleX">Horizontal scaling factor.</param>
         /// <param name="scaleY">Vertical scaling factor.</param>
-        private void DrawGraph(Graphics g, float scaleX, float scaleY)
+        private void DrawGraphs(Graphics g, float scaleX, float scaleY)
         {
-            List<ListPointLogical> logicalPointLists = null;
-
-            logicalPointLists = this.controller.GetListsOfLogicalPoints();
-            List<List<PointF>> pointLists = PollyFormHelper.ConvertToScaledPoints(logicalPointLists, scaleX, -scaleY);
-
-            using (Pen graphPen = new Pen(this.graphColor, 2))
+            for (int index = 0; index < this.controller.ExpressionCount; index++)
             {
-                pointLists
-                    .FindAll(pointList => pointList.Count > 1)
-                    .ForEach(nonEmptyPointList => g.DrawCurve(graphPen, nonEmptyPointList.ToArray()));
+                List<ListPointLogical> logicalPointLists = this.controller.GetListsOfLogicalPointsByIndex(index);
+                List<List<PointF>> pointLists = PollyFormHelper.ConvertToScaledPoints(logicalPointLists, scaleX, -scaleY);
+
+                using (Pen graphPen = new Pen(this.graphColors[index], 2))
+                {
+                    pointLists
+                        .FindAll(pointList => pointList.Count > 1)
+                        .ForEach(nonEmptyPointList => g.DrawCurve(graphPen, nonEmptyPointList.ToArray()));
+                }
             }
         }
 
@@ -265,9 +275,11 @@ namespace PollyNom.View
         /// <param name="e">?</param>
         private void Form1_Resize(object sender, EventArgs e)
         {
-            this.graphArea.Hide();
-            this.resizeClient();
-            this.graphArea.Show();
+            this.graphPanel.Hide();
+            this.inputPanel.Hide();
+            this.resizeClients();
+            this.graphPanel.Show();
+            this.inputPanel.Show();
         }
 
         /// <summary>
@@ -278,7 +290,8 @@ namespace PollyNom.View
         /// <param name="e">?</param>
         private void PollyForm_ResizeBegin(object sender, EventArgs e)
         {
-            this.graphArea.Hide();
+            this.graphPanel.Hide();
+            this.inputPanel.Hide();
         }
 
         /// <summary>
@@ -289,34 +302,40 @@ namespace PollyNom.View
         /// <param name="e">?</param>
         private void PollyForm_ResizeEnd(object sender, EventArgs e)
         {
-            this.graphArea.Show();
+            this.graphPanel.Show();
+            this.inputPanel.Show();
             this.Refresh();
         }
 
         /// <summary>
         /// Resizes the graph area according to <see cref="PollyForm"/> dimensions.
         /// </summary>
-        private void resizeClient()
+        private void resizeClients()
         {
             // hail mary and resize
             var rect = this.ClientRectangle;
-            var verticalOffset = this.menuStrip.Height;
+            var verticalOffset = this.inputPanel.Height;
             rect.Size = new Size(rect.Width, rect.Height - verticalOffset);
 
             if (rect.Height >= rect.Width)
             {
-                this.graphArea.Size = new Size(rect.Width, rect.Width);
+                this.graphPanel.Size = new Size(rect.Width, rect.Width);
                 var toDistribute = rect.Height - rect.Width;
-                this.graphArea.Left = 0;
-                this.graphArea.Top = verticalOffset + toDistribute / 2;
+                this.graphPanel.Left = 0;
+                this.graphPanel.Top = toDistribute / 2;
             }
             else
             {
-                this.graphArea.Size = new Size(rect.Height, rect.Height);
+                this.graphPanel.Size = new Size(rect.Height, rect.Height);
                 var toDistribute = rect.Width - rect.Height;
-                this.graphArea.Left = toDistribute / 2;
-                this.graphArea.Top = verticalOffset;
+                this.graphPanel.Left = toDistribute / 2;
+                this.graphPanel.Top = 0;
             }
+
+            // resize the input box 
+            int currWidth = this.inputBox.Width;
+            int x = toolStrip1.Items.OfType<ToolStripItem>().Sum(t => t.Width);
+            this.inputBox.Size = new Size(toolStrip1.Width - x + currWidth - 12, this.inputBox.Height);
         }
     }
 }

@@ -58,8 +58,8 @@ namespace PollyNom.Controller
         /// </summary>
         public PollyController(List<IDot> dots = null)
         {
-            this.expressions = new List<IExpression>(3);
-            this.points = new List<List<ListPointLogical>>(3);
+            this.expressions = new List<IExpression>(5);
+            this.points = new List<List<ListPointLogical>>(5);
             this.dots = dots ?? new GoodDotsGenerator().Generate();
 
             this.parser = new Parser();
@@ -88,7 +88,6 @@ namespace PollyNom.Controller
                 if (expressions.Count > 0)
                 {
                     this.expressions.RemoveAt(this.expressions.Count - 1);
-                    this.points.RemoveAt(this.points.Count - 1);
                 }
             }
             else
@@ -121,11 +120,11 @@ namespace PollyNom.Controller
         /// Get the lists of plottable points in terms of business logic units.
         /// </summary>
         /// <returns>A list of point list, in terms of business logic units.</returns>
-        public List<ListPointLogical> GetListsOfLogicalPoints()
+        public List<ListPointLogical> GetListsOfLogicalPointsByIndex(int index)
         {
-            if(points.Count > 0)
+            if(points.Count > index)
             {
-               return points[0]; // tbr
+               return points[index];
             }
             else
             {
@@ -155,19 +154,31 @@ namespace PollyNom.Controller
         }
 
         /// <summary>
+        /// The number of expressions currently handled by this controller.
+        /// </summary>
+        public int ExpressionCount
+        {
+            get
+            {
+                return this.expressions.Count;
+            }
+        }
+
+        /// <summary>
         /// Drives the updating process by delegating to other private methods.
         /// </summary>
         private void UpdateData()
         {
-            UpdateGraph();
+            UpdateGraphs();
             UpdateDotsAndScore();
         }
 
-        private void UpdateGraph()
+        private void UpdateGraphs()
         {
-            if (this.expressions.Count > 0)
+            this.points = new List<List<ListPointLogical>>(this.expressions.Count);
+            foreach (var expression in this.expressions)
             {
-                PointListGenerator pointListGenerator = new PointListGenerator(this.expressions[this.expressions.Count - 1], PollyController.startX, PollyController.endX, PollyController.limits);
+                PointListGenerator pointListGenerator = new PointListGenerator(expression, PollyController.startX, PollyController.endX, PollyController.limits);
                 this.points.Add(pointListGenerator.ObtainListsOfLogicalsPoints());
             }
         }

@@ -12,13 +12,13 @@ namespace PollyNom.BusinessLogic
         /// Indicates whether a value is held by the instance.
         /// </summary>
         /// <returns><c>true</c> if a value exists.</returns>
-        bool HasValue();
+        bool HasValue { get; }
 
         /// <summary>
         /// Provides access to the value.
         /// </summary>
         /// <returns>The value held, if any.</returns>
-        T Value();
+        T Value { get; }
     }
 
     /// <summary>
@@ -40,15 +40,21 @@ namespace PollyNom.BusinessLogic
         }
 
         /// <inheritdoc />
-        public bool HasValue()
+        public bool HasValue
         {
-            return true;
+            get
+            {
+                return true;
+            }
         }
 
         /// <inheritdoc />
-        public T Value()
+        public T Value
         {
-            return t;
+            get
+            {
+                return t;
+            }
         }
     }
 
@@ -59,18 +65,24 @@ namespace PollyNom.BusinessLogic
     public class None<T> : Maybe<T>
     {
         /// <inheritdoc />
-        public bool HasValue()
+        public bool HasValue
         {
-            return false;
+            get
+            {
+                return false;
+            }
         }
 
         /// <summary>
         /// Does not provide access, but throws an exception on access.
         /// </summary>
         /// <returns>Nothing, will throw exception instead.</returns>
-        public T Value()
+        public T Value
         {
-            throw new NotImplementedException();
+            get
+            {
+                throw new NotImplementedException();
+            }
         }
     }
 }

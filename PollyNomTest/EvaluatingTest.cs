@@ -16,10 +16,10 @@ namespace PollyNomTest
 
             // Act
             var result = expr.Evaluate(0.1);
-            double number = result.HasValue() ? result.Value() : 0.0;
+            double number = result.HasValue? result.Value: 0.0;
 
             // Assert
-            Assert.IsTrue(result.HasValue());
+            Assert.IsTrue(result.HasValue);
             Assert.IsTrue(DoubleEquality.IsApproximatelyEqual(expectedValue, number));
         }
 
@@ -32,10 +32,10 @@ namespace PollyNomTest
 
             // Act
             var result = expr.Evaluate(0.1);
-            double number = result.HasValue() ? result.Value() : 0.0;
+            double number = result.HasValue? result.Value: 0.0;
 
             // Assert
-            Assert.IsTrue(result.HasValue());
+            Assert.IsTrue(result.HasValue);
             Assert.IsTrue(DoubleEquality.IsApproximatelyEqual(expectedValue, number));
         }
 
@@ -48,10 +48,10 @@ namespace PollyNomTest
 
             // Act
             var result = expr.Evaluate(0.1);
-            double number = result.HasValue() ? result.Value() : 0.0;
+            double number = result.HasValue? result.Value: 0.0;
 
             // Assert
-            Assert.IsTrue(result.HasValue());
+            Assert.IsTrue(result.HasValue);
             Assert.IsTrue(DoubleEquality.IsApproximatelyEqual(expectedValue, number));
         }
 
@@ -64,10 +64,10 @@ namespace PollyNomTest
 
             // Act
             var result = expr.Evaluate(0.1);
-            double number = result.HasValue() ? result.Value() : 0.0;
+            double number = result.HasValue? result.Value: 0.0;
 
             // Assert
-            Assert.IsTrue(result.HasValue());
+            Assert.IsTrue(result.HasValue);
             Assert.IsTrue(DoubleEquality.IsApproximatelyEqual(expectedValue, number));
         }
 
@@ -80,10 +80,10 @@ namespace PollyNomTest
 
             // Act
             var result = expr.Evaluate(0.1);
-            double number = result.HasValue() ? result.Value() : 0.0;
+            double number = result.HasValue? result.Value: 0.0;
 
             // Assert
-            Assert.IsTrue(result.HasValue());
+            Assert.IsTrue(result.HasValue);
             Assert.IsTrue(DoubleEquality.IsApproximatelyEqual(expectedValue, number));
         }
 
@@ -97,10 +97,10 @@ namespace PollyNomTest
 
             // Act
             var result = expr.Evaluate(0.1);
-            double number = result.HasValue() ? result.Value() : 0.0;
+            double number = result.HasValue? result.Value: 0.0;
 
             // Assert
-            Assert.IsTrue(result.HasValue());
+            Assert.IsTrue(result.HasValue);
             Assert.IsTrue(DoubleEquality.IsApproximatelyEqual(expectedValue, number));
         }
 
@@ -113,10 +113,10 @@ namespace PollyNomTest
 
             // Act
             var result = expr.Evaluate(0.1);
-            double number = result.HasValue() ? result.Value() : 0.0;
+            double number = result.HasValue? result.Value: 0.0;
 
             // Assert
-            Assert.IsTrue(result.HasValue());
+            Assert.IsTrue(result.HasValue);
             Assert.IsTrue(DoubleEquality.IsApproximatelyEqual(expectedValue, number));
         }
 
@@ -129,10 +129,10 @@ namespace PollyNomTest
 
             // Act
             var result = expr.Evaluate(0.1);
-            double number = result.HasValue() ? result.Value() : 0.0;
+            double number = result.HasValue? result.Value: 0.0;
 
             // Assert
-            Assert.IsTrue(result.HasValue());
+            Assert.IsTrue(result.HasValue);
             Assert.IsTrue(DoubleEquality.IsApproximatelyEqual(expectedValue, number));
         }
     }

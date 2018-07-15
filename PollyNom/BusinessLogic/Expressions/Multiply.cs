@@ -114,12 +114,12 @@ namespace PollyNom.BusinessLogic.Expressions
             foreach (var expression in this.list)
             {
                 var value = expression.Evaluate(input);
-                if (!value.HasValue() || (expression.Sign == MultiplyExpression.Signs.Divide && Math.Abs(value.Value()) < 10e-10))
+                if (!value.HasValue|| (expression.Sign == MultiplyExpression.Signs.Divide && Math.Abs(value.Value) < 10e-10))
                 {
                     return new None<Double>();
                 }
 
-                var finalValue = expression.Sign == MultiplyExpression.Signs.Multiply ? value.Value() : (1.0 / value.Value());
+                var finalValue = expression.Sign == MultiplyExpression.Signs.Multiply ? value.Value: (1.0 / value.Value);
                 if (double.IsInfinity(finalValue) || double.IsNaN(finalValue))
                 {
                     return new None<Double>();
@@ -138,12 +138,12 @@ namespace PollyNom.BusinessLogic.Expressions
             foreach (var expression in this.list)
             {
                 var value = expression.Print();
-                if (!value.HasValue())
+                if (!value.HasValue)
                 {
                     return new None<string>();
                 }
 
-                var decoratedValue = value.Value();
+                var decoratedValue = value.Value;
                 if (expression.Level == this.Level - 1)
                 {
                     decoratedValue = "(" + decoratedValue + ")";

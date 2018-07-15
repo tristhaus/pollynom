@@ -114,11 +114,11 @@ namespace PollyNom.BusinessLogic.Expressions
             foreach(var expression in this.list)
             {
                 var value = expression.Evaluate(input);
-                if (!value.HasValue())
+                if (!value.HasValue)
                 {
                     return new None<Double>();
                 }
-                sum += expression.Sign == AddExpression.Signs.Plus ? (+value.Value()) : (-value.Value());
+                sum += expression.Sign == AddExpression.Signs.Plus ? (+value.Value) : (-value.Value);
             }
 
             return new Some<double>(sum);
@@ -131,11 +131,11 @@ namespace PollyNom.BusinessLogic.Expressions
             foreach (var expression in this.list)
             {
                 var value = expression.Print();
-                if (!value.HasValue())
+                if (!value.HasValue)
                 {
                     return new None<string>();
                 }
-                s += expression.Sign == AddExpression.Signs.Plus ? "+" + value.Value() : "-" + value.Value();
+                s += expression.Sign == AddExpression.Signs.Plus ? "+" + value.Value: "-" + value.Value;
             }
 
             if(s[0] == '+')

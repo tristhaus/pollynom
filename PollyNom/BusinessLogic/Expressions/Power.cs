@@ -80,12 +80,12 @@ namespace PollyNom.BusinessLogic.Expressions
         {
             var aValue = this.basis.Evaluate(input);
             var bValue = this.exponent.Evaluate(input);
-            if (!aValue.HasValue() || !bValue.HasValue())
+            if (!aValue.HasValue|| !bValue.HasValue)
             {
                 return new None<Double>();
             }
 
-            double value = Math.Pow(aValue.Value(), bValue.Value());
+            double value = Math.Pow(aValue.Value, bValue.Value);
             if (double.IsInfinity(value) || double.IsNaN(value))
             {
                 return new None<Double>();
@@ -98,13 +98,13 @@ namespace PollyNom.BusinessLogic.Expressions
         {
             var aValue = this.basis.Print();
             var bValue = this.exponent.Print();
-            if (!aValue.HasValue() || !bValue.HasValue())
+            if (!aValue.HasValue|| !bValue.HasValue)
             {
                 return new None<string>();
             }
 
-            var aDecorated = aValue.Value();
-            var bDecorated = bValue.Value();
+            var aDecorated = aValue.Value;
+            var bDecorated = bValue.Value;
             if (!basis.IsMonadic)
             {
                 aDecorated = "(" + aDecorated + ")";

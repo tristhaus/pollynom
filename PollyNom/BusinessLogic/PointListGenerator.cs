@@ -85,9 +85,9 @@ namespace PollyNom.BusinessLogic
                 var yMaybe = this.expression.Evaluate(Convert.ToDouble(x));
 
                 bool interrupt = true;
-                if (yMaybe.HasValue())
+                if (yMaybe.HasValue)
                 {
-                    y = yMaybe.Value();
+                    y = yMaybe.Value;
 
                     if (hadFirstPoint)
                     {
@@ -133,7 +133,7 @@ namespace PollyNom.BusinessLogic
                     }
                 }
 
-                if (yMaybe.HasValue() && !hadFirstPoint)
+                if (yMaybe.HasValue&& !hadFirstPoint)
                 {
                     hadFirstPoint = true;
                 }

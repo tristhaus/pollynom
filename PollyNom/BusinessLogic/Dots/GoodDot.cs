@@ -110,9 +110,9 @@ namespace PollyNom.BusinessLogic.Dots
             while(!retval && increment > epsilon)
             {
                 var midEvaluationResult = expression.Evaluate(mid);
-                if(midEvaluationResult.HasValue())
+                if(midEvaluationResult.HasValue)
                 {
-                    if(this.IsInsideCircle(mid, midEvaluationResult.Value()))
+                    if(this.IsInsideCircle(mid, midEvaluationResult.Value))
                     {
                         retval = true;
                         break;
@@ -120,9 +120,9 @@ namespace PollyNom.BusinessLogic.Dots
                 }
 
                 var rightEvaluationResult = expression.Evaluate(mid + increment);
-                if(rightEvaluationResult.HasValue())
+                if(rightEvaluationResult.HasValue)
                 {
-                    if (this.IsInsideCircle(mid + increment, rightEvaluationResult.Value()))
+                    if (this.IsInsideCircle(mid + increment, rightEvaluationResult.Value))
                     {
                         retval = true;
                         break;
@@ -130,9 +130,9 @@ namespace PollyNom.BusinessLogic.Dots
                 }
 
                 var leftEvaluationResult = expression.Evaluate(mid - increment);
-                if (leftEvaluationResult.HasValue())
+                if (leftEvaluationResult.HasValue)
                 {
-                    if (this.IsInsideCircle(mid - increment, leftEvaluationResult.Value()))
+                    if (this.IsInsideCircle(mid - increment, leftEvaluationResult.Value))
                     {
                         retval = true;
                         break;
@@ -140,10 +140,10 @@ namespace PollyNom.BusinessLogic.Dots
                 }
 
                 // well, that was easy. Now the hard part.
-                if(midEvaluationResult.HasValue() && rightEvaluationResult.HasValue() && leftEvaluationResult.HasValue())
+                if(midEvaluationResult.HasValue&& rightEvaluationResult.HasValue&& leftEvaluationResult.HasValue)
                 {
-                    var leftGradient = Helper.MathHelper.SquareDistance(this.x, this.y, mid - increment, leftEvaluationResult.Value());
-                    var rightGradient = Helper.MathHelper.SquareDistance(this.x, this.y, mid + increment, rightEvaluationResult.Value());
+                    var leftGradient = Helper.MathHelper.SquareDistance(this.x, this.y, mid - increment, leftEvaluationResult.Value);
+                    var rightGradient = Helper.MathHelper.SquareDistance(this.x, this.y, mid + increment, rightEvaluationResult.Value);
 
                     if (leftGradient < rightGradient)
                     {
@@ -162,24 +162,24 @@ namespace PollyNom.BusinessLogic.Dots
                 iterations++;
 
                 // in the following cases, damp the movement
-                if (midEvaluationResult.HasValue() && rightEvaluationResult.HasValue())
+                if (midEvaluationResult.HasValue&& rightEvaluationResult.HasValue)
                 {
                     mid += increment * dampingFactor;
                     increment *= 0.5;
                     continue;
                 }
-                else if (midEvaluationResult.HasValue() && leftEvaluationResult.HasValue())
+                else if (midEvaluationResult.HasValue&& leftEvaluationResult.HasValue)
                 {
                     mid -= increment * dampingFactor;
                     increment *= 0.5;
                     continue;
                 }
-                else if (rightEvaluationResult.HasValue())
+                else if (rightEvaluationResult.HasValue)
                 {
                     mid += increment * dampingFactor;
                     continue;
                 }
-                else if (leftEvaluationResult.HasValue())
+                else if (leftEvaluationResult.HasValue)
                 {
                     mid -= increment * dampingFactor;
                     continue;

@@ -60,7 +60,7 @@ namespace PollyNom.Controller
         {
             this.expressions = new List<IExpression>(5);
             this.points = new List<List<ListPointLogical>>(5);
-            this.dots = dots ?? new GoodDotsGenerator().Generate();
+            this.dots = dots ?? new GoodDotsGenerator(8).Generate();
 
             this.parser = new Parser();
 

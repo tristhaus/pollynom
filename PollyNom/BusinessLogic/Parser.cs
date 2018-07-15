@@ -30,13 +30,20 @@ namespace PollyNom.BusinessLogic
         /// <returns>The expression, which can be <see cref="InvalidExpression"/>.</returns>
         public IExpression Parse(string S)
         {
-            S = this.PrepareString(S);
-            if (!ValidateInput(S))
+            try
+            {
+                S = this.PrepareString(S);
+                if (!this.ValidateInput(S))
+                {
+                    return this.invalidExpressionSample;
+                }
+
+                return this.InternalParse(S);
+            }
+            catch (Exception)
             {
                 return this.invalidExpressionSample;
             }
-
-            return this.InternalParse(S);
         }
 
         /// <summary>
@@ -46,6 +53,11 @@ namespace PollyNom.BusinessLogic
         /// <returns>The expression, which can be <see cref="InvalidExpression"/>.</returns>
         private IExpression InternalParse(string S)
         {
+            if(!this.ValidateInput(S))
+            {
+                return this.invalidExpressionSample;
+            }
+
             // if fully enclosed in braces, we remove them
             if (S[0] == '(' && S.Length - 1 == this.FindMatchingBrace(S, 0))
             {

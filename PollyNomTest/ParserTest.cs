@@ -610,5 +610,19 @@ namespace PollyNomTest
             Assert.IsTrue(resultBracedX);
             Assert.IsTrue(resultDoubleBracedX);
         }
+
+        [TestMethod]
+        public void ParseabilityShouldNotThrowExceptions()
+        {
+            // Arrange
+            Parser parser = new Parser();
+            string xMinus = "X-";
+
+            // Act
+            bool resultXMinus = parser.IsParseable(xMinus);
+
+            // Assert
+            Assert.IsFalse(resultXMinus);
+        }
     }
 }

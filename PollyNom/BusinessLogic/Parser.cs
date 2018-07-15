@@ -366,6 +366,15 @@ namespace PollyNom.BusinessLogic
                 }
             }
 
+            // check for dangling operators at the end of string
+            {
+                char lastChar = S[S.Length - 1];
+                if(lastChar == '+' || lastChar == '-' || lastChar == '*' || lastChar == '\\' || lastChar == '^' || lastChar == '(')
+                {
+                    return false;
+                }
+            }
+
             // check balanced parentheses
             {
                 int count = 0;

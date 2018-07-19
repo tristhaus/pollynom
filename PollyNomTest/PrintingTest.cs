@@ -1,5 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using PollyNom.BusinessLogic;
+using PollyNom.BusinessLogic.Expressions;
 using PollyNomTest.Helper;
 
 namespace PollyNomTest
@@ -109,6 +110,25 @@ namespace PollyNomTest
 
             // Assert
             Assert.AreEqual<string>($"x+{1}-{4}+{7}", result);
+        }
+
+        [TestMethod]
+        public void PrintExponential()
+        {
+            // Arrange
+            IExpression exp = new Exponential(new BaseX());
+            IExpression log = new NaturalLogarithm(new BaseX());
+            IExpression expLog = new Exponential(new NaturalLogarithm(new BaseX()));
+
+            // Act
+            string resultExp = ExpressionPrinter.PrintExpression(exp);
+            string resultLog = ExpressionPrinter.PrintExpression(log);
+            string resultExpLog = ExpressionPrinter.PrintExpression(expLog);
+
+            // Assert
+            Assert.AreEqual<string>($"exp(x)", resultExp);
+            Assert.AreEqual<string>($"ln(x)", resultLog);
+            Assert.AreEqual<string>($"exp(ln(x))", resultExpLog);
         }
     }
 }

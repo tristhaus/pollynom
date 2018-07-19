@@ -1,5 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using PollyNom.BusinessLogic;
+using PollyNom.BusinessLogic.Expressions;
 using PollyNomTest.Helper;
 
 namespace PollyNomTest
@@ -134,6 +135,42 @@ namespace PollyNomTest
             // Assert
             Assert.IsTrue(result.HasValue);
             Assert.IsTrue(DoubleEquality.IsApproximatelyEqual(expectedValue, number));
+        }
+
+        [TestMethod]
+        public void EvaluateExponentialAndLogarithm()
+        {
+            // Arrange
+            IExpression exp = new Exponential(new BaseX());
+            IExpression log = new NaturalLogarithm(new BaseX());
+            IExpression expLog = new Exponential(new NaturalLogarithm(new BaseX()));
+            IExpression logExp = new NaturalLogarithm(new Exponential(new BaseX()));
+
+            // Act
+            var resultE = exp.Evaluate(1.0);
+            var resultZero = log.Evaluate(1.0);
+            var resultTwo1 = expLog.Evaluate(2.0);
+            var resultHundred1 = expLog.Evaluate(100.0);
+            var resultTwo2 = logExp.Evaluate(2.0);
+            var resultHundred2 = logExp.Evaluate(100.0);
+
+            var noResult = log.Evaluate(-1.0);
+
+            // Assert
+            Assert.IsTrue(resultE.HasValue);
+            Assert.IsTrue(resultZero.HasValue);
+            Assert.IsTrue(resultTwo1.HasValue);
+            Assert.IsTrue(resultHundred1.HasValue);
+            Assert.IsTrue(resultTwo2.HasValue);
+            Assert.IsTrue(resultHundred2.HasValue);
+            Assert.IsFalse(noResult.HasValue);
+
+            Assert.IsTrue(DoubleEquality.IsApproximatelyEqual(resultE.Value, System.Math.E));
+            Assert.IsTrue(DoubleEquality.IsApproximatelyEqual(resultZero.Value, 0.0));
+            Assert.IsTrue(DoubleEquality.IsApproximatelyEqual(resultTwo1.Value, 2.0));
+            Assert.IsTrue(DoubleEquality.IsApproximatelyEqual(resultHundred1.Value, 100.0));
+            Assert.IsTrue(DoubleEquality.IsApproximatelyEqual(resultTwo2.Value, 2.0));
+            Assert.IsTrue(DoubleEquality.IsApproximatelyEqual(resultHundred2.Value, 100.0));
         }
     }
 }

@@ -405,7 +405,7 @@ namespace PollyNomTest
         }
 
         /// <summary>
-        /// Test about power expressions, involving different constants, using the ,method.
+        /// Test about power expressions, involving different constants, using the method.
         /// </summary>
         [TestMethod]
         public void PowerPerMethod()
@@ -429,6 +429,94 @@ namespace PollyNomTest
             Assert.IsTrue(powerA.Equals(powerAA));
             Assert.IsFalse(powerB.Equals(powerA));
             Assert.IsFalse(powerB.Equals(powerAA));
+        }
+
+        /// <summary>
+        /// Test about exponential function, using the method.
+        /// </summary>
+        [TestMethod]
+        public void ExponentialPerMethod()
+        {
+            var argumentA = new BaseX();
+            var argumentAA = new BaseX();
+            var argumentB = new Add(new Add.AddExpression(Add.AddExpression.Signs.Minus, new Power(new BaseX(), new Constant(2.0))));
+
+            // exp(x)
+            var expressionA = new Exponential(argumentA);
+            // exp(x)
+            var expressionAA = new Exponential(argumentAA);
+            // exp(-x^2)
+            var expressionB = new Exponential(argumentB);
+
+            Assert.IsTrue(expressionA.Equals(expressionAA));
+            Assert.IsFalse(expressionB.Equals(expressionA));
+            Assert.IsFalse(expressionB.Equals(expressionAA));
+        }
+
+        /// <summary>
+        /// Test about exponential function, using the operator.
+        /// </summary>
+        [TestMethod]
+        public void ExponentialPerOperator()
+        {
+            var argumentA = new BaseX();
+            var argumentAA = new BaseX();
+            var argumentB = new Add(new Add.AddExpression(Add.AddExpression.Signs.Minus, new Power(new BaseX(), new Constant(2.0))));
+
+            // exp(x)
+            var expressionA = new Exponential(argumentA);
+            // exp(x)
+            var expressionAA = new Exponential(argumentAA);
+            // exp(-x^2)
+            var expressionB = new Exponential(argumentB);
+
+            Assert.IsTrue(expressionA==expressionAA);
+            Assert.IsFalse(expressionB==expressionA);
+            Assert.IsTrue(expressionB!=expressionAA);
+        }
+
+        /// <summary>
+        /// Test about logarithm function, using the method.
+        /// </summary>
+        [TestMethod]
+        public void LogarithmPerMethod()
+        {
+            var argumentA = new BaseX();
+            var argumentAA = new BaseX();
+            var argumentB = new Add(new Add.AddExpression(Add.AddExpression.Signs.Plus, new Power(new BaseX(), new Constant(2.0))));
+
+            // ln(x)
+            var expressionA = new Exponential(argumentA);
+            // ln(x)
+            var expressionAA = new Exponential(argumentAA);
+            // ln(x^2)
+            var expressionB = new Exponential(argumentB);
+
+            Assert.IsTrue(expressionA.Equals(expressionAA));
+            Assert.IsFalse(expressionB.Equals(expressionA));
+            Assert.IsFalse(expressionB.Equals(expressionAA));
+        }
+
+        /// <summary>
+        /// Test about logarithm function, using the operator.
+        /// </summary>
+        [TestMethod]
+        public void LogarithmPerOperator()
+        {
+            var argumentA = new BaseX();
+            var argumentAA = new BaseX();
+            var argumentB = new Add(new Add.AddExpression(Add.AddExpression.Signs.Plus, new Power(new BaseX(), new Constant(2.0))));
+
+            // ln(x)
+            var expressionA = new Exponential(argumentA);
+            // ln(x)
+            var expressionAA = new Exponential(argumentAA);
+            // ln(x^2)
+            var expressionB = new Exponential(argumentB);
+
+            Assert.IsTrue(expressionA == expressionAA);
+            Assert.IsFalse(expressionB == expressionA);
+            Assert.IsTrue(expressionB != expressionAA);
         }
 
         /// <summary>

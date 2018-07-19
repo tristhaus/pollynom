@@ -82,13 +82,13 @@ namespace PollyNom.BusinessLogic.Expressions
             var bValue = this.exponent.Evaluate(input);
             if (!aValue.HasValue|| !bValue.HasValue)
             {
-                return new None<Double>();
+                return new None<double>();
             }
 
             double value = Math.Pow(aValue.Value, bValue.Value);
             if (double.IsInfinity(value) || double.IsNaN(value))
             {
-                return new None<Double>();
+                return new None<double>();
             }
 
             return new Some<double>(value);

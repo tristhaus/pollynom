@@ -116,7 +116,7 @@ namespace PollyNom.BusinessLogic.Expressions
                 var value = expression.Evaluate(input);
                 if (!value.HasValue)
                 {
-                    return new None<Double>();
+                    return new None<double>();
                 }
                 sum += expression.Sign == AddExpression.Signs.Plus ? (+value.Value) : (-value.Value);
             }

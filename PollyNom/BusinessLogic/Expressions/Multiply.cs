@@ -116,13 +116,13 @@ namespace PollyNom.BusinessLogic.Expressions
                 var value = expression.Evaluate(input);
                 if (!value.HasValue|| (expression.Sign == MultiplyExpression.Signs.Divide && Math.Abs(value.Value) < 10e-10))
                 {
-                    return new None<Double>();
+                    return new None<double>();
                 }
 
                 var finalValue = expression.Sign == MultiplyExpression.Signs.Multiply ? value.Value: (1.0 / value.Value);
                 if (double.IsInfinity(finalValue) || double.IsNaN(finalValue))
                 {
-                    return new None<Double>();
+                    return new None<double>();
                 }
 
                 product *= finalValue;

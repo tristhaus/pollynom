@@ -2,102 +2,35 @@
 
 namespace PollyNom.BusinessLogic.Expressions
 {
-    public class Exponential : IExpression, IEquatable<Exponential>
+    public sealed class Exponential : SingleArgumentFunctionBase<Exponential>
     {
-        IExpression containedExpression;
-
-        public Exponential(IExpression containedExpression)
+        /// <summary>
+        /// Creates a new instance of the <see cref="Exponential"/> class.
+        /// </summary>
+        /// <param name="containedExpression">The single argument of the function.</param>
+        public Exponential(IExpression containedExpression) : base(containedExpression)
         {
-            this.containedExpression = containedExpression;
         }
 
-        public bool IsMonadic
+        protected override bool ArgumentIsValid(double argument)
+        {
+            return true;
+        }
+
+        protected sealed override Func<double, double> FunctionFunc
         {
             get
             {
-                return true;
+                return Math.Exp;
             }
         }
 
-        public int Level
+        protected sealed override string FunctionSymbol
         {
             get
             {
-                return 3;
+                return "exp";
             }
-        }
-
-        public override bool Equals(object other)
-        {
-            if (other.GetType() != typeof(Exponential))
-            {
-                return false;
-            }
-            Exponential otherExponential = (Exponential)other;
-
-            return this.equalityImplementation(otherExponential);
-        }
-
-        public bool Equals(Exponential other)
-        {
-            return this.equalityImplementation(other);
-        }
-
-        public static bool operator ==(Exponential x, IExpression y)
-        {
-            return x.Equals(y);
-        }
-
-        public static bool operator !=(Exponential x, IExpression y)
-        {
-            return !(x.Equals(y));
-        }
-
-        public static bool operator ==(Exponential x, Exponential y)
-        {
-            return x.Equals(y);
-        }
-
-        public static bool operator !=(Exponential x, Exponential y)
-        {
-            return !(x.Equals(y));
-        }
-
-        public override int GetHashCode()
-        {
-            unchecked
-            {
-                int hash = 17;
-                hash = hash * 23 + containedExpression.GetHashCode();
-                return hash;
-            }
-        }
-
-        public Maybe<double> Evaluate(double input)
-        {
-            var value = containedExpression.Evaluate(input);
-            if(!value.HasValue)
-            {
-                return new None<double>();
-            }
-
-            return new Some<double>(Math.Exp(value.Value));
-        }
-
-        public Maybe<string> Print()
-        {
-            var value = containedExpression.Print();
-            if (!value.HasValue)
-            {
-                return new None<string>();
-            }
-
-            return new Some<string>($"exp({value.Value})");
-        }
-
-        private bool equalityImplementation(Exponential other)
-        {
-            return containedExpression.Equals(other.containedExpression);
         }
     }
 }

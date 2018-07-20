@@ -414,7 +414,6 @@ namespace PollyNomTest
 
             // Assert
             Assert.IsTrue(exprPower.Equals(expectedPower));
-
         }
 
         /// <summary>
@@ -433,6 +432,101 @@ namespace PollyNomTest
 
             // Assert
             Assert.IsTrue(exprPower.Equals(expectedPower));
+        }
+
+        /// <summary>
+        /// Tests that a non-recognized function yields an <see cref="InvalidExpression"/>.
+        /// </summary>
+        [TestMethod]
+        public void NonRecognizedFunction()
+        {
+            // Arrange
+            Parser parser = new Parser();
+            string stringFunction = "expln(x)"; // try to pass the smell test for invalid characters
+            var expectedInvalidExpression = new InvalidExpression();
+
+            // Act
+            IExpression expr = parser.Parse(stringFunction);
+
+            // Assert
+            Assert.IsTrue(expr.Equals(expectedInvalidExpression));
+        }
+
+        /// <summary>
+        /// Tests the parsing of exponential and natural logarithm.
+        /// </summary>
+        [TestMethod]
+        public void SimpleExponentialAndNaturalLogarithm()
+        {
+            // Arrange
+            Parser parser = new Parser();
+
+            string stringExponential = "exp(2.0)";
+            var expectedExponential = new Exponential(new Constant(2.0));
+
+            string stringLogarithm = "ln(x)";
+            var expectedLogarithm = new NaturalLogarithm(new BaseX());
+
+            // Act
+            IExpression exprExponential = parser.Parse(stringExponential);
+            IExpression exprLogarithm = parser.Parse(stringLogarithm);
+
+            // Assert
+            Assert.IsTrue(expectedExponential.Equals(exprExponential));
+            Assert.IsTrue(expectedLogarithm.Equals(exprLogarithm));
+        }
+
+        /// <summary>
+        /// Test a complicated expression inside an exponential.
+        /// </summary>
+        [TestMethod]
+        public void ComplicatedExponential1()
+        {
+            // Arrange
+            Parser parser = new Parser();
+            string stringExponential = "exp(-((2.0*x)^(x+1.0)))";
+            var argument = new Add(new Add.AddExpression(Add.AddExpression.Signs.Minus,
+                new Power(
+                new Multiply(new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Multiply, new Constant(2.0)), new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Multiply, new BaseX())),
+                new Add(new Add.AddExpression(Add.AddExpression.Signs.Plus, new BaseX()), new Add.AddExpression(Add.AddExpression.Signs.Plus, new Constant(1.0)))
+                )));
+            var expectedExponential = new Exponential(argument);
+
+            // Act
+            IExpression exprExponential = parser.Parse(stringExponential);
+
+            // Assert
+            Assert.IsTrue(exprExponential.Equals(expectedExponential));
+        }
+
+        /// <summary>
+        /// Test a complicated expression inside an exponential and some decorators.
+        /// </summary>
+        [TestMethod]
+        public void ComplicatedExponential2()
+        {
+            // Arrange
+            Parser parser = new Parser();
+            string stringExponential = "4.0+2.3*exp(-((2.0*x)^(x+1.0)))";
+            var argument = new Add(new Add.AddExpression(Add.AddExpression.Signs.Minus,
+                new Power(
+                new Multiply(new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Multiply, new Constant(2.0)), new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Multiply, new BaseX())),
+                new Add(new Add.AddExpression(Add.AddExpression.Signs.Plus, new BaseX()), new Add.AddExpression(Add.AddExpression.Signs.Plus, new Constant(1.0)))
+                )));
+            var exponential = new Exponential(argument);
+            var expectedExpression = new Add(
+                new Add.AddExpression(Add.AddExpression.Signs.Plus, new Constant(4.0)),
+                new Add.AddExpression(Add.AddExpression.Signs.Plus,
+                new Multiply(
+                    new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Multiply, new Constant(2.3)),
+                    new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Multiply, exponential)
+                )));
+
+            // Act
+            IExpression exprExponential = parser.Parse(stringExponential);
+
+            // Assert
+            Assert.IsTrue(exprExponential.Equals(expectedExpression));
         }
 
         /// <summary>

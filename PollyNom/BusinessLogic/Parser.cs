@@ -13,6 +13,15 @@ namespace PollyNom.BusinessLogic
     {
         private readonly InvalidExpression invalidExpressionSample = new InvalidExpression();
 
+        private Dictionary<string, Type> functions;
+
+        public Parser()
+        {
+            this.functions = new Dictionary<string, Type>();
+            this.functions.Add("ln(", typeof(NaturalLogarithm));
+            this.functions.Add("exp(", typeof(Exponential));
+        }
+
         /// <summary>
         /// Tests the expression for parseability.
         /// </summary>
@@ -255,11 +264,46 @@ namespace PollyNom.BusinessLogic
                 return new Power(baseExpression, exponentExpression);
             }
 
+            // Fourth case: functions
+            if(tokens.Count == 1)
+            {
+                token = tokens[0];
+
+                bool hit = false;
+                foreach (var item in this.functions)
+                {
+                    if(token.StartsWith(item.Key))
+                    {
+                        hit = true;
+                    }
+                }
+
+                if (!hit)
+                {
+                    return this.invalidExpressionSample;
+                }
+
+                Regex functionNameRegex = new Regex(@"^(?<name>[a-zA-Z0-9]+\()");
+                Match match = functionNameRegex.Match(token);
+                string functionName = match.Groups["name"].Value;
+                var functionType = this.functions[functionName];
+
+                string argumentString = token.Substring(functionName.Length - 1);
+                IExpression argumentExpression = this.InternalParse(argumentString);
+
+                if(argumentExpression.Equals(this.invalidExpressionSample))
+                {
+                    return this.invalidExpressionSample;
+                }
+
+                return Activator.CreateInstance(functionType, argumentExpression) as IExpression;
+            }
+
             return this.invalidExpressionSample;
         }
 
         /// <summary>
-        /// Checks the character for being a mathemical operator.
+        /// Checks the character for being a mathematical operator.
         /// </summary>
         /// <param name="c">The character to be checked.</param>
         /// <returns><c>true</c> if character is an operator.</returns>
@@ -363,7 +407,7 @@ namespace PollyNom.BusinessLogic
         {
             // check unsupported characters
             {
-                Regex regex = new Regex("^[-0-9.+/*^()xX]+$", RegexOptions.Compiled);
+                Regex regex = new Regex("^[-0-9.+/*^()elnpxX]+$", RegexOptions.Compiled);
                 if (!regex.IsMatch(S))
                 {
                     return false;

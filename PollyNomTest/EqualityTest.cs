@@ -486,11 +486,11 @@ namespace PollyNomTest
             var argumentB = new Add(new Add.AddExpression(Add.AddExpression.Signs.Plus, new Power(new BaseX(), new Constant(2.0))));
 
             // ln(x)
-            var expressionA = new Exponential(argumentA);
+            var expressionA = new NaturalLogarithm(argumentA);
             // ln(x)
-            var expressionAA = new Exponential(argumentAA);
+            var expressionAA = new NaturalLogarithm(argumentAA);
             // ln(x^2)
-            var expressionB = new Exponential(argumentB);
+            var expressionB = new NaturalLogarithm(argumentB);
 
             Assert.IsTrue(expressionA.Equals(expressionAA));
             Assert.IsFalse(expressionB.Equals(expressionA));
@@ -508,11 +508,11 @@ namespace PollyNomTest
             var argumentB = new Add(new Add.AddExpression(Add.AddExpression.Signs.Plus, new Power(new BaseX(), new Constant(2.0))));
 
             // ln(x)
-            var expressionA = new Exponential(argumentA);
+            var expressionA = new NaturalLogarithm(argumentA);
             // ln(x)
-            var expressionAA = new Exponential(argumentAA);
+            var expressionAA = new NaturalLogarithm(argumentAA);
             // ln(x^2)
-            var expressionB = new Exponential(argumentB);
+            var expressionB = new NaturalLogarithm(argumentB);
 
             Assert.IsTrue(expressionA == expressionAA);
             Assert.IsFalse(expressionB == expressionA);

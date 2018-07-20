@@ -18,8 +18,8 @@ namespace PollyNom.BusinessLogic
         public Parser()
         {
             this.functions = new Dictionary<string, Type>();
-            this.functions.Add("ln(", typeof(NaturalLogarithm));
-            this.functions.Add("exp(", typeof(Exponential));
+            this.functions.Add(NaturalLogarithm.Symbol, typeof(NaturalLogarithm));
+            this.functions.Add(Exponential.Symbol, typeof(Exponential));
         }
 
         /// <summary>
@@ -49,7 +49,7 @@ namespace PollyNom.BusinessLogic
 
                 return this.InternalParse(S);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 return this.invalidExpressionSample;
             }
@@ -269,26 +269,18 @@ namespace PollyNom.BusinessLogic
             {
                 token = tokens[0];
 
-                bool hit = false;
-                foreach (var item in this.functions)
-                {
-                    if(token.StartsWith(item.Key))
-                    {
-                        hit = true;
-                    }
-                }
+                Regex functionNameRegex = new Regex(@"^(?<name>[a-zA-Z0-9]+\()");
+                Match match = functionNameRegex.Match(token);
+                string functionName = match.Groups["name"].Value.Replace("(", string.Empty);
 
-                if (!hit)
+                if(!functions.ContainsKey(functionName))
                 {
                     return this.invalidExpressionSample;
                 }
 
-                Regex functionNameRegex = new Regex(@"^(?<name>[a-zA-Z0-9]+\()");
-                Match match = functionNameRegex.Match(token);
-                string functionName = match.Groups["name"].Value;
                 var functionType = this.functions[functionName];
 
-                string argumentString = token.Substring(functionName.Length - 1);
+                string argumentString = token.Substring(functionName.Length);
                 IExpression argumentExpression = this.InternalParse(argumentString);
 
                 if(argumentExpression.Equals(this.invalidExpressionSample))

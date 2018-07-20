@@ -8,6 +8,8 @@ namespace PollyNom.BusinessLogic.Expressions
     /// </summary>
     public sealed class Exponential : SingleArgumentFunctionBase<Exponential>
     {
+        internal static readonly string Symbol = "exp";
+
         /// <summary>
         /// Creates a new instance of the <see cref="Exponential"/> class.
         /// </summary>
@@ -33,7 +35,7 @@ namespace PollyNom.BusinessLogic.Expressions
         {
             get
             {
-                return "exp";
+                return Symbol;
             }
         }
     }

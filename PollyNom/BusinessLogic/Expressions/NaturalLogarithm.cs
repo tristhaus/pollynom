@@ -7,6 +7,8 @@ namespace PollyNom.BusinessLogic.Expressions
     /// </summary>
     public class NaturalLogarithm : SingleArgumentFunctionBase<NaturalLogarithm>
     {
+        public static readonly string Symbol = "ln";
+
         /// <summary>
         /// Creates a new instance of the <see cref="NaturalLogarithm"/> class.
         /// </summary>
@@ -32,7 +34,7 @@ namespace PollyNom.BusinessLogic.Expressions
         {
             get
             {
-                return "ln";
+                return Symbol;
             }
         }
     }

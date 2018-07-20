@@ -2,102 +2,35 @@
 
 namespace PollyNom.BusinessLogic.Expressions
 {
-    public class NaturalLogarithm : IExpression, IEquatable<NaturalLogarithm>
+    public class NaturalLogarithm : SingleArgumentFunctionBase<NaturalLogarithm>
     {
-        IExpression containedExpression;
-
-        public NaturalLogarithm(IExpression containedExpression)
+        /// <summary>
+        /// Creates a new instance of the <see cref="NaturalLogarithm"/> class.
+        /// </summary>
+        /// <param name="containedExpression">The single argument of the function.</param>
+        public NaturalLogarithm(IExpression containedExpression) : base(containedExpression)
         {
-            this.containedExpression = containedExpression;
         }
 
-        public bool IsMonadic
+        protected override bool ArgumentIsValid(double argument)
+        {
+            return argument > 0.0;
+        }
+
+        protected override Func<double, double> FunctionFunc
         {
             get
             {
-                return true;
+                return Math.Log;
             }
         }
 
-        public int Level
+        protected override string FunctionSymbol
         {
             get
             {
-                return 3;
+                return "ln";
             }
-        }
-
-        public override bool Equals(object other)
-        {
-            if (other.GetType() != typeof(NaturalLogarithm))
-            {
-                return false;
-            }
-            NaturalLogarithm otherExponential = (NaturalLogarithm)other;
-
-            return this.equalityImplementation(otherExponential);
-        }
-
-        public bool Equals(NaturalLogarithm other)
-        {
-            return this.equalityImplementation(other);
-        }
-
-        public static bool operator ==(NaturalLogarithm x, IExpression y)
-        {
-            return x.Equals(y);
-        }
-
-        public static bool operator !=(NaturalLogarithm x, IExpression y)
-        {
-            return !(x.Equals(y));
-        }
-
-        public static bool operator ==(NaturalLogarithm x, NaturalLogarithm y)
-        {
-            return x.Equals(y);
-        }
-
-        public static bool operator !=(NaturalLogarithm x, NaturalLogarithm y)
-        {
-            return !(x.Equals(y));
-        }
-
-        public override int GetHashCode()
-        {
-            unchecked
-            {
-                int hash = 17;
-                hash = hash * 23 + containedExpression.GetHashCode();
-                return hash;
-            }
-        }
-
-        public Maybe<double> Evaluate(double input)
-        {
-            var value = containedExpression.Evaluate(input);
-            if (!value.HasValue || (value.HasValue && value.Value <= 0.0))
-            {
-                return new None<double>();
-            }
-
-            return new Some<double>(Math.Log(value.Value));
-        }
-
-        public Maybe<string> Print()
-        {
-            var value = containedExpression.Print();
-            if (!value.HasValue)
-            {
-                return new None<string>();
-            }
-
-            return new Some<string>($"ln({value.Value})");
-        }
-
-        private bool equalityImplementation(NaturalLogarithm other)
-        {
-            return containedExpression.Equals(other.containedExpression);
         }
     }
 }

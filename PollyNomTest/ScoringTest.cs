@@ -5,6 +5,9 @@ using PollyNom.BusinessLogic;
 
 namespace PollyNomTest
 {
+    /// <summary>
+    /// Collects tests related to the scoring of hit lists.
+    /// </summary>
     [TestClass]
     public class ScoringTest
     {

@@ -8,6 +8,9 @@ using System.Collections.Generic;
 
 namespace PollyNomTest
 {
+    /// <summary>
+    /// Collects tests related to whether an expression hits a dot.
+    /// </summary>
     [TestClass]
     public class DotHittingTest
     {

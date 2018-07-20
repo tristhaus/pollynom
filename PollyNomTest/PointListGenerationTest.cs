@@ -8,6 +8,9 @@ using PollyNom.View;
 
 namespace PollyNomTest
 {
+    /// <summary>
+    /// Collects tests related to the generation of lists of point lists.
+    /// </summary>
     [TestClass]
     public class PointListGenerationTest
     {

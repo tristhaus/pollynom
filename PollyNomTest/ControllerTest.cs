@@ -8,6 +8,9 @@ using PollyNom.Controller;
 
 namespace PollyNomTest
 {
+    /// <summary>
+    /// Collects tests related to calling controller methods.
+    /// </summary>
     [TestClass]
     public class ControllerTest
     {

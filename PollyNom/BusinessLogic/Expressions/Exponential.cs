@@ -2,6 +2,10 @@
 
 namespace PollyNom.BusinessLogic.Expressions
 {
+    /// <summary>
+    /// Implements the exponential function,
+    /// i.e. base <c>e ~ 2.71828</c> raised to the argument.
+    /// </summary>
     public sealed class Exponential : SingleArgumentFunctionBase<Exponential>
     {
         /// <summary>

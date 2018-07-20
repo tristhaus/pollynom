@@ -4,6 +4,9 @@ using PollyNomTest.Helper;
 
 namespace PollyNomTest
 {
+    /// <summary>
+    /// Collects tests related to internal test tools.
+    /// </summary>
     [TestClass]
     public class HelperTests
     {

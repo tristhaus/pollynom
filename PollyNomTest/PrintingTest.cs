@@ -5,6 +5,10 @@ using PollyNomTest.Helper;
 
 namespace PollyNomTest
 {
+    /// <summary>
+    /// Collects tests related to textual output
+    /// of <see cref="IExpression"/> instances.
+    /// </summary>
     [TestClass]
     public class PrintingTest
     {

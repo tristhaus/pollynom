@@ -24,13 +24,6 @@ namespace PollyNom.BusinessLogic.Expressions
             }
         }
 
-        protected Multiply(MultiplyExpression a, MultiplyExpression b)
-        {
-            this.list = new List<MultiplyExpression>(2);
-            this.list.Add(a);
-            this.list.Add(b);
-        }
-
         public Multiply(List<MultiplyExpression> list)
         {
             this.list = list;

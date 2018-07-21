@@ -50,6 +50,7 @@
     <Compile Include="BusinessLogic\Expressions\Exponential.cs" />
     <Compile Include="BusinessLogic\Expressions\NaturalLogarithm.cs" />
     <Compile Include="BusinessLogic\Expressions\SingleArgumentFunctionBase.cs" />
+    <Compile Include="BusinessLogic\FixedGoodDotsGenerator.cs" />
     <Compile Include="BusinessLogic\GoodDotsGenerator.cs" />
     <Compile Include="BusinessLogic\Helper\MathHelper.cs" />
     <Compile Include="BusinessLogic\IDot.cs" />

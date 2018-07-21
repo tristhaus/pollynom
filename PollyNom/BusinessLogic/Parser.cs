@@ -15,6 +15,9 @@ namespace PollyNom.BusinessLogic
 
         private Dictionary<string, Type> functions;
 
+        /// <summary>
+        /// Creates a new instance of the <see cref="Parser"/> class.
+        /// </summary>
         public Parser()
         {
             this.functions = new Dictionary<string, Type>();

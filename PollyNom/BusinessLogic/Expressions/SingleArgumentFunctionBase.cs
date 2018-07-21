@@ -2,6 +2,14 @@
 
 namespace PollyNom.BusinessLogic.Expressions
 {
+    /// <summary>
+    /// Base class for implementing functions that accept single arguments 
+    /// as <see cref="IExpression"/>.
+    /// </summary>
+    /// <typeparam name="T">
+    /// The type that implements this base, as needed for equality determination 
+    /// using the <see cref="IEquatable{U}"/> interface.
+    /// </typeparam>
     public abstract class SingleArgumentFunctionBase<T> : IExpression, IEquatable<SingleArgumentFunctionBase<T>>
     {
         private IExpression containedExpression;

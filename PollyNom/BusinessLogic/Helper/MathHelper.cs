@@ -1,7 +1,7 @@
 ﻿namespace PollyNom.BusinessLogic.Helper
 {
     /// <summary>
-    /// Provides 
+    /// Provides math functions.
     /// </summary>
     public static class MathHelper
     {

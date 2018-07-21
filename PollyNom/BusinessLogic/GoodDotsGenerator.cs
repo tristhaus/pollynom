@@ -25,9 +25,9 @@ namespace PollyNom.BusinessLogic
         }
 
         /// <summary>
-        /// Generates a list of good dots 
+        /// Generates a list of good dots.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>A list of dots in terms of logical units.</returns>
         public List<IDot> Generate()
         {
             List<CandidateDot> candidates = new List<CandidateDot>(400);
@@ -59,8 +59,20 @@ namespace PollyNom.BusinessLogic
         /// </summary>
         private class CandidateDot
         {
+            /// <summary>
+            /// x-coordinate of the dot.
+            /// </summary>
             public double x;
+
+            /// <summary>
+            /// y-coordinate of the dot.
+            /// </summary>
             public double y;
+
+            /// <summary>
+            /// Indicates whether this dot has been picked up,
+            /// should be returned and cannot be picked again.
+            /// </summary>
             public bool picked;
         }
     }

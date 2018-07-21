@@ -5,7 +5,7 @@ namespace PollyNom.BusinessLogic.Expressions
     /// <summary>
     /// Implements the natural logarithm, i.e. base <c>e ~ 2.71828</c>.
     /// </summary>
-    public class NaturalLogarithm : SingleArgumentFunctionBase<NaturalLogarithm>
+    public sealed class NaturalLogarithm : SingleArgumentFunctionBase<NaturalLogarithm>
     {
         public static readonly string Symbol = "ln";
 

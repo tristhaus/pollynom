@@ -2,8 +2,12 @@
 
 namespace PollyNom.BusinessLogic.Expressions
 {
-    public class BaseX : IExpression, IEquatable<BaseX>
+    /// <summary>
+    /// Implements a variable which will accept a value on evaluation.
+    /// </summary>
+    public sealed class BaseX : IExpression, IEquatable<BaseX>
     {
+        /// <inheritdoc />
         public bool IsMonadic
         {
             get
@@ -12,6 +16,7 @@ namespace PollyNom.BusinessLogic.Expressions
             }
         }
 
+        /// <inheritdoc />
         public int Level
         {
             get
@@ -58,11 +63,13 @@ namespace PollyNom.BusinessLogic.Expressions
             }
         }
 
+        /// <inheritdoc />
         public Maybe<double> Evaluate(double input)
         {
             return new Some<double>(input);
         }
 
+        /// <inheritdoc />
         public Maybe<string> Print()
         {
             return new Some<string>("x");

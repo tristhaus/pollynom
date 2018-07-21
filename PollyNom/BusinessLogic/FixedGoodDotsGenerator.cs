@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-using PollyNom.BusinessLogic.Dots;
+﻿using System.Collections.Generic;
 
 namespace PollyNom.BusinessLogic
 {
@@ -11,17 +8,9 @@ namespace PollyNom.BusinessLogic
     public class FixedGoodDotsGenerator
     {
         /// <summary>
-        /// Creates a new instance of the <see cref="FixedGoodDotsGenerator"/> class
-        /// that will generate the hard-coded dots.
-        /// </summary>
-        public FixedGoodDotsGenerator()
-        {
-        }
-
-        /// <summary>
         /// Generates a list of good dots 
         /// </summary>
-        /// <returns></returns>
+        /// <returns>A list of dots in terms of logical units.</returns>
         public List<IDot> Generate()
         {
             List<IDot> list = new List<IDot>();

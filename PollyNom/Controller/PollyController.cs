@@ -6,6 +6,9 @@ using PollyNom.BusinessLogic.Dots;
 
 namespace PollyNom.Controller
 {
+    /// <summary>
+    /// Controls the business logic on behalf of the view.
+    /// </summary>
     public class PollyController
     {
         /// <summary>

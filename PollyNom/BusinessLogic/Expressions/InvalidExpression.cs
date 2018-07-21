@@ -2,8 +2,12 @@
 
 namespace PollyNom.BusinessLogic.Expressions
 {
-    public class InvalidExpression : IExpression, IEquatable<InvalidExpression>
+    /// <summary>
+    /// Implements an invalid expression following the Null Object Pattern.
+    /// </summary>
+    public sealed class InvalidExpression : IExpression, IEquatable<InvalidExpression>
     {
+        /// <inheritdoc />
         public bool IsMonadic
         {
             get
@@ -12,6 +16,7 @@ namespace PollyNom.BusinessLogic.Expressions
             }
         }
 
+        /// <inheritdoc />
         public int Level
         {
             get
@@ -58,11 +63,13 @@ namespace PollyNom.BusinessLogic.Expressions
             }
         }
 
+        /// <inheritdoc />
         public Maybe<double> Evaluate(double input)
         {
             return new None<double>();
         }
 
+        /// <inheritdoc />
         public Maybe<string> Print()
         {
             return new None<string>();

@@ -2,17 +2,25 @@
 
 namespace PollyNom.BusinessLogic.Expressions
 {
-    public class Power : IExpression, IEquatable<Power>
+    /// <summary>
+    /// Implements a power using a basis and exponent.
+    /// </summary>
+    public sealed class Power : IExpression, IEquatable<Power>
     {
         private IExpression basis;
         private IExpression exponent;
 
-        public Power(IExpression a, IExpression b)
+        /// <summary>
+        /// Creates a new instance of the <see cref="Power"/> class.
+        /// </summary>
+        /// <param name="containedExpression">The single argument of the function.</param>
+        public Power(IExpression basis, IExpression exponent)
         {
-            this.basis = a;
-            this.exponent = b;
+            this.basis = basis;
+            this.exponent = exponent;
         }
 
+        /// <inheritdoc />
         public bool IsMonadic
         {
             get
@@ -21,6 +29,7 @@ namespace PollyNom.BusinessLogic.Expressions
             }
         }
 
+        /// <inheritdoc />
         public int Level
         {
             get
@@ -76,6 +85,7 @@ namespace PollyNom.BusinessLogic.Expressions
             }
         }
 
+        /// <inheritdoc />
         public Maybe<double> Evaluate(double input)
         {
             var aValue = this.basis.Evaluate(input);
@@ -94,6 +104,7 @@ namespace PollyNom.BusinessLogic.Expressions
             return new Some<double>(value);
         }
 
+        /// <inheritdoc />
         public Maybe<string> Print()
         {
             var aValue = this.basis.Print();

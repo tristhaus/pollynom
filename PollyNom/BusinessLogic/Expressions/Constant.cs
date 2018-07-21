@@ -2,15 +2,22 @@
 
 namespace PollyNom.BusinessLogic.Expressions
 {
-    public class Constant : IExpression, IEquatable<Constant>
+    /// <summary>
+    /// Implements a constant expression.
+    /// </summary>
+    public sealed class Constant : IExpression, IEquatable<Constant>
     {
         private double a;
 
+        /// <summary>
+        /// Creates a new instance of the <see cref="Constant"/> class.
+        /// </summary>
         public Constant(double a)
         {
             this.a = a;
         }
 
+        /// <inheritdoc />
         public bool IsMonadic
         {
             get
@@ -19,6 +26,7 @@ namespace PollyNom.BusinessLogic.Expressions
             }
         }
 
+        /// <inheritdoc />
         public int Level
         {
             get
@@ -70,11 +78,13 @@ namespace PollyNom.BusinessLogic.Expressions
             }
         }
 
+        /// <inheritdoc />
         public Maybe<double> Evaluate(double input)
         {
             return new Some<double>(a);
         }
 
+        /// <inheritdoc />
         public Maybe<string> Print()
         {
             return new Some<string>($"{a}");

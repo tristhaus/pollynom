@@ -4,10 +4,18 @@ using System.Linq;
 
 namespace PollyNom.BusinessLogic.Expressions
 {
-    public class Multiply : IExpression, IEquatable<Multiply>
+    /// <summary>
+    /// Implements a product over an arbritrary, fixed list of factors.
+    /// </summary>
+    public sealed class Multiply : IExpression, IEquatable<Multiply>
     {
         private List<MultiplyExpression> list;
 
+        /// <summary>
+        /// Creates a new instance of the <see cref="Multiply"/> class.
+        /// </summary>
+        /// <param name="a">First factor of the resulting expression.</param>
+        /// <param name="b">Second and last factor of the resulting expression.</param>
         public Multiply(IExpression a, IExpression b)
         {
             this.list = new List<MultiplyExpression>(2);
@@ -15,6 +23,10 @@ namespace PollyNom.BusinessLogic.Expressions
             this.list.Add(new MultiplyExpression(MultiplyExpression.Signs.Multiply, b));
         }
 
+        /// <summary>
+        /// Creates a new instance of the <see cref="Multiply"/> class.
+        /// </summary>
+        /// <param name="expressions">Extensible array of <see cref="MultiplyExpression"/> to be contained.</param>
         public Multiply(params MultiplyExpression[] expressions)
         {
             this.list = new List<MultiplyExpression>();
@@ -24,11 +36,16 @@ namespace PollyNom.BusinessLogic.Expressions
             }
         }
 
+        /// <summary>
+        /// Creates a new instance of the <see cref="Multiply"/> class.
+        /// </summary>
+        /// <param name="list">List of <see cref="MultiplyExpression"/> to be contained.</param>
         public Multiply(List<MultiplyExpression> list)
         {
             this.list = list;
         }
 
+        /// <inheritdoc />
         public bool IsMonadic
         {
             get
@@ -37,6 +54,7 @@ namespace PollyNom.BusinessLogic.Expressions
             }
         }
 
+        /// <inheritdoc />
         public int Level
         {
             get
@@ -100,6 +118,7 @@ namespace PollyNom.BusinessLogic.Expressions
             }
         }
 
+        /// <inheritdoc />
         public Maybe<double> Evaluate(double input)
         {
             double product = 1.0;
@@ -124,6 +143,7 @@ namespace PollyNom.BusinessLogic.Expressions
             return new Some<double>(product);
         }
 
+        /// <inheritdoc />
         public Maybe<string> Print()
         {
             string s = "1";
@@ -188,26 +208,49 @@ namespace PollyNom.BusinessLogic.Expressions
             return cnt.Values.All(c => c == 0);
         }
 
-        public class MultiplyExpression : IExpression, IEquatable<MultiplyExpression>
+        /// <summary>
+        /// Defines a factor containing a "sign" and an <see cref="IExpression"/>.
+        /// </summary>
+        public sealed class MultiplyExpression : IExpression, IEquatable<MultiplyExpression>
         {
+            /// <summary>
+            /// Enumerates the "signs" of factors.
+            /// </summary>
             public enum Signs
             {
+                /// <summary>
+                /// Makes the expression work in a multiplicative fashion.
+                /// </summary>
                 Multiply = 3,
+
+                /// <summary>
+                /// Makes the expression work in a dividing fashion.
+                /// </summary>
                 Divide = 4
             }
 
             private IExpression expression;
 
+            /// <summary>
+            /// Creates a new instance of the <see cref="MultiplyExpression"/> class.
+            /// </summary>
+            /// <param name="sign">The "sign" to be used.</param>
+            /// <param name="expression">The expression to be contained.</param>
             public MultiplyExpression(Signs sign, IExpression expression)
             {
                 this.expression = expression;
                 this.Sign = sign;
             }
 
+            /// <summary>
+            /// Gets the "sign" of the instance.
+            /// </summary>
             public Signs Sign { get; }
 
+            /// <inheritdoc />
             public bool IsMonadic => expression.IsMonadic;
 
+            /// <inheritdoc />
             public int Level => expression.Level;
 
             public override bool Equals(object other)
@@ -256,11 +299,13 @@ namespace PollyNom.BusinessLogic.Expressions
                 }
             }
 
+            /// <inheritdoc />
             public Maybe<double> Evaluate(double input)
             {
                 return expression.Evaluate(input);
             }
 
+            /// <inheritdoc />
             public Maybe<string> Print()
             {
                 return expression.Print();

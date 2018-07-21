@@ -99,15 +99,17 @@ namespace PollyNom.BusinessLogic.Dots
 
         private bool HitImplementationGreedy(IExpression expression)
         {
-            double mid = this.x;
-            double increment = this.Radius;
             const double epsilon = 1e-6;
             const double dampingFactor = 0.8;
+            const uint maxIterations = 10000;
+
+            double mid = this.x;
+            double increment = this.Radius;
             bool retval = false;
 
-            int iterations = 0;
+            uint iterations = 0;
 
-            while(!retval && increment > epsilon)
+            while(!retval && increment > epsilon && iterations < maxIterations)
             {
                 var midEvaluationResult = expression.Evaluate(mid);
                 if(midEvaluationResult.HasValue)

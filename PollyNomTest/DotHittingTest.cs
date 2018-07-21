@@ -85,7 +85,7 @@ namespace PollyNomTest
 
             PointListGenerator pointListGenerator = new PointListGenerator(plainOneOverX, DotHittingTest.startX, DotHittingTest.endX, DotHittingTest.limits);
 
-            List<ListPointLogical> logicalPointLists = pointListGenerator.ObtainListsOfLogicalsPoints();
+            List<ListPointLogical> logicalPointLists = pointListGenerator.ObtainListsOfLogicalPoints();
 
             // Act
             bool plainOneOverXResult = originDot.IsHit(plainOneOverX, logicalPointLists);
@@ -112,7 +112,7 @@ namespace PollyNomTest
 
             PointListGenerator pointListGenerator = new PointListGenerator(OneOverXMinus10, DotHittingTest.startX, DotHittingTest.endX, DotHittingTest.limits);
 
-            List<ListPointLogical> logicalPointLists = pointListGenerator.ObtainListsOfLogicalsPoints();
+            List<ListPointLogical> logicalPointLists = pointListGenerator.ObtainListsOfLogicalPoints();
 
             // Act
             bool OneOverXMinus10Result = originDot.IsHit(OneOverXMinus10, logicalPointLists);

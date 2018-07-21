@@ -179,7 +179,7 @@ namespace PollyNom.Controller
             foreach (var expression in this.expressions)
             {
                 PointListGenerator pointListGenerator = new PointListGenerator(expression, PollyController.startX, PollyController.endX, PollyController.limits);
-                this.points.Add(pointListGenerator.ObtainListsOfLogicalsPoints());
+                this.points.Add(pointListGenerator.ObtainListsOfLogicalPoints());
             }
         }
 

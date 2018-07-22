@@ -4,6 +4,7 @@ using System.Drawing;
 
 using PollyNom.BusinessLogic;
 using PollyNom.BusinessLogic.Expressions;
+using PollyNom.BusinessLogic.Expressions.SingleArgumentFunctions;
 using PollyNom.View;
 
 namespace PollyNomTest

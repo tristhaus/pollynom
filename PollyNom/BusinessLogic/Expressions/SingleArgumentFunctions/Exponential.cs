@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace PollyNom.BusinessLogic.Expressions
+namespace PollyNom.BusinessLogic.Expressions.SingleArgumentFunctions
 {
     /// <summary>
     /// Implements the exponential function,

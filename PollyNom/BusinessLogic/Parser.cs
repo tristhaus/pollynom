@@ -1,4 +1,5 @@
 ﻿using PollyNom.BusinessLogic.Expressions;
+using PollyNom.BusinessLogic.Expressions.SingleArgumentFunctions;
 using System;
 using System.Collections.Generic;
 using System.Globalization;

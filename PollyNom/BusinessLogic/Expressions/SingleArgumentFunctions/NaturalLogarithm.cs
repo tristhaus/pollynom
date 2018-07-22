@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace PollyNom.BusinessLogic.Expressions
+namespace PollyNom.BusinessLogic.Expressions.SingleArgumentFunctions
 {
     /// <summary>
     /// Implements the natural logarithm, i.e. base <c>e ~ 2.71828</c>.

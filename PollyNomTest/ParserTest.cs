@@ -531,6 +531,54 @@ namespace PollyNomTest
         }
 
         /// <summary>
+        /// Tests the parsing of trigonometric functions.
+        /// </summary>
+        [TestMethod]
+        public void SimpleTrigonometricFunctions()
+        {
+            // Arrange
+            Parser parser = new Parser();
+
+            string stringSine = "sin(2.0)";
+            var expectedSine = new Sine(new Constant(2.0));
+
+            string stringCosine = "cos(32.0)";
+            var expectedCosine = new Cosine(new Constant(32.0));
+
+            string stringTangent = "tan(x)";
+            var expectedTangent = new Tangent(new BaseX());
+
+            // Act
+            IExpression exprSine = parser.Parse(stringSine);
+            IExpression exprCosine = parser.Parse(stringCosine);
+            IExpression exprTangent = parser.Parse(stringTangent);
+
+            // Assert
+            Assert.IsTrue(expectedSine.Equals(exprSine));
+            Assert.IsTrue(expectedCosine.Equals(exprCosine));
+            Assert.IsTrue(expectedTangent.Equals(exprTangent));
+        }
+
+        /// <summary>
+        /// Tests the parsing of the absolute value function.
+        /// </summary>
+        [TestMethod]
+        public void SimpleAbsoluteValue()
+        {
+            // Arrange
+            Parser parser = new Parser();
+
+            string stringAbsoluteValue = "abs(2.0)";
+            var expectedAbsoluteValue = new AbsoluteValue(new Constant(2.0));
+
+            // Act
+            IExpression exprExponential = parser.Parse(stringAbsoluteValue);
+
+            // Assert
+            Assert.IsTrue(expectedAbsoluteValue.Equals(exprExponential));
+        }
+
+        /// <summary>
         /// Roundtrip test on the members of <see cref="Helper.TestExpressionBuilder"/>
         /// </summary>
         [TestMethod]

@@ -24,6 +24,10 @@ namespace PollyNom.BusinessLogic
             this.functions = new Dictionary<string, Type>();
             this.functions.Add(NaturalLogarithm.Symbol, typeof(NaturalLogarithm));
             this.functions.Add(Exponential.Symbol, typeof(Exponential));
+            this.functions.Add(Sine.Symbol, typeof(Sine));
+            this.functions.Add(Cosine.Symbol, typeof(Cosine));
+            this.functions.Add(Tangent.Symbol, typeof(Tangent));
+            this.functions.Add(AbsoluteValue.Symbol, typeof(AbsoluteValue));
         }
 
         /// <summary>
@@ -53,7 +57,7 @@ namespace PollyNom.BusinessLogic
 
                 return this.InternalParse(S);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return this.invalidExpressionSample;
             }
@@ -403,7 +407,7 @@ namespace PollyNom.BusinessLogic
         {
             // check unsupported characters
             {
-                Regex regex = new Regex("^[-0-9.+/*^()elnpxX]+$", RegexOptions.Compiled);
+                Regex regex = new Regex("^[-0-9.+/*^()abceilnopstxX]+$", RegexOptions.Compiled);
                 if (!regex.IsMatch(S))
                 {
                     return false;

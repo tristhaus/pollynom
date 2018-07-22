@@ -47,9 +47,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BusinessLogic\Dots\GoodDot.cs" />
+    <Compile Include="BusinessLogic\Expressions\SingleArgumentFunctions\AbsoluteValue.cs" />
+    <Compile Include="BusinessLogic\Expressions\SingleArgumentFunctions\Cosine.cs" />
     <Compile Include="BusinessLogic\Expressions\SingleArgumentFunctions\Exponential.cs" />
     <Compile Include="BusinessLogic\Expressions\SingleArgumentFunctions\NaturalLogarithm.cs" />
     <Compile Include="BusinessLogic\Expressions\SingleArgumentFunctionBase.cs" />
+    <Compile Include="BusinessLogic\Expressions\SingleArgumentFunctions\Sine.cs" />
+    <Compile Include="BusinessLogic\Expressions\SingleArgumentFunctions\Tangent.cs" />
     <Compile Include="BusinessLogic\FixedGoodDotsGenerator.cs" />
     <Compile Include="BusinessLogic\GoodDotsGenerator.cs" />
     <Compile Include="BusinessLogic\Helper\MathHelper.cs" />

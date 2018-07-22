@@ -3,6 +3,7 @@ using PollyNom.BusinessLogic;
 using PollyNom.BusinessLogic.Expressions;
 using PollyNom.BusinessLogic.Expressions.SingleArgumentFunctions;
 using PollyNomTest.Helper;
+using System;
 
 namespace PollyNomTest
 {
@@ -176,6 +177,59 @@ namespace PollyNomTest
             Assert.IsTrue(DoubleEquality.IsApproximatelyEqual(resultHundred1.Value, 100.0));
             Assert.IsTrue(DoubleEquality.IsApproximatelyEqual(resultTwo2.Value, 2.0));
             Assert.IsTrue(DoubleEquality.IsApproximatelyEqual(resultHundred2.Value, 100.0));
+        }
+
+        [TestMethod]
+        public void EvaluateTrigonometricFunctions()
+        {
+            // Arrange
+            IExpression sin = new Sine(new BaseX());
+            IExpression cos = new Cosine(new BaseX());
+            IExpression tan = new Tangent(new BaseX());
+
+            // Act
+            var resultSin1 = sin.Evaluate((1.0 / 6.0) * Math.PI);
+            var resultSin2 = sin.Evaluate((1.0 / 6.0) * Math.PI + 2 * Math.PI);
+            var resultCos1 = cos.Evaluate((1.0 / 3.0) * Math.PI);
+            var resultCos2 = cos.Evaluate((1.0 / 3.0) * Math.PI + 2 * Math.PI);
+            var resultTan1 = tan.Evaluate((1.0 / 4.0) * Math.PI);
+            var resultTan2 = tan.Evaluate((1.0 / 4.0) * Math.PI + 2 * Math.PI);
+
+            // Assert
+            Assert.IsTrue(resultSin1.HasValue);
+            Assert.IsTrue(resultSin2.HasValue);
+            Assert.IsTrue(resultCos1.HasValue);
+            Assert.IsTrue(resultCos2.HasValue);
+            Assert.IsTrue(resultTan1.HasValue);
+            Assert.IsTrue(resultTan2.HasValue);
+
+            Assert.IsTrue(DoubleEquality.IsApproximatelyEqual(resultSin1.Value, 0.5));
+            Assert.IsTrue(DoubleEquality.IsApproximatelyEqual(resultSin2.Value, 0.5));
+            Assert.IsTrue(DoubleEquality.IsApproximatelyEqual(resultCos1.Value, 0.5));
+            Assert.IsTrue(DoubleEquality.IsApproximatelyEqual(resultCos2.Value, 0.5));
+            Assert.IsTrue(DoubleEquality.IsApproximatelyEqual(resultTan1.Value, 1.0));
+            Assert.IsTrue(DoubleEquality.IsApproximatelyEqual(resultTan2.Value, 1.0)); 
+        }
+
+        [TestMethod]
+        public void EvaluateAbsoluteValue()
+        {
+            // Arrange
+            IExpression abs = new AbsoluteValue(new BaseX());
+
+            // Act
+            var resultPositive = abs.Evaluate(1.0);
+            var resultZero = abs.Evaluate(0.0);
+            var resultNegative = abs.Evaluate(-1.0);
+
+            // Assert
+            Assert.IsTrue(resultPositive.HasValue);
+            Assert.IsTrue(resultZero.HasValue);
+            Assert.IsTrue(resultNegative.HasValue);
+
+            Assert.IsTrue(DoubleEquality.IsApproximatelyEqual(resultPositive.Value, 1.0));
+            Assert.IsTrue(DoubleEquality.IsApproximatelyEqual(resultZero.Value, 0.0));
+            Assert.IsTrue(DoubleEquality.IsApproximatelyEqual(resultNegative.Value, 1.0));
         }
     }
 }

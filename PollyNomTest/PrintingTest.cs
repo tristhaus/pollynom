@@ -118,7 +118,7 @@ namespace PollyNomTest
         }
 
         [TestMethod]
-        public void PrintExponential()
+        public void PrintExponentialAndLogarithm()
         {
             // Arrange
             IExpression exp = new Exponential(new BaseX());
@@ -131,9 +131,61 @@ namespace PollyNomTest
             string resultExpLog = ExpressionPrinter.PrintExpression(expLog);
 
             // Assert
-            Assert.AreEqual<string>($"exp(x)", resultExp);
-            Assert.AreEqual<string>($"ln(x)", resultLog);
-            Assert.AreEqual<string>($"exp(ln(x))", resultExpLog);
+            Assert.AreEqual<string>("exp(x)", resultExp);
+            Assert.AreEqual<string>("ln(x)", resultLog);
+            Assert.AreEqual<string>("exp(ln(x))", resultExpLog);
+        }
+
+        [TestMethod]
+        public void PrintSine()
+        {
+            // Arrange
+            IExpression sin = new Sine(new BaseX());
+
+            // Act
+            string resultExp = ExpressionPrinter.PrintExpression(sin);
+
+            // Assert
+            Assert.AreEqual<string>("sin(x)", resultExp);
+        }
+
+        [TestMethod]
+        public void PrintCosine()
+        {
+            // Arrange
+            IExpression cos = new Cosine(new BaseX());
+
+            // Act
+            string resultExp = ExpressionPrinter.PrintExpression(cos);
+
+            // Assert
+            Assert.AreEqual<string>("cos(x)", resultExp);
+        }
+
+        [TestMethod]
+        public void PrintTangent()
+        {
+            // Arrange
+            IExpression tan = new Tangent(new BaseX());
+
+            // Act
+            string resultExp = ExpressionPrinter.PrintExpression(tan);
+
+            // Assert
+            Assert.AreEqual<string>("tan(x)", resultExp);
+        }
+
+        [TestMethod]
+        public void PrintAbsoluteValue()
+        {
+            // Arrange
+            IExpression abs = new AbsoluteValue(new BaseX());
+
+            // Act
+            string resultExp = ExpressionPrinter.PrintExpression(abs);
+
+            // Assert
+            Assert.AreEqual<string>("abs(x)", resultExp);
         }
     }
 }

@@ -521,6 +521,110 @@ namespace PollyNomTest
         }
 
         /// <summary>
+        /// Test about sine function, using both the operator and the method.
+        /// </summary>
+        [TestMethod]
+        public void SinePerOperatorAndPerMethod()
+        {
+            var argumentA = new BaseX();
+            var argumentAA = new BaseX();
+            var argumentB = new Add(new Add.AddExpression(Add.AddExpression.Signs.Plus, new Power(new BaseX(), new Constant(2.0))));
+
+            // sin(x)
+            var expressionA = new Sine(argumentA);
+            // sin(x)
+            var expressionAA = new Sine(argumentAA);
+            // sin(x^2)
+            var expressionB = new Sine(argumentB);
+
+            Assert.IsTrue(expressionA == expressionAA);
+            Assert.IsFalse(expressionB == expressionA);
+            Assert.IsTrue(expressionB != expressionAA);
+
+            Assert.IsTrue(expressionA.Equals(expressionAA));
+            Assert.IsFalse(expressionB.Equals(expressionA));
+            Assert.IsFalse(expressionB.Equals(expressionAA));
+        }
+
+        /// <summary>
+        /// Test about cosine function, using both the operator and the method.
+        /// </summary>
+        [TestMethod]
+        public void CosinePerOperatorAndPerMethod()
+        {
+            var argumentA = new BaseX();
+            var argumentAA = new BaseX();
+            var argumentB = new Add(new Add.AddExpression(Add.AddExpression.Signs.Plus, new Power(new BaseX(), new Constant(2.0))));
+
+            // cos(x)
+            var expressionA = new Cosine(argumentA);
+            // cos(x)
+            var expressionAA = new Cosine(argumentAA);
+            // cos(x^2)
+            var expressionB = new Cosine(argumentB);
+
+            Assert.IsTrue(expressionA == expressionAA);
+            Assert.IsFalse(expressionB == expressionA);
+            Assert.IsTrue(expressionB != expressionAA);
+
+            Assert.IsTrue(expressionA.Equals(expressionAA));
+            Assert.IsFalse(expressionB.Equals(expressionA));
+            Assert.IsFalse(expressionB.Equals(expressionAA));
+        }
+
+        /// <summary>
+        /// Test about tangent function, using both the operator and the method.
+        /// </summary>
+        [TestMethod]
+        public void TangentPerOperatorAndPerMethod()
+        {
+            var argumentA = new BaseX();
+            var argumentAA = new BaseX();
+            var argumentB = new Add(new Add.AddExpression(Add.AddExpression.Signs.Plus, new Power(new BaseX(), new Constant(2.0))));
+
+            // tan(x)
+            var expressionA = new Tangent(argumentA);
+            // tan(x)
+            var expressionAA = new Tangent(argumentAA);
+            // tan(x^2)
+            var expressionB = new Tangent(argumentB);
+
+            Assert.IsTrue(expressionA == expressionAA);
+            Assert.IsFalse(expressionB == expressionA);
+            Assert.IsTrue(expressionB != expressionAA);
+
+            Assert.IsTrue(expressionA.Equals(expressionAA));
+            Assert.IsFalse(expressionB.Equals(expressionA));
+            Assert.IsFalse(expressionB.Equals(expressionAA));
+        }
+
+        /// <summary>
+        /// Test about absolute value function, using both the operator and the method.
+        /// </summary>
+        [TestMethod]
+        public void AbsoluteValuePerOperatorAndPerMethod()
+        {
+            var argumentA = new BaseX();
+            var argumentAA = new BaseX();
+            var argumentB = new Add(new Add.AddExpression(Add.AddExpression.Signs.Plus, new Power(new BaseX(), new Constant(2.0))));
+
+            // abs(x)
+            var expressionA = new AbsoluteValue(argumentA);
+            // abs(x)
+            var expressionAA = new AbsoluteValue(argumentAA);
+            // abs(x^2)
+            var expressionB = new AbsoluteValue(argumentB);
+
+            Assert.IsTrue(expressionA == expressionAA);
+            Assert.IsFalse(expressionB == expressionA);
+            Assert.IsTrue(expressionB != expressionAA);
+
+            Assert.IsTrue(expressionA.Equals(expressionAA));
+            Assert.IsFalse(expressionB.Equals(expressionA));
+            Assert.IsFalse(expressionB.Equals(expressionAA));
+        }
+
+        /// <summary>
         /// Test about nontrivial equality, involving recursion (for reordered expression) and hash map challenges.
         /// </summary>
         [TestMethod]

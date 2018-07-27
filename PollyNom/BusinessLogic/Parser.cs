@@ -64,13 +64,83 @@ namespace PollyNom.BusinessLogic
         }
 
         /// <summary>
+        /// Prepare the string for parsing.
+        /// </summary>
+        /// <param name="S">The string to be prepared.</param>
+        /// <returns>The prepared string.</returns>
+        private string PrepareString(string S)
+        {
+            return S.Replace(" ", string.Empty);
+        }
+
+        /// <summary>
+        /// Check if the input string is valid to be parsed per business criteria.
+        /// </summary>
+        /// <param name="S">The string to be checked.</param>
+        /// <returns><c>true</c> if valid.</returns>
+        private bool ValidateInput(string S)
+        {
+            // check unsupported characters
+            {
+                Regex regex = new Regex("^[-0-9.+/*^()abceilnopstxX]+$", RegexOptions.Compiled);
+                if (!regex.IsMatch(S))
+                {
+                    return false;
+                }
+            }
+
+            // check for "^-", "^+", which is hard to parse
+            {
+                if (S.Contains("^-") || S.Contains("^+"))
+                {
+                    return false;
+                }
+            }
+
+            // check for dangling operators at the end of string
+            {
+                char lastChar = S[S.Length - 1];
+                if (lastChar == '+' || lastChar == '-' || lastChar == '*' || lastChar == '\\' || lastChar == '^' || lastChar == '(')
+                {
+                    return false;
+                }
+            }
+
+            // check balanced parentheses
+            {
+                int count = 0;
+                foreach (char c in S)
+                {
+                    if (c == '(')
+                    {
+                        count++;
+                    }
+                    else if (c == ')')
+                    {
+                        count--;
+                    }
+                    if (count < 0)
+                    {
+                        return false;
+                    }
+                }
+                if (count != 0)
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        /// <summary>
         /// Internal parsing (post validation). Supports recursion when given prepared and validated strings.
         /// </summary>
         /// <param name="S">The prepared and validated string to be parsed.</param>
         /// <returns>The expression, which can be <see cref="InvalidExpression"/>.</returns>
         private IExpression InternalParse(string S)
         {
-            if(!this.ValidateInput(S))
+            if (!this.ValidateInput(S))
             {
                 return this.invalidExpressionSample;
             }
@@ -81,23 +151,91 @@ namespace PollyNom.BusinessLogic
                 return this.InternalParse(S.Substring(1, S.Length - 2));
             }
 
-            // deal with a simple case
+            // deal with a simple case: plain x
             if (S == "X" || S == "x")
             {
                 return new BaseX();
             }
 
-            // deal with a simple case
+            // deal with a simple case: a numerical constant
             if (Regex.IsMatch(S, @"^[+-]?[0-9]+.?[0-9]*$", RegexOptions.Compiled))
             {
-                return ParseToConstant(S);
+                return this.ParseToConstant(S);
             }
 
-            // Now, tokenize
-            string token = string.Empty;
+            // now, tokenize
             List<string> tokens = new List<string>();
             List<string> ops = new List<string>();
 
+            this.Tokenize(S, tokens, ops);
+
+            // deal with a signed single token
+            if (Regex.IsMatch(S, @"^[+-]", RegexOptions.Compiled) && tokens.Count == 1)
+            {
+                string subToken = S.Substring(1, S.Length - 1);
+                Add.AddExpression.Signs sign = S[0] == '+' ? Add.AddExpression.Signs.Plus : Add.AddExpression.Signs.Minus;
+                IExpression bracketedExpression = this.InternalParse(subToken);
+                if (bracketedExpression.Equals(this.invalidExpressionSample))
+                {
+                    return this.invalidExpressionSample;
+                }
+
+                return new Add(new Add.AddExpression(sign, bracketedExpression));
+            }
+
+            // reassemble for recursive parsing
+            // First case: plus and minus
+            if (ops.Contains("+") || ops.Contains("-"))
+            {
+                return this.ParseAdd(tokens, ops);
+            }
+
+            // Second case: multiply and divide
+            if (ops.Contains("*") || ops.Contains("/"))
+            {
+                return this.ParseMultiply(tokens, ops);
+            }
+
+            // Third case: power expressions
+            if (ops.Contains("^"))
+            {
+                return this.ParsePower(tokens, ops);
+            }
+
+            // Fourth case: functions
+            if (tokens.Count == 1)
+            {
+                return ParseFunction(tokens);
+            }
+
+            return this.invalidExpressionSample;
+        }
+
+        /// <summary>
+        /// Parses a <see cref="Constant"/> expression from the input string.
+        /// </summary>
+        /// <param name="S">The input string.</param>
+        /// <returns>The expression, which can be <see cref="InvalidExpression"/>.</returns>
+        private IExpression ParseToConstant(string S)
+        {
+            double result;
+            if (double.TryParse(S, NumberStyles.Any, new CultureInfo("en-US"), out result))
+            {
+                return new Constant(result);
+            }
+
+            return this.invalidExpressionSample;
+        }
+
+        /// <summary>
+        /// Fill the provided lists with operands and operators.
+        /// </summary>
+        /// <param name="S">The input string.</param>
+        /// <param name="tokens">Output slot for lists of operands.</param>
+        /// <param name="ops">Output slot for lists of operators.</param>
+        private void Tokenize(string S, List<string> tokens, List<string> ops)
+        {
+            string token = string.Empty;
             for (int index = 0; index < S.Length; index++)
             {
                 char c = S[index];
@@ -121,185 +259,11 @@ namespace PollyNom.BusinessLogic
                 token += c;
             }
 
-            if(token.Length > 0)
+            if (token.Length > 0)
             {
                 tokens.Add(token);
                 token = string.Empty;
             }
-
-            // deal with a signed single token
-            if (Regex.IsMatch(S, @"^[+-]", RegexOptions.Compiled) && tokens.Count == 1)
-            {
-                string subToken = S.Substring(1, S.Length - 1);
-                Add.AddExpression.Signs sign = S[0] == '+' ? Add.AddExpression.Signs.Plus : Add.AddExpression.Signs.Minus;
-                IExpression bracketedExpression = this.InternalParse(subToken);
-                if (bracketedExpression.Equals(this.invalidExpressionSample))
-                {
-                    return this.invalidExpressionSample;
-                }
-
-                return new Add(new Add.AddExpression(sign, bracketedExpression));
-            }
-
-            // reassemble for recursive parsing, three cases. First case: plus and minus
-            if (ops.Contains("+") || ops.Contains("-"))
-            {
-                List<Add.AddExpression> targetList = new List<Add.AddExpression>();
-
-                Add.AddExpression.Signs sign = Add.AddExpression.Signs.Plus;
-
-                token = tokens[0];
-                tokens.RemoveAt(0);
-                foreach(var op in ops)
-                {
-                    if(op == "+" || op == "-")
-                    {
-                        var expression = this.InternalParse(token);
-                        if (expression.Equals(this.invalidExpressionSample))
-                        {
-                            return this.invalidExpressionSample;
-                        }
-                        targetList.Add(new Add.AddExpression(sign, expression));
-                        token = tokens[0];
-                        tokens.RemoveAt(0);
-                        sign = op == "+" ? Add.AddExpression.Signs.Plus : Add.AddExpression.Signs.Minus;
-                    }
-                    else
-                    {
-                        token += op + tokens[0];
-                        tokens.RemoveAt(0);
-                    }
-                }
-
-                if(tokens.Count == 1)
-                {
-                    token = tokens[0];
-                }
-
-                if (token != string.Empty)
-                {
-                    var expression = this.InternalParse(token);
-                    if (expression.Equals(this.invalidExpressionSample))
-                    {
-                        return this.invalidExpressionSample;
-                    }
-                    targetList.Add(new Add.AddExpression(sign, expression));
-                    token = string.Empty;
-                }
-
-                return new Add(targetList);
-            }
-
-            // Second case: multiply and divide
-            if (ops.Contains("*") || ops.Contains("/"))
-            {
-                List<Multiply.MultiplyExpression> targetList = new List<Multiply.MultiplyExpression>();
-
-                Multiply.MultiplyExpression.Signs sign = Multiply.MultiplyExpression.Signs.Multiply;
-
-                token = tokens[0];
-                tokens.RemoveAt(0);
-                foreach (var op in ops)
-                {
-                    if (op == "*" || op == "/")
-                    {
-                        var expression = this.InternalParse(token);
-                        if (expression.Equals(this.invalidExpressionSample))
-                        {
-                            return this.invalidExpressionSample;
-                        }
-                        targetList.Add(new Multiply.MultiplyExpression(sign, expression));
-                        token = tokens[0];
-                        tokens.RemoveAt(0);
-                        sign = op == "*" ? Multiply.MultiplyExpression.Signs.Multiply : Multiply.MultiplyExpression.Signs.Divide;
-                    }
-                    else
-                    {
-                        token += op + tokens[0];
-                        tokens.RemoveAt(0);
-                    }
-                }
-
-                if (tokens.Count == 1)
-                {
-                    token = tokens[0];
-                }
-
-                if (token != string.Empty)
-                {
-                    var expression = this.InternalParse(token);
-                    if(expression.Equals(this.invalidExpressionSample))
-                    {
-                        return this.invalidExpressionSample;
-                    }
-                    targetList.Add(new Multiply.MultiplyExpression(sign, expression));
-                    token = string.Empty;
-                }
-
-                return new Multiply(targetList);
-            }
-
-            // Third case: power expressions
-            if (ops.Contains("^"))
-            {
-                if (ops.Contains("*") || ops.Contains("/") || ops.Contains("+") || ops.Contains("-"))
-                {
-                    return this.invalidExpressionSample;
-                }
-
-                string baseToken = tokens[0];
-                tokens.RemoveAt(0);
-                IExpression baseExpression = this.InternalParse(baseToken);
-                if (baseExpression.Equals(this.invalidExpressionSample))
-                {
-                    return this.invalidExpressionSample;
-                }
-
-                string exponentToken = tokens[0];
-                tokens.RemoveAt(0);
-                for(int index = 1; index < ops.Count; index++)
-                {
-                    exponentToken += ops[index] + tokens[0];
-                    tokens.RemoveAt(0);
-                }
-
-                IExpression exponentExpression = this.InternalParse(exponentToken);
-                if (exponentExpression.Equals(this.invalidExpressionSample))
-                {
-                    return this.invalidExpressionSample;
-                }
-
-                return new Power(baseExpression, exponentExpression);
-            }
-
-            // Fourth case: functions
-            if(tokens.Count == 1)
-            {
-                token = tokens[0];
-
-                Regex functionNameRegex = new Regex(@"^(?<name>[a-zA-Z0-9]+\()");
-                Match match = functionNameRegex.Match(token);
-                string functionName = match.Groups["name"].Value.Replace("(", string.Empty);
-
-                if(!functions.ContainsKey(functionName))
-                {
-                    return this.invalidExpressionSample;
-                }
-
-                var functionType = this.functions[functionName];
-
-                string argumentString = token.Substring(functionName.Length);
-                IExpression argumentExpression = this.InternalParse(argumentString);
-
-                if(argumentExpression.Equals(this.invalidExpressionSample))
-                {
-                    return this.invalidExpressionSample;
-                }
-
-                return Activator.CreateInstance(functionType, argumentExpression) as IExpression;
-            }
-
-            return this.invalidExpressionSample;
         }
 
         /// <summary>
@@ -313,19 +277,185 @@ namespace PollyNom.BusinessLogic
         }
 
         /// <summary>
-        /// Parses a <see cref="Constant"/> expression from the input string.
+        /// Parse the operators and operands into an <see cref="Add"/> expression,
+        /// reassembling the rest into summands.
         /// </summary>
-        /// <param name="S">The input string.</param>
-        /// <returns>The expression, which can be <see cref="InvalidExpression"/>.</returns>
-        private IExpression ParseToConstant(string S)
+        /// <param name="tokens">The lists of operands.</param>
+        /// <param name="ops">The lists of operators.</param>
+        /// <returns>A returnable <see cref="IExpression"/>.</returns>
+        private IExpression ParseAdd(List<string> tokens, List<string> ops)
         {
-            double result;
-            if (double.TryParse(S, NumberStyles.Any, new CultureInfo("en-US"), out result))
+            List<Add.AddExpression> targetList = new List<Add.AddExpression>();
+
+            Add.AddExpression.Signs sign = Add.AddExpression.Signs.Plus;
+
+            string token = tokens[0];
+            tokens.RemoveAt(0);
+            foreach (var op in ops)
             {
-                return new Constant(result);
+                if (op == "+" || op == "-")
+                {
+                    var expression = this.InternalParse(token);
+                    if (expression.Equals(this.invalidExpressionSample))
+                    {
+                        return this.invalidExpressionSample;
+                    }
+                    targetList.Add(new Add.AddExpression(sign, expression));
+                    token = tokens[0];
+                    tokens.RemoveAt(0);
+                    sign = op == "+" ? Add.AddExpression.Signs.Plus : Add.AddExpression.Signs.Minus;
+                }
+                else
+                {
+                    token += op + tokens[0];
+                    tokens.RemoveAt(0);
+                }
             }
 
-            return this.invalidExpressionSample;
+            if (tokens.Count == 1)
+            {
+                token = tokens[0];
+            }
+
+            if (token != string.Empty)
+            {
+                var expression = this.InternalParse(token);
+                if (expression.Equals(this.invalidExpressionSample))
+                {
+                    return this.invalidExpressionSample;
+                }
+                targetList.Add(new Add.AddExpression(sign, expression));
+                token = string.Empty;
+            }
+
+            return new Add(targetList);
+        }
+
+        /// <summary>
+        /// Parse the operators and operands into a <see cref="Multiply"/> expression,
+        /// reassembling the rest into factors.
+        /// </summary>
+        /// <param name="tokens">The lists of operands.</param>
+        /// <param name="ops">The lists of operators.</param>
+        /// <returns>A returnable <see cref="IExpression"/>.</returns>
+        private IExpression ParseMultiply(List<string> tokens, List<string> ops)
+        {
+            List<Multiply.MultiplyExpression> targetList = new List<Multiply.MultiplyExpression>();
+
+            Multiply.MultiplyExpression.Signs sign = Multiply.MultiplyExpression.Signs.Multiply;
+
+            string token = tokens[0];
+            tokens.RemoveAt(0);
+            foreach (var op in ops)
+            {
+                if (op == "*" || op == "/")
+                {
+                    var expression = this.InternalParse(token);
+                    if (expression.Equals(this.invalidExpressionSample))
+                    {
+                        return this.invalidExpressionSample;
+                    }
+                    targetList.Add(new Multiply.MultiplyExpression(sign, expression));
+                    token = tokens[0];
+                    tokens.RemoveAt(0);
+                    sign = op == "*" ? Multiply.MultiplyExpression.Signs.Multiply : Multiply.MultiplyExpression.Signs.Divide;
+                }
+                else
+                {
+                    token += op + tokens[0];
+                    tokens.RemoveAt(0);
+                }
+            }
+
+            if (tokens.Count == 1)
+            {
+                token = tokens[0];
+            }
+
+            if (token != string.Empty)
+            {
+                var expression = this.InternalParse(token);
+                if (expression.Equals(this.invalidExpressionSample))
+                {
+                    return this.invalidExpressionSample;
+                }
+                targetList.Add(new Multiply.MultiplyExpression(sign, expression));
+                token = string.Empty;
+            }
+
+            return new Multiply(targetList);
+        }
+
+        /// <summary>
+        /// Parse the operators and operands into a <see cref="Power"/> expression,
+        /// reassembling the rest into basis and exponent.
+        /// </summary>
+        /// <param name="tokens">The lists of operands.</param>
+        /// <param name="ops">The lists of operators.</param>
+        /// <returns>A returnable <see cref="IExpression"/>.</returns>
+        private IExpression ParsePower(List<string> tokens, List<string> ops)
+        {
+            if (ops.Contains("*") || ops.Contains("/") || ops.Contains("+") || ops.Contains("-"))
+            {
+                return this.invalidExpressionSample;
+            }
+
+            string baseToken = tokens[0];
+            tokens.RemoveAt(0);
+            IExpression baseExpression = this.InternalParse(baseToken);
+            if (baseExpression.Equals(this.invalidExpressionSample))
+            {
+                return this.invalidExpressionSample;
+            }
+
+            string exponentToken = tokens[0];
+            tokens.RemoveAt(0);
+            for (int index = 1; index < ops.Count; index++)
+            {
+                exponentToken += ops[index] + tokens[0];
+                tokens.RemoveAt(0);
+            }
+
+            IExpression exponentExpression = this.InternalParse(exponentToken);
+            if (exponentExpression.Equals(this.invalidExpressionSample))
+            {
+                return this.invalidExpressionSample;
+            }
+
+            return new Power(baseExpression, exponentExpression);
+        }
+
+        /// <summary>
+        /// Parse the operators and operands into a <see cref="SingleArgumentFunctionBase{T}"/> 
+        /// expression, reassembling the rest into the argument.
+        /// </summary>
+        /// <param name="tokens">The lists of operands.</param>
+        /// <returns>A returnable <see cref="IExpression"/>.</returns>
+        /// <remarks>Note that the operators should be non-existent when this is called.</remarks>
+        private IExpression ParseFunction(List<string> tokens)
+        {
+            string token = tokens[0];
+
+            Regex functionNameRegex = new Regex(@"^(?<name>[a-zA-Z0-9]+\()");
+            Match match = functionNameRegex.Match(token);
+            string functionName = match.Groups["name"].Value.Replace("(", string.Empty);
+
+            if (!functions.ContainsKey(functionName))
+            {
+                return this.invalidExpressionSample;
+            }
+
+            var functionType = this.functions[functionName];
+
+            string argumentString = token.Substring(functionName.Length);
+            IExpression argumentExpression = this.InternalParse(argumentString);
+
+            if (argumentExpression.Equals(this.invalidExpressionSample))
+            {
+                return this.invalidExpressionSample;
+            }
+
+            return Activator.CreateInstance(functionType, argumentExpression) as IExpression;
         }
 
         /// <summary>
@@ -396,76 +526,6 @@ namespace PollyNom.BusinessLogic
             }
 
             return -1;
-        }
-
-        /// <summary>
-        /// Check if the input string is valid to be parsed per business criteria.
-        /// </summary>
-        /// <param name="S">The string to be checked.</param>
-        /// <returns><c>true</c> if valid.</returns>
-        private bool ValidateInput(string S)
-        {
-            // check unsupported characters
-            {
-                Regex regex = new Regex("^[-0-9.+/*^()abceilnopstxX]+$", RegexOptions.Compiled);
-                if (!regex.IsMatch(S))
-                {
-                    return false;
-                }
-            }
-
-            // check for "^-", "^+", which is hard to parse
-            {
-                if(S.Contains("^-") || S.Contains("^+"))
-                {
-                    return false;
-                }
-            }
-
-            // check for dangling operators at the end of string
-            {
-                char lastChar = S[S.Length - 1];
-                if(lastChar == '+' || lastChar == '-' || lastChar == '*' || lastChar == '\\' || lastChar == '^' || lastChar == '(')
-                {
-                    return false;
-                }
-            }
-
-            // check balanced parentheses
-            {
-                int count = 0;
-                foreach (char c in S)
-                {
-                    if (c == '(')
-                    {
-                        count++;
-                    }
-                    else if (c == ')')
-                    {
-                        count--;
-                    }
-                    if (count < 0)
-                    {
-                        return false;
-                    }
-                }
-                if (count != 0)
-                {
-                    return false;
-                }
-            }
-
-            return true;
-        }
-
-        /// <summary>
-        /// Prepare the string for parsing.
-        /// </summary>
-        /// <param name="S">The string to be prepared.</param>
-        /// <returns>The prepared string.</returns>
-        private string PrepareString(string S)
-        {
-            return S.Replace(" ", string.Empty);
         }
     }
 }

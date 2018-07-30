@@ -58,7 +58,7 @@
     <Compile Include="EqualityTest.cs" />
     <Compile Include="EvaluatingTest.cs" />
     <Compile Include="HelperTests.cs" />
-    <Compile Include="Helper\DoubleComparer.cs" />
+    <Compile Include="Helper\DoubleEquality.cs" />
     <Compile Include="Helper\ExpressionPrinter.cs" />
     <Compile Include="PointListGenerationTest.cs" />
     <Compile Include="PrintingTest.cs" />

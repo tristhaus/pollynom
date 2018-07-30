@@ -13,6 +13,9 @@ namespace PollyNomTest
     [TestClass]
     public class PrintingTest
     {
+        /// <summary>
+        /// Tests the printing of <see cref="TestExpressionBuilder.Expression01"/>.
+        /// </summary>
         [TestMethod]
         public void Print01()
         {
@@ -26,6 +29,9 @@ namespace PollyNomTest
             Assert.AreEqual<string>($"{2.0}*x", result);
         }
 
+        /// <summary>
+        /// Tests the printing of <see cref="TestExpressionBuilder.Expression02"/>.
+        /// </summary>
         [TestMethod]
         public void Print02()
         {
@@ -39,6 +45,9 @@ namespace PollyNomTest
             Assert.AreEqual<string>($"{2}*x^{3}/(x-{2}^x)", result);
         }
 
+        /// <summary>
+        /// Tests the printing of <see cref="TestExpressionBuilder.Expression03"/>.
+        /// </summary>
         [TestMethod]
         public void Print03()
         {
@@ -52,6 +61,9 @@ namespace PollyNomTest
             Assert.AreEqual<string>($"{2}*(x+{1})", result);
         }
 
+        /// <summary>
+        /// Tests the printing of <see cref="TestExpressionBuilder.Expression04"/>.
+        /// </summary>
         [TestMethod]
         public void Print04()
         {
@@ -65,6 +77,9 @@ namespace PollyNomTest
             Assert.AreEqual<string>($"(x+{1})^{2}", result);
         }
 
+        /// <summary>
+        /// Tests the printing of <see cref="TestExpressionBuilder.Expression05"/>.
+        /// </summary>
         [TestMethod]
         public void Print05()
         {
@@ -78,6 +93,9 @@ namespace PollyNomTest
             Assert.AreEqual<string>($"(x+{1})^(x/{3})", result);
         }
 
+        /// <summary>
+        /// Tests the printing of <see cref="TestExpressionBuilder.Expression06"/>.
+        /// </summary>
         [TestMethod]
         public void Print06()
         {
@@ -91,6 +109,9 @@ namespace PollyNomTest
             Assert.AreEqual<string>($"x-{1}+{2}-{3}", result);
         }
 
+        /// <summary>
+        /// Tests the printing of <see cref="TestExpressionBuilder.Expression07"/>.
+        /// </summary>
         [TestMethod]
         public void Print07()
         {
@@ -104,6 +125,9 @@ namespace PollyNomTest
             Assert.AreEqual<string>($"x+{1}-{2}+{3}", result);
         }
 
+        /// <summary>
+        /// Tests the printing of <see cref="TestExpressionBuilder.Expression08"/>.
+        /// </summary>
         [TestMethod]
         public void Print08()
         {
@@ -117,6 +141,9 @@ namespace PollyNomTest
             Assert.AreEqual<string>($"x+{1}-{4}+{7}", result);
         }
 
+        /// <summary>
+        /// Tests the printing of an exponential function and natural logarithm.
+        /// </summary>
         [TestMethod]
         public void PrintExponentialAndLogarithm()
         {
@@ -136,6 +163,9 @@ namespace PollyNomTest
             Assert.AreEqual<string>("exp(ln(x))", resultExpLog);
         }
 
+        /// <summary>
+        /// Tests the printing of the sine function.
+        /// </summary>
         [TestMethod]
         public void PrintSine()
         {
@@ -149,6 +179,9 @@ namespace PollyNomTest
             Assert.AreEqual<string>("sin(x)", resultExp);
         }
 
+        /// <summary>
+        /// Tests the printing of the cosine function.
+        /// </summary>
         [TestMethod]
         public void PrintCosine()
         {
@@ -162,6 +195,9 @@ namespace PollyNomTest
             Assert.AreEqual<string>("cos(x)", resultExp);
         }
 
+        /// <summary>
+        /// Tests the printing of the tangent function.
+        /// </summary>
         [TestMethod]
         public void PrintTangent()
         {
@@ -175,6 +211,9 @@ namespace PollyNomTest
             Assert.AreEqual<string>("tan(x)", resultExp);
         }
 
+        /// <summary>
+        /// Tests the printing of the absolute value function.
+        /// </summary>
         [TestMethod]
         public void PrintAbsoluteValue()
         {

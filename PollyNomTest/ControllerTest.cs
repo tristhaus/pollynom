@@ -9,13 +9,16 @@ using PollyNom.Controller;
 namespace PollyNomTest
 {
     /// <summary>
-    /// Collects tests related to calling controller methods.
+    /// Collects tests related to controller methods.
     /// </summary>
     [TestClass]
     public class ControllerTest
     {
+        /// <summary>
+        /// Tests the sequential addition and removal of expressions.
+        /// </summary>
         [TestMethod]
-        public void TestSequentialAdditionAndSubtraction()
+        public void TestSequentialAdditionAndRemoval()
         {
             // Arrange
             List<IDot> testDots = new List<IDot> { new GoodDot(0.0, 0.0), new GoodDot(4.0, 0.0)};

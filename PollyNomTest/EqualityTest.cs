@@ -352,7 +352,7 @@ namespace PollyNomTest
         }
 
         /// <summary>
-        /// Test about power expressions, involving reordering, using the operator.
+        /// Tests about power expressions, involving reordering, using the operator.
         /// </summary>
         [TestMethod]
         public void PowerEqualPerOperator()
@@ -379,7 +379,7 @@ namespace PollyNomTest
         }
 
         /// <summary>
-        /// Test about power expressions, involving different constants, using the operator.
+        /// Tests about power expressions, involving different constants, using the operator.
         /// </summary>
         [TestMethod]
         public void PowerUnequalPerOperator()
@@ -406,7 +406,7 @@ namespace PollyNomTest
         }
 
         /// <summary>
-        /// Test about power expressions, involving different constants, using the method.
+        /// Tests about power expressions, involving different constants, using the method.
         /// </summary>
         [TestMethod]
         public void PowerPerMethod()
@@ -433,7 +433,7 @@ namespace PollyNomTest
         }
 
         /// <summary>
-        /// Test about exponential function, using the method.
+        /// Tests about exponential function, using the method.
         /// </summary>
         [TestMethod]
         public void ExponentialPerMethod()
@@ -455,7 +455,7 @@ namespace PollyNomTest
         }
 
         /// <summary>
-        /// Test about exponential function, using the operator.
+        /// Tests about exponential function, using the operator.
         /// </summary>
         [TestMethod]
         public void ExponentialPerOperator()
@@ -477,7 +477,7 @@ namespace PollyNomTest
         }
 
         /// <summary>
-        /// Test about logarithm function, using the method.
+        /// Tests about logarithm function, using the method.
         /// </summary>
         [TestMethod]
         public void LogarithmPerMethod()
@@ -499,7 +499,7 @@ namespace PollyNomTest
         }
 
         /// <summary>
-        /// Test about logarithm function, using the operator.
+        /// Tests about logarithm function, using the operator.
         /// </summary>
         [TestMethod]
         public void LogarithmPerOperator()
@@ -521,7 +521,7 @@ namespace PollyNomTest
         }
 
         /// <summary>
-        /// Test about sine function, using both the operator and the method.
+        /// Tests about sine function, using both the operator and the method.
         /// </summary>
         [TestMethod]
         public void SinePerOperatorAndPerMethod()
@@ -547,7 +547,7 @@ namespace PollyNomTest
         }
 
         /// <summary>
-        /// Test about cosine function, using both the operator and the method.
+        /// Tests about cosine function, using both the operator and the method.
         /// </summary>
         [TestMethod]
         public void CosinePerOperatorAndPerMethod()
@@ -573,7 +573,7 @@ namespace PollyNomTest
         }
 
         /// <summary>
-        /// Test about tangent function, using both the operator and the method.
+        /// Tests about tangent function, using both the operator and the method.
         /// </summary>
         [TestMethod]
         public void TangentPerOperatorAndPerMethod()
@@ -599,7 +599,7 @@ namespace PollyNomTest
         }
 
         /// <summary>
-        /// Test about absolute value function, using both the operator and the method.
+        /// Tests about absolute value function, using both the operator and the method.
         /// </summary>
         [TestMethod]
         public void AbsoluteValuePerOperatorAndPerMethod()
@@ -625,7 +625,7 @@ namespace PollyNomTest
         }
 
         /// <summary>
-        /// Test about nontrivial equality, involving recursion (for reordered expression) and hash map challenges.
+        /// Tests about nontrivial equality, involving recursion (for reordered expression) and hash map challenges.
         /// </summary>
         [TestMethod]
         public void NontrivialMultiplyAddMix()

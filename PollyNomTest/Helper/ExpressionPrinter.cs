@@ -5,7 +5,7 @@ namespace PollyNomTest.Helper
     /// <summary>
     /// Provides a filtered printing of expressions.
     /// </summary>
-    internal class ExpressionPrinter
+    internal static class ExpressionPrinter
     {
         /// <summary>
         /// Print the expression, filter the result.

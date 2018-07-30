@@ -7,7 +7,7 @@ namespace PollyNomTest.Helper
     /// <summary>
     /// Provides a collection of test expressions.
     /// </summary>
-    internal class TestExpressionBuilder
+    internal static class TestExpressionBuilder
     {
         /// <summary>
         /// Builds

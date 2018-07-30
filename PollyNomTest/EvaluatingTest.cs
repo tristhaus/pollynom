@@ -14,6 +14,9 @@ namespace PollyNomTest
     [TestClass]
     public class EvaluatingTest
     {
+        /// <summary>
+        /// Tests the evaluation of <see cref="TestExpressionBuilder.Expression01"/>.
+        /// </summary>
         [TestMethod]
         public void Evaluate01()
         {
@@ -29,7 +32,10 @@ namespace PollyNomTest
             Assert.IsTrue(result.HasValue);
             Assert.IsTrue(DoubleEquality.IsApproximatelyEqual(expectedValue, number));
         }
-
+        
+        /// <summary>
+        /// Tests the evaluation of <see cref="TestExpressionBuilder.Expression02"/>.
+        /// </summary>
         [TestMethod]
         public void Evaluate02()
         {
@@ -46,6 +52,9 @@ namespace PollyNomTest
             Assert.IsTrue(DoubleEquality.IsApproximatelyEqual(expectedValue, number));
         }
 
+        /// <summary>
+        /// Tests the evaluation of <see cref="TestExpressionBuilder.Expression03"/>.
+        /// </summary>
         [TestMethod]
         public void Evaluate03()
         {
@@ -62,6 +71,9 @@ namespace PollyNomTest
             Assert.IsTrue(DoubleEquality.IsApproximatelyEqual(expectedValue, number));
         }
 
+        /// <summary>
+        /// Tests the evaluation of <see cref="TestExpressionBuilder.Expression04"/>.
+        /// </summary>
         [TestMethod]
         public void Evaluate04()
         {
@@ -78,6 +90,9 @@ namespace PollyNomTest
             Assert.IsTrue(DoubleEquality.IsApproximatelyEqual(expectedValue, number));
         }
 
+        /// <summary>
+        /// Tests the evaluation of <see cref="TestExpressionBuilder.Expression05"/>.
+        /// </summary>
         [TestMethod]
         public void Evaluate05()
         {
@@ -94,7 +109,9 @@ namespace PollyNomTest
             Assert.IsTrue(DoubleEquality.IsApproximatelyEqual(expectedValue, number));
         }
 
-
+        /// <summary>
+        /// Tests the evaluation of <see cref="TestExpressionBuilder.Expression06"/>.
+        /// </summary>
         [TestMethod]
         public void Evaluate06()
         {
@@ -111,6 +128,9 @@ namespace PollyNomTest
             Assert.IsTrue(DoubleEquality.IsApproximatelyEqual(expectedValue, number));
         }
 
+        /// <summary>
+        /// Tests the evaluation of <see cref="TestExpressionBuilder.Expression07"/>.
+        /// </summary>
         [TestMethod]
         public void Evaluate07()
         {
@@ -127,6 +147,9 @@ namespace PollyNomTest
             Assert.IsTrue(DoubleEquality.IsApproximatelyEqual(expectedValue, number));
         }
 
+        /// <summary>
+        /// Tests the evaluation of <see cref="TestExpressionBuilder.Expression08"/>.
+        /// </summary>
         [TestMethod]
         public void Evaluate08()
         {
@@ -143,6 +166,9 @@ namespace PollyNomTest
             Assert.IsTrue(DoubleEquality.IsApproximatelyEqual(expectedValue, number));
         }
 
+        /// <summary>
+        /// Tests the evaluation of the exponential function and the natural logarithm.
+        /// </summary>
         [TestMethod]
         public void EvaluateExponentialAndLogarithm()
         {
@@ -179,6 +205,9 @@ namespace PollyNomTest
             Assert.IsTrue(DoubleEquality.IsApproximatelyEqual(resultHundred2.Value, 100.0));
         }
 
+        /// <summary>
+        /// Tests the evaluation of trigonometric functions.
+        /// </summary>
         [TestMethod]
         public void EvaluateTrigonometricFunctions()
         {
@@ -211,6 +240,9 @@ namespace PollyNomTest
             Assert.IsTrue(DoubleEquality.IsApproximatelyEqual(resultTan2.Value, 1.0)); 
         }
 
+        /// <summary>
+        /// Tests the evaluationo of the absolute value function.
+        /// </summary>
         [TestMethod]
         public void EvaluateAbsoluteValue()
         {

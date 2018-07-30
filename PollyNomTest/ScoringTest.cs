@@ -11,6 +11,9 @@ namespace PollyNomTest
     [TestClass]
     public class ScoringTest
     {
+        /// <summary>
+        /// Single list with 3 hits should give 7.
+        /// </summary>
         [TestMethod]
         public void SimpleCase()
         {
@@ -24,8 +27,11 @@ namespace PollyNomTest
             Assert.IsTrue(7 == score);
         }
 
+        /// <summary>
+        /// A list with no hits should give 0.
+        /// </summary>
         [TestMethod]
-        public void EmptyList()
+        public void NoHitsList()
         {
             // Arrange
             List<int> list = new List<int>() { 0 };
@@ -37,6 +43,25 @@ namespace PollyNomTest
             Assert.IsTrue(0 == score);
         }
 
+        /// <summary>
+        /// An empty list should give 0.
+        /// </summary>
+        [TestMethod]
+        public void EmptyList()
+        {
+            // Arrange
+            List<int> list = new List<int>(0);
+
+            // Act
+            int score = ScoreCalculator.CalculateScore(list);
+
+            // Assert
+            Assert.IsTrue(0 == score);
+        }
+
+        /// <summary>
+        /// A more complicated case.
+        /// </summary>
         [TestMethod]
         public void CombinedCase()
         {

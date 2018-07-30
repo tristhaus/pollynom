@@ -5,7 +5,7 @@ namespace PollyNomTest.Helper
     /// <summary>
     /// Allows to compare two doubles for approximate equality.
     /// </summary>
-    public class DoubleEquality
+    internal static class DoubleEquality
     {
         /// <summary>
         /// Threshold below which the absolute difference must be for equality.

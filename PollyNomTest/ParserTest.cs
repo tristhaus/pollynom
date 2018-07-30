@@ -12,6 +12,9 @@ namespace PollyNomTest
     [TestClass]
     public class ParserTest
     {
+        /// <summary>
+        /// Tests simple expressions.
+        /// </summary>
         [TestMethod]
         public void SimpleTests()
         {
@@ -42,7 +45,7 @@ namespace PollyNomTest
         }
 
         /// <summary>
-        /// Test whether single addition terms evaluate to Constant, regardless of sign.
+        /// Tests whether single addition terms evaluate to Constant, regardless of sign.
         /// </summary>
         [TestMethod]
         public void SingleAdditionTermAsConstant()
@@ -61,6 +64,9 @@ namespace PollyNomTest
             Assert.IsTrue(exprNegative.Equals(new Constant(-2.2)));
         }
 
+        /// <summary>
+        /// Tests whether a simple expression parses to an <see cref="Add"/> instance.
+        /// </summary>
         [TestMethod]
         public void SingleXasAdd()
         {
@@ -75,6 +81,9 @@ namespace PollyNomTest
             Assert.IsTrue(exprSignedX.Equals(new Add(new Add.AddExpression(Add.AddExpression.Signs.Minus, new BaseX()))));
         }
 
+        /// <summary>
+        /// Tests the correct parsing of simple additive terms.
+        /// </summary>
         [TestMethod]
         public void SimpleAddition01()
         {
@@ -90,6 +99,9 @@ namespace PollyNomTest
             Assert.IsTrue(exprTwoAdd.Equals(expectedTwoAdd));
         }
 
+        /// <summary>
+        /// Tests the correct parsing of simple additive terms involving negative signs.
+        /// </summary>
         [TestMethod]
         public void SimpleAddition02()
         {
@@ -105,6 +117,9 @@ namespace PollyNomTest
             Assert.IsTrue(expectedTwoSubtract.Equals(exprTwoSubtract));
         }
 
+        /// <summary>
+        /// Tests the correct parsing of simple additive terms involving parentheses.
+        /// </summary>
         [TestMethod]
         public void SimpleAddition03()
         {
@@ -120,6 +135,9 @@ namespace PollyNomTest
             Assert.IsTrue(exprTwoAddBracketed.Equals(expectedTwoAddBracketed));
         }
 
+        /// <summary>
+        /// Tests the correct parsing of simple additive terms involving alternating signs.
+        /// </summary>
         [TestMethod]
         public void SimpleAddition04()
         {
@@ -135,6 +153,9 @@ namespace PollyNomTest
             Assert.IsTrue(exprThreeAdd.Equals(expectedThreeAdd));
         }
 
+        /// <summary>
+        /// Tests the correct parsing of simple additive terms involving alternating signs and parentheses.
+        /// </summary>
         [TestMethod]
         public void SimpleAddition05()
         {
@@ -159,6 +180,9 @@ namespace PollyNomTest
             Assert.IsTrue(exprThreeAddWithBrackets.Equals(expectedThreeAddWithBrackets));
         }
 
+        /// <summary>
+        /// Tests the correct parsing of simple multiplicative terms.
+        /// </summary>
         [TestMethod]
         public void SimpleMultiplication01()
         {
@@ -173,6 +197,10 @@ namespace PollyNomTest
             // Assert
             Assert.IsTrue(exprTwoMultiply.Equals(expectedTwoMultiply));
         }
+
+        /// <summary>
+        /// Tests the correct parsing of simple multiplicative terms involving division.
+        /// </summary>
 
         [TestMethod]
         public void SimpleMultiplication02()
@@ -189,6 +217,9 @@ namespace PollyNomTest
             Assert.IsTrue(expectedTwoDivide.Equals(exprTwoDivide));
         }
 
+        /// <summary>
+        /// Tests the correct parsing of simple multiplicative terms involving parentheses.
+        /// </summary>
         [TestMethod]
         public void SimpleMultiplication03()
         {
@@ -204,6 +235,9 @@ namespace PollyNomTest
             Assert.IsTrue(exprTwoMultiplyBracketed.Equals(expectedTwoMultiplyBracketed));
         }
 
+        /// <summary>
+        /// Tests the correct parsing of simple multiplicative terms involving alternating "signs".
+        /// </summary>
         [TestMethod]
         public void SimpleMultiplication04()
         {
@@ -219,6 +253,9 @@ namespace PollyNomTest
             Assert.IsTrue(exprThreeMultiply.Equals(expectedThreeMultiply));
         }
 
+        /// <summary>
+        /// Tests the correct parsing of simple multiplicative terms involving alternating "signs" and parentheses.
+        /// </summary>
         [TestMethod]
         public void SimpleMultiplication05()
         {
@@ -242,7 +279,10 @@ namespace PollyNomTest
             // Assert
             Assert.IsTrue(exprThreeMultiplyWithBrackets.Equals(expectedThreeMultiplyWithBrackets));
         }
-
+        
+        /// <summary>
+        /// Tests the correct parsing of mixed addition and multiplication.
+        /// </summary>
         [TestMethod]
         public void AddMultiplyMix01()
         {
@@ -263,6 +303,9 @@ namespace PollyNomTest
             Assert.IsTrue(exprThreeTerms.Equals(expectedThreeTerms));
         }
 
+        /// <summary>
+        /// Tests the correct parsing of mixed addition and multiplication involving a leading sign.
+        /// </summary>
         [TestMethod]
         public void AddMultiplyMix02()
         {
@@ -283,6 +326,9 @@ namespace PollyNomTest
             Assert.IsTrue(exprThreeTerms.Equals(expectedThreeTerms));
         }
 
+        /// <summary>
+        /// Tests the correct parsing of mixed addition and multiplication a leading sign and parentheses.
+        /// </summary>
         [TestMethod]
         public void AddMultiplyMix03()
         {
@@ -303,6 +349,9 @@ namespace PollyNomTest
             Assert.IsTrue(exprThreeTerms.Equals(expectedThreeTerms));
         }
 
+        /// <summary>
+        /// Tests the correct parsing of mixed addition and multiplication a contained sign and parentheses.
+        /// </summary>
         [TestMethod]
         public void AddMultiplyMix04()
         {
@@ -323,6 +372,9 @@ namespace PollyNomTest
             Assert.IsTrue(exprThreeTerms.Equals(expectedThreeTerms));
         }
 
+        /// <summary>
+        /// Tests the correct parsing of a simple power.
+        /// </summary>
         [TestMethod]
         public void SimplePower01()
         {
@@ -338,6 +390,9 @@ namespace PollyNomTest
             Assert.IsTrue(exprSquare.Equals(expectedSquare));
         }
 
+        /// <summary>
+        /// Tests the correct parsing of a simple power involving a negative sign.
+        /// </summary>
         [TestMethod]
         public void SimplePower02()
         {
@@ -353,6 +408,9 @@ namespace PollyNomTest
             Assert.IsTrue(exprInvertedSquare.Equals(expectedInvertedSquare));
         }
 
+        /// <summary>
+        /// Tests the correctly failing parsing of a simple power involving a negative sign.
+        /// </summary>
         [TestMethod]
         public void SimplePower03()
         {
@@ -368,6 +426,9 @@ namespace PollyNomTest
             Assert.IsTrue(exprInvalid.Equals(expectedInvalid));
         }
 
+        /// <summary>
+        /// Tests the correct parsing of a simple power.
+        /// </summary>
         [TestMethod]
         public void SimplePower04()
         {
@@ -383,6 +444,9 @@ namespace PollyNomTest
             Assert.IsTrue(exprPower.Equals(expectedPower));
         }
 
+        /// <summary>
+        /// Tests the correct parsing of a simple power involving a sign.
+        /// </summary>
         [TestMethod]
         public void SimplePower05()
         {
@@ -398,6 +462,9 @@ namespace PollyNomTest
             Assert.IsTrue(exprPower.Equals(expectedPower));
         }
 
+        /// <summary>
+        /// Tests the correct parsing of a complex power.
+        /// </summary>
         [TestMethod]
         public void LessSimplePower()
         {
@@ -478,7 +545,7 @@ namespace PollyNomTest
         }
 
         /// <summary>
-        /// Test a complicated expression inside an exponential.
+        /// Tests a complicated expression inside an exponential.
         /// </summary>
         [TestMethod]
         public void ComplicatedExponential1()
@@ -501,7 +568,7 @@ namespace PollyNomTest
         }
 
         /// <summary>
-        /// Test a complicated expression inside an exponential and some decorators.
+        /// Tests a complicated expression inside an exponential and some decorators.
         /// </summary>
         [TestMethod]
         public void ComplicatedExponential2()
@@ -722,6 +789,9 @@ namespace PollyNomTest
             Assert.IsTrue(exprExpected.Equals(exprParsed));
         }
 
+        /// <summary>
+        /// Tests the correct result of the parseability evaluation.
+        /// </summary>
         [TestMethod]
         public void SimpleParseabilityTests()
         {
@@ -754,6 +824,10 @@ namespace PollyNomTest
             Assert.IsTrue(resultDoubleBracedX);
         }
 
+        /// <summary>
+        /// Tests that the evaluation of parseability does not throw an exception
+        /// and yields the correct result for a specific case.
+        /// </summary>
         [TestMethod]
         public void ParseabilityShouldNotThrowExceptions()
         {

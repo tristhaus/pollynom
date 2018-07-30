@@ -6,6 +6,7 @@ using PollyNom.BusinessLogic;
 using PollyNom.BusinessLogic.Expressions;
 using PollyNom.BusinessLogic.Expressions.SingleArgumentFunctions;
 using PollyNom.View;
+using PollyNomTest.Helper;
 
 namespace PollyNomTest
 {
@@ -15,6 +16,9 @@ namespace PollyNomTest
     [TestClass]
     public class PointListGenerationTest
     {
+        /// <summary>
+        /// Tests the correct evaluation of a constant to unscaled points.
+        /// </summary>
         [TestMethod]
         public void Constant_HasOneListAndTheCorrectValue()
         {
@@ -31,6 +35,9 @@ namespace PollyNomTest
             Assert.IsTrue(Helper.DoubleEquality.IsApproximatelyEqual(1.3, result[0][0].Y));
         }
 
+        /// <summary>
+        /// Tests the correct evaluation of a constant to scaled points.
+        /// </summary>
         [TestMethod]
         public void Constant_HasOneListAndTheCorrectScaledValue()
         {
@@ -47,6 +54,9 @@ namespace PollyNomTest
             Assert.IsTrue(Helper.DoubleEquality.IsApproximatelyEqual(2.6, result[0][0].Y));
         }
 
+        /// <summary>
+        /// Tests the evaluation of x^2 into a single list.
+        /// </summary>
         [TestMethod]
         public void XSquared_HasOneList()
         {
@@ -62,6 +72,9 @@ namespace PollyNomTest
             Assert.IsTrue(1 <= result[0].Count);
         }
 
+        /// <summary>
+        /// Tests the evaluation of 1/x into two lists.
+        /// </summary>
         [TestMethod]
         public void OneOverX_HasTwoLists()
         {
@@ -78,6 +91,9 @@ namespace PollyNomTest
             Assert.IsTrue(1 <= result[1].Count);
         }
 
+        /// <summary>
+        /// Tests the evaluation of x^(0.5) into a single list and a decent starting value.
+        /// </summary>
         [TestMethod]
         public void RootX_HasOneList()
         {
@@ -91,8 +107,13 @@ namespace PollyNomTest
             // Assert
             Assert.AreEqual(1, result.Count);
             Assert.IsTrue(1 <= result[0].Count);
+            Assert.IsTrue(DoubleEquality.IsApproximatelyEqual(result[0].Points[0].X, 0.0));
+            Assert.IsTrue(DoubleEquality.IsApproximatelyEqual(result[0].Points[0].Y, 0.0));
         }
 
+        /// <summary>
+        /// Tests the evaluation of ln(x) into a single list with a decent starting value.
+        /// </summary>
         [TestMethod]
         public void LnX_HasOneListAndStartsSufficientlyLow()
         {

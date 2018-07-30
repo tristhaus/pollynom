@@ -1,5 +1,4 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using PollyNomTest.Helper;
 
 namespace PollyNomTest
@@ -10,6 +9,9 @@ namespace PollyNomTest
     [TestClass]
     public class HelperTests
     {
+        /// <summary>
+        /// Tests that two instances of <see cref="double"/> match.
+        /// </summary>
         [TestMethod]
         public void DoubleMatch()
         {
@@ -24,6 +26,9 @@ namespace PollyNomTest
             Assert.IsTrue(result);
         }
 
+        /// <summary>
+        /// Tests that two instances of <see cref="double"/> do not match.
+        /// </summary>
         [TestMethod]
         public void DoubleMismatch()
         {

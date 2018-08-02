@@ -119,7 +119,7 @@ namespace PollyNom.BusinessLogic
 
                 // work inside interval - forward
                 this.workAnInterval(d => +d, out x, ref points, XinCurrentInterval, out lastXinCurrentInterval);
-                
+
                 // finish up interval
                 if (points.Count > 0)
                 {

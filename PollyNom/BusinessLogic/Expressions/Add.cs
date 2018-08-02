@@ -30,7 +30,7 @@ namespace PollyNom.BusinessLogic.Expressions
         public Add(params AddExpression[] expressions)
         {
             this.list = new List<AddExpression>();
-            foreach(var expression in expressions)
+            foreach (var expression in expressions)
             {
                 this.list.Add(expression);
             }
@@ -123,7 +123,7 @@ namespace PollyNom.BusinessLogic.Expressions
         {
             double sum = 0.0;
 
-            foreach(var expression in this.list)
+            foreach (var expression in this.list)
             {
                 var value = expression.Evaluate(input);
                 if (!value.HasValue)
@@ -148,10 +148,10 @@ namespace PollyNom.BusinessLogic.Expressions
                 {
                     return new None<string>();
                 }
-                s += expression.Sign == AddExpression.Signs.Plus ? "+" + value.Value: "-" + value.Value;
+                s += expression.Sign == AddExpression.Signs.Plus ? "+" + value.Value : "-" + value.Value;
             }
 
-            if(s[0] == '+')
+            if (s[0] == '+')
             {
                 s = s.Remove(0, 1);
             }

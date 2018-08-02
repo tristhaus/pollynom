@@ -17,7 +17,7 @@ namespace PollyNom.BusinessLogic.Dots
         /// Radius of the dot in implied logical business units.
         /// </summary>
         private const double radius = 0.25;
-        
+
         /// <summary>
         /// X-coordinate of the dot in implied logical business units.
         /// </summary>
@@ -60,7 +60,7 @@ namespace PollyNom.BusinessLogic.Dots
         /// <inheritdoc />
         public bool IsHit(IExpression expression, List<ListPointLogical> tupleLists)
         {
-            if(expression.GetType() == typeof(BusinessLogic.Expressions.InvalidExpression))
+            if (expression.GetType() == typeof(BusinessLogic.Expressions.InvalidExpression))
             {
                 return false;
             }
@@ -77,7 +77,7 @@ namespace PollyNom.BusinessLogic.Dots
             {
                 foreach (var tuple in tupleList.Points)
                 {
-                    if(tuple.X >= this.x - this.Radius)
+                    if (tuple.X >= this.x - this.Radius)
                     {
                         if (this.IsInsideCircle(tuple.X, tuple.Y))
                         {
@@ -85,7 +85,7 @@ namespace PollyNom.BusinessLogic.Dots
                             break;
                         }
 
-                        if(tuple.X > this.x + this.Radius)
+                        if (tuple.X > this.x + this.Radius)
                         {
                             break;
                         }
@@ -109,12 +109,12 @@ namespace PollyNom.BusinessLogic.Dots
 
             uint iterations = 0;
 
-            while(!retval && increment > epsilon && iterations < maxIterations)
+            while (!retval && increment > epsilon && iterations < maxIterations)
             {
                 var midEvaluationResult = expression.Evaluate(mid);
-                if(midEvaluationResult.HasValue)
+                if (midEvaluationResult.HasValue)
                 {
-                    if(this.IsInsideCircle(mid, midEvaluationResult.Value))
+                    if (this.IsInsideCircle(mid, midEvaluationResult.Value))
                     {
                         retval = true;
                         break;
@@ -122,7 +122,7 @@ namespace PollyNom.BusinessLogic.Dots
                 }
 
                 var rightEvaluationResult = expression.Evaluate(mid + increment);
-                if(rightEvaluationResult.HasValue)
+                if (rightEvaluationResult.HasValue)
                 {
                     if (this.IsInsideCircle(mid + increment, rightEvaluationResult.Value))
                     {
@@ -142,7 +142,7 @@ namespace PollyNom.BusinessLogic.Dots
                 }
 
                 // well, that was easy. Now the hard part.
-                if(midEvaluationResult.HasValue&& rightEvaluationResult.HasValue&& leftEvaluationResult.HasValue)
+                if (midEvaluationResult.HasValue && rightEvaluationResult.HasValue && leftEvaluationResult.HasValue)
                 {
                     var leftGradient = Helper.MathHelper.SquareDistance(this.x, this.y, mid - increment, leftEvaluationResult.Value);
                     var rightGradient = Helper.MathHelper.SquareDistance(this.x, this.y, mid + increment, rightEvaluationResult.Value);
@@ -164,13 +164,13 @@ namespace PollyNom.BusinessLogic.Dots
                 iterations++;
 
                 // in the following cases, damp the movement
-                if (midEvaluationResult.HasValue&& rightEvaluationResult.HasValue)
+                if (midEvaluationResult.HasValue && rightEvaluationResult.HasValue)
                 {
                     mid += increment * dampingFactor;
                     increment *= 0.5;
                     continue;
                 }
-                else if (midEvaluationResult.HasValue&& leftEvaluationResult.HasValue)
+                else if (midEvaluationResult.HasValue && leftEvaluationResult.HasValue)
                 {
                     mid -= increment * dampingFactor;
                     increment *= 0.5;
@@ -197,7 +197,7 @@ namespace PollyNom.BusinessLogic.Dots
 
         private bool IsInsideCircle(double otherX, double otherY)
         {
-            return (this.Radius * this.Radius) >= Helper.MathHelper.SquareDistance(this.x, this.y, otherX, otherY); 
+            return (this.Radius * this.Radius) >= Helper.MathHelper.SquareDistance(this.x, this.y, otherX, otherY);
         }
     }
 }

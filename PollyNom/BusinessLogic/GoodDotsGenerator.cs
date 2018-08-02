@@ -15,7 +15,7 @@ namespace PollyNom.BusinessLogic
         private int targetNumberOfDots;
 
         /// <summary>
-        /// Creates a new instance of the <see cref="GoodDotsGenerator"/> class
+        /// Initializes a new instance of the <see cref="GoodDotsGenerator"/> class
         /// that will generate <paramref name="targetNumberOfDots"/> dots.
         /// </summary>
         /// <param name="targetNumberOfDots">Number of dots to be generated.</param>
@@ -31,23 +31,23 @@ namespace PollyNom.BusinessLogic
         public List<IDot> Generate()
         {
             List<CandidateDot> candidates = new List<CandidateDot>(400);
-            for(int x = -10; x < 10; x++)
+            for (int x = -10; x < 10; x++)
             {
-                for(int y = -10; y < 10; y++)
+                for (int y = -10; y < 10; y++)
                 {
-                    candidates.Add(new CandidateDot { x = x + 0.5, y = y + 0.5, picked = false });
+                    candidates.Add(new CandidateDot { X = x + 0.5, Y = y + 0.5, Picked = false });
                 }
             }
 
             int candidateCount = candidates.Count;
             List<IDot> list = new List<IDot>();
-            while(list.Count < targetNumberOfDots)
+            while (list.Count < this.targetNumberOfDots)
             {
                 CandidateDot candidate = candidates[rng.Next(candidateCount)];
-                if(!candidate.picked)
+                if (!candidate.Picked)
                 {
-                    list.Add(new GoodDot(candidate.x, candidate.y));
-                    candidate.picked = true;
+                    list.Add(new GoodDot(candidate.X, candidate.Y));
+                    candidate.Picked = true;
                 }
             }
 
@@ -60,20 +60,20 @@ namespace PollyNom.BusinessLogic
         private class CandidateDot
         {
             /// <summary>
-            /// x-coordinate of the dot.
+            /// Gets or sets the x-coordinate of the dot.
             /// </summary>
-            public double x;
+            public double X { get; set; }
 
             /// <summary>
-            /// y-coordinate of the dot.
+            /// Gets or sets the y-coordinate of the dot.
             /// </summary>
-            public double y;
+            public double Y { get; set; }
 
             /// <summary>
-            /// Indicates whether this dot has been picked up,
+            /// Gets or sets a value indicating whether this dot has been picked up,
             /// should be returned and cannot be picked again.
             /// </summary>
-            public bool picked;
+            public bool Picked { get; set; }
         }
     }
 }

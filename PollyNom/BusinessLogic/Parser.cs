@@ -426,7 +426,7 @@ namespace PollyNom.BusinessLogic
         }
 
         /// <summary>
-        /// Parse the operators and operands into a <see cref="SingleArgumentFunctionBase{T}"/> 
+        /// Parse the operators and operands into a <see cref="SingleArgumentFunctionBase{T}"/>
         /// expression, reassembling the rest into the argument.
         /// </summary>
         /// <param name="tokens">The lists of operands.</param>

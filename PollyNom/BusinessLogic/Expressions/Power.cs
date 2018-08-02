@@ -90,7 +90,7 @@ namespace PollyNom.BusinessLogic.Expressions
         {
             var aValue = this.basis.Evaluate(input);
             var bValue = this.exponent.Evaluate(input);
-            if (!aValue.HasValue|| !bValue.HasValue)
+            if (!aValue.HasValue || !bValue.HasValue)
             {
                 return new None<double>();
             }
@@ -109,7 +109,7 @@ namespace PollyNom.BusinessLogic.Expressions
         {
             var aValue = this.basis.Print();
             var bValue = this.exponent.Print();
-            if (!aValue.HasValue|| !bValue.HasValue)
+            if (!aValue.HasValue || !bValue.HasValue)
             {
                 return new None<string>();
             }

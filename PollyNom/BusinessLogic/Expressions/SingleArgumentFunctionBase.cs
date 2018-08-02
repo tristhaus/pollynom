@@ -3,11 +3,11 @@
 namespace PollyNom.BusinessLogic.Expressions
 {
     /// <summary>
-    /// Base class for implementing functions that accept single arguments 
+    /// Base class for implementing functions that accept single arguments
     /// as <see cref="IExpression"/>.
     /// </summary>
     /// <typeparam name="T">
-    /// The type that implements this base, as needed for equality determination 
+    /// The type that implements this base, as needed for equality determination
     /// using the <see cref="IEquatable{U}"/> interface.
     /// </typeparam>
     public abstract class SingleArgumentFunctionBase<T> : IExpression, IEquatable<SingleArgumentFunctionBase<T>>
@@ -89,7 +89,7 @@ namespace PollyNom.BusinessLogic.Expressions
         }
 
         /// <summary>
-        /// Must be overridden to validate the argument to prevent 
+        /// Must be overridden to validate the argument to prevent
         /// illegal input to <see cref="FunctionFunc"/>.
         /// </summary>
         protected abstract bool ArgumentIsValid(double argument);

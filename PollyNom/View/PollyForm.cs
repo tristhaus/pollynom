@@ -267,7 +267,7 @@ namespace PollyNom.View
         }
 
         /// <summary>
-        /// Handles the resizing of the entire main form 
+        /// Handles the resizing of the entire main form
         /// by disabling the coordinate system, resizing it, and
         /// reenabling it.
         /// </summary>
@@ -332,7 +332,7 @@ namespace PollyNom.View
                 this.graphPanel.Top = 0;
             }
 
-            // resize the input box 
+            // resize the input box
             int currWidth = this.inputBox.Width;
             int x = toolStrip1.Items.OfType<ToolStripItem>().Sum(t => t.Width);
             this.inputBox.Size = new Size(toolStrip1.Width - x + currWidth - 12, this.inputBox.Height);

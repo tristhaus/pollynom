@@ -81,7 +81,7 @@ namespace PollyNom.BusinessLogic
         {
             get
             {
-                throw new NotImplementedException();
+                throw new NotSupportedException("cannot provide value");
             }
         }
     }

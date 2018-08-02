@@ -110,7 +110,7 @@ namespace PollyNom.BusinessLogic.Expressions
                     hashes.Add(multiplyExpression.GetHashCode());
                 }
                 hashes.Sort();
-                foreach(var hash in hashes)
+                foreach (var hash in hashes)
                 {
                     finalHash = finalHash * 23 + hash;
                 }
@@ -126,12 +126,12 @@ namespace PollyNom.BusinessLogic.Expressions
             foreach (var expression in this.list)
             {
                 var value = expression.Evaluate(input);
-                if (!value.HasValue|| (expression.Sign == MultiplyExpression.Signs.Divide && Math.Abs(value.Value) < 10e-10))
+                if (!value.HasValue || (expression.Sign == MultiplyExpression.Signs.Divide && Math.Abs(value.Value) < 10e-10))
                 {
                     return new None<double>();
                 }
 
-                var finalValue = expression.Sign == MultiplyExpression.Signs.Multiply ? value.Value: (1.0 / value.Value);
+                var finalValue = expression.Sign == MultiplyExpression.Signs.Multiply ? value.Value : (1.0 / value.Value);
                 if (double.IsInfinity(finalValue) || double.IsNaN(finalValue))
                 {
                     return new None<double>();

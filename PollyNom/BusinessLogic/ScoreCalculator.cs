@@ -14,7 +14,7 @@ namespace PollyNom.BusinessLogic
         /// </summary>
         /// <param name="numbersOfHits">List of hit series.</param>
         /// <returns>The calculated score.</returns>
-        public static int CalculateScore(List <int> numbersOfHits)
+        public static int CalculateScore(List<int> numbersOfHits)
         {
             return numbersOfHits.Where(x => (x > 0)).Select(x => ((int)Math.Pow(2, x) - 1)).Sum();
         }

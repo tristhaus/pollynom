@@ -10,7 +10,7 @@ namespace PollyNom.BusinessLogic.Expressions
         private double a;
 
         /// <summary>
-        /// Creates a new instance of the <see cref="Constant"/> class.
+        /// Initializes a new instance of the <see cref="Constant"/> class.
         /// </summary>
         public Constant(double a)
         {
@@ -37,10 +37,11 @@ namespace PollyNom.BusinessLogic.Expressions
 
         public override bool Equals(object other)
         {
-            if(other.GetType() != typeof(Constant))
+            if (other.GetType() != typeof(Constant))
             {
                 return false;
             }
+
             Constant otherConstant = (Constant)other;
             return Math.Abs(a - otherConstant.a) < 10e-10;
         }
@@ -67,7 +68,7 @@ namespace PollyNom.BusinessLogic.Expressions
 
         public static bool operator !=(Constant x, Constant y)
         {
-            return !(x.Equals(y));
+            return !x.Equals(y);
         }
 
         public override int GetHashCode()

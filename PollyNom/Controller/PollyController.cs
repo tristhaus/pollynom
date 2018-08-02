@@ -21,7 +21,7 @@ namespace PollyNom.Controller
         private const float TickInterval = 1f;
 
         /// <summary>
-        /// When exceeding this absolute limit in terms of y-value, 
+        /// When exceeding this absolute limit in terms of y-value,
         /// no attempt at using the point is made
         /// </summary>
         private const float limits = 1000f;
@@ -125,9 +125,9 @@ namespace PollyNom.Controller
         /// <returns>A list of point list, in terms of business logic units.</returns>
         public List<ListPointLogical> GetListsOfLogicalPointsByIndex(int index)
         {
-            if(points.Count > index)
+            if (this.points.Count > index)
             {
-               return points[index];
+                return this.points[index];
             }
             else
             {
@@ -201,7 +201,7 @@ namespace PollyNom.Controller
                 for (int dotIndex = 0; dotIndex < this.drawDots.Count; ++dotIndex)
                 {
                     DrawDot drawDot = this.drawDots[dotIndex] as DrawDot;
-                    if(!drawDot.IsHit)
+                    if (!drawDot.IsHit)
                     {
                         bool isHit = this.dots[dotIndex].IsHit(expression, this.points[expressionIndex]);
                         if (isHit)

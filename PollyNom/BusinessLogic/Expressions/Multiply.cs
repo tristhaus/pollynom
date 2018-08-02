@@ -71,12 +71,12 @@ namespace PollyNom.BusinessLogic.Expressions
             }
             Multiply otherMultiply = (Multiply)other;
 
-            return this.equalityImplementation(otherMultiply);
+            return this.EqualityImplementation(otherMultiply);
         }
 
         public bool Equals(Multiply other)
         {
-            return this.equalityImplementation(other);
+            return this.EqualityImplementation(other);
         }
 
         public static bool operator ==(Multiply x, IExpression y)
@@ -119,7 +119,7 @@ namespace PollyNom.BusinessLogic.Expressions
         }
 
         /// <inheritdoc />
-        public Maybe<double> Evaluate(double input)
+        public IMaybe<double> Evaluate(double input)
         {
             double product = 1.0;
 
@@ -144,7 +144,7 @@ namespace PollyNom.BusinessLogic.Expressions
         }
 
         /// <inheritdoc />
-        public Maybe<string> Print()
+        public IMaybe<string> Print()
         {
             string s = "1";
 
@@ -173,7 +173,7 @@ namespace PollyNom.BusinessLogic.Expressions
             return new Some<string>(s);
         }
 
-        private bool equalityImplementation(Multiply other)
+        private bool EqualityImplementation(Multiply other)
         {
             if (this.list.Count != other.list.Count)
             {
@@ -300,13 +300,13 @@ namespace PollyNom.BusinessLogic.Expressions
             }
 
             /// <inheritdoc />
-            public Maybe<double> Evaluate(double input)
+            public IMaybe<double> Evaluate(double input)
             {
                 return expression.Evaluate(input);
             }
 
             /// <inheritdoc />
-            public Maybe<string> Print()
+            public IMaybe<string> Print()
             {
                 return expression.Print();
             }

@@ -86,22 +86,22 @@ namespace PollyNom.BusinessLogic
 
             double lastXinPreviousInterval = this.initialX;
             double x = lastXinPreviousInterval;
-            Maybe<double> yMaybe;
+            IMaybe<double> yMaybe;
 
             while (x < this.finalX)
             {
                 ListPointLogical points = new ListPointLogical();
 
                 // look for interval
-                double XinCurrentInterval = lastXinPreviousInterval;
+                double xInCurrentInterval = lastXinPreviousInterval;
                 bool foundInterval = false;
-                while (!foundInterval && XinCurrentInterval < this.finalX)
+                while (!foundInterval && xInCurrentInterval < this.finalX)
                 {
-                    XinCurrentInterval += PointListGenerator.largeIncrement;
-                    yMaybe = this.expression.Evaluate(XinCurrentInterval);
+                    xInCurrentInterval += PointListGenerator.largeIncrement;
+                    yMaybe = this.expression.Evaluate(xInCurrentInterval);
                     if (yMaybe.HasValue)
                     {
-                        points.Add(new PointLogical(XinCurrentInterval, yMaybe.Value));
+                        points.Add(new PointLogical(xInCurrentInterval, yMaybe.Value));
                         foundInterval = true;
                     }
                 }
@@ -115,10 +115,10 @@ namespace PollyNom.BusinessLogic
                 double lastXinCurrentInterval;
 
                 // work inside interval - backward
-                this.workAnInterval(d => -d, out x, ref points, XinCurrentInterval, out lastXinCurrentInterval);
+                this.WorkAnInterval(d => -d, out x, ref points, xInCurrentInterval, out lastXinCurrentInterval);
 
                 // work inside interval - forward
-                this.workAnInterval(d => +d, out x, ref points, XinCurrentInterval, out lastXinCurrentInterval);
+                this.WorkAnInterval(d => +d, out x, ref points, xInCurrentInterval, out lastXinCurrentInterval);
 
                 // finish up interval
                 if (points.Count > 0)
@@ -131,14 +131,14 @@ namespace PollyNom.BusinessLogic
             return retList;
         }
 
-        private void workAnInterval(Func<double, double> direction, out double x, ref ListPointLogical points, double XinCurrentInterval, out double xOld)
+        private void WorkAnInterval(Func<double, double> direction, out double x, ref ListPointLogical points, double xInCurrentInterval, out double xOld)
         {
-            x = XinCurrentInterval + direction(epsilon);
-            Maybe<double> yMaybe = this.expression.Evaluate(x);
-            xOld = XinCurrentInterval;
+            x = xInCurrentInterval + direction(epsilon);
+            IMaybe<double> yMaybe = this.expression.Evaluate(x);
+            xOld = xInCurrentInterval;
 
             double y = yMaybe.HasValue ? yMaybe.Value : 0.0;
-            double yOld = yMaybe.HasValue ? yMaybe.Value : this.expression.Evaluate(XinCurrentInterval).Value;
+            double yOld = yMaybe.HasValue ? yMaybe.Value : this.expression.Evaluate(xInCurrentInterval).Value;
 
             double incr = PointListGenerator.initialIncrement;
 

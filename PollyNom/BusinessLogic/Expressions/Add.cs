@@ -71,12 +71,12 @@ namespace PollyNom.BusinessLogic.Expressions
             }
             Add otherAdd = (Add)other;
 
-            return this.equalityImplementation(otherAdd);
+            return this.EqualityImplementation(otherAdd);
         }
 
         public bool Equals(Add other)
         {
-            return this.equalityImplementation(other);
+            return this.EqualityImplementation(other);
         }
 
         public static bool operator ==(Add x, IExpression y)
@@ -119,7 +119,7 @@ namespace PollyNom.BusinessLogic.Expressions
         }
 
         /// <inheritdoc />
-        public Maybe<double> Evaluate(double input)
+        public IMaybe<double> Evaluate(double input)
         {
             double sum = 0.0;
 
@@ -137,7 +137,7 @@ namespace PollyNom.BusinessLogic.Expressions
         }
 
         /// <inheritdoc />
-        public Maybe<string> Print()
+        public IMaybe<string> Print()
         {
             string s = string.Empty;
 
@@ -159,7 +159,7 @@ namespace PollyNom.BusinessLogic.Expressions
             return new Some<string>(s);
         }
 
-        private bool equalityImplementation(Add other)
+        private bool EqualityImplementation(Add other)
         {
             if (this.list.Count != other.list.Count)
             {
@@ -286,13 +286,13 @@ namespace PollyNom.BusinessLogic.Expressions
             }
 
             /// <inheritdoc />
-            public Maybe<double> Evaluate(double input)
+            public IMaybe<double> Evaluate(double input)
             {
                 return expression.Evaluate(input);
             }
 
             /// <inheritdoc />
-            public Maybe<string> Print()
+            public IMaybe<string> Print()
             {
                 return expression.Print();
             }

@@ -9,14 +9,14 @@ namespace PollyNom.BusinessLogic.Dots
     public class GoodDot : IDot
     {
         /// <summary>
-        /// Random number generator
-        /// </summary>
-        private static Random rng = new Random();
-
-        /// <summary>
         /// Radius of the dot in implied logical business units.
         /// </summary>
         private const double radius = 0.25;
+
+        /// <summary>
+        /// Random number generator
+        /// </summary>
+        private static Random rng = new Random();
 
         /// <summary>
         /// X-coordinate of the dot in implied logical business units.
@@ -70,7 +70,10 @@ namespace PollyNom.BusinessLogic.Dots
 
         private bool HitImplementationListBased(List<ListPointLogical> tupleLists)
         {
-            if (tupleLists == null) return false;
+            if (tupleLists == null)
+            {
+                return false;
+            }
 
             bool retval = false;
             foreach (var tupleList in tupleLists)
@@ -91,7 +94,11 @@ namespace PollyNom.BusinessLogic.Dots
                         }
                     }
                 }
-                if (retval) break;
+
+                if (retval)
+                {
+                    break;
+                }
             }
 
             return retval;

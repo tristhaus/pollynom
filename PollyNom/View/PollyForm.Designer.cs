@@ -55,7 +55,7 @@
             this.graphArea.Name = "graphArea";
             this.graphArea.Size = new System.Drawing.Size(535, 535);
             this.graphArea.TabIndex = 0;
-            this.graphArea.Paint += new System.Windows.Forms.PaintEventHandler(this.userControl1_Paint);
+            this.graphArea.Paint += new System.Windows.Forms.PaintEventHandler(this.UserControl1_Paint);
             // 
             // inputPanel
             // 
@@ -89,8 +89,8 @@
             this.inputBox.Name = "inputBox";
             this.inputBox.Size = new System.Drawing.Size(478, 25);
             this.inputBox.Text = "x";
-            this.inputBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.inputBox_KeyPress);
-            this.inputBox.TextChanged += new System.EventHandler(this.inputBox_TextChanged);
+            this.inputBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.InputBox_KeyPress);
+            this.inputBox.TextChanged += new System.EventHandler(this.InputBox_TextChanged);
             // 
             // calcButton
             // 
@@ -100,7 +100,7 @@
             this.calcButton.Name = "calcButton";
             this.calcButton.Size = new System.Drawing.Size(37, 22);
             this.calcButton.Text = "Calc!";
-            this.calcButton.Click += new System.EventHandler(this.toolStripMenuItem1_Click);
+            this.calcButton.Click += new System.EventHandler(this.ToolStripMenuItem1_Click);
             // 
             // PollyForm
             // 

@@ -14,7 +14,8 @@ namespace PollyNom.BusinessLogic.Expressions.SingleArgumentFunctions
         /// Creates a new instance of the <see cref="Exponential"/> class.
         /// </summary>
         /// <param name="containedExpression">The single argument of the function.</param>
-        public Exponential(IExpression containedExpression) : base(containedExpression)
+        public Exponential(IExpression containedExpression)
+            : base(containedExpression)
         {
         }
 

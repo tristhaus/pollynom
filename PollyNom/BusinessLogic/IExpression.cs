@@ -19,13 +19,13 @@
         /// Evaluates the expression at a given x-coordinate.
         /// </summary>
         /// <param name="input">The x-coordinate at which the expression shall be evaluated.</param>
-        /// <returns>A <see cref="Maybe{double}"/> representing the result of the evaluation.</returns>
-        Maybe<double> Evaluate(double input);
+        /// <returns>A <see cref="IMaybe{double}"/> representing the result of the evaluation.</returns>
+        IMaybe<double> Evaluate(double input);
 
         /// <summary>
         /// Prints the expression as a human-readable and machine-parseable string.
         /// </summary>
-        /// <returns>A <see cref="Maybe{double}"/> representing the printed string.</returns>
-        Maybe<string> Print();
+        /// <returns>A <see cref="IMaybe{double}"/> representing the printed string.</returns>
+        IMaybe<string> Print();
     }
 }

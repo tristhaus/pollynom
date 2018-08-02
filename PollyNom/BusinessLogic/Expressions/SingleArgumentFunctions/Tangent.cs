@@ -10,7 +10,8 @@ namespace PollyNom.BusinessLogic.Expressions.SingleArgumentFunctions
         /// Creates a new instance of the <see cref="Tangent"/> class.
         /// </summary>
         /// <param name="containedExpression">The single argument of the function.</param>
-        public Tangent(IExpression containedExpression) : base(containedExpression)
+        public Tangent(IExpression containedExpression)
+            : base(containedExpression)
         {
         }
 

@@ -1,9 +1,9 @@
-﻿using PollyNom.BusinessLogic.Expressions;
-using PollyNom.BusinessLogic.Expressions.SingleArgumentFunctions;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Text.RegularExpressions;
+using PollyNom.BusinessLogic.Expressions;
+using PollyNom.BusinessLogic.Expressions.SingleArgumentFunctions;
 
 namespace PollyNom.BusinessLogic
 {
@@ -33,29 +33,29 @@ namespace PollyNom.BusinessLogic
         /// <summary>
         /// Tests the expression for parseability.
         /// </summary>
-        /// <param name="S">The string to be tested.</param>
+        /// <param name="s">The string to be tested.</param>
         /// <returns><c>true</c> if string is parseable.</returns>
-        public bool IsParseable(string S)
+        public bool IsParseable(string s)
         {
-            return !this.Parse(S).Equals(this.invalidExpressionSample);
+            return !this.Parse(s).Equals(this.invalidExpressionSample);
         }
 
         /// <summary>
         /// The parsing operation from string to <see cref="IExpression"/>.
         /// </summary>
-        /// <param name="S">The string to be parsed.</param>
+        /// <param name="s">The string to be parsed.</param>
         /// <returns>The expression, which can be <see cref="InvalidExpression"/>.</returns>
-        public IExpression Parse(string S)
+        public IExpression Parse(string s)
         {
             try
             {
-                S = this.PrepareString(S);
-                if (!this.ValidateInput(S))
+                s = this.PrepareString(s);
+                if (!this.ValidateInput(s))
                 {
                     return this.invalidExpressionSample;
                 }
 
-                return this.InternalParse(S);
+                return this.InternalParse(s);
             }
             catch (Exception)
             {
@@ -66,24 +66,24 @@ namespace PollyNom.BusinessLogic
         /// <summary>
         /// Prepare the string for parsing.
         /// </summary>
-        /// <param name="S">The string to be prepared.</param>
+        /// <param name="s">The string to be prepared.</param>
         /// <returns>The prepared string.</returns>
-        private string PrepareString(string S)
+        private string PrepareString(string s)
         {
-            return S.Replace(" ", string.Empty);
+            return s.Replace(" ", string.Empty);
         }
 
         /// <summary>
         /// Check if the input string is valid to be parsed per business criteria.
         /// </summary>
-        /// <param name="S">The string to be checked.</param>
+        /// <param name="s">The string to be checked.</param>
         /// <returns><c>true</c> if valid.</returns>
-        private bool ValidateInput(string S)
+        private bool ValidateInput(string s)
         {
             // check unsupported characters
             {
                 Regex regex = new Regex("^[-0-9.+/*^()abceilnopstxX]+$", RegexOptions.Compiled);
-                if (!regex.IsMatch(S))
+                if (!regex.IsMatch(s))
                 {
                     return false;
                 }
@@ -91,7 +91,7 @@ namespace PollyNom.BusinessLogic
 
             // check for "^-", "^+", which is hard to parse
             {
-                if (S.Contains("^-") || S.Contains("^+"))
+                if (s.Contains("^-") || s.Contains("^+"))
                 {
                     return false;
                 }
@@ -99,7 +99,7 @@ namespace PollyNom.BusinessLogic
 
             // check for dangling operators at the end of string
             {
-                char lastChar = S[S.Length - 1];
+                char lastChar = s[s.Length - 1];
                 if (lastChar == '+' || lastChar == '-' || lastChar == '*' || lastChar == '\\' || lastChar == '^' || lastChar == '(')
                 {
                     return false;
@@ -109,7 +109,7 @@ namespace PollyNom.BusinessLogic
             // check balanced parentheses
             {
                 int count = 0;
-                foreach (char c in S)
+                foreach (char c in s)
                 {
                     if (c == '(')
                     {
@@ -136,44 +136,44 @@ namespace PollyNom.BusinessLogic
         /// <summary>
         /// Internal parsing (post validation). Supports recursion when given prepared and validated strings.
         /// </summary>
-        /// <param name="S">The prepared and validated string to be parsed.</param>
+        /// <param name="s">The prepared and validated string to be parsed.</param>
         /// <returns>The expression, which can be <see cref="InvalidExpression"/>.</returns>
-        private IExpression InternalParse(string S)
+        private IExpression InternalParse(string s)
         {
-            if (!this.ValidateInput(S))
+            if (!this.ValidateInput(s))
             {
                 return this.invalidExpressionSample;
             }
 
             // if fully enclosed in braces, we remove them
-            if (S[0] == '(' && S.Length - 1 == this.FindMatchingBrace(S, 0))
+            if (s[0] == '(' && s.Length - 1 == this.FindMatchingBrace(s, 0))
             {
-                return this.InternalParse(S.Substring(1, S.Length - 2));
+                return this.InternalParse(s.Substring(1, s.Length - 2));
             }
 
             // deal with a simple case: plain x
-            if (S == "X" || S == "x")
+            if (s == "X" || s == "x")
             {
                 return new BaseX();
             }
 
             // deal with a simple case: a numerical constant
-            if (Regex.IsMatch(S, @"^[+-]?[0-9]+.?[0-9]*$", RegexOptions.Compiled))
+            if (Regex.IsMatch(s, @"^[+-]?[0-9]+.?[0-9]*$", RegexOptions.Compiled))
             {
-                return this.ParseToConstant(S);
+                return this.ParseToConstant(s);
             }
 
             // now, tokenize
             List<string> tokens = new List<string>();
             List<string> ops = new List<string>();
 
-            this.Tokenize(S, tokens, ops);
+            this.Tokenize(s, tokens, ops);
 
             // deal with a signed single token
-            if (Regex.IsMatch(S, @"^[+-]", RegexOptions.Compiled) && tokens.Count == 1)
+            if (Regex.IsMatch(s, @"^[+-]", RegexOptions.Compiled) && tokens.Count == 1)
             {
-                string subToken = S.Substring(1, S.Length - 1);
-                Add.AddExpression.Signs sign = S[0] == '+' ? Add.AddExpression.Signs.Plus : Add.AddExpression.Signs.Minus;
+                string subToken = s.Substring(1, s.Length - 1);
+                Add.AddExpression.Signs sign = s[0] == '+' ? Add.AddExpression.Signs.Plus : Add.AddExpression.Signs.Minus;
                 IExpression bracketedExpression = this.InternalParse(subToken);
                 if (bracketedExpression.Equals(this.invalidExpressionSample))
                 {
@@ -214,12 +214,12 @@ namespace PollyNom.BusinessLogic
         /// <summary>
         /// Parses a <see cref="Constant"/> expression from the input string.
         /// </summary>
-        /// <param name="S">The input string.</param>
+        /// <param name="s">The input string.</param>
         /// <returns>The expression, which can be <see cref="InvalidExpression"/>.</returns>
-        private IExpression ParseToConstant(string S)
+        private IExpression ParseToConstant(string s)
         {
             double result;
-            if (double.TryParse(S, NumberStyles.Any, new CultureInfo("en-US"), out result))
+            if (double.TryParse(s, NumberStyles.Any, new CultureInfo("en-US"), out result))
             {
                 return new Constant(result);
             }
@@ -230,25 +230,25 @@ namespace PollyNom.BusinessLogic
         /// <summary>
         /// Fill the provided lists with operands and operators.
         /// </summary>
-        /// <param name="S">The input string.</param>
+        /// <param name="s">The input string.</param>
         /// <param name="tokens">Output slot for lists of operands.</param>
         /// <param name="ops">Output slot for lists of operators.</param>
-        private void Tokenize(string S, List<string> tokens, List<string> ops)
+        private void Tokenize(string s, List<string> tokens, List<string> ops)
         {
             string token = string.Empty;
-            for (int index = 0; index < S.Length; index++)
+            for (int index = 0; index < s.Length; index++)
             {
-                char c = S[index];
+                char c = s[index];
 
                 if (c == '(')
                 {
-                    int EndIndex = this.FindMatchingBrace(S, index);
-                    token += S.Substring(index, EndIndex - index + 1);
-                    index = EndIndex;
+                    int endIndex = this.FindMatchingBrace(s, index);
+                    token += s.Substring(index, endIndex - index + 1);
+                    index = endIndex;
                     continue;
                 }
 
-                if (isOperatorChar(c) && token.Length > 0)
+                if (IsOperatorChar(c) && token.Length > 0)
                 {
                     tokens.Add(token);
                     token = string.Empty;
@@ -271,7 +271,7 @@ namespace PollyNom.BusinessLogic
         /// </summary>
         /// <param name="c">The character to be checked.</param>
         /// <returns><c>true</c> if character is an operator.</returns>
-        private bool isOperatorChar(char c)
+        private bool IsOperatorChar(char c)
         {
             return c == '-' || c == '+' || c == '*' || c == '/' || c == '^';
         }
@@ -388,7 +388,7 @@ namespace PollyNom.BusinessLogic
 
         /// <summary>
         /// Parse the operators and operands into a <see cref="Power"/> expression,
-        /// reassembling the rest into basis and exponent.
+        /// reassembling the rest into base and exponent.
         /// </summary>
         /// <param name="tokens">The lists of operands.</param>
         /// <param name="ops">The lists of operators.</param>
@@ -461,22 +461,22 @@ namespace PollyNom.BusinessLogic
         /// <summary>
         /// Finds the parenthesis in the string matching the one at the given index.
         /// </summary>
-        /// <param name="S">The string to be worked on.</param>
+        /// <param name="s">The string to be worked on.</param>
         /// <param name="pos">The index of the parenthesis that needs to be matched.</param>
         /// <returns>The index of the matching parenthesis.</returns>
-        private int FindMatchingBrace(string S, int pos)
+        private int FindMatchingBrace(string s, int pos)
         {
-            if (pos < 0 || pos > S.Length - 1)
+            if (pos < 0 || pos > s.Length - 1)
             {
-                throw new ArgumentOutOfRangeException(nameof(pos) + "must be within" + nameof(S));
+                throw new ArgumentOutOfRangeException(nameof(pos) + "must be within" + nameof(s));
             }
 
             bool lookForClosing;
-            if (S[pos] == '(')
+            if (s[pos] == '(')
             {
                 lookForClosing = true;
             }
-            else if (S[pos] == ')')
+            else if (s[pos] == ')')
             {
                 lookForClosing = false;
             }
@@ -488,9 +488,9 @@ namespace PollyNom.BusinessLogic
             int count = 0;
             if (lookForClosing)
             {
-                for (int index = pos; index < S.Length; index++)
+                for (int index = pos; index < s.Length; index++)
                 {
-                    char c = S[index];
+                    char c = s[index];
                     if (c == '(')
                     {
                         count++;
@@ -509,7 +509,7 @@ namespace PollyNom.BusinessLogic
             {
                 for (int index = pos; index >= 0; index--)
                 {
-                    char c = S[index];
+                    char c = s[index];
                     if (c == ')')
                     {
                         count++;

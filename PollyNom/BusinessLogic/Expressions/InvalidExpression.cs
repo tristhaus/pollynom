@@ -64,13 +64,13 @@ namespace PollyNom.BusinessLogic.Expressions
         }
 
         /// <inheritdoc />
-        public Maybe<double> Evaluate(double input)
+        public IMaybe<double> Evaluate(double input)
         {
             return new None<double>();
         }
 
         /// <inheritdoc />
-        public Maybe<string> Print()
+        public IMaybe<string> Print()
         {
             return new None<string>();
         }

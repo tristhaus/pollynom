@@ -3,20 +3,21 @@
 namespace PollyNom.BusinessLogic.Expressions
 {
     /// <summary>
-    /// Implements a power using a basis and exponent.
+    /// Implements a power using a base and exponent.
     /// </summary>
     public sealed class Power : IExpression, IEquatable<Power>
     {
-        private IExpression basis;
+        private IExpression @base;
         private IExpression exponent;
 
         /// <summary>
         /// Creates a new instance of the <see cref="Power"/> class.
         /// </summary>
-        /// <param name="containedExpression">The single argument of the function.</param>
-        public Power(IExpression basis, IExpression exponent)
+        /// <param name="base">The base of the <see cref="Power"/>expression.</param>
+        /// <param name="exponent">The exponent to which the <see cref="base"/> is raised.</param>
+        public Power(IExpression @base, IExpression exponent)
         {
-            this.basis = basis;
+            this.@base = @base;
             this.exponent = exponent;
         }
 
@@ -46,12 +47,12 @@ namespace PollyNom.BusinessLogic.Expressions
             }
             Power otherPower = (Power)other;
 
-            return this.equalityImplementation(otherPower);
+            return this.EqualityImplementation(otherPower);
         }
 
         public bool Equals(Power other)
         {
-            return this.equalityImplementation(other);
+            return this.EqualityImplementation(other);
         }
 
         public static bool operator ==(Power x, IExpression y)
@@ -79,16 +80,16 @@ namespace PollyNom.BusinessLogic.Expressions
             unchecked
             {
                 int hash = 17;
-                    hash = hash * 23 + basis.GetHashCode();
+                    hash = hash * 23 + @base.GetHashCode();
                     hash = hash * 23 + exponent.GetHashCode();
                 return hash;
             }
         }
 
         /// <inheritdoc />
-        public Maybe<double> Evaluate(double input)
+        public IMaybe<double> Evaluate(double input)
         {
-            var aValue = this.basis.Evaluate(input);
+            var aValue = this.@base.Evaluate(input);
             var bValue = this.exponent.Evaluate(input);
             if (!aValue.HasValue || !bValue.HasValue)
             {
@@ -105,9 +106,9 @@ namespace PollyNom.BusinessLogic.Expressions
         }
 
         /// <inheritdoc />
-        public Maybe<string> Print()
+        public IMaybe<string> Print()
         {
-            var aValue = this.basis.Print();
+            var aValue = this.@base.Print();
             var bValue = this.exponent.Print();
             if (!aValue.HasValue || !bValue.HasValue)
             {
@@ -116,7 +117,7 @@ namespace PollyNom.BusinessLogic.Expressions
 
             var aDecorated = aValue.Value;
             var bDecorated = bValue.Value;
-            if (!basis.IsMonadic)
+            if (!@base.IsMonadic)
             {
                 aDecorated = "(" + aDecorated + ")";
             }
@@ -128,9 +129,9 @@ namespace PollyNom.BusinessLogic.Expressions
             return new Some<string>(aDecorated + "^" + bDecorated);
         }
 
-        private bool equalityImplementation(Power other)
+        private bool EqualityImplementation(Power other)
         {
-            return basis.Equals(other.basis) && exponent.Equals(other.exponent);
+            return @base.Equals(other.@base) && exponent.Equals(other.exponent);
         }
     }
 }

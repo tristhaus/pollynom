@@ -49,12 +49,12 @@ namespace PollyNom.BusinessLogic.Expressions
             }
             SingleArgumentFunctionBase<T> otherFunction = (SingleArgumentFunctionBase<T>)other;
 
-            return this.equalityImplementation(otherFunction);
+            return this.EqualityImplementation(otherFunction);
         }
 
         public bool Equals(SingleArgumentFunctionBase<T> other)
         {
-            return this.equalityImplementation(other);
+            return this.EqualityImplementation(other);
         }
 
         public static bool operator ==(SingleArgumentFunctionBase<T> x, IExpression y)
@@ -92,15 +92,18 @@ namespace PollyNom.BusinessLogic.Expressions
         /// Must be overridden to validate the argument to prevent
         /// illegal input to <see cref="FunctionFunc"/>.
         /// </summary>
+        /// <param name="argument">The numerical value to be checked for validity.</param>
+        /// <returns>A flag indicating whether the argument is valid for this function.</returns>
         protected abstract bool ArgumentIsValid(double argument);
 
         /// <summary>
+        /// Gets a <see cref="Func{T, TResult}"/> object that represents the function.
         /// Must be overridden by a <see cref="Math"/> or similar function.
         /// </summary>
         protected abstract Func<double, double> FunctionFunc { get; }
 
         /// <inheritdoc />
-        public Maybe<double> Evaluate(double input)
+        public IMaybe<double> Evaluate(double input)
         {
             var value = containedExpression.Evaluate(input);
             if (!value.HasValue || !this.ArgumentIsValid(value.Value))
@@ -112,12 +115,13 @@ namespace PollyNom.BusinessLogic.Expressions
         }
 
         /// <summary>
-        /// Must be overridden by the textual representation of the function.
+        /// Gets a string representation of the function.
+        /// Must be overridden.
         /// </summary>
         protected abstract string FunctionSymbol { get; }
 
         /// <inheritdoc />
-        public Maybe<string> Print()
+        public IMaybe<string> Print()
         {
             var value = containedExpression.Print();
             if (!value.HasValue)
@@ -128,7 +132,7 @@ namespace PollyNom.BusinessLogic.Expressions
             return new Some<string>($"{this.FunctionSymbol}({value.Value})");
         }
 
-        private bool equalityImplementation(SingleArgumentFunctionBase<T> other)
+        private bool EqualityImplementation(SingleArgumentFunctionBase<T> other)
         {
             return containedExpression.Equals(other.containedExpression);
         }

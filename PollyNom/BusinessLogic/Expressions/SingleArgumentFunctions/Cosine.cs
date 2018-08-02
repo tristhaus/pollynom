@@ -10,7 +10,8 @@ namespace PollyNom.BusinessLogic.Expressions.SingleArgumentFunctions
         /// Creates a new instance of the <see cref="Cosine"/> class.
         /// </summary>
         /// <param name="containedExpression">The single argument of the function.</param>
-        public Cosine(IExpression containedExpression) : base(containedExpression)
+        public Cosine(IExpression containedExpression)
+            : base(containedExpression)
         {
         }
 

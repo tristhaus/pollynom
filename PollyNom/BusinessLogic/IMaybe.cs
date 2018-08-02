@@ -6,18 +6,17 @@ namespace PollyNom.BusinessLogic
     /// Defines the Maybe design pattern.
     /// </summary>
     /// <typeparam name="T">The type of the value that can be held.</typeparam>
-    public interface Maybe<T>
+    public interface IMaybe<T>
     {
         /// <summary>
-        /// Indicates whether a value is held by the instance.
+        /// Gets a value indicating whether a value is held by the instance.
         /// </summary>
         /// <returns><c>true</c> if a value exists.</returns>
         bool HasValue { get; }
 
         /// <summary>
-        /// Provides access to the value.
+        /// Gets the value contained.
         /// </summary>
-        /// <returns>The value held, if any.</returns>
         T Value { get; }
     }
 
@@ -25,7 +24,7 @@ namespace PollyNom.BusinessLogic
     /// Implementation of a value that actually exists.
     /// </summary>
     /// <typeparam name="T">The type of the value that can be held.</typeparam>
-    public class Some<T> : Maybe<T>
+    public class Some<T> : IMaybe<T>
     {
         private readonly T t;
 
@@ -62,7 +61,7 @@ namespace PollyNom.BusinessLogic
     /// Implementation of a non-existing value.
     /// </summary>
     /// <typeparam name="T">The type of the value that could have been held.</typeparam>
-    public class None<T> : Maybe<T>
+    public class None<T> : IMaybe<T>
     {
         /// <inheritdoc />
         public bool HasValue
@@ -74,9 +73,8 @@ namespace PollyNom.BusinessLogic
         }
 
         /// <summary>
-        /// Does not provide access, but throws an exception on access.
+        /// Gets an exception.
         /// </summary>
-        /// <returns>Nothing, will throw exception instead.</returns>
         public T Value
         {
             get

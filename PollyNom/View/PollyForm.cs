@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Windows.Forms;
-
-using PollyNom.Controller;
-using PollyNom.BusinessLogic;
 using System.Linq;
+using System.Windows.Forms;
+using PollyNom.BusinessLogic;
+using PollyNom.Controller;
 
 namespace PollyNom.View
 {
@@ -20,11 +19,6 @@ namespace PollyNom.View
         /// To be used in the title bar.
         /// </summary>
         private const string titlePrefix = "PollyNom - Score: ";
-
-        /// <summary>
-        /// Controller providing access to data and accepting commands.
-        /// </summary>
-        private PollyController controller;
 
         /// <summary>
         /// Color chosen for the coordinate system.
@@ -47,6 +41,11 @@ namespace PollyNom.View
         private readonly Color goodDotHitColor = Color.DarkBlue;
 
         /// <summary>
+        /// Controller providing access to data and accepting commands.
+        /// </summary>
+        private PollyController controller;
+
+        /// <summary>
         /// Creates a new instance of the <see cref="PollyForm"/> class.
         /// </summary>
         public PollyForm()
@@ -62,7 +61,7 @@ namespace PollyNom.View
         /// </summary>
         /// <param name="sender">Sender, i.e. button.</param>
         /// <param name="e">EventArgs</param>
-        private void toolStripMenuItem1_Click(object sender, EventArgs e)
+        private void ToolStripMenuItem1_Click(object sender, EventArgs e)
         {
             this.ReadAndDelegate();
             this.Refresh();
@@ -73,9 +72,9 @@ namespace PollyNom.View
         /// whether the text is parseable and changing the text color
         /// accordingly.
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void inputBox_TextChanged(object sender, EventArgs e)
+        /// <param name="sender">The sender.</param>
+        /// <param name="e">The <see cref="EventArgs"/> instance.</param>
+        private void InputBox_TextChanged(object sender, EventArgs e)
         {
             bool isParseable = this.controller.TestExpression(inputBox.Text);
             var oldColor = inputBox.ForeColor;
@@ -92,11 +91,11 @@ namespace PollyNom.View
         /// by filtering out the enter key, which simulates
         /// a button press on <c>Calc!</c>.
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void inputBox_KeyPress(object sender, KeyPressEventArgs e)
+        /// <param name="sender">The sender.</param>
+        /// <param name="e">The <see cref="KeyPressEventArgs"/> instance.</param>
+        private void InputBox_KeyPress(object sender, KeyPressEventArgs e)
         {
-            if (e.KeyChar == (Char)Keys.Enter && (this.controller.TestExpression(this.inputBox.Text) || string.IsNullOrWhiteSpace(this.inputBox.Text)))
+            if (e.KeyChar == (char)Keys.Enter && (this.controller.TestExpression(this.inputBox.Text) || string.IsNullOrWhiteSpace(this.inputBox.Text)))
             {
                 this.ReadAndDelegate();
                 this.Refresh();
@@ -119,9 +118,9 @@ namespace PollyNom.View
         /// <summary>
         /// Handles the refreshing of the coordinate system and contents.
         /// </summary>
-        /// <param name="sender">?</param>
-        /// <param name="e">?</param>
-        private void userControl1_Paint(object sender, PaintEventArgs e)
+        /// <param name="sender">The sender.</param>
+        /// <param name="e">The <see cref="PaintEventArgs"/> instance.</param>
+        private void UserControl1_Paint(object sender, PaintEventArgs e)
         {
             DrawContents(e);
 
@@ -130,8 +129,8 @@ namespace PollyNom.View
 
         private void DrawContents(PaintEventArgs e)
         {
-            Int32 workingWidth = this.graphArea.Width;
-            Int32 workingHeight = this.graphArea.Height;
+            int workingWidth = this.graphArea.Width;
+            int workingHeight = this.graphArea.Height;
 
             CoordinateSystemInfo coordinateSystemInfo = controller.CoordinateSystemInfo;
 
@@ -270,13 +269,13 @@ namespace PollyNom.View
         /// by disabling the coordinate system, resizing it, and
         /// reenabling it.
         /// </summary>
-        /// <param name="sender">?</param>
-        /// <param name="e">?</param>
+        /// <param name="sender">The sender.</param>
+        /// <param name="e">The <see cref="EventArgs"/> instance.</param>
         private void Form1_Resize(object sender, EventArgs e)
         {
             this.graphPanel.Hide();
             this.inputPanel.Hide();
-            this.resizeClients();
+            this.ResizeClients();
             this.graphPanel.Show();
             this.inputPanel.Show();
         }
@@ -285,8 +284,8 @@ namespace PollyNom.View
         /// Handles the begin of a resizing on <see cref="PollyForm"/>
         /// by hiding the coordinate system.
         /// </summary>
-        /// <param name="sender">?</param>
-        /// <param name="e">?</param>
+        /// <param name="sender">The sender.</param>
+        /// <param name="e">The <see cref="EventArgs"/> instance.</param>
         private void PollyForm_ResizeBegin(object sender, EventArgs e)
         {
             this.graphPanel.Hide();
@@ -297,8 +296,8 @@ namespace PollyNom.View
         /// Handles the end of a resizing on <see cref="PollyForm"/>
         /// by updating and showing the coordinate system.
         /// </summary>
-        /// <param name="sender">?</param>
-        /// <param name="e">?</param>
+        /// <param name="sender">The sender.</param>
+        /// <param name="e">The <see cref="EventArgs"/> instance.</param>
         private void PollyForm_ResizeEnd(object sender, EventArgs e)
         {
             this.graphPanel.Show();
@@ -309,7 +308,7 @@ namespace PollyNom.View
         /// <summary>
         /// Resizes the graph area according to <see cref="PollyForm"/> dimensions.
         /// </summary>
-        private void resizeClients()
+        private void ResizeClients()
         {
             // hail mary and resize
             var rect = this.ClientRectangle;

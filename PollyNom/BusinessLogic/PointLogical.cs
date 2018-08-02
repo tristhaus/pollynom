@@ -8,14 +8,14 @@ namespace PollyNom.BusinessLogic
     public class PointLogical : IComparable<PointLogical>
     {
         /// <summary>
-        /// The x-coordinate in implied logical business units.
+        /// Gets the x-coordinate in implied logical business units.
         /// </summary>
-        public readonly double X;
+        public double X { get; }
 
         /// <summary>
-        /// The y-coordinate in implied logical business units.
+        /// Gets the y-coordinate in implied logical business units.
         /// </summary>
-        public readonly double Y;
+        public double Y { get; }
 
         /// <summary>
         /// Creates a new instance of the <see cref="PointLogical"/> class from the coordinates given.

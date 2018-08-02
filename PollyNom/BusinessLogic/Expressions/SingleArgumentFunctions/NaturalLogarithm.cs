@@ -13,7 +13,8 @@ namespace PollyNom.BusinessLogic.Expressions.SingleArgumentFunctions
         /// Creates a new instance of the <see cref="NaturalLogarithm"/> class.
         /// </summary>
         /// <param name="containedExpression">The single argument of the function.</param>
-        public NaturalLogarithm(IExpression containedExpression) : base(containedExpression)
+        public NaturalLogarithm(IExpression containedExpression)
+            : base(containedExpression)
         {
         }
 

@@ -16,20 +16,20 @@ namespace PollyNomTest
         [TestMethod]
         public void XInvalidPerMethod()
         {
-            var Xa = new BaseX();
-            var Xb = new BaseX();
+            var xA = new BaseX();
+            var xB = new BaseX();
 
-            var InvalidA = new InvalidExpression();
-            var InvalidB = new InvalidExpression();
+            var invalidA = new InvalidExpression();
+            var invalidB = new InvalidExpression();
 
-            Assert.IsTrue(Xa.Equals(Xb));
-            Assert.IsTrue(Xb.Equals(Xa));
+            Assert.IsTrue(xA.Equals(xB));
+            Assert.IsTrue(xB.Equals(xA));
 
-            Assert.IsTrue(InvalidA.Equals(InvalidB));
-            Assert.IsTrue(InvalidB.Equals(InvalidA));
+            Assert.IsTrue(invalidA.Equals(invalidB));
+            Assert.IsTrue(invalidB.Equals(invalidA));
 
-            Assert.IsFalse(Xa.Equals(InvalidA));
-            Assert.IsFalse(InvalidA.Equals(Xa));
+            Assert.IsFalse(xA.Equals(invalidA));
+            Assert.IsFalse(invalidA.Equals(xA));
         }
 
         /// <summary>
@@ -38,23 +38,23 @@ namespace PollyNomTest
         [TestMethod]
         public void XInvalidPerOperator()
         {
-            var Xa = new BaseX();
-            var Xb = new BaseX();
+            var xA = new BaseX();
+            var xB = new BaseX();
 
-            var InvalidA = new InvalidExpression();
-            var InvalidB = new InvalidExpression();
+            var invalidA = new InvalidExpression();
+            var invalidB = new InvalidExpression();
 
-            Assert.IsTrue(Xa == Xb);
-            Assert.IsTrue(Xb == Xa);
+            Assert.IsTrue(xA == xB);
+            Assert.IsTrue(xB == xA);
 
-            Assert.IsTrue(InvalidA == InvalidB);
-            Assert.IsTrue(InvalidB == InvalidA);
+            Assert.IsTrue(invalidA == invalidB);
+            Assert.IsTrue(invalidB == invalidA);
 
-            Assert.IsFalse(Xa == InvalidA);
-            Assert.IsTrue(Xa != InvalidA);
+            Assert.IsFalse(xA == invalidA);
+            Assert.IsTrue(xA != invalidA);
 
-            Assert.IsFalse(InvalidA == Xa);
-            Assert.IsTrue(InvalidA != Xa);
+            Assert.IsFalse(invalidA == xA);
+            Assert.IsTrue(invalidA != xA);
         }
 
         /// <summary>
@@ -148,6 +148,7 @@ namespace PollyNomTest
         {
             // 0.5 + 0.3 - 1.2
             var a = new Add(new Add.AddExpression(Add.AddExpression.Signs.Plus, new Constant(0.5)), new Add.AddExpression(Add.AddExpression.Signs.Plus, new Constant(0.3)), new Add.AddExpression(Add.AddExpression.Signs.Minus, new Constant(1.2)));
+
             // -0.5 + 0.3 + 1.2
             var b = new Add(new Add.AddExpression(Add.AddExpression.Signs.Minus, new Constant(0.5)), new Add.AddExpression(Add.AddExpression.Signs.Plus, new Constant(0.3)), new Add.AddExpression(Add.AddExpression.Signs.Plus, new Constant(1.2)));
 
@@ -163,6 +164,7 @@ namespace PollyNomTest
         {
             // 0.5 + 0.3 + 1.2
             var a = new Add(new Add.AddExpression(Add.AddExpression.Signs.Plus, new Constant(0.5)), new Add.AddExpression(Add.AddExpression.Signs.Plus, new Constant(0.3)), new Add.AddExpression(Add.AddExpression.Signs.Plus, new Constant(1.2)));
+
             // 0.3 + 0.5 + 1.2
             var b = new Add(new Add.AddExpression(Add.AddExpression.Signs.Plus, new Constant(0.3)), new Add.AddExpression(Add.AddExpression.Signs.Plus, new Constant(0.5)), new Add.AddExpression(Add.AddExpression.Signs.Plus, new Constant(1.2)));
 
@@ -219,6 +221,7 @@ namespace PollyNomTest
         {
             // 0.5 * 0.3 * 1.2
             var a = new Multiply(new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Multiply, new Constant(0.5)), new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Multiply, new Constant(0.3)), new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Multiply, new Constant(1.2)));
+
             // 0.3 * 0.3 * 1.2
             var b = new Multiply(new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Multiply, new Constant(0.3)), new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Multiply, new Constant(0.3)), new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Multiply, new Constant(1.2)));
 
@@ -234,6 +237,7 @@ namespace PollyNomTest
         {
             // 0.5 * 0.3 / 1.2
             var a = new Multiply(new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Multiply, new Constant(0.5)), new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Multiply, new Constant(0.3)), new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Divide, new Constant(1.2)));
+
             // / 0.5 * 0.3 * 1.2
             var b = new Multiply(new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Divide, new Constant(0.5)), new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Multiply, new Constant(0.3)), new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Multiply, new Constant(1.2)));
 
@@ -249,6 +253,7 @@ namespace PollyNomTest
         {
             // 0.5 * 0.3 * 1.2
             var a = new Multiply(new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Multiply, new Constant(0.5)), new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Multiply, new Constant(0.3)), new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Multiply, new Constant(1.2)));
+
             // 0.3 * 0.5 * 1.2
             var b = new Multiply(new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Multiply, new Constant(0.3)), new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Multiply, new Constant(0.5)), new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Multiply, new Constant(1.2)));
 
@@ -278,6 +283,7 @@ namespace PollyNomTest
         {
             // 0.3 * X * 1.2
             var a = new Multiply(new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Multiply, new Constant(0.3)), new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Multiply, new BaseX()), new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Multiply, new Constant(1.2)));
+
             // X * 0.3 * 1.2
             var b = new Multiply(new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Multiply, new BaseX()), new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Multiply, new Constant(0.3)), new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Multiply, new Constant(1.2)));
 
@@ -296,6 +302,7 @@ namespace PollyNomTest
                 new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Multiply, new Add(new Add.AddExpression(Add.AddExpression.Signs.Plus, new BaseX()), new Add.AddExpression(Add.AddExpression.Signs.Plus, new Constant(4.2)))),
                 new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Divide, new BaseX())
                 );
+
             // / (X) * (X + 4.2)
             var b = new Multiply(
                 new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Divide, new BaseX()),
@@ -317,6 +324,7 @@ namespace PollyNomTest
                 new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Multiply, new Add(new Add.AddExpression(Add.AddExpression.Signs.Plus, new BaseX()), new Add.AddExpression(Add.AddExpression.Signs.Plus, new Constant(4.2)))),
                 new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Divide, new BaseX())
                 );
+
             // (-X + 4.2) / (X)
             var b = new Multiply(
                 new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Multiply, new Add(new Add.AddExpression(Add.AddExpression.Signs.Minus, new BaseX()), new Add.AddExpression(Add.AddExpression.Signs.Plus, new Constant(4.2)))),
@@ -371,6 +379,7 @@ namespace PollyNomTest
 
             // (X - 1.0) ^ (X / 0.4)
             var powerA = new Power(basisA, exponentA);
+
             // (X - 1.0) ^ (/ 0.4 * X)
             var powerB = new Power(basisB, exponentB);
 
@@ -398,6 +407,7 @@ namespace PollyNomTest
 
             // (X - 1.0) ^ (X / 0.3)
             var powerA = new Power(basisA, exponentA);
+
             // (X - 1.0) ^ (X / 0.4)
             var powerB = new Power(basisB, exponentB);
 
@@ -422,8 +432,10 @@ namespace PollyNomTest
 
             // (X - 1.0) ^ X
             var powerA = new Power(basisA, exponentA);
+
             // (X - 1.0) ^ X
             var powerAA = new Power(basisAA, exponentAA);
+
             // (X - 1.0) ^ (1.4)
             var powerB = new Power(basisB, exponentB);
 
@@ -444,8 +456,10 @@ namespace PollyNomTest
 
             // exp(x)
             var expressionA = new Exponential(argumentA);
+
             // exp(x)
             var expressionAA = new Exponential(argumentAA);
+
             // exp(-x^2)
             var expressionB = new Exponential(argumentB);
 
@@ -466,8 +480,10 @@ namespace PollyNomTest
 
             // exp(x)
             var expressionA = new Exponential(argumentA);
+
             // exp(x)
             var expressionAA = new Exponential(argumentAA);
+
             // exp(-x^2)
             var expressionB = new Exponential(argumentB);
 
@@ -488,8 +504,10 @@ namespace PollyNomTest
 
             // ln(x)
             var expressionA = new NaturalLogarithm(argumentA);
+
             // ln(x)
             var expressionAA = new NaturalLogarithm(argumentAA);
+
             // ln(x^2)
             var expressionB = new NaturalLogarithm(argumentB);
 
@@ -510,8 +528,10 @@ namespace PollyNomTest
 
             // ln(x)
             var expressionA = new NaturalLogarithm(argumentA);
+
             // ln(x)
             var expressionAA = new NaturalLogarithm(argumentAA);
+
             // ln(x^2)
             var expressionB = new NaturalLogarithm(argumentB);
 
@@ -532,8 +552,10 @@ namespace PollyNomTest
 
             // sin(x)
             var expressionA = new Sine(argumentA);
+
             // sin(x)
             var expressionAA = new Sine(argumentAA);
+
             // sin(x^2)
             var expressionB = new Sine(argumentB);
 
@@ -558,8 +580,10 @@ namespace PollyNomTest
 
             // cos(x)
             var expressionA = new Cosine(argumentA);
+
             // cos(x)
             var expressionAA = new Cosine(argumentAA);
+
             // cos(x^2)
             var expressionB = new Cosine(argumentB);
 
@@ -584,8 +608,10 @@ namespace PollyNomTest
 
             // tan(x)
             var expressionA = new Tangent(argumentA);
+
             // tan(x)
             var expressionAA = new Tangent(argumentAA);
+
             // tan(x^2)
             var expressionB = new Tangent(argumentB);
 
@@ -610,8 +636,10 @@ namespace PollyNomTest
 
             // abs(x)
             var expressionA = new AbsoluteValue(argumentA);
+
             // abs(x)
             var expressionAA = new AbsoluteValue(argumentAA);
+
             // abs(x^2)
             var expressionB = new AbsoluteValue(argumentB);
 

@@ -1,6 +1,6 @@
-﻿using PollyNom.BusinessLogic;
+﻿using System.Collections.Generic;
+using PollyNom.BusinessLogic;
 using PollyNom.BusinessLogic.Expressions;
-using System.Collections.Generic;
 
 namespace PollyNomTest.Helper
 {
@@ -99,7 +99,8 @@ namespace PollyNomTest.Helper
         /// <returns>An Expression object.</returns>
         internal static IExpression Expression07()
         {
-            Add.AddExpression[] expressions = {
+            Add.AddExpression[] expressions =
+            {
                 new Add.AddExpression(Add.AddExpression.Signs.Plus, new BaseX()),
                 new Add.AddExpression(Add.AddExpression.Signs.Plus, new Constant(1.0)),
                 new Add.AddExpression(Add.AddExpression.Signs.Minus, new Constant(2.0)),

@@ -42,6 +42,5 @@ namespace PollyNomTest
             // Assert
             Assert.IsFalse(result);
         }
-
     }
 }

@@ -1,10 +1,9 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-
+﻿using System.Collections.Generic;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using PollyNom.BusinessLogic;
 using PollyNom.BusinessLogic.Dots;
 using PollyNom.BusinessLogic.Expressions;
 using PollyNomTest.Helper;
-using System.Collections.Generic;
 
 namespace PollyNomTest
 {
@@ -14,9 +13,9 @@ namespace PollyNomTest
     [TestClass]
     public class DotHittingTest
     {
-        private const double startX = -1.0;
-        private const double endX = 1.0;
-        private const double limits = 1000.0;
+        private const double StartX = -1.0;
+        private const double EndX = 1.0;
+        private const double Limits = 1000.0;
 
         /// <summary>
         /// Tests hitting of a dot at tangential points
@@ -29,10 +28,12 @@ namespace PollyNomTest
 
             IExpression top = new Constant(0.25);
             IExpression bottom = new Constant(-0.25);
+
             // +1000 * x - 250
             IExpression right = new Add(
                 new Add.AddExpression(Add.AddExpression.Signs.Plus, new Multiply(new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Multiply, new Constant(+1000.0)), new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Multiply, new BaseX()))),
                 new Add.AddExpression(Add.AddExpression.Signs.Minus, new Constant(250.0)));
+
             // -1000 * x - 250
             IExpression left = new Add(
                 new Add.AddExpression(Add.AddExpression.Signs.Plus, new Multiply(new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Multiply, new Constant(-1000.0)), new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Multiply, new BaseX()))),
@@ -40,10 +41,12 @@ namespace PollyNomTest
 
             IExpression topMiss = new Constant(0.3);
             IExpression bottomMiss = new Constant(-0.3);
+
             // +1000 * x - 500
             IExpression rightMiss = new Add(
                 new Add.AddExpression(Add.AddExpression.Signs.Plus, new Multiply(new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Multiply, new Constant(+1000.0)), new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Multiply, new BaseX()))),
                 new Add.AddExpression(Add.AddExpression.Signs.Minus, new Constant(500.0)));
+
             // -1000 * x - 500
             IExpression leftMiss = new Add(
                 new Add.AddExpression(Add.AddExpression.Signs.Plus, new Multiply(new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Multiply, new Constant(-1000.0)), new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Multiply, new BaseX()))),
@@ -83,7 +86,7 @@ namespace PollyNomTest
 
             IExpression plainOneOverX = new Multiply(new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Multiply, new Constant(1.0)), new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Divide, new BaseX()));
 
-            PointListGenerator pointListGenerator = new PointListGenerator(plainOneOverX, DotHittingTest.startX, DotHittingTest.endX, DotHittingTest.limits);
+            PointListGenerator pointListGenerator = new PointListGenerator(plainOneOverX, DotHittingTest.StartX, DotHittingTest.EndX, DotHittingTest.Limits);
 
             List<ListPointLogical> logicalPointLists = pointListGenerator.ObtainListsOfLogicalPoints();
 
@@ -103,22 +106,22 @@ namespace PollyNomTest
             // Arrange
             GoodDot originDot = new GoodDot(0.0, 0.0);
 
-            IExpression OneOverXMinus10 = new Add(
+            IExpression oneOverXMinus10 = new Add(
                 new Add.AddExpression(Add.AddExpression.Signs.Plus,
                     new Multiply(new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Multiply, new Constant(1.0)), new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Divide, new BaseX()))
                     ),
                 new Add.AddExpression(Add.AddExpression.Signs.Minus, new Constant(10.0))
                 );
 
-            PointListGenerator pointListGenerator = new PointListGenerator(OneOverXMinus10, DotHittingTest.startX, DotHittingTest.endX, DotHittingTest.limits);
+            PointListGenerator pointListGenerator = new PointListGenerator(oneOverXMinus10, DotHittingTest.StartX, DotHittingTest.EndX, DotHittingTest.Limits);
 
             List<ListPointLogical> logicalPointLists = pointListGenerator.ObtainListsOfLogicalPoints();
 
             // Act
-            bool OneOverXMinus10Result = originDot.IsHit(OneOverXMinus10, logicalPointLists);
+            bool oneOverXMinus10Result = originDot.IsHit(oneOverXMinus10, logicalPointLists);
 
             // Assert
-            Assert.IsTrue(OneOverXMinus10Result);
+            Assert.IsTrue(oneOverXMinus10Result);
         }
     }
 }

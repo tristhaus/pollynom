@@ -1,7 +1,6 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Drawing;
-
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using PollyNom.BusinessLogic;
 using PollyNom.BusinessLogic.Expressions;
 using PollyNom.BusinessLogic.Expressions.SingleArgumentFunctions;
@@ -98,8 +97,8 @@ namespace PollyNomTest
         public void RootX_HasOneList()
         {
             // Arrange
-            IExpression RootX = new Power(new BaseX(), new Constant(0.5));
-            PointListGenerator pointList = new PointListGenerator(RootX, -1.0, 1.0, 1000.0);
+            IExpression rootX = new Power(new BaseX(), new Constant(0.5));
+            PointListGenerator pointList = new PointListGenerator(rootX, -1.0, 1.0, 1000.0);
 
             // Act
             var result = pointList.ObtainListsOfLogicalPoints();
@@ -118,8 +117,8 @@ namespace PollyNomTest
         public void LnX_HasOneListAndStartsSufficientlyLow()
         {
             // Arrange
-            IExpression LnX = new NaturalLogarithm(new BaseX());
-            PointListGenerator pointList = new PointListGenerator(LnX, -1.0, 1.0, 1000.0);
+            IExpression lnX = new NaturalLogarithm(new BaseX());
+            PointListGenerator pointList = new PointListGenerator(lnX, -1.0, 1.0, 1000.0);
 
             // Act
             var result = pointList.ObtainListsOfLogicalPoints();
@@ -129,6 +128,5 @@ namespace PollyNomTest
             Assert.IsTrue(result[0].Count >= 1);
             Assert.IsTrue(result[0].Points[0].Y < -10);
         }
-
     }
 }

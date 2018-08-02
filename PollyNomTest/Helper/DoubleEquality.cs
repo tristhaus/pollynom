@@ -10,7 +10,7 @@ namespace PollyNomTest.Helper
         /// <summary>
         /// Threshold below which the absolute difference must be for equality.
         /// </summary>
-        private const double epsilon = 1e-6;
+        private const double Epsilon = 1e-6;
 
         /// <summary>
         /// Compare the provided doubles for approximate equality.
@@ -20,7 +20,7 @@ namespace PollyNomTest.Helper
         /// <returns><c>true</c> if the doubles are close enough to each other.</returns>
         public static bool IsApproximatelyEqual(double a, double b)
         {
-            return (Math.Abs(a - b)) < DoubleEquality.epsilon;
+            return (Math.Abs(a - b)) < DoubleEquality.Epsilon;
         }
     }
 }

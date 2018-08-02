@@ -1,9 +1,9 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using System;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using PollyNom.BusinessLogic;
 using PollyNom.BusinessLogic.Expressions;
 using PollyNom.BusinessLogic.Expressions.SingleArgumentFunctions;
 using PollyNomTest.Helper;
-using System;
 
 namespace PollyNomTest
 {

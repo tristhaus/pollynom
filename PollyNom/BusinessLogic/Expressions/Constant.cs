@@ -12,6 +12,7 @@ namespace PollyNom.BusinessLogic.Expressions
         /// <summary>
         /// Initializes a new instance of the <see cref="Constant"/> class.
         /// </summary>
+        /// <param name="a">The numerical value of the constant.</param>
         public Constant(double a)
         {
             this.a = a;

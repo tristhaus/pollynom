@@ -13,7 +13,7 @@ namespace PollyNom.Controller
         private readonly DrawDotKind kind;
 
         /// <summary>
-        /// Creates a new instance of the <see cref="DrawDot"/> class.
+        /// Initializes a new instance of the <see cref="DrawDot"/> class.
         /// </summary>
         /// <param name="xCoordinate">X-coordinate of the dot.</param>
         /// <param name="yCoordinate">Y-coordinate of the dot.</param>
@@ -52,7 +52,7 @@ namespace PollyNom.Controller
         }
 
         /// <summary>
-        /// Gets or sets a flag indicating whether the dot has been hit.
+        /// Gets or sets a value indicating whether the dot has been hit.
         /// </summary>
         public bool IsHit { get; set; }
 

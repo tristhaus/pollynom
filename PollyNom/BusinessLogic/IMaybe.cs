@@ -29,7 +29,7 @@ namespace PollyNom.BusinessLogic
         private readonly T t;
 
         /// <summary>
-        /// Creates a new instance of the <see cref="Some"/> class,
+        /// Initializes a new instance of the <see cref="Some{T}"/> class,
         /// given a value to be held.
         /// </summary>
         /// <param name="t">The value to be held by this instance.</param>

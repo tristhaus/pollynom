@@ -18,7 +18,7 @@ namespace PollyNom.BusinessLogic
         public double Y { get; }
 
         /// <summary>
-        /// Creates a new instance of the <see cref="PointLogical"/> class from the coordinates given.
+        /// Initializes a new instance of the <see cref="PointLogical"/> class from the coordinates given.
         /// </summary>
         /// <param name="x">X-coordinate of the point in implied logical business units.</param>
         /// <param name="y">Y-coordinate of the point in implied logical business units.</param>

@@ -7,7 +7,7 @@ namespace PollyNom.BusinessLogic.Expressions.SingleArgumentFunctions
         internal static readonly string Symbol = "abs";
 
         /// <summary>
-        /// Creates a new instance of the <see cref="Tangent"/> class.
+        /// Initializes a new instance of the <see cref="AbsoluteValue"/> class.
         /// </summary>
         /// <param name="containedExpression">The single argument of the function.</param>
         public AbsoluteValue(IExpression containedExpression)

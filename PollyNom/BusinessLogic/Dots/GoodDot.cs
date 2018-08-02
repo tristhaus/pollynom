@@ -29,7 +29,7 @@ namespace PollyNom.BusinessLogic.Dots
         private readonly double y;
 
         /// <summary>
-        /// Creates a new instance of the <see cref="GoodDot"/> class from the coordinates given.
+        /// Initializes a new instance of the <see cref="GoodDot"/> class from the coordinates given.
         /// </summary>
         /// <param name="x">X-coordinate of the dot in implied logical business units.</param>
         /// <param name="y">Y-coordinate of the dot in implied logical business units.</param>
@@ -164,6 +164,7 @@ namespace PollyNom.BusinessLogic.Dots
                         increment *= rightGradient < 10 ? rightGradient / 20 : 0.75;
                         mid += increment;
                     }
+
                     continue;
                 }
 

@@ -10,7 +10,7 @@ namespace PollyNom.BusinessLogic
         private List<PointLogical> list;
 
         /// <summary>
-        /// Creates a new instance of the <see cref="ListPointLogical"/> class.
+        /// Initializes a new instance of the <see cref="ListPointLogical"/> class.
         /// </summary>
         public ListPointLogical()
         {

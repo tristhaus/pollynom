@@ -15,7 +15,7 @@ namespace PollyNom.BusinessLogic.Expressions
         private IExpression containedExpression;
 
         /// <summary>
-        /// Creates a new instance of the <see cref="SingleArgumentFunctionBase{T}"/> class.
+        /// Initializes a new instance of the <see cref="SingleArgumentFunctionBase{T}"/> class.
         /// </summary>
         /// <param name="containedExpression">The single argument of the function.</param>
         protected SingleArgumentFunctionBase(IExpression containedExpression)
@@ -47,6 +47,7 @@ namespace PollyNom.BusinessLogic.Expressions
             {
                 return false;
             }
+
             SingleArgumentFunctionBase<T> otherFunction = (SingleArgumentFunctionBase<T>)other;
 
             return this.EqualityImplementation(otherFunction);

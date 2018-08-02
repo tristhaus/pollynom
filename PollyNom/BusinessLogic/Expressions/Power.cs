@@ -11,7 +11,7 @@ namespace PollyNom.BusinessLogic.Expressions
         private IExpression exponent;
 
         /// <summary>
-        /// Creates a new instance of the <see cref="Power"/> class.
+        /// Initializes a new instance of the <see cref="Power"/> class.
         /// </summary>
         /// <param name="base">The base of the <see cref="Power"/>expression.</param>
         /// <param name="exponent">The exponent to which the <see cref="base"/> is raised.</param>
@@ -45,6 +45,7 @@ namespace PollyNom.BusinessLogic.Expressions
             {
                 return false;
             }
+
             Power otherPower = (Power)other;
 
             return this.EqualityImplementation(otherPower);
@@ -121,6 +122,7 @@ namespace PollyNom.BusinessLogic.Expressions
             {
                 aDecorated = "(" + aDecorated + ")";
             }
+
             if (!exponent.IsMonadic)
             {
                 bDecorated = "(" + bDecorated + ")";

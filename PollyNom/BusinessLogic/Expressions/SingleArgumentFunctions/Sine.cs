@@ -7,7 +7,7 @@ namespace PollyNom.BusinessLogic.Expressions.SingleArgumentFunctions
         internal static readonly string Symbol = "sin";
 
         /// <summary>
-        /// Creates a new instance of the <see cref="Sine"/> class.
+        /// Initializes a new instance of the <see cref="Sine"/> class.
         /// </summary>
         /// <param name="containedExpression">The single argument of the function.</param>
         public Sine(IExpression containedExpression)

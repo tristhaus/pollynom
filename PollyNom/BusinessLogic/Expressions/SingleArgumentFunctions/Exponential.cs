@@ -11,7 +11,7 @@ namespace PollyNom.BusinessLogic.Expressions.SingleArgumentFunctions
         internal static readonly string Symbol = "exp";
 
         /// <summary>
-        /// Creates a new instance of the <see cref="Exponential"/> class.
+        /// Initializes a new instance of the <see cref="Exponential"/> class.
         /// </summary>
         /// <param name="containedExpression">The single argument of the function.</param>
         public Exponential(IExpression containedExpression)

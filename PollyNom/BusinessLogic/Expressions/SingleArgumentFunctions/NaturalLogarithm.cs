@@ -10,7 +10,7 @@ namespace PollyNom.BusinessLogic.Expressions.SingleArgumentFunctions
         public static readonly string Symbol = "ln";
 
         /// <summary>
-        /// Creates a new instance of the <see cref="NaturalLogarithm"/> class.
+        /// Initializes a new instance of the <see cref="NaturalLogarithm"/> class.
         /// </summary>
         /// <param name="containedExpression">The single argument of the function.</param>
         public NaturalLogarithm(IExpression containedExpression)

@@ -46,7 +46,7 @@ namespace PollyNom.View
         private PollyController controller;
 
         /// <summary>
-        /// Creates a new instance of the <see cref="PollyForm"/> class.
+        /// Initializes a new instance of the <see cref="PollyForm"/> class.
         /// </summary>
         public PollyForm()
         {

@@ -57,7 +57,7 @@ namespace PollyNom.Controller
         private int score = 0;
 
         /// <summary>
-        /// Creates a new instance of the <see cref="PollyController"/> class.
+        /// Initializes a new instance of the <see cref="PollyController"/> class.
         /// </summary>
         /// <param name="dots">A list of dots that shall be respected by the <see cref="PollyController"/> instance.</param>
         public PollyController(List<IDot> dots = null)
@@ -212,6 +212,7 @@ namespace PollyNom.Controller
                         }
                     }
                 }
+
                 numbersOfHits.Add(countOfHits);
             }
 

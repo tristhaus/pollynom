@@ -12,7 +12,7 @@ namespace PollyNom.BusinessLogic.Expressions
         private List<AddExpression> list;
 
         /// <summary>
-        /// Creates a new instance of the <see cref="Add"/> class.
+        /// Initializes a new instance of the <see cref="Add"/> class.
         /// </summary>
         /// <param name="a">First summand of the resulting expression.</param>
         /// <param name="b">Second and last summand of the resulting expression.</param>
@@ -24,7 +24,7 @@ namespace PollyNom.BusinessLogic.Expressions
         }
 
         /// <summary>
-        /// Creates a new instance of the <see cref="Add"/> class.
+        /// Initializes a new instance of the <see cref="Add"/> class.
         /// </summary>
         /// <param name="expressions">Extensible array of <see cref="AddExpression"/> to be contained.</param>
         public Add(params AddExpression[] expressions)
@@ -37,7 +37,7 @@ namespace PollyNom.BusinessLogic.Expressions
         }
 
         /// <summary>
-        /// Creates a new instance of the <see cref="Add"/> class.
+        /// Initializes a new instance of the <see cref="Add"/> class.
         /// </summary>
         /// <param name="list">List of <see cref="AddExpression"/> to be contained.</param>
         public Add(List<AddExpression> list)
@@ -69,6 +69,7 @@ namespace PollyNom.BusinessLogic.Expressions
             {
                 return false;
             }
+
             Add otherAdd = (Add)other;
 
             return this.EqualityImplementation(otherAdd);
@@ -109,11 +110,13 @@ namespace PollyNom.BusinessLogic.Expressions
                 {
                     hashes.Add(addExpression.GetHashCode());
                 }
+
                 hashes.Sort();
                 foreach (var hash in hashes)
                 {
                     finalHash = finalHash * 23 + hash;
                 }
+
                 return finalHash;
             }
         }
@@ -130,6 +133,7 @@ namespace PollyNom.BusinessLogic.Expressions
                 {
                     return new None<double>();
                 }
+
                 sum += expression.Sign == AddExpression.Signs.Plus ? (+value.Value) : (-value.Value);
             }
 
@@ -148,6 +152,7 @@ namespace PollyNom.BusinessLogic.Expressions
                 {
                     return new None<string>();
                 }
+
                 s += expression.Sign == AddExpression.Signs.Plus ? "+" + value.Value : "-" + value.Value;
             }
 
@@ -218,7 +223,7 @@ namespace PollyNom.BusinessLogic.Expressions
             private IExpression expression;
 
             /// <summary>
-            /// Creates a new instance of the <see cref="MultiplyExpression"/> class.
+            /// Initializes a new instance of the <see cref="AddExpression"/> class.
             /// </summary>
             /// <param name="sign">The sign to be used.</param>
             /// <param name="expression">The expression to be contained.</param>
@@ -245,6 +250,7 @@ namespace PollyNom.BusinessLogic.Expressions
                 {
                     return false;
                 }
+
                 AddExpression otherAddExpression = (AddExpression)other;
                 return this.Sign == otherAddExpression.Sign && this.expression.Equals(otherAddExpression.expression);
             }

@@ -50,7 +50,7 @@ namespace PollyNom.BusinessLogic
         private double limits;
 
         /// <summary>
-        /// Creates a new instance of the <see cref="PointListGenerator"/> class,
+        /// Initializes a new instance of the <see cref="PointListGenerator"/> class,
         /// using an <see cref="IExpression"/> and parameters for the evaluation.
         /// </summary>
         /// <param name="expression">The expression to be used.</param>

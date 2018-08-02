@@ -6,7 +6,7 @@ using PollyNom.BusinessLogic.Dots;
 namespace PollyNom.BusinessLogic
 {
     /// <summary>
-    /// Creates good dots on a grid in a random manner.
+    /// Initializes good dots on a grid in a random manner.
     /// </summary>
     public class GoodDotsGenerator
     {

@@ -7,7 +7,7 @@ namespace PollyNom.BusinessLogic.Expressions.SingleArgumentFunctions
         internal static readonly string Symbol = "cos";
 
         /// <summary>
-        /// Creates a new instance of the <see cref="Cosine"/> class.
+        /// Initializes a new instance of the <see cref="Cosine"/> class.
         /// </summary>
         /// <param name="containedExpression">The single argument of the function.</param>
         public Cosine(IExpression containedExpression)

@@ -7,7 +7,7 @@ namespace PollyNom.BusinessLogic.Expressions.SingleArgumentFunctions
         internal static readonly string Symbol = "tan";
 
         /// <summary>
-        /// Creates a new instance of the <see cref="Tangent"/> class.
+        /// Initializes a new instance of the <see cref="Tangent"/> class.
         /// </summary>
         /// <param name="containedExpression">The single argument of the function.</param>
         public Tangent(IExpression containedExpression)

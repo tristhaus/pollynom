@@ -12,7 +12,7 @@ namespace PollyNom.BusinessLogic.Expressions
         private List<MultiplyExpression> list;
 
         /// <summary>
-        /// Creates a new instance of the <see cref="Multiply"/> class.
+        /// Initializes a new instance of the <see cref="Multiply"/> class.
         /// </summary>
         /// <param name="a">First factor of the resulting expression.</param>
         /// <param name="b">Second and last factor of the resulting expression.</param>
@@ -24,7 +24,7 @@ namespace PollyNom.BusinessLogic.Expressions
         }
 
         /// <summary>
-        /// Creates a new instance of the <see cref="Multiply"/> class.
+        /// Initializes a new instance of the <see cref="Multiply"/> class.
         /// </summary>
         /// <param name="expressions">Extensible array of <see cref="MultiplyExpression"/> to be contained.</param>
         public Multiply(params MultiplyExpression[] expressions)
@@ -37,7 +37,7 @@ namespace PollyNom.BusinessLogic.Expressions
         }
 
         /// <summary>
-        /// Creates a new instance of the <see cref="Multiply"/> class.
+        /// Initializes a new instance of the <see cref="Multiply"/> class.
         /// </summary>
         /// <param name="list">List of <see cref="MultiplyExpression"/> to be contained.</param>
         public Multiply(List<MultiplyExpression> list)
@@ -69,6 +69,7 @@ namespace PollyNom.BusinessLogic.Expressions
             {
                 return false;
             }
+
             Multiply otherMultiply = (Multiply)other;
 
             return this.EqualityImplementation(otherMultiply);
@@ -109,11 +110,13 @@ namespace PollyNom.BusinessLogic.Expressions
                 {
                     hashes.Add(multiplyExpression.GetHashCode());
                 }
+
                 hashes.Sort();
                 foreach (var hash in hashes)
                 {
                     finalHash = finalHash * 23 + hash;
                 }
+
                 return finalHash;
             }
         }
@@ -232,7 +235,7 @@ namespace PollyNom.BusinessLogic.Expressions
             private IExpression expression;
 
             /// <summary>
-            /// Creates a new instance of the <see cref="MultiplyExpression"/> class.
+            /// Initializes a new instance of the <see cref="MultiplyExpression"/> class.
             /// </summary>
             /// <param name="sign">The "sign" to be used.</param>
             /// <param name="expression">The expression to be contained.</param>
@@ -259,6 +262,7 @@ namespace PollyNom.BusinessLogic.Expressions
                 {
                     return false;
                 }
+
                 MultiplyExpression otherMultiplyExpression = (MultiplyExpression)other;
                 return this.Sign == otherMultiplyExpression.Sign && this.expression.Equals(otherMultiplyExpression.expression);
             }

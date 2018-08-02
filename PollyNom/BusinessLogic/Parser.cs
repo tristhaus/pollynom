@@ -17,7 +17,7 @@ namespace PollyNom.BusinessLogic
         private Dictionary<string, Type> functions;
 
         /// <summary>
-        /// Creates a new instance of the <see cref="Parser"/> class.
+        /// Initializes a new instance of the <see cref="Parser"/> class.
         /// </summary>
         public Parser()
         {
@@ -119,11 +119,13 @@ namespace PollyNom.BusinessLogic
                     {
                         count--;
                     }
+
                     if (count < 0)
                     {
                         return false;
                     }
                 }
+
                 if (count != 0)
                 {
                     return false;
@@ -300,6 +302,7 @@ namespace PollyNom.BusinessLogic
                     {
                         return this.invalidExpressionSample;
                     }
+
                     targetList.Add(new Add.AddExpression(sign, expression));
                     token = tokens[0];
                     tokens.RemoveAt(0);
@@ -324,6 +327,7 @@ namespace PollyNom.BusinessLogic
                 {
                     return this.invalidExpressionSample;
                 }
+
                 targetList.Add(new Add.AddExpression(sign, expression));
                 token = string.Empty;
             }
@@ -355,6 +359,7 @@ namespace PollyNom.BusinessLogic
                     {
                         return this.invalidExpressionSample;
                     }
+
                     targetList.Add(new Multiply.MultiplyExpression(sign, expression));
                     token = tokens[0];
                     tokens.RemoveAt(0);
@@ -379,6 +384,7 @@ namespace PollyNom.BusinessLogic
                 {
                     return this.invalidExpressionSample;
                 }
+
                 targetList.Add(new Multiply.MultiplyExpression(sign, expression));
                 token = string.Empty;
             }
@@ -499,6 +505,7 @@ namespace PollyNom.BusinessLogic
                     {
                         count--;
                     }
+
                     if (count == 0)
                     {
                         return index;
@@ -518,6 +525,7 @@ namespace PollyNom.BusinessLogic
                     {
                         count--;
                     }
+
                     if (count == 0)
                     {
                         return index;

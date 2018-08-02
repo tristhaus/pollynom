@@ -107,11 +107,10 @@ namespace PollyNomTest
             GoodDot originDot = new GoodDot(0.0, 0.0);
 
             IExpression oneOverXMinus10 = new Add(
-                new Add.AddExpression(Add.AddExpression.Signs.Plus,
-                    new Multiply(new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Multiply, new Constant(1.0)), new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Divide, new BaseX()))
-                    ),
-                new Add.AddExpression(Add.AddExpression.Signs.Minus, new Constant(10.0))
-                );
+                new Add.AddExpression(
+                    Add.AddExpression.Signs.Plus,
+                    new Multiply(new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Multiply, new Constant(1.0)), new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Divide, new BaseX()))),
+                new Add.AddExpression(Add.AddExpression.Signs.Minus, new Constant(10.0)));
 
             PointListGenerator pointListGenerator = new PointListGenerator(oneOverXMinus10, DotHittingTest.StartX, DotHittingTest.EndX, DotHittingTest.Limits);
 

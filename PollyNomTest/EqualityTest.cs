@@ -648,15 +648,29 @@ namespace PollyNomTest
         public void NontrivialMultiplyAddMix()
         {
             // ( -2.1 * (X + 3.1) ) + 1.1
+            var innerBracketA = new Add(
+                new Add.AddExpression(Add.AddExpression.Signs.Plus, new BaseX()),
+                new Add.AddExpression(Add.AddExpression.Signs.Plus, new Constant(3.1)));
+
+            var outerBracketA = new Multiply(
+                new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Multiply, new Constant(-2.1)),
+                new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Multiply, innerBracketA));
+
             var exprA = new Add(
-                            new Add.AddExpression(Add.AddExpression.Signs.Plus, new Multiply(
-                                new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Multiply, new Constant(-2.1)), new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Multiply, new Add(new Add.AddExpression(Add.AddExpression.Signs.Plus, new BaseX()), new Add.AddExpression(Add.AddExpression.Signs.Plus, new Constant(3.1)))))),
+                            new Add.AddExpression(Add.AddExpression.Signs.Plus, outerBracketA),
                             new Add.AddExpression(Add.AddExpression.Signs.Plus, new Constant(1.1)));
 
-            // ( (X + 3.1) * -2.1 ) + 1.1
+            // ( (3.1 + X) * -2.1 ) + 1.1
+            var innerBracketB = new Add(
+                new Add.AddExpression(Add.AddExpression.Signs.Plus, new Constant(3.1)),
+                new Add.AddExpression(Add.AddExpression.Signs.Plus, new BaseX()));
+
+            var outerBracketB = new Multiply(
+                new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Multiply, innerBracketB),
+                new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Multiply, new Constant(-2.1)));
+
             var exprB = new Add(
-                            new Add.AddExpression(Add.AddExpression.Signs.Plus, new Multiply(
-                                new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Multiply, new Add(new Add.AddExpression(Add.AddExpression.Signs.Plus, new BaseX()), new Add.AddExpression(Add.AddExpression.Signs.Plus, new Constant(3.1)))), new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Multiply, new Constant(-2.1)))),
+                            new Add.AddExpression(Add.AddExpression.Signs.Plus, outerBracketB),
                             new Add.AddExpression(Add.AddExpression.Signs.Plus, new Constant(1.1)));
 
             Assert.IsTrue(exprA.Equals(exprB));

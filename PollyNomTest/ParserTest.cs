@@ -108,7 +108,9 @@ namespace PollyNomTest
             // Arrange
             Parser parser = new Parser();
             string twoSubtract = "-2.0-3.0";
-            var expectedTwoSubtract = new Add(new Add.AddExpression(Add.AddExpression.Signs.Plus, new Constant(-2.0)), new Add.AddExpression(Add.AddExpression.Signs.Minus, new Constant(3.0)));
+            var expectedTwoSubtract = new Add(
+                new Add.AddExpression(Add.AddExpression.Signs.Plus, new Constant(-2.0)),
+                new Add.AddExpression(Add.AddExpression.Signs.Minus, new Constant(3.0)));
 
             // Act
             IExpression exprTwoSubtract = parser.Parse(twoSubtract);
@@ -144,7 +146,10 @@ namespace PollyNomTest
             // Arrange
             Parser parser = new Parser();
             string threeAdd = "2.0+3.0-x";
-            var expectedThreeAdd = new Add(new Add.AddExpression(Add.AddExpression.Signs.Plus, new Constant(2.0)), new Add.AddExpression(Add.AddExpression.Signs.Plus, new Constant(3.0)), new Add.AddExpression(Add.AddExpression.Signs.Minus, new BaseX()));
+            var expectedThreeAdd = new Add(
+                new Add.AddExpression(Add.AddExpression.Signs.Plus, new Constant(2.0)),
+                new Add.AddExpression(Add.AddExpression.Signs.Plus, new Constant(3.0)),
+                new Add.AddExpression(Add.AddExpression.Signs.Minus, new BaseX()));
 
             // Act
             IExpression exprThreeAdd = parser.Parse(threeAdd);
@@ -162,16 +167,14 @@ namespace PollyNomTest
             // Arrange
             Parser parser = new Parser();
             string threeAddWithBrackets = "2.0-(3.0+x)+1.0";
+            var innerBracket = new Add(
+                    new Add.AddExpression(Add.AddExpression.Signs.Plus, new Constant(3.0)),
+                    new Add.AddExpression(Add.AddExpression.Signs.Plus, new BaseX()));
+
             var expectedThreeAddWithBrackets = new Add(
-                new Add.AddExpression(Add.AddExpression.Signs.Plus, new Constant(2.0)),
-                new Add.AddExpression(Add.AddExpression.Signs.Minus,
-                    new Add(
-                        new Add.AddExpression(Add.AddExpression.Signs.Plus, new Constant(3.0)),
-                        new Add.AddExpression(Add.AddExpression.Signs.Plus, new BaseX())
-                        )
-                    ),
-                new Add.AddExpression(Add.AddExpression.Signs.Plus, new Constant(1.0))
-                );
+                    new Add.AddExpression(Add.AddExpression.Signs.Plus, new Constant(2.0)),
+                    new Add.AddExpression(Add.AddExpression.Signs.Minus, innerBracket),
+                    new Add.AddExpression(Add.AddExpression.Signs.Plus, new Constant(1.0)));
 
             // Act
             IExpression exprThreeAddWithBrackets = parser.Parse(threeAddWithBrackets);
@@ -207,7 +210,9 @@ namespace PollyNomTest
             // Arrange
             Parser parser = new Parser();
             string twoDivide = "2.0/3.0";
-            var expectedTwoDivide = new Multiply(new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Multiply, new Constant(2.0)), new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Divide, new Constant(3.0)));
+            var expectedTwoDivide = new Multiply(
+                new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Multiply, new Constant(2.0)),
+                new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Divide, new Constant(3.0)));
 
             // Act
             IExpression exprTwoDivide = parser.Parse(twoDivide);
@@ -243,7 +248,10 @@ namespace PollyNomTest
             // Arrange
             Parser parser = new Parser();
             string threeMultiply = "2.0*3.0/x";
-            var expectedThreeMultiply = new Multiply(new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Multiply, new Constant(2.0)), new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Multiply, new Constant(3.0)), new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Divide, new BaseX()));
+            var expectedThreeMultiply = new Multiply(
+                new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Multiply, new Constant(2.0)),
+                new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Multiply, new Constant(3.0)),
+                new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Divide, new BaseX()));
 
             // Act
             IExpression exprThreeMultiply = parser.Parse(threeMultiply);
@@ -261,16 +269,14 @@ namespace PollyNomTest
             // Arrange
             Parser parser = new Parser();
             string threeMultiplyWithBrackets = "2.0/(3.0*x)*1.0";
+            var innerBracket = new Multiply(
+                new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Multiply, new Constant(3.0)),
+                new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Multiply, new BaseX()));
+
             var expectedThreeMultiplyWithBrackets = new Multiply(
                 new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Multiply, new Constant(2.0)),
-                new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Divide,
-                    new Multiply(
-                        new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Multiply, new Constant(3.0)),
-                        new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Multiply, new BaseX())
-                        )
-                    ),
-                new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Multiply, new Constant(1.0))
-                );
+                new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Divide, innerBracket),
+                new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Multiply, new Constant(1.0)));
 
             // Act
             IExpression exprThreeMultiplyWithBrackets = parser.Parse(threeMultiplyWithBrackets);
@@ -288,12 +294,13 @@ namespace PollyNomTest
             // Arrange
             Parser parser = new Parser();
             string threeTerms = "2.0*x+1.0";
+            var multiplicationTerm = new Multiply(
+                    new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Multiply, new Constant(2.0)),
+                    new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Multiply, new BaseX()));
+
             var expectedThreeTerms = new Add(
-                new Add.AddExpression(Add.AddExpression.Signs.Plus, new Multiply(
-                    new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Multiply, new Constant(2.0)), new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Multiply, new BaseX()))
-                    ),
-                new Add.AddExpression(Add.AddExpression.Signs.Plus, new Constant(1.0))
-                );
+                new Add.AddExpression(Add.AddExpression.Signs.Plus, multiplicationTerm),
+                new Add.AddExpression(Add.AddExpression.Signs.Plus, new Constant(1.0)));
 
             // Act
             IExpression exprThreeTerms = parser.Parse(threeTerms);
@@ -311,12 +318,13 @@ namespace PollyNomTest
             // Arrange
             Parser parser = new Parser();
             string threeTerms = "-2.0*x+1.0";
+            var multiplicationTerm = new Multiply(
+                new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Multiply, new Constant(-2.0)),
+                new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Multiply, new BaseX()));
+
             var expectedThreeTerms = new Add(
-                new Add.AddExpression(Add.AddExpression.Signs.Plus, new Multiply(
-                    new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Multiply, new Constant(-2.0)), new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Multiply, new BaseX()))
-                    ),
-                new Add.AddExpression(Add.AddExpression.Signs.Plus, new Constant(1.0))
-                );
+                new Add.AddExpression(Add.AddExpression.Signs.Plus, multiplicationTerm),
+                new Add.AddExpression(Add.AddExpression.Signs.Plus, new Constant(1.0)));
 
             // Act
             IExpression exprThreeTerms = parser.Parse(threeTerms);
@@ -334,12 +342,17 @@ namespace PollyNomTest
             // Arrange
             Parser parser = new Parser();
             string threeTerms = "-2.1*(x+3.1)+1.1";
+            var innerBracket = new Add(
+                new Add.AddExpression(Add.AddExpression.Signs.Plus, new BaseX()),
+                new Add.AddExpression(Add.AddExpression.Signs.Plus, new Constant(3.1)));
+
+            var multiplicationTerm = new Multiply(
+                new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Multiply, new Constant(-2.1)),
+                new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Multiply, innerBracket));
+
             var expectedThreeTerms = new Add(
-                new Add.AddExpression(Add.AddExpression.Signs.Plus, new Multiply(
-                    new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Multiply, new Constant(-2.1)), new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Multiply, new Add(new Add.AddExpression(Add.AddExpression.Signs.Plus, new BaseX()), new Add.AddExpression(Add.AddExpression.Signs.Plus, new Constant(3.1)))))
-                    ),
-                new Add.AddExpression(Add.AddExpression.Signs.Plus, new Constant(1.1))
-                );
+                new Add.AddExpression(Add.AddExpression.Signs.Plus, multiplicationTerm),
+                new Add.AddExpression(Add.AddExpression.Signs.Plus, new Constant(1.1)));
 
             // Act
             IExpression exprThreeTerms = parser.Parse(threeTerms);
@@ -357,12 +370,17 @@ namespace PollyNomTest
             // Arrange
             Parser parser = new Parser();
             string threeTerms = "(x+3.1)*-2.1+1.1";
+            var innerBracket = new Add(
+                new Add.AddExpression(Add.AddExpression.Signs.Plus, new BaseX()),
+                new Add.AddExpression(Add.AddExpression.Signs.Plus, new Constant(3.1)));
+
+            var multiplicationTerm = new Multiply(
+                new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Multiply, new Constant(-2.1)),
+                new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Multiply, innerBracket));
+
             var expectedThreeTerms = new Add(
-                new Add.AddExpression(Add.AddExpression.Signs.Plus, new Multiply(
-                    new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Multiply, new Constant(-2.1)), new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Multiply, new Add(new Add.AddExpression(Add.AddExpression.Signs.Plus, new BaseX()), new Add.AddExpression(Add.AddExpression.Signs.Plus, new Constant(3.1)))))
-                    ),
-                new Add.AddExpression(Add.AddExpression.Signs.Plus, new Constant(1.1))
-                );
+                new Add.AddExpression(Add.AddExpression.Signs.Plus, multiplicationTerm),
+                new Add.AddExpression(Add.AddExpression.Signs.Plus, new Constant(1.1)));
 
             // Act
             IExpression exprThreeTerms = parser.Parse(threeTerms);
@@ -452,7 +470,9 @@ namespace PollyNomTest
             // Arrange
             Parser parser = new Parser();
             string powerString = "-(2.0^x)";
-            var expectedPower = new Add(new Add.AddExpression(Add.AddExpression.Signs.Minus, new Power(new Constant(2.0), new BaseX())));
+            var powerTerm = new Power(new Constant(2.0), new BaseX());
+
+            var expectedPower = new Add(new Add.AddExpression(Add.AddExpression.Signs.Minus, powerTerm));
 
             // Act
             IExpression exprPower = parser.Parse(powerString);
@@ -470,11 +490,17 @@ namespace PollyNomTest
             // Arrange
             Parser parser = new Parser();
             string powerString = "-((2.0*x)^(x+1.0))";
-            var expectedPower = new Add(new Add.AddExpression(Add.AddExpression.Signs.Minus,
-                new Power(
-                new Multiply(new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Multiply, new Constant(2.0)), new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Multiply, new BaseX())),
-                new Add(new Add.AddExpression(Add.AddExpression.Signs.Plus, new BaseX()), new Add.AddExpression(Add.AddExpression.Signs.Plus, new Constant(1.0)))
-                )));
+            var baseBracket = new Multiply(
+                new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Multiply, new Constant(2.0)),
+                new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Multiply, new BaseX()));
+
+            var exponentBracket = new Add(
+                new Add.AddExpression(Add.AddExpression.Signs.Plus, new BaseX()),
+                new Add.AddExpression(Add.AddExpression.Signs.Plus, new Constant(1.0)));
+
+            var outerBracket = new Power(baseBracket, exponentBracket);
+
+            var expectedPower = new Add(new Add.AddExpression(Add.AddExpression.Signs.Minus, outerBracket));
 
             // Act
             IExpression exprPower = parser.Parse(powerString);
@@ -527,7 +553,6 @@ namespace PollyNomTest
         {
             // Arrange
             Parser parser = new Parser();
-
             string stringExponential = "exp(2.0)";
             var expectedExponential = new Exponential(new Constant(2.0));
 
@@ -552,11 +577,18 @@ namespace PollyNomTest
             // Arrange
             Parser parser = new Parser();
             string stringExponential = "exp(-((2.0*x)^(x+1.0)))";
-            var argument = new Add(new Add.AddExpression(Add.AddExpression.Signs.Minus,
-                new Power(
-                new Multiply(new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Multiply, new Constant(2.0)), new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Multiply, new BaseX())),
-                new Add(new Add.AddExpression(Add.AddExpression.Signs.Plus, new BaseX()), new Add.AddExpression(Add.AddExpression.Signs.Plus, new Constant(1.0)))
-                )));
+            var firstInnerBracket = new Multiply(
+                new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Multiply, new Constant(2.0)),
+                new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Multiply, new BaseX()));
+
+            var secondInnerBracket = new Add(
+                new Add.AddExpression(Add.AddExpression.Signs.Plus, new BaseX()),
+                new Add.AddExpression(Add.AddExpression.Signs.Plus, new Constant(1.0)));
+
+            var powerTerm = new Power(firstInnerBracket, secondInnerBracket);
+
+            var argument = new Add(new Add.AddExpression(Add.AddExpression.Signs.Minus, powerTerm));
+
             var expectedExponential = new Exponential(argument);
 
             // Act
@@ -575,19 +607,27 @@ namespace PollyNomTest
             // Arrange
             Parser parser = new Parser();
             string stringExponential = "4.0+2.3*exp(-((2.0*x)^(x+1.0)))";
-            var argument = new Add(new Add.AddExpression(Add.AddExpression.Signs.Minus,
-                new Power(
-                new Multiply(new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Multiply, new Constant(2.0)), new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Multiply, new BaseX())),
-                new Add(new Add.AddExpression(Add.AddExpression.Signs.Plus, new BaseX()), new Add.AddExpression(Add.AddExpression.Signs.Plus, new Constant(1.0)))
-                )));
+            var firstInnerBracket = new Multiply(
+                new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Multiply, new Constant(2.0)),
+                new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Multiply, new BaseX()));
+
+            var secondInnerBracket = new Add(
+                new Add.AddExpression(Add.AddExpression.Signs.Plus, new BaseX()),
+                new Add.AddExpression(Add.AddExpression.Signs.Plus, new Constant(1.0)));
+
+            var powerTerm = new Power(firstInnerBracket, secondInnerBracket);
+
+            var argument = new Add(new Add.AddExpression(Add.AddExpression.Signs.Minus, powerTerm));
+
             var exponential = new Exponential(argument);
+
+            var outerMultiplicationTerm = new Multiply(
+                new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Multiply, new Constant(2.3)),
+                new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Multiply, exponential));
+
             var expectedExpression = new Add(
                 new Add.AddExpression(Add.AddExpression.Signs.Plus, new Constant(4.0)),
-                new Add.AddExpression(Add.AddExpression.Signs.Plus,
-                new Multiply(
-                    new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Multiply, new Constant(2.3)),
-                    new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Multiply, exponential)
-                )));
+                new Add.AddExpression(Add.AddExpression.Signs.Plus, outerMultiplicationTerm));
 
             // Act
             IExpression exprExponential = parser.Parse(stringExponential);
@@ -604,7 +644,6 @@ namespace PollyNomTest
         {
             // Arrange
             Parser parser = new Parser();
-
             string stringSine = "sin(2.0)";
             var expectedSine = new Sine(new Constant(2.0));
 
@@ -633,7 +672,6 @@ namespace PollyNomTest
         {
             // Arrange
             Parser parser = new Parser();
-
             string stringAbsoluteValue = "abs(2.0)";
             var expectedAbsoluteValue = new AbsoluteValue(new Constant(2.0));
 

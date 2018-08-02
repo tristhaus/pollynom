@@ -207,7 +207,7 @@ namespace PollyNom.BusinessLogic
             // Fourth case: functions
             if (tokens.Count == 1)
             {
-                return ParseFunction(tokens);
+                return this.ParseFunction(tokens);
             }
 
             return this.invalidExpressionSample;
@@ -250,7 +250,7 @@ namespace PollyNom.BusinessLogic
                     continue;
                 }
 
-                if (IsOperatorChar(c) && token.Length > 0)
+                if (this.IsOperatorChar(c) && token.Length > 0)
                 {
                     tokens.Add(token);
                     token = string.Empty;
@@ -446,7 +446,7 @@ namespace PollyNom.BusinessLogic
             Match match = functionNameRegex.Match(token);
             string functionName = match.Groups["name"].Value.Replace("(", string.Empty);
 
-            if (!functions.ContainsKey(functionName))
+            if (!this.functions.ContainsKey(functionName))
             {
                 return this.invalidExpressionSample;
             }

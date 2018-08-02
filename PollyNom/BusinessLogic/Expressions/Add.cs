@@ -105,8 +105,8 @@ namespace PollyNom.BusinessLogic.Expressions
             unchecked
             {
                 int finalHash = 17;
-                List<int> hashes = new List<int>(list.Count);
-                foreach (var addExpression in list)
+                List<int> hashes = new List<int>(this.list.Count);
+                foreach (var addExpression in this.list)
                 {
                     hashes.Add(addExpression.GetHashCode());
                 }
@@ -239,10 +239,10 @@ namespace PollyNom.BusinessLogic.Expressions
             public Signs Sign { get; }
 
             /// <inheritdoc />
-            public bool IsMonadic => expression.IsMonadic;
+            public bool IsMonadic => this.expression.IsMonadic;
 
             /// <inheritdoc />
-            public int Level => expression.Level;
+            public int Level => this.expression.Level;
 
             public override bool Equals(object other)
             {
@@ -294,13 +294,13 @@ namespace PollyNom.BusinessLogic.Expressions
             /// <inheritdoc />
             public IMaybe<double> Evaluate(double input)
             {
-                return expression.Evaluate(input);
+                return this.expression.Evaluate(input);
             }
 
             /// <inheritdoc />
             public IMaybe<string> Print()
             {
-                return expression.Print();
+                return this.expression.Print();
             }
         }
     }

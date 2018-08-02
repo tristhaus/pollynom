@@ -52,7 +52,7 @@ namespace PollyNom.BusinessLogic
         {
             get
             {
-                return t;
+                return this.t;
             }
         }
     }

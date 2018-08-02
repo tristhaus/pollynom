@@ -152,7 +152,7 @@ namespace PollyNom.BusinessLogic
                 if (yMaybe.HasValue)
                 {
                     y = yMaybe.Value;
-                    interrupt = !(initialX <= x && x <= finalX && -limits <= y && y <= limits);
+                    interrupt = !(this.initialX <= x && x <= this.finalX && -this.limits <= y && y <= this.limits);
                 }
 
                 if (!interrupt)

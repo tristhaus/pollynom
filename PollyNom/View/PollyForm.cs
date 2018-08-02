@@ -53,7 +53,7 @@ namespace PollyNom.View
             this.controller = new PollyController();
 
             this.ResizeRedraw = true;
-            InitializeComponent();
+            this.InitializeComponent();
         }
 
         /// <summary>
@@ -76,10 +76,10 @@ namespace PollyNom.View
         /// <param name="e">The <see cref="EventArgs"/> instance.</param>
         private void InputBox_TextChanged(object sender, EventArgs e)
         {
-            bool isParseable = this.controller.TestExpression(inputBox.Text);
-            var oldColor = inputBox.ForeColor;
-            inputBox.ForeColor = isParseable ? SystemColors.WindowText : Color.Red;
-            var newColor = inputBox.ForeColor;
+            bool isParseable = this.controller.TestExpression(this.inputBox.Text);
+            var oldColor = this.inputBox.ForeColor;
+            this.inputBox.ForeColor = isParseable ? SystemColors.WindowText : Color.Red;
+            var newColor = this.inputBox.ForeColor;
             if (!oldColor.Equals(newColor))
             {
                 this.Refresh();
@@ -109,9 +109,9 @@ namespace PollyNom.View
         /// </summary>
         private void ReadAndDelegate()
         {
-            if ((!string.IsNullOrWhiteSpace(inputBox.Text) && this.controller.ExpressionCount < 5) || string.IsNullOrWhiteSpace(inputBox.Text))
+            if ((!string.IsNullOrWhiteSpace(this.inputBox.Text) && this.controller.ExpressionCount < 5) || string.IsNullOrWhiteSpace(this.inputBox.Text))
             {
-                this.controller.UpdateExpression(inputBox.Text);
+                this.controller.UpdateExpression(this.inputBox.Text);
             }
         }
 
@@ -122,7 +122,7 @@ namespace PollyNom.View
         /// <param name="e">The <see cref="PaintEventArgs"/> instance.</param>
         private void UserControl1_Paint(object sender, PaintEventArgs e)
         {
-            DrawContents(e);
+            this.DrawContents(e);
 
             base.OnPaint(e);
         }
@@ -132,7 +132,7 @@ namespace PollyNom.View
             int workingWidth = this.graphArea.Width;
             int workingHeight = this.graphArea.Height;
 
-            CoordinateSystemInfo coordinateSystemInfo = controller.CoordinateSystemInfo;
+            CoordinateSystemInfo coordinateSystemInfo = this.controller.CoordinateSystemInfo;
 
             float scaleX = -workingWidth / ((coordinateSystemInfo.StartX - coordinateSystemInfo.EndX));
             float scaleY = -workingHeight / ((coordinateSystemInfo.StartY - coordinateSystemInfo.EndY));
@@ -169,7 +169,7 @@ namespace PollyNom.View
             using (FontFamily segoeUIFamily = new FontFamily("Segoe UI"))
             using (Font segoeUIFont = new Font(segoeUIFamily, 9.0f)) // Segoe UI; 9pt
             {
-                CoordinateSystemInfo coordinateSystemInfo = controller.CoordinateSystemInfo;
+                CoordinateSystemInfo coordinateSystemInfo = this.controller.CoordinateSystemInfo;
 
                 // move coordinate system
                 g.TranslateTransform(theWidth / 2, theHeight / 2);
@@ -332,8 +332,8 @@ namespace PollyNom.View
 
             // resize the input box
             int currWidth = this.inputBox.Width;
-            int x = toolStrip1.Items.OfType<ToolStripItem>().Sum(t => t.Width);
-            this.inputBox.Size = new Size(toolStrip1.Width - x + currWidth - 12, this.inputBox.Height);
+            int x = this.toolStrip1.Items.OfType<ToolStripItem>().Sum(t => t.Width);
+            this.inputBox.Size = new Size(this.toolStrip1.Width - x + currWidth - 12, this.inputBox.Height);
         }
     }
 }

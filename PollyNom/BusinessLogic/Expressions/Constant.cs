@@ -44,12 +44,12 @@ namespace PollyNom.BusinessLogic.Expressions
             }
 
             Constant otherConstant = (Constant)other;
-            return Math.Abs(a - otherConstant.a) < 10e-10;
+            return Math.Abs(this.a - otherConstant.a) < 10e-10;
         }
 
         public bool Equals(Constant other)
         {
-            return Math.Abs(a - other.a) < 10e-10;
+            return Math.Abs(this.a - other.a) < 10e-10;
         }
 
         public static bool operator ==(Constant x, IExpression y)
@@ -76,20 +76,20 @@ namespace PollyNom.BusinessLogic.Expressions
         {
             unchecked
             {
-                return a.GetHashCode();
+                return this.a.GetHashCode();
             }
         }
 
         /// <inheritdoc />
         public IMaybe<double> Evaluate(double input)
         {
-            return new Some<double>(a);
+            return new Some<double>(this.a);
         }
 
         /// <inheritdoc />
         public IMaybe<string> Print()
         {
-            return new Some<string>($"{a}");
+            return new Some<string>($"{this.a}");
         }
     }
 }

@@ -24,7 +24,7 @@ namespace PollyNom.BusinessLogic
         {
             get
             {
-                return list.AsReadOnly();
+                return this.list.AsReadOnly();
             }
         }
 
@@ -35,7 +35,7 @@ namespace PollyNom.BusinessLogic
         {
             get
             {
-                return list.Count;
+                return this.list.Count;
             }
         }
 
@@ -45,15 +45,15 @@ namespace PollyNom.BusinessLogic
         /// <param name="point">The point to be added.</param>
         public void Add(PointLogical point)
         {
-            if (list.Count == 0 || list[list.Count - 1].X < point.X)
+            if (this.list.Count == 0 || this.list[this.list.Count - 1].X < point.X)
             {
-                list.Add(point);
+                this.list.Add(point);
                 return;
             }
             else
             {
-                list.Add(point);
-                list.Sort();
+                this.list.Add(point);
+                this.list.Sort();
             }
         }
     }

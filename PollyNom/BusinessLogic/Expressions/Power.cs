@@ -81,8 +81,8 @@ namespace PollyNom.BusinessLogic.Expressions
             unchecked
             {
                 int hash = 17;
-                    hash = hash * 23 + @base.GetHashCode();
-                    hash = hash * 23 + exponent.GetHashCode();
+                    hash = hash * 23 + this.@base.GetHashCode();
+                    hash = hash * 23 + this.exponent.GetHashCode();
                 return hash;
             }
         }
@@ -118,12 +118,12 @@ namespace PollyNom.BusinessLogic.Expressions
 
             var aDecorated = aValue.Value;
             var bDecorated = bValue.Value;
-            if (!@base.IsMonadic)
+            if (!this.@base.IsMonadic)
             {
                 aDecorated = "(" + aDecorated + ")";
             }
 
-            if (!exponent.IsMonadic)
+            if (!this.exponent.IsMonadic)
             {
                 bDecorated = "(" + bDecorated + ")";
             }
@@ -133,7 +133,7 @@ namespace PollyNom.BusinessLogic.Expressions
 
         private bool EqualityImplementation(Power other)
         {
-            return @base.Equals(other.@base) && exponent.Equals(other.exponent);
+            return this.@base.Equals(other.@base) && this.exponent.Equals(other.exponent);
         }
     }
 }

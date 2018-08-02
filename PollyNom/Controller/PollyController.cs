@@ -89,7 +89,7 @@ namespace PollyNom.Controller
         {
             if (string.IsNullOrWhiteSpace(textRepresentation))
             {
-                if (expressions.Count > 0)
+                if (this.expressions.Count > 0)
                 {
                     this.expressions.RemoveAt(this.expressions.Count - 1);
                 }
@@ -143,7 +143,7 @@ namespace PollyNom.Controller
         /// <returns>A list of drawable dots.</returns>
         public List<IDrawDot> GetDrawDots()
         {
-            return drawDots ?? new List<IDrawDot>(0);
+            return this.drawDots ?? new List<IDrawDot>(0);
         }
 
         /// <summary>
@@ -153,7 +153,7 @@ namespace PollyNom.Controller
         {
             get
             {
-                return score;
+                return this.score;
             }
         }
 
@@ -173,8 +173,8 @@ namespace PollyNom.Controller
         /// </summary>
         private void UpdateData()
         {
-            UpdateGraphs();
-            UpdateDotsAndScore();
+            this.UpdateGraphs();
+            this.UpdateDotsAndScore();
         }
 
         private void UpdateGraphs()
@@ -192,7 +192,7 @@ namespace PollyNom.Controller
             this.drawDots = new List<IDrawDot>(this.dots.Count);
             List<int> numbersOfHits = new List<int>(1);
 
-            this.dots.ForEach(x => drawDots.Add(new DrawDot(x.Position.Item1, x.Position.Item2, x.Radius, x.GetType() == typeof(GoodDot) ? DrawDotKind.GoodDot : DrawDotKind.BadDot)));
+            this.dots.ForEach(x => this.drawDots.Add(new DrawDot(x.Position.Item1, x.Position.Item2, x.Radius, x.GetType() == typeof(GoodDot) ? DrawDotKind.GoodDot : DrawDotKind.BadDot)));
 
             for (int expressionIndex = 0; expressionIndex < this.expressions.Count; ++expressionIndex)
             {

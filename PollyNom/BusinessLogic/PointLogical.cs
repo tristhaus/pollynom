@@ -31,7 +31,7 @@ namespace PollyNom.BusinessLogic
         /// <inheritdoc />
         public int CompareTo(PointLogical other)
         {
-            return X.CompareTo(other.X);
+            return this.X.CompareTo(other.X);
         }
     }
 }

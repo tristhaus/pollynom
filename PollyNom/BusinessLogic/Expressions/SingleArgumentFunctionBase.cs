@@ -84,7 +84,7 @@ namespace PollyNom.BusinessLogic.Expressions
             unchecked
             {
                 int hash = 17;
-                hash = hash * 23 + containedExpression.GetHashCode();
+                hash = hash * 23 + this.containedExpression.GetHashCode();
                 return hash;
             }
         }
@@ -106,7 +106,7 @@ namespace PollyNom.BusinessLogic.Expressions
         /// <inheritdoc />
         public IMaybe<double> Evaluate(double input)
         {
-            var value = containedExpression.Evaluate(input);
+            var value = this.containedExpression.Evaluate(input);
             if (!value.HasValue || !this.ArgumentIsValid(value.Value))
             {
                 return new None<double>();
@@ -124,7 +124,7 @@ namespace PollyNom.BusinessLogic.Expressions
         /// <inheritdoc />
         public IMaybe<string> Print()
         {
-            var value = containedExpression.Print();
+            var value = this.containedExpression.Print();
             if (!value.HasValue)
             {
                 return new None<string>();
@@ -135,7 +135,7 @@ namespace PollyNom.BusinessLogic.Expressions
 
         private bool EqualityImplementation(SingleArgumentFunctionBase<T> other)
         {
-            return containedExpression.Equals(other.containedExpression);
+            return this.containedExpression.Equals(other.containedExpression);
         }
     }
 }

@@ -11,7 +11,7 @@ namespace PollyNom.BusinessLogic.Dots
         /// <summary>
         /// Radius of the dot in implied logical business units.
         /// </summary>
-        private const double radius = 0.25;
+        private const double RadiusValue = 0.25;
 
         /// <summary>
         /// Random number generator
@@ -53,7 +53,7 @@ namespace PollyNom.BusinessLogic.Dots
         {
             get
             {
-                return GoodDot.radius;
+                return GoodDot.RadiusValue;
             }
         }
 

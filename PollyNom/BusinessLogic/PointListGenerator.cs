@@ -12,22 +12,22 @@ namespace PollyNom.BusinessLogic
         /// <summary>
         /// The lower limit for increments etc.
         /// </summary>
-        private const double epsilon = 1e-4;
+        private const double Epsilon = 1e-4;
 
         /// <summary>
-        /// The x increments should be below this value, but above <see cref="PointListGenerator.epsilon"/>.
+        /// The x increments should be below this value, but above <see cref="PointListGenerator.Epsilon"/>.
         /// </summary>
-        private const double targetDistance = 5e-3;
+        private const double TargetDistance = 5e-3;
 
         /// <summary>
         /// The starting increment for x.
         /// </summary>
-        private const double initialIncrement = 1e-3;
+        private const double InitialIncrement = 1e-3;
 
         /// <summary>
         /// The large increment for detecting intervals.
         /// </summary>
-        private const double largeIncrement = 1e-2;
+        private const double LargeIncrement = 1e-2;
 
         /// <summary>
         /// The expression to be evaluated.
@@ -97,7 +97,7 @@ namespace PollyNom.BusinessLogic
                 bool foundInterval = false;
                 while (!foundInterval && xInCurrentInterval < this.finalX)
                 {
-                    xInCurrentInterval += PointListGenerator.largeIncrement;
+                    xInCurrentInterval += PointListGenerator.LargeIncrement;
                     yMaybe = this.expression.Evaluate(xInCurrentInterval);
                     if (yMaybe.HasValue)
                     {
@@ -133,14 +133,14 @@ namespace PollyNom.BusinessLogic
 
         private void WorkAnInterval(Func<double, double> direction, out double x, ref ListPointLogical points, double xInCurrentInterval, out double xOld)
         {
-            x = xInCurrentInterval + direction(epsilon);
+            x = xInCurrentInterval + direction(Epsilon);
             IMaybe<double> yMaybe = this.expression.Evaluate(x);
             xOld = xInCurrentInterval;
 
             double y = yMaybe.HasValue ? yMaybe.Value : 0.0;
             double yOld = yMaybe.HasValue ? yMaybe.Value : this.expression.Evaluate(xInCurrentInterval).Value;
 
-            double incr = PointListGenerator.initialIncrement;
+            double incr = PointListGenerator.InitialIncrement;
 
             // scan the interval until it is interrupted
             bool interrupt = false;
@@ -158,9 +158,9 @@ namespace PollyNom.BusinessLogic
                 if (!interrupt)
                 {
                     double squareDist = Helper.MathHelper.SquareDistance(x, y, xOld, yOld);
-                    if (squareDist < PointListGenerator.targetDistance || incr < PointListGenerator.epsilon)
+                    if (squareDist < PointListGenerator.TargetDistance || incr < PointListGenerator.Epsilon)
                     {
-                        if (squareDist < PointListGenerator.epsilon)
+                        if (squareDist < PointListGenerator.Epsilon)
                         {
                             incr *= 2.0;
                         }

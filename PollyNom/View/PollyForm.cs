@@ -13,12 +13,12 @@ namespace PollyNom.View
         /// <summary>
         /// The maximum number of graphs supported by this visualizer.
         /// </summary>
-        private const int maxGraphCount = 5;
+        private const int MaxGraphCount = 5;
 
         /// <summary>
         /// To be used in the title bar.
         /// </summary>
-        private const string titlePrefix = "PollyNom - Score: ";
+        private const string TitlePrefix = "PollyNom - Score: ";
 
         /// <summary>
         /// Color chosen for the coordinate system.
@@ -153,7 +153,7 @@ namespace PollyNom.View
         /// </summary>
         private void UpdateWindowTitle()
         {
-            this.Text = PollyForm.titlePrefix + $"{this.controller.Score}";
+            this.Text = PollyForm.TitlePrefix + $"{this.controller.Score}";
         }
 
         /// <summary>

@@ -14,17 +14,17 @@ namespace PollyNom.Controller
         /// <summary>
         /// Dimensions of the coordinate system in business logical units.
         /// </summary>
-        private const float startX = -11f;
-        private const float endX = 11f;
-        private const float startY = PollyController.startX;
-        private const float endY = PollyController.endX;
+        private const float StartX = -11f;
+        private const float EndX = 11f;
+        private const float StartY = PollyController.StartX;
+        private const float EndY = PollyController.EndX;
         private const float TickInterval = 1f;
 
         /// <summary>
         /// When exceeding this absolute limit in terms of y-value,
         /// no attempt at using the point is made
         /// </summary>
-        private const float limits = 1000f;
+        private const float Limits = 1000f;
 
         /// <summary>
         /// The parser for textual representations of <see cref="IExpression"/>.
@@ -59,6 +59,7 @@ namespace PollyNom.Controller
         /// <summary>
         /// Creates a new instance of the <see cref="PollyController"/> class.
         /// </summary>
+        /// <param name="dots">A list of dots that shall be respected by the <see cref="PollyController"/> instance.</param>
         public PollyController(List<IDot> dots = null)
         {
             this.expressions = new List<IExpression>(5);
@@ -102,7 +103,7 @@ namespace PollyNom.Controller
         }
 
         /// <summary>
-        /// Get the information as needed for the drawing of the coordinate system.
+        /// Gets the information as needed for the drawing of the coordinate system.
         /// </summary>
         public CoordinateSystemInfo CoordinateSystemInfo
         {
@@ -110,10 +111,10 @@ namespace PollyNom.Controller
             {
                 return new CoordinateSystemInfo()
                 {
-                    StartX = PollyController.startX,
-                    EndX = PollyController.endX,
-                    StartY = PollyController.startY,
-                    EndY = PollyController.endY,
+                    StartX = PollyController.StartX,
+                    EndX = PollyController.EndX,
+                    StartY = PollyController.StartY,
+                    EndY = PollyController.EndY,
                     TickInterval = PollyController.TickInterval,
                 };
             }
@@ -122,6 +123,7 @@ namespace PollyNom.Controller
         /// <summary>
         /// Get the lists of plottable points in terms of business logic units.
         /// </summary>
+        /// <param name="index">The index of the internally held <see cref="IExpression"/>.</param>
         /// <returns>A list of point list, in terms of business logic units.</returns>
         public List<ListPointLogical> GetListsOfLogicalPointsByIndex(int index)
         {
@@ -156,7 +158,7 @@ namespace PollyNom.Controller
         }
 
         /// <summary>
-        /// The number of expressions currently handled by this controller.
+        /// Gets the number of expressions currently handled by this controller.
         /// </summary>
         public int ExpressionCount
         {
@@ -180,7 +182,7 @@ namespace PollyNom.Controller
             this.points = new List<List<ListPointLogical>>(this.expressions.Count);
             foreach (var expression in this.expressions)
             {
-                PointListGenerator pointListGenerator = new PointListGenerator(expression, PollyController.startX, PollyController.endX, PollyController.limits);
+                PointListGenerator pointListGenerator = new PointListGenerator(expression, PollyController.StartX, PollyController.EndX, PollyController.Limits);
                 this.points.Add(pointListGenerator.ObtainListsOfLogicalPoints());
             }
         }

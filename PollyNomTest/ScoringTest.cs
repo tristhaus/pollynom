@@ -24,7 +24,7 @@ namespace PollyNomTest
             int score = ScoreCalculator.CalculateScore(list);
 
             // Assert
-            Assert.IsTrue(7 == score);
+            Assert.IsTrue(score == 7);
         }
 
         /// <summary>
@@ -40,7 +40,7 @@ namespace PollyNomTest
             int score = ScoreCalculator.CalculateScore(list);
 
             // Assert
-            Assert.IsTrue(0 == score);
+            Assert.IsTrue(score == 0);
         }
 
         /// <summary>
@@ -56,7 +56,7 @@ namespace PollyNomTest
             int score = ScoreCalculator.CalculateScore(list);
 
             // Assert
-            Assert.IsTrue(0 == score);
+            Assert.IsTrue(score == 0);
         }
 
         /// <summary>
@@ -72,7 +72,7 @@ namespace PollyNomTest
             int score = ScoreCalculator.CalculateScore(list);
 
             // Assert
-            Assert.IsTrue(15 + 3 == score);
+            Assert.IsTrue(score == 15 + 3);
         }
     }
 }

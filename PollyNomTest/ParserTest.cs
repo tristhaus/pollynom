@@ -279,7 +279,7 @@ namespace PollyNomTest
             // Assert
             Assert.IsTrue(exprThreeMultiplyWithBrackets.Equals(expectedThreeMultiplyWithBrackets));
         }
-        
+
         /// <summary>
         /// Tests the correct parsing of mixed addition and multiplication.
         /// </summary>
@@ -471,7 +471,7 @@ namespace PollyNomTest
             // Arrange
             Parser parser = new Parser();
             string PowerString = "-((2.0*x)^(x+1.0))";
-            var expectedPower = new Add(new Add.AddExpression(Add.AddExpression.Signs.Minus, 
+            var expectedPower = new Add(new Add.AddExpression(Add.AddExpression.Signs.Minus,
                 new Power(
                 new Multiply(new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Multiply, new Constant(2.0)), new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Multiply, new BaseX())),
                 new Add(new Add.AddExpression(Add.AddExpression.Signs.Plus, new BaseX()), new Add.AddExpression(Add.AddExpression.Signs.Plus, new Constant(1.0)))

@@ -471,9 +471,9 @@ namespace PollyNomTest
             // exp(-x^2)
             var expressionB = new Exponential(argumentB);
 
-            Assert.IsTrue(expressionA==expressionAA);
-            Assert.IsFalse(expressionB==expressionA);
-            Assert.IsTrue(expressionB!=expressionAA);
+            Assert.IsTrue(expressionA == expressionAA);
+            Assert.IsFalse(expressionB == expressionA);
+            Assert.IsTrue(expressionB != expressionAA);
         }
 
         /// <summary>

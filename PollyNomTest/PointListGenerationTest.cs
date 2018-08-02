@@ -31,7 +31,7 @@ namespace PollyNomTest
 
             // Assert
             Assert.AreEqual(1, result.Count);
-            Assert.IsTrue(1 <= result[0].Count);
+            Assert.IsTrue(result[0].Count >= 1);
             Assert.IsTrue(Helper.DoubleEquality.IsApproximatelyEqual(1.3, result[0][0].Y));
         }
 
@@ -50,7 +50,7 @@ namespace PollyNomTest
 
             // Assert
             Assert.AreEqual(1, result.Count);
-            Assert.IsTrue(1 <= result[0].Count);
+            Assert.IsTrue(result[0].Count >= 1);
             Assert.IsTrue(Helper.DoubleEquality.IsApproximatelyEqual(2.6, result[0][0].Y));
         }
 
@@ -69,7 +69,7 @@ namespace PollyNomTest
 
             // Assert
             Assert.AreEqual(1, result.Count);
-            Assert.IsTrue(1 <= result[0].Count);
+            Assert.IsTrue(result[0].Count >= 1);
         }
 
         /// <summary>
@@ -87,8 +87,8 @@ namespace PollyNomTest
 
             // Assert
             Assert.AreEqual(2, result.Count);
-            Assert.IsTrue(1 <= result[0].Count);
-            Assert.IsTrue(1 <= result[1].Count);
+            Assert.IsTrue(result[0].Count >= 1);
+            Assert.IsTrue(result[1].Count >= 1);
         }
 
         /// <summary>
@@ -106,7 +106,7 @@ namespace PollyNomTest
 
             // Assert
             Assert.AreEqual(1, result.Count);
-            Assert.IsTrue(1 <= result[0].Count);
+            Assert.IsTrue(result[0].Count >= 1);
             Assert.IsTrue(DoubleEquality.IsApproximatelyEqual(result[0].Points[0].X, 0.0));
             Assert.IsTrue(DoubleEquality.IsApproximatelyEqual(result[0].Points[0].Y, 0.0));
         }
@@ -126,7 +126,7 @@ namespace PollyNomTest
 
             // Assert
             Assert.AreEqual(1, result.Count);
-            Assert.IsTrue(1 <= result[0].Count);
+            Assert.IsTrue(result[0].Count >= 1);
             Assert.IsTrue(result[0].Points[0].Y < -10);
         }
 

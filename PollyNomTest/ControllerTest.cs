@@ -21,7 +21,7 @@ namespace PollyNomTest
         public void TestSequentialAdditionAndRemoval()
         {
             // Arrange
-            List<IDot> testDots = new List<IDot> { new GoodDot(0.0, 0.0), new GoodDot(4.0, 0.0)};
+            List<IDot> testDots = new List<IDot> { new GoodDot(0.0, 0.0), new GoodDot(4.0, 0.0) };
             PollyController controller = new PollyController(testDots);
             IExpression exprX = new BaseX();
             IExpression exprConst = new Constant(0.0);

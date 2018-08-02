@@ -26,13 +26,13 @@ namespace PollyNomTest
 
             // Act
             var result = expr.Evaluate(0.1);
-            double number = result.HasValue? result.Value: 0.0;
+            double number = result.HasValue ? result.Value : 0.0;
 
             // Assert
             Assert.IsTrue(result.HasValue);
             Assert.IsTrue(DoubleEquality.IsApproximatelyEqual(expectedValue, number));
         }
-        
+
         /// <summary>
         /// Tests the evaluation of <see cref="TestExpressionBuilder.Expression02"/>.
         /// </summary>
@@ -45,7 +45,7 @@ namespace PollyNomTest
 
             // Act
             var result = expr.Evaluate(0.1);
-            double number = result.HasValue? result.Value: 0.0;
+            double number = result.HasValue ? result.Value : 0.0;
 
             // Assert
             Assert.IsTrue(result.HasValue);
@@ -64,7 +64,7 @@ namespace PollyNomTest
 
             // Act
             var result = expr.Evaluate(0.1);
-            double number = result.HasValue? result.Value: 0.0;
+            double number = result.HasValue ? result.Value : 0.0;
 
             // Assert
             Assert.IsTrue(result.HasValue);
@@ -83,7 +83,7 @@ namespace PollyNomTest
 
             // Act
             var result = expr.Evaluate(0.1);
-            double number = result.HasValue? result.Value: 0.0;
+            double number = result.HasValue ? result.Value : 0.0;
 
             // Assert
             Assert.IsTrue(result.HasValue);
@@ -102,7 +102,7 @@ namespace PollyNomTest
 
             // Act
             var result = expr.Evaluate(0.1);
-            double number = result.HasValue? result.Value: 0.0;
+            double number = result.HasValue ? result.Value : 0.0;
 
             // Assert
             Assert.IsTrue(result.HasValue);
@@ -121,7 +121,7 @@ namespace PollyNomTest
 
             // Act
             var result = expr.Evaluate(0.1);
-            double number = result.HasValue? result.Value: 0.0;
+            double number = result.HasValue ? result.Value : 0.0;
 
             // Assert
             Assert.IsTrue(result.HasValue);
@@ -140,7 +140,7 @@ namespace PollyNomTest
 
             // Act
             var result = expr.Evaluate(0.1);
-            double number = result.HasValue? result.Value: 0.0;
+            double number = result.HasValue ? result.Value : 0.0;
 
             // Assert
             Assert.IsTrue(result.HasValue);
@@ -159,7 +159,7 @@ namespace PollyNomTest
 
             // Act
             var result = expr.Evaluate(0.1);
-            double number = result.HasValue? result.Value: 0.0;
+            double number = result.HasValue ? result.Value : 0.0;
 
             // Assert
             Assert.IsTrue(result.HasValue);
@@ -237,7 +237,7 @@ namespace PollyNomTest
             Assert.IsTrue(DoubleEquality.IsApproximatelyEqual(resultCos1.Value, 0.5));
             Assert.IsTrue(DoubleEquality.IsApproximatelyEqual(resultCos2.Value, 0.5));
             Assert.IsTrue(DoubleEquality.IsApproximatelyEqual(resultTan1.Value, 1.0));
-            Assert.IsTrue(DoubleEquality.IsApproximatelyEqual(resultTan2.Value, 1.0)); 
+            Assert.IsTrue(DoubleEquality.IsApproximatelyEqual(resultTan2.Value, 1.0));
         }
 
         /// <summary>

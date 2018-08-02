@@ -14,7 +14,7 @@ namespace PollyNomTest.Helper
         /// <returns>The expression string or <c>"invalid"</c></returns>
         public static string PrintExpression(IExpression expression)
         {
-            return expression.Print().HasValue? expression.Print().Value: "invalid";
+            return expression.Print().HasValue ? expression.Print().Value : "invalid";
         }
     }
 }

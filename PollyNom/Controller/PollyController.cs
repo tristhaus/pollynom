@@ -133,7 +133,6 @@ namespace PollyNom.Controller
             {
                 return new List<ListPointLogical>(0);
             }
-
         }
 
         /// <summary>

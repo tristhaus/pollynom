@@ -260,8 +260,7 @@ namespace PollyNom.View
                         (float)(goodDot.Position.Item1 - goodDot.Radius) * (scaleX),
                         (float)(goodDot.Position.Item2 + goodDot.Radius) * (-scaleY),
                         (float)(2.0f * goodDot.Radius) * Math.Abs(scaleY),
-                        (float)(2.0f * goodDot.Radius) * Math.Abs(scaleX)
-                        );
+                        (float)(2.0f * goodDot.Radius) * Math.Abs(scaleX));
                 }
             }
         }

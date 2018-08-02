@@ -45,7 +45,7 @@ namespace PollyNom.BusinessLogic
         /// <param name="point">The point to be added.</param>
         public void Add(PointLogical point)
         {
-            if (list.Count == 0 || list[list.Count - 1].X < point.X )
+            if (list.Count == 0 || list[list.Count - 1].X < point.X)
             {
                 list.Add(point);
                 return;

@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 
 using PollyNom.BusinessLogic;
 using PollyNom.BusinessLogic.Dots;
@@ -72,6 +71,46 @@ namespace PollyNom.Controller
         }
 
         /// <summary>
+        /// Gets the information as needed for the drawing of the coordinate system.
+        /// </summary>
+        public CoordinateSystemInfo CoordinateSystemInfo
+        {
+            get
+            {
+                return new CoordinateSystemInfo()
+                {
+                    StartX = PollyController.StartX,
+                    EndX = PollyController.EndX,
+                    StartY = PollyController.StartY,
+                    EndY = PollyController.EndY,
+                    TickInterval = PollyController.TickInterval,
+                };
+            }
+        }
+
+        /// <summary>
+        /// Gets the current score.
+        /// </summary>
+        public int Score
+        {
+            get
+            {
+                return this.score;
+            }
+        }
+
+        /// <summary>
+        /// Gets the number of expressions currently handled by this controller.
+        /// </summary>
+        public int ExpressionCount
+        {
+            get
+            {
+                return this.expressions.Count;
+            }
+        }
+
+        /// <summary>
         /// Tests the expression for parseability.
         /// </summary>
         /// <param name="textRepresentation">The textual representation of the expression.</param>
@@ -103,24 +142,6 @@ namespace PollyNom.Controller
         }
 
         /// <summary>
-        /// Gets the information as needed for the drawing of the coordinate system.
-        /// </summary>
-        public CoordinateSystemInfo CoordinateSystemInfo
-        {
-            get
-            {
-                return new CoordinateSystemInfo()
-                {
-                    StartX = PollyController.StartX,
-                    EndX = PollyController.EndX,
-                    StartY = PollyController.StartY,
-                    EndY = PollyController.EndY,
-                    TickInterval = PollyController.TickInterval,
-                };
-            }
-        }
-
-        /// <summary>
         /// Get the lists of plottable points in terms of business logic units.
         /// </summary>
         /// <param name="index">The index of the internally held <see cref="IExpression"/>.</param>
@@ -137,35 +158,13 @@ namespace PollyNom.Controller
             }
         }
 
-        /// <summary>
+       /// <summary>
         /// Get the drawable dots.
         /// </summary>
         /// <returns>A list of drawable dots.</returns>
         public List<IDrawDot> GetDrawDots()
         {
             return this.drawDots ?? new List<IDrawDot>(0);
-        }
-
-        /// <summary>
-        /// Gets the current score.
-        /// </summary>
-        public int Score
-        {
-            get
-            {
-                return this.score;
-            }
-        }
-
-        /// <summary>
-        /// Gets the number of expressions currently handled by this controller.
-        /// </summary>
-        public int ExpressionCount
-        {
-            get
-            {
-                return this.expressions.Count;
-            }
         }
 
         /// <summary>

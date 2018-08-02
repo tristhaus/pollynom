@@ -18,9 +18,12 @@ namespace PollyNom.BusinessLogic.Expressions.SingleArgumentFunctions
         {
         }
 
-        protected override bool ArgumentIsValid(double argument)
+        protected override string FunctionSymbol
         {
-            return argument > 0.0;
+            get
+            {
+                return Symbol;
+            }
         }
 
         protected override Func<double, double> FunctionFunc
@@ -31,12 +34,9 @@ namespace PollyNom.BusinessLogic.Expressions.SingleArgumentFunctions
             }
         }
 
-        protected override string FunctionSymbol
+        protected override bool ArgumentIsValid(double argument)
         {
-            get
-            {
-                return Symbol;
-            }
+            return argument > 0.0;
         }
     }
 }

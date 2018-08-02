@@ -39,23 +39,6 @@ namespace PollyNom.BusinessLogic.Expressions
             }
         }
 
-        public override bool Equals(object other)
-        {
-            if (other.GetType() != typeof(Power))
-            {
-                return false;
-            }
-
-            Power otherPower = (Power)other;
-
-            return this.EqualityImplementation(otherPower);
-        }
-
-        public bool Equals(Power other)
-        {
-            return this.EqualityImplementation(other);
-        }
-
         public static bool operator ==(Power x, IExpression y)
         {
             return x.Equals(y);
@@ -74,6 +57,23 @@ namespace PollyNom.BusinessLogic.Expressions
         public static bool operator !=(Power x, Power y)
         {
             return !(x.Equals(y));
+        }
+
+        public override bool Equals(object other)
+        {
+            if (other.GetType() != typeof(Power))
+            {
+                return false;
+            }
+
+            Power otherPower = (Power)other;
+
+            return this.EqualityImplementation(otherPower);
+        }
+
+        public bool Equals(Power other)
+        {
+            return this.EqualityImplementation(other);
         }
 
         public override int GetHashCode()

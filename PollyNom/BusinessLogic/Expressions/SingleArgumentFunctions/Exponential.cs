@@ -19,9 +19,12 @@ namespace PollyNom.BusinessLogic.Expressions.SingleArgumentFunctions
         {
         }
 
-        protected override bool ArgumentIsValid(double argument)
+        protected sealed override string FunctionSymbol
         {
-            return true;
+            get
+            {
+                return Symbol;
+            }
         }
 
         protected sealed override Func<double, double> FunctionFunc
@@ -32,12 +35,9 @@ namespace PollyNom.BusinessLogic.Expressions.SingleArgumentFunctions
             }
         }
 
-        protected sealed override string FunctionSymbol
+        protected override bool ArgumentIsValid(double argument)
         {
-            get
-            {
-                return Symbol;
-            }
+            return true;
         }
     }
 }

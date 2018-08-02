@@ -25,16 +25,6 @@ namespace PollyNom.BusinessLogic.Expressions
             }
         }
 
-        public override bool Equals(object other)
-        {
-            return other.GetType() == typeof(InvalidExpression);
-        }
-
-        public bool Equals(InvalidExpression other)
-        {
-            return true;
-        }
-
         public static bool operator ==(InvalidExpression x, IExpression y)
         {
             return x.Equals(y);
@@ -53,6 +43,16 @@ namespace PollyNom.BusinessLogic.Expressions
         public static bool operator !=(InvalidExpression x, InvalidExpression y)
         {
             return !(x.Equals(y));
+        }
+
+        public override bool Equals(object other)
+        {
+            return other.GetType() == typeof(InvalidExpression);
+        }
+
+        public bool Equals(InvalidExpression other)
+        {
+            return true;
         }
 
         public override int GetHashCode()

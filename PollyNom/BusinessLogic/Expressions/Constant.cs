@@ -36,22 +36,6 @@ namespace PollyNom.BusinessLogic.Expressions
             }
         }
 
-        public override bool Equals(object other)
-        {
-            if (other.GetType() != typeof(Constant))
-            {
-                return false;
-            }
-
-            Constant otherConstant = (Constant)other;
-            return Math.Abs(this.a - otherConstant.a) < 10e-10;
-        }
-
-        public bool Equals(Constant other)
-        {
-            return Math.Abs(this.a - other.a) < 10e-10;
-        }
-
         public static bool operator ==(Constant x, IExpression y)
         {
             return x.Equals(y);
@@ -70,6 +54,22 @@ namespace PollyNom.BusinessLogic.Expressions
         public static bool operator !=(Constant x, Constant y)
         {
             return !x.Equals(y);
+        }
+
+        public override bool Equals(object other)
+        {
+            if (other.GetType() != typeof(Constant))
+            {
+                return false;
+            }
+
+            Constant otherConstant = (Constant)other;
+            return Math.Abs(this.a - otherConstant.a) < 10e-10;
+        }
+
+        public bool Equals(Constant other)
+        {
+            return Math.Abs(this.a - other.a) < 10e-10;
         }
 
         public override int GetHashCode()

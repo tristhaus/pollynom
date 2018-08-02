@@ -63,23 +63,6 @@ namespace PollyNom.BusinessLogic.Expressions
             }
         }
 
-        public override bool Equals(object other)
-        {
-            if (other.GetType() != typeof(Multiply))
-            {
-                return false;
-            }
-
-            Multiply otherMultiply = (Multiply)other;
-
-            return this.EqualityImplementation(otherMultiply);
-        }
-
-        public bool Equals(Multiply other)
-        {
-            return this.EqualityImplementation(other);
-        }
-
         public static bool operator ==(Multiply x, IExpression y)
         {
             return x.Equals(y);
@@ -98,6 +81,23 @@ namespace PollyNom.BusinessLogic.Expressions
         public static bool operator !=(Multiply x, Multiply y)
         {
             return !(x.Equals(y));
+        }
+
+        public override bool Equals(object other)
+        {
+            if (other.GetType() != typeof(Multiply))
+            {
+                return false;
+            }
+
+            Multiply otherMultiply = (Multiply)other;
+
+            return this.EqualityImplementation(otherMultiply);
+        }
+
+        public bool Equals(Multiply other)
+        {
+            return this.EqualityImplementation(other);
         }
 
         public override int GetHashCode()
@@ -216,6 +216,19 @@ namespace PollyNom.BusinessLogic.Expressions
         /// </summary>
         public sealed class MultiplyExpression : IExpression, IEquatable<MultiplyExpression>
         {
+            private IExpression expression;
+
+            /// <summary>
+            /// Initializes a new instance of the <see cref="MultiplyExpression"/> class.
+            /// </summary>
+            /// <param name="sign">The "sign" to be used.</param>
+            /// <param name="expression">The expression to be contained.</param>
+            public MultiplyExpression(Signs sign, IExpression expression)
+            {
+                this.expression = expression;
+                this.Sign = sign;
+            }
+
             /// <summary>
             /// Enumerates the "signs" of factors.
             /// </summary>
@@ -232,19 +245,6 @@ namespace PollyNom.BusinessLogic.Expressions
                 Divide = 4
             }
 
-            private IExpression expression;
-
-            /// <summary>
-            /// Initializes a new instance of the <see cref="MultiplyExpression"/> class.
-            /// </summary>
-            /// <param name="sign">The "sign" to be used.</param>
-            /// <param name="expression">The expression to be contained.</param>
-            public MultiplyExpression(Signs sign, IExpression expression)
-            {
-                this.expression = expression;
-                this.Sign = sign;
-            }
-
             /// <summary>
             /// Gets the "sign" of the instance.
             /// </summary>
@@ -255,22 +255,6 @@ namespace PollyNom.BusinessLogic.Expressions
 
             /// <inheritdoc />
             public int Level => this.expression.Level;
-
-            public override bool Equals(object other)
-            {
-                if (other.GetType() != typeof(MultiplyExpression))
-                {
-                    return false;
-                }
-
-                MultiplyExpression otherMultiplyExpression = (MultiplyExpression)other;
-                return this.Sign == otherMultiplyExpression.Sign && this.expression.Equals(otherMultiplyExpression.expression);
-            }
-
-            public bool Equals(MultiplyExpression other)
-            {
-                return this.Sign == other.Sign && this.expression.Equals(other.expression);
-            }
 
             public static bool operator ==(MultiplyExpression x, IExpression y)
             {
@@ -290,6 +274,22 @@ namespace PollyNom.BusinessLogic.Expressions
             public static bool operator !=(MultiplyExpression x, MultiplyExpression y)
             {
                 return !(x.Equals(y));
+            }
+
+            public override bool Equals(object other)
+            {
+                if (other.GetType() != typeof(MultiplyExpression))
+                {
+                    return false;
+                }
+
+                MultiplyExpression otherMultiplyExpression = (MultiplyExpression)other;
+                return this.Sign == otherMultiplyExpression.Sign && this.expression.Equals(otherMultiplyExpression.expression);
+            }
+
+            public bool Equals(MultiplyExpression other)
+            {
+                return this.Sign == other.Sign && this.expression.Equals(other.expression);
             }
 
             public override int GetHashCode()

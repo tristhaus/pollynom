@@ -41,22 +41,17 @@ namespace PollyNom.BusinessLogic.Expressions
             }
         }
 
-        public override bool Equals(object other)
-        {
-            if (other.GetType() != this.GetType())
-            {
-                return false;
-            }
+        /// <summary>
+        /// Gets a <see cref="Func{T, TResult}"/> object that represents the function.
+        /// Must be overridden by a <see cref="Math"/> or similar function.
+        /// </summary>
+        protected abstract Func<double, double> FunctionFunc { get; }
 
-            SingleArgumentFunctionBase<T> otherFunction = (SingleArgumentFunctionBase<T>)other;
-
-            return this.EqualityImplementation(otherFunction);
-        }
-
-        public bool Equals(SingleArgumentFunctionBase<T> other)
-        {
-            return this.EqualityImplementation(other);
-        }
+        /// <summary>
+        /// Gets a string representation of the function.
+        /// Must be overridden.
+        /// </summary>
+        protected abstract string FunctionSymbol { get; }
 
         public static bool operator ==(SingleArgumentFunctionBase<T> x, IExpression y)
         {
@@ -78,6 +73,23 @@ namespace PollyNom.BusinessLogic.Expressions
             return !(x.Equals(y));
         }
 
+        public override bool Equals(object other)
+        {
+            if (other.GetType() != this.GetType())
+            {
+                return false;
+            }
+
+            SingleArgumentFunctionBase<T> otherFunction = (SingleArgumentFunctionBase<T>)other;
+
+            return this.EqualityImplementation(otherFunction);
+        }
+
+        public bool Equals(SingleArgumentFunctionBase<T> other)
+        {
+            return this.EqualityImplementation(other);
+        }
+
         /// <inheritdoc />
         public override int GetHashCode()
         {
@@ -88,20 +100,6 @@ namespace PollyNom.BusinessLogic.Expressions
                 return hash;
             }
         }
-
-        /// <summary>
-        /// Must be overridden to validate the argument to prevent
-        /// illegal input to <see cref="FunctionFunc"/>.
-        /// </summary>
-        /// <param name="argument">The numerical value to be checked for validity.</param>
-        /// <returns>A flag indicating whether the argument is valid for this function.</returns>
-        protected abstract bool ArgumentIsValid(double argument);
-
-        /// <summary>
-        /// Gets a <see cref="Func{T, TResult}"/> object that represents the function.
-        /// Must be overridden by a <see cref="Math"/> or similar function.
-        /// </summary>
-        protected abstract Func<double, double> FunctionFunc { get; }
 
         /// <inheritdoc />
         public IMaybe<double> Evaluate(double input)
@@ -115,12 +113,6 @@ namespace PollyNom.BusinessLogic.Expressions
             return new Some<double>(this.FunctionFunc(value.Value));
         }
 
-        /// <summary>
-        /// Gets a string representation of the function.
-        /// Must be overridden.
-        /// </summary>
-        protected abstract string FunctionSymbol { get; }
-
         /// <inheritdoc />
         public IMaybe<string> Print()
         {
@@ -132,6 +124,14 @@ namespace PollyNom.BusinessLogic.Expressions
 
             return new Some<string>($"{this.FunctionSymbol}({value.Value})");
         }
+
+        /// <summary>
+        /// Must be overridden to validate the argument to prevent
+        /// illegal input to <see cref="FunctionFunc"/>.
+        /// </summary>
+        /// <param name="argument">The numerical value to be checked for validity.</param>
+        /// <returns>A flag indicating whether the argument is valid for this function.</returns>
+        protected abstract bool ArgumentIsValid(double argument);
 
         private bool EqualityImplementation(SingleArgumentFunctionBase<T> other)
         {

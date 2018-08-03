@@ -7,6 +7,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PollyNom", "PollyNom\PollyN
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PollyNomTest", "PollyNomTest\PollyNomTest.csproj", "{8D3F929A-889A-401C-8463-6CA33D6B029E}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{B62C0462-3A89-466B-BE41-AC2E75F5CC79}"
+	ProjectSection(SolutionItems) = preProject
+		Issues.txt = Issues.txt
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

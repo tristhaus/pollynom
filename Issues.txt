@@ -1,3 +1,6 @@
 Michael suggests to switch to pixel/graphic based dot hitting
 Spice up the UI
-Switch UI/Controller communication to delegates and/or Tasks
+
++----------------------------------------------------------------------------------------------------------------------+
+
+DONE Switch UI/Controller communication to delegates and/or Tasks

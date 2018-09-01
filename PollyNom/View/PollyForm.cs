@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 using PollyNom.BusinessLogic;
 using PollyNom.Controller;
@@ -61,9 +62,9 @@ namespace PollyNom.View
         /// </summary>
         /// <param name="sender">Sender, i.e. button.</param>
         /// <param name="e">EventArgs</param>
-        private void ToolStripMenuItem1_Click(object sender, EventArgs e)
+        private async void ToolStripMenuItem1_Click(object sender, EventArgs e)
         {
-            this.ReadAndDelegate();
+            await this.ReadAndDelegate();
             this.Refresh();
         }
 
@@ -74,9 +75,9 @@ namespace PollyNom.View
         /// </summary>
         /// <param name="sender">The sender.</param>
         /// <param name="e">The <see cref="EventArgs"/> instance.</param>
-        private void InputBox_TextChanged(object sender, EventArgs e)
+        private async void InputBox_TextChanged(object sender, EventArgs e)
         {
-            bool isParseable = this.controller.TestExpression(this.inputBox.Text);
+            bool isParseable = await Task.Run(() => { return this.controller.TestExpression(this.inputBox.Text); });
             var oldColor = this.inputBox.ForeColor;
             this.inputBox.ForeColor = isParseable ? SystemColors.WindowText : Color.Red;
             var newColor = this.inputBox.ForeColor;
@@ -93,11 +94,11 @@ namespace PollyNom.View
         /// </summary>
         /// <param name="sender">The sender.</param>
         /// <param name="e">The <see cref="KeyPressEventArgs"/> instance.</param>
-        private void InputBox_KeyPress(object sender, KeyPressEventArgs e)
+        private async void InputBox_KeyPress(object sender, KeyPressEventArgs e)
         {
             if (e.KeyChar == (char)Keys.Enter && (this.controller.TestExpression(this.inputBox.Text) || string.IsNullOrWhiteSpace(this.inputBox.Text)))
             {
-                this.ReadAndDelegate();
+                await this.ReadAndDelegate();
                 this.Refresh();
                 e.Handled = true;
                 return;
@@ -107,11 +108,12 @@ namespace PollyNom.View
         /// <summary>
         /// Reads the user input text and parses the expression from it.
         /// </summary>
-        private void ReadAndDelegate()
+        /// <returns>An awaitable task.</returns>
+        private async Task ReadAndDelegate()
         {
             if ((!string.IsNullOrWhiteSpace(this.inputBox.Text) && this.controller.ExpressionCount < 5) || string.IsNullOrWhiteSpace(this.inputBox.Text))
             {
-                this.controller.UpdateExpression(this.inputBox.Text);
+                await Task.Run(() => this.controller.UpdateExpression(this.inputBox.Text));
             }
         }
 

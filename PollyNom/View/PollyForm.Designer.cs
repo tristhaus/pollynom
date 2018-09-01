@@ -17,6 +17,10 @@
             {
                 components.Dispose();
             }
+            if (disposing && (this.controllerMutex != null))
+            {
+                this.controllerMutex.Dispose();
+            }
             base.Dispose(disposing);
         }
 
@@ -100,7 +104,7 @@
             this.calcButton.Name = "calcButton";
             this.calcButton.Size = new System.Drawing.Size(37, 22);
             this.calcButton.Text = "Calc!";
-            this.calcButton.Click += new System.EventHandler(this.ToolStripMenuItem1_Click);
+            this.calcButton.Click += new System.EventHandler(this.CalcButton_Click);
             // 
             // PollyForm
             // 

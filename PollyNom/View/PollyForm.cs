@@ -43,6 +43,12 @@ namespace PollyNom.View
         private readonly Color goodDotHitColor = Color.DarkBlue;
 
         /// <summary>
+        /// Flag to indicate whether the form currently accepts input (<c>true</c>)
+        /// or is waiting for work to finish for the last input (<c>false</c>)
+        /// </summary>
+        private bool acceptInput;
+
+        /// <summary>
         /// Controller providing access to data and accepting commands.
         /// </summary>
         private PollyController controller;
@@ -57,6 +63,8 @@ namespace PollyNom.View
         /// </summary>
         public PollyForm()
         {
+            this.acceptInput = true;
+
             this.controller = new PollyController();
             this.controllerMutex = new SemaphoreSlim(1, 1);
 
@@ -69,17 +77,22 @@ namespace PollyNom.View
         /// </summary>
         /// <param name="sender">Sender, i.e. button.</param>
         /// <param name="e">EventArgs</param>
-        private async void ToolStripMenuItem1_Click(object sender, EventArgs e)
+        private async void CalcButton_Click(object sender, EventArgs e)
         {
-            try
+            if (this.acceptInput)
             {
-                await this.controllerMutex.WaitAsync();
-                await this.ReadAndDelegate();
-                this.Refresh();
-            }
-            finally
-            {
-                this.controllerMutex.Release();
+                try
+                {
+                    this.SetRejectInput();
+                    await this.controllerMutex.WaitAsync();
+                    await this.ReadAndDelegate();
+                    this.Refresh();
+                }
+                finally
+                {
+                    this.controllerMutex.Release();
+                    this.SetAcceptInput();
+                }
             }
         }
 
@@ -122,21 +135,46 @@ namespace PollyNom.View
         /// <param name="e">The <see cref="KeyPressEventArgs"/> instance.</param>
         private async void InputBox_KeyPress(object sender, KeyPressEventArgs e)
         {
-            try
+            if (e.KeyChar == (char)Keys.Enter && this.acceptInput)
             {
-                await this.controllerMutex.WaitAsync();
-                if (e.KeyChar == (char)Keys.Enter && (this.controller.TestExpression(this.inputBox.Text) || string.IsNullOrWhiteSpace(this.inputBox.Text)))
+                try
                 {
-                    await this.ReadAndDelegate();
-                    this.Refresh();
-                    e.Handled = true;
-                    return;
+                    this.SetRejectInput();
+                    await this.controllerMutex.WaitAsync();
+                    if (this.controller.TestExpression(this.inputBox.Text) || string.IsNullOrWhiteSpace(this.inputBox.Text))
+                    {
+                        await this.ReadAndDelegate();
+                        this.Refresh();
+                        e.Handled = true;
+                        return;
+                    }
+                }
+                finally
+                {
+                    this.controllerMutex.Release();
+                    this.SetAcceptInput();
                 }
             }
-            finally
-            {
-                this.controllerMutex.Release();
-            }
+        }
+
+        private void SetAcceptInput()
+        {
+            this.acceptInput = true;
+
+            this.SetEnabledOnMenuItems(true);
+        }
+
+        private void SetRejectInput()
+        {
+            this.SetEnabledOnMenuItems(false);
+
+            this.acceptInput = false;
+        }
+
+        private void SetEnabledOnMenuItems(bool newValue)
+        {
+            this.calcButton.Enabled = newValue;
+            this.inputBox.Enabled = newValue;
         }
 
         /// <summary>

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using PollyNom.BusinessLogic;
@@ -47,11 +48,17 @@ namespace PollyNom.View
         private PollyController controller;
 
         /// <summary>
+        /// Semaphore serializing access to the controller.
+        /// </summary>
+        private SemaphoreSlim controllerMutex;
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="PollyForm"/> class.
         /// </summary>
         public PollyForm()
         {
             this.controller = new PollyController();
+            this.controllerMutex = new SemaphoreSlim(1, 1);
 
             this.ResizeRedraw = true;
             this.InitializeComponent();
@@ -64,8 +71,16 @@ namespace PollyNom.View
         /// <param name="e">EventArgs</param>
         private async void ToolStripMenuItem1_Click(object sender, EventArgs e)
         {
-            await this.ReadAndDelegate();
-            this.Refresh();
+            try
+            {
+                await this.controllerMutex.WaitAsync();
+                await this.ReadAndDelegate();
+                this.Refresh();
+            }
+            finally
+            {
+                this.controllerMutex.Release();
+            }
         }
 
         /// <summary>
@@ -77,13 +92,24 @@ namespace PollyNom.View
         /// <param name="e">The <see cref="EventArgs"/> instance.</param>
         private async void InputBox_TextChanged(object sender, EventArgs e)
         {
-            bool isParseable = await Task.Run(() => { return this.controller.TestExpression(this.inputBox.Text); });
-            var oldColor = this.inputBox.ForeColor;
-            this.inputBox.ForeColor = isParseable ? SystemColors.WindowText : Color.Red;
-            var newColor = this.inputBox.ForeColor;
-            if (!oldColor.Equals(newColor))
+            try
             {
-                this.Refresh();
+                await this.controllerMutex.WaitAsync();
+                bool isParseable = await Task.Run(() =>
+                {
+                    return this.controller.TestExpression(this.inputBox.Text);
+                });
+                var oldColor = this.inputBox.ForeColor;
+                this.inputBox.ForeColor = isParseable ? SystemColors.WindowText : Color.Red;
+                var newColor = this.inputBox.ForeColor;
+                if (!oldColor.Equals(newColor))
+                {
+                    this.Refresh();
+                }
+            }
+            finally
+            {
+                this.controllerMutex.Release();
             }
         }
 
@@ -96,12 +122,20 @@ namespace PollyNom.View
         /// <param name="e">The <see cref="KeyPressEventArgs"/> instance.</param>
         private async void InputBox_KeyPress(object sender, KeyPressEventArgs e)
         {
-            if (e.KeyChar == (char)Keys.Enter && (this.controller.TestExpression(this.inputBox.Text) || string.IsNullOrWhiteSpace(this.inputBox.Text)))
+            try
             {
-                await this.ReadAndDelegate();
-                this.Refresh();
-                e.Handled = true;
-                return;
+                await this.controllerMutex.WaitAsync();
+                if (e.KeyChar == (char)Keys.Enter && (this.controller.TestExpression(this.inputBox.Text) || string.IsNullOrWhiteSpace(this.inputBox.Text)))
+                {
+                    await this.ReadAndDelegate();
+                    this.Refresh();
+                    e.Handled = true;
+                    return;
+                }
+            }
+            finally
+            {
+                this.controllerMutex.Release();
             }
         }
 
@@ -113,7 +147,10 @@ namespace PollyNom.View
         {
             if ((!string.IsNullOrWhiteSpace(this.inputBox.Text) && this.controller.ExpressionCount < 5) || string.IsNullOrWhiteSpace(this.inputBox.Text))
             {
-                await Task.Run(() => this.controller.UpdateExpression(this.inputBox.Text));
+                await Task.Run(() =>
+                {
+                    this.controller.UpdateExpression(this.inputBox.Text);
+                });
             }
         }
 

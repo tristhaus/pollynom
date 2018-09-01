@@ -25,6 +25,15 @@ namespace PollyNom.Controller
         /// </summary>
         private const float Limits = 1000f;
 
+        private readonly CoordinateSystemInfo coordinateSystemInfo = new CoordinateSystemInfo()
+        {
+            StartX = PollyController.StartX,
+            EndX = PollyController.EndX,
+            StartY = PollyController.StartY,
+            EndY = PollyController.EndY,
+            TickInterval = PollyController.TickInterval,
+        };
+
         /// <summary>
         /// The parser for textual representations of <see cref="IExpression"/>.
         /// </summary>
@@ -77,14 +86,7 @@ namespace PollyNom.Controller
         {
             get
             {
-                return new CoordinateSystemInfo()
-                {
-                    StartX = PollyController.StartX,
-                    EndX = PollyController.EndX,
-                    StartY = PollyController.StartY,
-                    EndY = PollyController.EndY,
-                    TickInterval = PollyController.TickInterval,
-                };
+                return this.coordinateSystemInfo;
             }
         }
 
@@ -158,7 +160,7 @@ namespace PollyNom.Controller
             }
         }
 
-       /// <summary>
+        /// <summary>
         /// Get the drawable dots.
         /// </summary>
         /// <returns>A list of drawable dots.</returns>

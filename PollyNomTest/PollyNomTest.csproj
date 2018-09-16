@@ -35,7 +35,8 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <CodeAnalysisRuleSet />
+    <CodeAnalysisRuleSet>..\PollyNom.ruleset</CodeAnalysisRuleSet>
+    <RunCodeAnalysis>true</RunCodeAnalysis>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -71,6 +72,10 @@
     <Compile Include="ScoringTest.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Backend\Backend.csproj">
+      <Project>{dca01706-4651-4248-b9b6-c8b9967b0b98}</Project>
+      <Name>Backend</Name>
+    </ProjectReference>
     <ProjectReference Include="..\PollyNom\PollyNom.csproj">
       <Project>{054c6fb2-2654-41c8-ac10-c771bbfc8741}</Project>
       <Name>PollyNom</Name>

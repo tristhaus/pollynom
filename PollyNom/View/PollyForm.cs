@@ -5,8 +5,9 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using PollyNom.BusinessLogic;
-using PollyNom.Controller;
+
+using Backend.BusinessLogic;
+using Backend.Controller;
 
 namespace PollyNom.View
 {

@@ -4,17 +4,15 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{054C6FB2-2654-41C8-AC10-C771BBFC8741}</ProjectGuid>
-    <OutputType>WinExe</OutputType>
+    <ProjectGuid>{DCA01706-4651-4248-B9B6-C8B9967B0B98}</ProjectGuid>
+    <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>PollyNom</RootNamespace>
-    <AssemblyName>PollyNom</AssemblyName>
+    <RootNamespace>Backend</RootNamespace>
+    <AssemblyName>Backend</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -26,15 +24,14 @@
     <CodeAnalysisRuleSet>..\PollyNom.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <CodeAnalysisRuleSet>..\PollyNom.ruleset</CodeAnalysisRuleSet>
     <RunCodeAnalysis>true</RunCodeAnalysis>
+    <CodeAnalysisRuleSet>..\PollyNom.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -43,58 +40,44 @@
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
-    <Reference Include="System.Deployment" />
-    <Reference Include="System.Drawing" />
     <Reference Include="System.Net.Http" />
-    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="View\PollyForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="View\PollyForm.Designer.cs">
-      <DependentUpon>PollyForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="View\PollyFormHelper.cs" />
-    <Compile Include="Program.cs" />
+    <Compile Include="BusinessLogic\Dots\GoodDot.cs" />
+    <Compile Include="BusinessLogic\Expressions\Add.cs" />
+    <Compile Include="BusinessLogic\Expressions\BaseX.cs" />
+    <Compile Include="BusinessLogic\Expressions\Constant.cs" />
+    <Compile Include="BusinessLogic\Expressions\InvalidExpression.cs" />
+    <Compile Include="BusinessLogic\Expressions\Multiply.cs" />
+    <Compile Include="BusinessLogic\Expressions\Power.cs" />
+    <Compile Include="BusinessLogic\Expressions\SingleArgumentFunctionBase.cs" />
+    <Compile Include="BusinessLogic\Expressions\SingleArgumentFunctions\AbsoluteValue.cs" />
+    <Compile Include="BusinessLogic\Expressions\SingleArgumentFunctions\Cosine.cs" />
+    <Compile Include="BusinessLogic\Expressions\SingleArgumentFunctions\Exponential.cs" />
+    <Compile Include="BusinessLogic\Expressions\SingleArgumentFunctions\NaturalLogarithm.cs" />
+    <Compile Include="BusinessLogic\Expressions\SingleArgumentFunctions\Sine.cs" />
+    <Compile Include="BusinessLogic\Expressions\SingleArgumentFunctions\Tangent.cs" />
+    <Compile Include="BusinessLogic\FixedGoodDotsGenerator.cs" />
+    <Compile Include="BusinessLogic\GoodDotsGenerator.cs" />
+    <Compile Include="BusinessLogic\Helper\MathHelper.cs" />
+    <Compile Include="BusinessLogic\IDot.cs" />
+    <Compile Include="BusinessLogic\IExpression.cs" />
+    <Compile Include="BusinessLogic\IMaybe.cs" />
+    <Compile Include="BusinessLogic\ListPointLogical.cs" />
+    <Compile Include="BusinessLogic\Parser.cs" />
+    <Compile Include="BusinessLogic\PointListGenerator.cs" />
+    <Compile Include="BusinessLogic\PointLogical.cs" />
+    <Compile Include="BusinessLogic\ScoreCalculator.cs" />
+    <Compile Include="Controller\CoordinateSystemInfo.cs" />
+    <Compile Include="Controller\DrawDot.cs" />
+    <Compile Include="Controller\DrawDotKind.cs" />
+    <Compile Include="Controller\IDrawDot.cs" />
+    <Compile Include="Controller\PollyController.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="View\PollyForm.resx">
-      <DependentUpon>PollyForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Properties\Resources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Resources.resx</DependentUpon>
-    </Compile>
-    <None Include="packages.config" />
-    <None Include="Properties\Settings.settings">
-      <Generator>SettingsSingleFileGenerator</Generator>
-      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
-    </None>
-    <Compile Include="Properties\Settings.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Settings.settings</DependentUpon>
-      <DesignTimeSharedInput>True</DesignTimeSharedInput>
-    </Compile>
+  </ItemGroup>
+  <ItemGroup>
     <AdditionalFiles Include="stylecop.json" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="App.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <Analyzer Include="..\packages\StyleCop.Analyzers.1.0.2\analyzers\dotnet\cs\StyleCop.Analyzers.CodeFixes.dll" />
-    <Analyzer Include="..\packages\StyleCop.Analyzers.1.0.2\analyzers\dotnet\cs\StyleCop.Analyzers.dll" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Backend\Backend.csproj">
-      <Project>{dca01706-4651-4248-b9b6-c8b9967b0b98}</Project>
-      <Name>Backend</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

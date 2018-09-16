@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 
-using PollyNom.BusinessLogic;
+using Backend.BusinessLogic;
 
 namespace PollyNom.View
 {

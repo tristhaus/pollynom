@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
-using PollyNom.BusinessLogic;
-using PollyNom.BusinessLogic.Expressions;
+using Backend.BusinessLogic;
+using Backend.BusinessLogic.Expressions;
 
 namespace PollyNomTest.Helper
 {

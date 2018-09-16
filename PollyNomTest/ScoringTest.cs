@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
+using Backend.BusinessLogic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using PollyNom.BusinessLogic;
 
 namespace PollyNomTest
 {

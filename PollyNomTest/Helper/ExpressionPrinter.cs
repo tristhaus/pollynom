@@ -1,4 +1,4 @@
-﻿using PollyNom.BusinessLogic;
+﻿using Backend.BusinessLogic;
 
 namespace PollyNomTest.Helper
 {

@@ -1,6 +1,6 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using PollyNom.BusinessLogic.Expressions;
-using PollyNom.BusinessLogic.Expressions.SingleArgumentFunctions;
+﻿using Backend.BusinessLogic.Expressions;
+using Backend.BusinessLogic.Expressions.SingleArgumentFunctions;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace PollyNomTest
 {

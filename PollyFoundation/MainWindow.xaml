@@ -16,7 +16,7 @@
         <UniformGrid DockPanel.Dock="Bottom" Columns="1" Rows="1" Margin="6,6,6,6">
             <DockPanel Margin="0,0,0,0">
                 <Label x:Name="label0" DockPanel.Dock="Left" Content="y =" VerticalAlignment="Center" HorizontalAlignment="Left"/>
-                <Button x:Name="button0" DockPanel.Dock="Right" Content="Calc" Click="button0_Click" Height="20"/>
+                <Button x:Name="button0" DockPanel.Dock="Right" Content="Calc" Click="Button0_Click" Height="20"/>
                 <TextBox x:Name="textBox0" VerticalAlignment="Center" TextWrapping="Wrap" Text="exp(x)" Height="20"/>
             </DockPanel>
         </UniformGrid>

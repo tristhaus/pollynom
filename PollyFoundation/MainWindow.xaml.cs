@@ -13,8 +13,7 @@ namespace PollyFoundation
     /// </summary>
     public sealed partial class MainWindow : Window
     {
-        private const double margin = 10;
-        private const double step = 10;
+        private const double CanvasMargin = 10;
         private double xmax;
         private double xmin;
         private double ymin;
@@ -26,33 +25,34 @@ namespace PollyFoundation
 
         public MainWindow()
         {
-            controller = new PollyController();
-            InitializeComponent();
+            this.controller = new PollyController();
+            this.InitializeComponent();
         }
 
-        private void button0_Click(object sender, RoutedEventArgs e)
+        private void Button0_Click(object sender, RoutedEventArgs e)
         {
-            controller.UpdateExpression(textBox0.Text);
+            this.controller.UpdateExpression(this.textBox0.Text);
 
-            CoordinateSystemInfo csi = controller.CoordinateSystemInfo;
+            CoordinateSystemInfo csi = this.controller.CoordinateSystemInfo;
 
-            RefreshCanvasInfo(csi);
+            this.RefreshCanvasInfo(csi);
 
-            DrawCoordinateSystem(csi);
+            this.DrawCoordinateSystem(csi);
 
+            /*
             // Make some data sets.
             Brush[] brushes = { Brushes.Red, Brushes.Green, Brushes.Blue };
             Random rand = new Random();
             for (int data_set = 0; data_set < 3; data_set++)
             {
-                int last_y = rand.Next((int)ymin, (int)ymax);
+                int last_y = rand.Next((int)this.ymin, (int)this.ymax);
 
                 PointCollection points = new PointCollection();
-                for (double x = xmin; x <= xmax; x += step)
+                for (double x = this.xmin; x <= this.xmax; x += step)
                 {
                     last_y = rand.Next(last_y - 10, last_y + 10);
-                    if (last_y < ymin) last_y = (int)ymin;
-                    if (last_y > ymax) last_y = (int)ymax;
+                    if (last_y < this.ymin) last_y = (int)this.ymin;
+                    if (last_y > this.ymax) last_y = (int)this.ymax;
                     points.Add(new Point(x, last_y));
                 }
 
@@ -63,17 +63,18 @@ namespace PollyFoundation
 
                 this.canvas.Children.Add(polyline);
             }
+            */
         }
 
         private void RefreshCanvasInfo(CoordinateSystemInfo csi)
         {
-            squareLength = Math.Min(this.canvas.Width, this.canvas.Height) - 2 * margin;
-            scale = squareLength / (csi.EndX - csi.StartX);
+            this.squareLength = Math.Min(this.canvas.Width, this.canvas.Height) - 2 * CanvasMargin;
+            this.scale = this.squareLength / (csi.EndX - csi.StartX);
 
-            this.xmin = 0.5 * (this.canvas.Width - squareLength) + margin;
-            this.xmax = xmin + squareLength;
-            this.ymin = 0.5 * (this.canvas.Height - squareLength) + margin;
-            this.ymax = ymin + squareLength;
+            this.xmin = 0.5 * (this.canvas.Width - this.squareLength) + CanvasMargin;
+            this.xmax = this.xmin + this.squareLength;
+            this.ymin = 0.5 * (this.canvas.Height - this.squareLength) + CanvasMargin;
+            this.ymax = this.ymin + this.squareLength;
         }
 
         private void DrawCoordinateSystem(CoordinateSystemInfo csi)
@@ -81,13 +82,13 @@ namespace PollyFoundation
             // Make the X axis.
             GeometryGroup xaxis_geom = new GeometryGroup();
             xaxis_geom.Children.Add(new LineGeometry(
-                new Point(xmin, 0.5 * (ymin + ymax)), new Point(xmax, 0.5 * (ymin + ymax))));
+                new Point(this.xmin, 0.5 * (this.ymin + this.ymax)), new Point(this.xmax, 0.5 * (this.ymin + this.ymax))));
             for (double x = csi.StartX + csi.TickInterval;
                 x <= csi.EndX; x += csi.TickInterval)
             {
                 xaxis_geom.Children.Add(new LineGeometry(
-                    new Point(x * scale + xmin, 0.5 * (ymin + ymax) - margin / 2),
-                    new Point(x * scale + xmin, 0.5 * (ymin + ymax) + margin / 2)));
+                    new Point(x * this.scale + this.xmin, 0.5 * (this.ymin + this.ymax) - CanvasMargin / 2),
+                    new Point(x * this.scale + this.xmin, 0.5 * (this.ymin + this.ymax) + CanvasMargin / 2)));
             }
 
             Path xaxis_path = new Path();

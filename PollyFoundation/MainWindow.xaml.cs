@@ -11,7 +11,7 @@ namespace PollyFoundation
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public sealed partial class MainWindow : Window
     {
         private const double margin = 10;
         private const double step = 10;

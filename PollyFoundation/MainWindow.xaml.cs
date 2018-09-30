@@ -98,6 +98,17 @@ namespace PollyFoundation
 
             this.canvas.Children.Add(xaxis_path);
 
+            // GeometryGroup myGroup = new GeometryGroup();
+            // myGroup.Children.Add(new LineGeometry(new Point(0, 0), new Point(100, 200)));
+            // Path myPath = new Path()
+            // {
+            //     Stroke = Brushes.Aquamarine,
+            //     StrokeThickness = 2,
+            //     Data = myGroup
+            // };
+            //
+            // this.canvas.Children.Add(myPath);
+
             /*
             // Make the Y ayis.
             GeometryGroup yaxis_geom = new GeometryGroup();
@@ -116,7 +127,7 @@ namespace PollyFoundation
             yaxis_path.Data = yaxis_geom;
 
             this.canvas.Children.Add(yaxis_path);
-            //*/   
+            //*/
         }
     }
 }

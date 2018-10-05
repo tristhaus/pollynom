@@ -12,20 +12,5 @@
         MinWidth="200"
         WindowStartupLocation="CenterScreen"
         >
-    
-    <DockPanel LastChildFill="True">
-        <UniformGrid DockPanel.Dock="Bottom" Columns="1" Rows="1" Margin="6,6,6,6">
-            <DockPanel Margin="0,0,0,0">
-                <Label x:Name="label0" DockPanel.Dock="Left" Content="y =" VerticalAlignment="Center" HorizontalAlignment="Left"/>
-                <Button x:Name="button0" DockPanel.Dock="Right" Content="Calc" Click="Button0_Click" Height="20"/>
-                <TextBox x:Name="textBox0" VerticalAlignment="Center" TextWrapping="Wrap" Text="exp(x)" Height="20"/>
-            </DockPanel>
-        </UniformGrid>
-        <DockPanel Name="dpForCanvas" LastChildFill="True">
-            <Canvas x:Name="canvas" Margin="0,0,0,0" 
-                    Height="{Binding Path=ActualHeight, ElementName=dpForCanvas}"
-                    Width="{Binding Path=ActualWidth, ElementName=dpForCanvas}"
-                    />
-        </DockPanel>
-    </DockPanel>
+    <DockPanel x:Name="mainDockPanel" LastChildFill="True"/>
 </Window>

@@ -1,6 +1,10 @@
-﻿using System.Windows;
+﻿using System;
+using System.Threading;
+using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
+using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Shapes;
 using Backend.Controller;
@@ -10,13 +14,16 @@ namespace PollyFoundation
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public sealed partial class MainWindow : Window
+    public sealed partial class MainWindow : Window, IDisposable
     {
         private const double CanvasMargin = 10;
         private readonly Color[] graphColors = { Colors.Black, Colors.Blue, Colors.Green, Colors.Pink, Colors.Brown };
+        private readonly SolidColorBrush errorSolidBrush = new SolidColorBrush(Colors.Red);
 
+        private bool disposedValue = false;
         private CoordinateHelper coordinateHelper;
         private PollyController controller;
+        private SemaphoreSlim controllerMutex;
 
         private Label label0;
         private Button button0;
@@ -31,18 +38,39 @@ namespace PollyFoundation
         public MainWindow()
         {
             this.controller = new PollyController();
+            this.controllerMutex = new SemaphoreSlim(1, 1);
             this.InitializeComponent();
 
             this.ConstructLayout();
+            this.SetEnabledOnMenuItems(true);
             this.RedrawAll();
 
             this.button0.Click += this.Button0_Click;
             this.SizeChanged += this.HandleSizeChanged;
             this.dpForCanvas.SizeChanged += this.HandleSizeChanged;
-            this.textBox0.KeyDown += this.TextBox0_KeyDown;
+            this.textBox0.PreviewKeyDown += this.TextBox0_KeyDown;
+            this.textBox0.TextChanged += this.TextBox0_TextChanged;
         }
 
-       private void ConstructLayout()
+        public void Dispose()
+        {
+            this.Dispose(true);
+        }
+
+        private void Dispose(bool disposing)
+        {
+            if (!this.disposedValue)
+            {
+                if (disposing)
+                {
+                    ((IDisposable)this.controllerMutex).Dispose();
+                }
+
+                this.disposedValue = true;
+            }
+        }
+
+        private void ConstructLayout()
         {
             this.label0 = new Label()
             {
@@ -132,23 +160,72 @@ namespace PollyFoundation
             this.RedrawAll();
         }
 
-        private void TextBox0_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
+        private async void TextBox0_TextChanged(object sender, TextChangedEventArgs e)
         {
-            if (e.Key == System.Windows.Input.Key.Enter)
+            try
             {
-                this.UpdateExpression();
+                await this.controllerMutex.WaitAsync();
+                string input = this.textBox0.Text;
+                bool parseable = await Task.Run(() =>
+                {
+                    return string.IsNullOrWhiteSpace(input) || this.controller.TestExpression(input);
+                });
+                this.textBox0.Foreground = parseable ? SystemColors.WindowTextBrush : this.errorSolidBrush;
+            }
+            finally
+            {
+                this.controllerMutex.Release();
             }
         }
 
-        private void Button0_Click(object sender, RoutedEventArgs e)
+        private async void TextBox0_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
         {
-            this.UpdateExpression();
+            if (e.Key == Key.Return)
+            {
+                await this.HandleUpdate();
+            }
         }
 
-        private void UpdateExpression()
+        private async void Button0_Click(object sender, RoutedEventArgs e)
         {
-            this.controller.UpdateExpression(this.textBox0.Text);
-            this.RedrawAll();
+            await this.HandleUpdate();
+        }
+
+        private async Task HandleUpdate()
+        {
+            try
+            {
+                await this.controllerMutex.WaitAsync();
+                this.SetEnabledOnMenuItems(false);
+                string input = this.textBox0.Text;
+                bool parseable = await Task.Run(() =>
+                {
+                    return string.IsNullOrWhiteSpace(input) || this.controller.TestExpression(input);
+                });
+
+                if (parseable)
+                {
+                    if ((parseable && this.controller.ExpressionCount < 5) || string.IsNullOrWhiteSpace(input))
+                    {
+                        await Task.Run(() => this.controller.UpdateExpression(input));
+                    }
+
+                    this.RedrawAll();
+                }
+            }
+            finally
+            {
+                this.SetEnabledOnMenuItems(true);
+                this.textBox0.Focus();
+                Keyboard.Focus(this.textBox0);
+                this.controllerMutex.Release();
+            }
+        }
+
+        private void SetEnabledOnMenuItems(bool newValue)
+        {
+            this.button0.IsEnabled = newValue;
+            this.textBox0.IsEnabled = newValue;
         }
 
         private void RedrawAll()

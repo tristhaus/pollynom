@@ -24,11 +24,11 @@ namespace PollyNomTest.PollyFoundation
             var coordinateHelper = new CoordinateHelper(canvasDimension, canvasDimension, margin, fullInterval);
 
             // Act
-            Point origin = coordinateHelper.Convert(0.0, 0.0);
-            Point topLeft = coordinateHelper.Convert(-10, 10);
-            Point bottomLeft = coordinateHelper.Convert(-10, -10);
-            Point topRight = coordinateHelper.Convert(10, 10);
-            Point bottomRight = coordinateHelper.Convert(10, -10);
+            Point origin = coordinateHelper.ConvertCoordinates(0.0, 0.0);
+            Point topLeft = coordinateHelper.ConvertCoordinates(-10, 10);
+            Point bottomLeft = coordinateHelper.ConvertCoordinates(-10, -10);
+            Point topRight = coordinateHelper.ConvertCoordinates(10, 10);
+            Point bottomRight = coordinateHelper.ConvertCoordinates(10, -10);
 
             // Assert
             Assert.IsTrue(DoubleEquality.IsApproximatelyEqual(origin.X, 50.0));
@@ -61,11 +61,11 @@ namespace PollyNomTest.PollyFoundation
             var coordinateHelper = new CoordinateHelper(canvasWidth, canvasHeight, margin, fullInterval);
 
             // Act
-            Point origin = coordinateHelper.Convert(0.0, 0.0);
-            Point topLeft = coordinateHelper.Convert(-10, 10);
-            Point bottomLeft = coordinateHelper.Convert(-10, -10);
-            Point topRight = coordinateHelper.Convert(10, 10);
-            Point bottomRight = coordinateHelper.Convert(10, -10);
+            Point origin = coordinateHelper.ConvertCoordinates(0.0, 0.0);
+            Point topLeft = coordinateHelper.ConvertCoordinates(-10, 10);
+            Point bottomLeft = coordinateHelper.ConvertCoordinates(-10, -10);
+            Point topRight = coordinateHelper.ConvertCoordinates(10, 10);
+            Point bottomRight = coordinateHelper.ConvertCoordinates(10, -10);
 
             // Assert
             Assert.IsTrue(DoubleEquality.IsApproximatelyEqual(origin.X, 60.0));
@@ -98,11 +98,11 @@ namespace PollyNomTest.PollyFoundation
             var coordinateHelper = new CoordinateHelper(canvasWidth, canvasHeight, margin, fullInterval);
 
             // Act
-            Point origin = coordinateHelper.Convert(0.0, 0.0);
-            Point topLeft = coordinateHelper.Convert(-10, 10);
-            Point bottomLeft = coordinateHelper.Convert(-10, -10);
-            Point topRight = coordinateHelper.Convert(10, 10);
-            Point bottomRight = coordinateHelper.Convert(10, -10);
+            Point origin = coordinateHelper.ConvertCoordinates(0.0, 0.0);
+            Point topLeft = coordinateHelper.ConvertCoordinates(-10, 10);
+            Point bottomLeft = coordinateHelper.ConvertCoordinates(-10, -10);
+            Point topRight = coordinateHelper.ConvertCoordinates(10, 10);
+            Point bottomRight = coordinateHelper.ConvertCoordinates(10, -10);
 
             // Assert
             Assert.IsTrue(DoubleEquality.IsApproximatelyEqual(origin.X, 50.0));
@@ -135,11 +135,11 @@ namespace PollyNomTest.PollyFoundation
             var coordinateHelper = new CoordinateHelper(canvasWidth, canvasHeight, margin, fullInterval);
 
             // Act
-            Point origin = coordinateHelper.Convert(0.0, 0.0);
-            Point topLeft = coordinateHelper.Convert(-10, 10);
-            Point bottomLeft = coordinateHelper.Convert(-10, -10);
-            Point topRight = coordinateHelper.Convert(10, 10);
-            Point bottomRight = coordinateHelper.Convert(10, -10);
+            Point origin = coordinateHelper.ConvertCoordinates(0.0, 0.0);
+            Point topLeft = coordinateHelper.ConvertCoordinates(-10, 10);
+            Point bottomLeft = coordinateHelper.ConvertCoordinates(-10, -10);
+            Point topRight = coordinateHelper.ConvertCoordinates(10, 10);
+            Point bottomRight = coordinateHelper.ConvertCoordinates(10, -10);
 
             // Assert
             Assert.IsTrue(DoubleEquality.IsApproximatelyEqual(origin.X, 60.0));
@@ -172,11 +172,11 @@ namespace PollyNomTest.PollyFoundation
             var coordinateHelper = new CoordinateHelper(canvasWidth, canvasHeight, margin, fullInterval);
 
             // Act
-            Point origin = coordinateHelper.Convert(0.0, 0.0);
-            Point topLeft = coordinateHelper.Convert(-10, 10);
-            Point bottomLeft = coordinateHelper.Convert(-10, -10);
-            Point topRight = coordinateHelper.Convert(10, 10);
-            Point bottomRight = coordinateHelper.Convert(10, -10);
+            Point origin = coordinateHelper.ConvertCoordinates(0.0, 0.0);
+            Point topLeft = coordinateHelper.ConvertCoordinates(-10, 10);
+            Point bottomLeft = coordinateHelper.ConvertCoordinates(-10, -10);
+            Point topRight = coordinateHelper.ConvertCoordinates(10, 10);
+            Point bottomRight = coordinateHelper.ConvertCoordinates(10, -10);
 
             // Assert
             Assert.IsTrue(DoubleEquality.IsApproximatelyEqual(origin.X, 50.0));

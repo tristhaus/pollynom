@@ -19,6 +19,8 @@ namespace PollyFoundation
         private const double CanvasMargin = 10;
         private readonly Color[] graphColors = { Colors.Black, Colors.Blue, Colors.Green, Colors.Pink, Colors.Brown };
         private readonly SolidColorBrush errorSolidBrush = new SolidColorBrush(Colors.Red);
+        private readonly SolidColorBrush goodDotActiveSolidBrush = new SolidColorBrush(Colors.LightBlue);
+        private readonly SolidColorBrush goodDotAsleepSolidBrush = new SolidColorBrush(Colors.DarkBlue);
 
         private bool disposedValue = false;
         private CoordinateHelper coordinateHelper;
@@ -237,6 +239,7 @@ namespace PollyFoundation
 
             this.DrawCoordinateSystem();
             this.DrawGraphs();
+            this.DrawDots();
         }
 
         private void AdjustCanvasSize()
@@ -250,15 +253,15 @@ namespace PollyFoundation
         {
             // Make the X axis.
             GeometryGroup xAxisGeometryGroup = new GeometryGroup();
-            xAxisGeometryGroup.Children.Add(new LineGeometry(this.coordinateHelper.Convert(10.5, 0), this.coordinateHelper.Convert(-10.5, 0)));
+            xAxisGeometryGroup.Children.Add(new LineGeometry(this.coordinateHelper.ConvertCoordinates(10.5, 0), this.coordinateHelper.ConvertCoordinates(-10.5, 0)));
             for (int i = 1; i <= 10; i++)
             {
-                xAxisGeometryGroup.Children.Add(new LineGeometry(this.coordinateHelper.Convert(+i, -0.3), this.coordinateHelper.Convert(+i, +0.3)));
-                xAxisGeometryGroup.Children.Add(new LineGeometry(this.coordinateHelper.Convert(-i, -0.3), this.coordinateHelper.Convert(-i, +0.3)));
+                xAxisGeometryGroup.Children.Add(new LineGeometry(this.coordinateHelper.ConvertCoordinates(+i, -0.3), this.coordinateHelper.ConvertCoordinates(+i, +0.3)));
+                xAxisGeometryGroup.Children.Add(new LineGeometry(this.coordinateHelper.ConvertCoordinates(-i, -0.3), this.coordinateHelper.ConvertCoordinates(-i, +0.3)));
             }
 
-            xAxisGeometryGroup.Children.Add(new LineGeometry(this.coordinateHelper.Convert(10.5, 0.0), this.coordinateHelper.Convert(10.2, -0.3)));
-            xAxisGeometryGroup.Children.Add(new LineGeometry(this.coordinateHelper.Convert(10.5, 0.0), this.coordinateHelper.Convert(10.2, +0.3)));
+            xAxisGeometryGroup.Children.Add(new LineGeometry(this.coordinateHelper.ConvertCoordinates(10.5, 0.0), this.coordinateHelper.ConvertCoordinates(10.2, -0.3)));
+            xAxisGeometryGroup.Children.Add(new LineGeometry(this.coordinateHelper.ConvertCoordinates(10.5, 0.0), this.coordinateHelper.ConvertCoordinates(10.2, +0.3)));
 
             Path xAxisPath = new Path();
             xAxisPath.StrokeThickness = 1;
@@ -269,15 +272,15 @@ namespace PollyFoundation
 
             // Make the Y axis.
             GeometryGroup yAxisGeometryGroup = new GeometryGroup();
-            yAxisGeometryGroup.Children.Add(new LineGeometry(this.coordinateHelper.Convert(0, 10.5), this.coordinateHelper.Convert(0, -10.5)));
+            yAxisGeometryGroup.Children.Add(new LineGeometry(this.coordinateHelper.ConvertCoordinates(0, 10.5), this.coordinateHelper.ConvertCoordinates(0, -10.5)));
             for (int i = 1; i <= 10; i++)
             {
-                yAxisGeometryGroup.Children.Add(new LineGeometry(this.coordinateHelper.Convert(-0.3, +i), this.coordinateHelper.Convert(+0.3, +i)));
-                yAxisGeometryGroup.Children.Add(new LineGeometry(this.coordinateHelper.Convert(-0.3, -i), this.coordinateHelper.Convert(+0.3, -i)));
+                yAxisGeometryGroup.Children.Add(new LineGeometry(this.coordinateHelper.ConvertCoordinates(-0.3, +i), this.coordinateHelper.ConvertCoordinates(+0.3, +i)));
+                yAxisGeometryGroup.Children.Add(new LineGeometry(this.coordinateHelper.ConvertCoordinates(-0.3, -i), this.coordinateHelper.ConvertCoordinates(+0.3, -i)));
             }
 
-            yAxisGeometryGroup.Children.Add(new LineGeometry(this.coordinateHelper.Convert(0.0, 10.5), this.coordinateHelper.Convert(-0.3, 10.2)));
-            yAxisGeometryGroup.Children.Add(new LineGeometry(this.coordinateHelper.Convert(0.0, 10.5), this.coordinateHelper.Convert(+0.3, 10.2)));
+            yAxisGeometryGroup.Children.Add(new LineGeometry(this.coordinateHelper.ConvertCoordinates(0.0, 10.5), this.coordinateHelper.ConvertCoordinates(-0.3, 10.2)));
+            yAxisGeometryGroup.Children.Add(new LineGeometry(this.coordinateHelper.ConvertCoordinates(0.0, 10.5), this.coordinateHelper.ConvertCoordinates(+0.3, 10.2)));
 
             Path yAxisPath = new Path();
             yAxisPath.StrokeThickness = 1.5;
@@ -299,7 +302,7 @@ namespace PollyFoundation
                     Polyline polyLine = new Polyline();
                     foreach (var point in list.Points)
                     {
-                        polyLine.Points.Add(this.coordinateHelper.Convert(point.X, point.Y));
+                        polyLine.Points.Add(this.coordinateHelper.ConvertCoordinates(point.X, point.Y));
                     }
 
                     polyLine.Stroke = brush;
@@ -307,6 +310,38 @@ namespace PollyFoundation
                     this.canvas.Children.Add(polyLine);
                 }
             }
+        }
+
+        private void DrawDots()
+        {
+            GeometryGroup goodDotsHitGeometryGroup = new GeometryGroup();
+            GeometryGroup goodDotMissedGeometryGroup = new GeometryGroup();
+
+            foreach (var goodDot in this.controller.GetDrawDots())
+            {
+                double radius = this.coordinateHelper.ConvertXLength(goodDot.Radius);
+                EllipseGeometry ellipseGeometry = new EllipseGeometry(this.coordinateHelper.ConvertCoordinates(goodDot.Position.Item1, goodDot.Position.Item2), radius, radius);
+                if (goodDot.IsHit)
+                {
+                    goodDotsHitGeometryGroup.Children.Add(ellipseGeometry);
+                }
+                else
+                {
+                    goodDotMissedGeometryGroup.Children.Add(ellipseGeometry);
+                }
+            }
+
+            Path goodDotsHitPath = new Path();
+            goodDotsHitPath.StrokeThickness = 0.0;
+            goodDotsHitPath.Fill = this.goodDotActiveSolidBrush;
+            goodDotsHitPath.Data = goodDotsHitGeometryGroup;
+            this.canvas.Children.Add(goodDotsHitPath);
+
+            Path goodDotMissedPath = new Path();
+            goodDotMissedPath.StrokeThickness = 0.0;
+            goodDotMissedPath.Fill = this.goodDotAsleepSolidBrush;
+            goodDotMissedPath.Data = goodDotMissedGeometryGroup;
+            this.canvas.Children.Add(goodDotMissedPath);
         }
     }
 }

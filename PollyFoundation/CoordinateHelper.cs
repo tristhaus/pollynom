@@ -25,11 +25,16 @@ namespace PollyFoundation
             this.Initialize();
         }
 
-        public Point Convert(double x, double y)
+        public Point ConvertCoordinates(double x, double y)
         {
             double transformedX = this.xAnchor + this.xFactor * x;
             double transformedY = this.yAnchor + this.yFactor * y;
             return new Point(transformedX, transformedY);
+        }
+
+        public double ConvertXLength(double input)
+        {
+            return input * this.xFactor;
         }
 
         private void Initialize()

@@ -17,6 +17,7 @@ namespace PollyFoundation
     public sealed partial class MainWindow : Window, IDisposable
     {
         private const double CanvasMargin = 10;
+        private const string TitlePrefix = "PollyNom - Score: ";
         private readonly Color[] graphColors = { Colors.Black, Colors.Blue, Colors.Green, Colors.Pink, Colors.Brown };
         private readonly SolidColorBrush errorSolidBrush = new SolidColorBrush(Colors.Red);
         private readonly SolidColorBrush goodDotActiveSolidBrush = new SolidColorBrush(Colors.LightBlue);
@@ -240,6 +241,7 @@ namespace PollyFoundation
             this.DrawCoordinateSystem();
             this.DrawGraphs();
             this.DrawDots();
+            this.UpdateWindowTitle();
         }
 
         private void AdjustCanvasSize()
@@ -342,6 +344,11 @@ namespace PollyFoundation
             goodDotMissedPath.Fill = this.goodDotAsleepSolidBrush;
             goodDotMissedPath.Data = goodDotMissedGeometryGroup;
             this.canvas.Children.Add(goodDotMissedPath);
+        }
+
+        private void UpdateWindowTitle()
+        {
+            this.Title = TitlePrefix + this.controller.Score.ToString();
         }
     }
 }

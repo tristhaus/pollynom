@@ -253,43 +253,88 @@ namespace PollyFoundation
 
         private void DrawCoordinateSystem()
         {
-            // Make the X axis.
+            // X axis and ticks
             GeometryGroup xAxisGeometryGroup = new GeometryGroup();
             xAxisGeometryGroup.Children.Add(new LineGeometry(this.coordinateHelper.ConvertCoordinates(10.5, 0), this.coordinateHelper.ConvertCoordinates(-10.5, 0)));
             for (int i = 1; i <= 10; i++)
             {
-                xAxisGeometryGroup.Children.Add(new LineGeometry(this.coordinateHelper.ConvertCoordinates(+i, -0.3), this.coordinateHelper.ConvertCoordinates(+i, +0.3)));
-                xAxisGeometryGroup.Children.Add(new LineGeometry(this.coordinateHelper.ConvertCoordinates(-i, -0.3), this.coordinateHelper.ConvertCoordinates(-i, +0.3)));
+                double length = i % 5 == 0 ? 0.4 : 0.3;
+                xAxisGeometryGroup.Children.Add(new LineGeometry(this.coordinateHelper.ConvertCoordinates(+i, -length), this.coordinateHelper.ConvertCoordinates(+i, +length)));
+                xAxisGeometryGroup.Children.Add(new LineGeometry(this.coordinateHelper.ConvertCoordinates(-i, -length), this.coordinateHelper.ConvertCoordinates(-i, +length)));
             }
 
             xAxisGeometryGroup.Children.Add(new LineGeometry(this.coordinateHelper.ConvertCoordinates(10.5, 0.0), this.coordinateHelper.ConvertCoordinates(10.2, -0.3)));
             xAxisGeometryGroup.Children.Add(new LineGeometry(this.coordinateHelper.ConvertCoordinates(10.5, 0.0), this.coordinateHelper.ConvertCoordinates(10.2, +0.3)));
-
             Path xAxisPath = new Path();
             xAxisPath.StrokeThickness = 1;
             xAxisPath.Stroke = Brushes.Black;
             xAxisPath.Data = xAxisGeometryGroup;
-
             this.canvas.Children.Add(xAxisPath);
 
-            // Make the Y axis.
+            // X labels
+            TextBlock xMinusTextBlock = new TextBlock()
+            {
+                Text = "-10",
+                FontSize = this.coordinateHelper.ConvertXLength(0.8),
+                Foreground = Brushes.Black,
+            };
+            Point xMinusPoint = this.coordinateHelper.ConvertCoordinates(-10.5, -0.5);
+            Canvas.SetLeft(xMinusTextBlock, xMinusPoint.X);
+            Canvas.SetTop(xMinusTextBlock, xMinusPoint.Y);
+            this.canvas.Children.Add(xMinusTextBlock);
+
+            TextBlock xPlusTextBlock = new TextBlock()
+            {
+                Text = "10",
+                FontSize = this.coordinateHelper.ConvertXLength(0.8),
+                Foreground = Brushes.Black,
+            };
+            Point xPlusPoint = this.coordinateHelper.ConvertCoordinates(9.5, -0.5);
+            Canvas.SetLeft(xPlusTextBlock, xPlusPoint.X);
+            Canvas.SetTop(xPlusTextBlock, xPlusPoint.Y);
+            this.canvas.Children.Add(xPlusTextBlock);
+
+            // Y axis and ticks
             GeometryGroup yAxisGeometryGroup = new GeometryGroup();
             yAxisGeometryGroup.Children.Add(new LineGeometry(this.coordinateHelper.ConvertCoordinates(0, 10.5), this.coordinateHelper.ConvertCoordinates(0, -10.5)));
             for (int i = 1; i <= 10; i++)
             {
-                yAxisGeometryGroup.Children.Add(new LineGeometry(this.coordinateHelper.ConvertCoordinates(-0.3, +i), this.coordinateHelper.ConvertCoordinates(+0.3, +i)));
-                yAxisGeometryGroup.Children.Add(new LineGeometry(this.coordinateHelper.ConvertCoordinates(-0.3, -i), this.coordinateHelper.ConvertCoordinates(+0.3, -i)));
+                double length = i % 5 == 0 ? 0.4 : 0.3;
+                yAxisGeometryGroup.Children.Add(new LineGeometry(this.coordinateHelper.ConvertCoordinates(-length, +i), this.coordinateHelper.ConvertCoordinates(+length, +i)));
+                yAxisGeometryGroup.Children.Add(new LineGeometry(this.coordinateHelper.ConvertCoordinates(-length, -i), this.coordinateHelper.ConvertCoordinates(+length, -i)));
             }
 
             yAxisGeometryGroup.Children.Add(new LineGeometry(this.coordinateHelper.ConvertCoordinates(0.0, 10.5), this.coordinateHelper.ConvertCoordinates(-0.3, 10.2)));
             yAxisGeometryGroup.Children.Add(new LineGeometry(this.coordinateHelper.ConvertCoordinates(0.0, 10.5), this.coordinateHelper.ConvertCoordinates(+0.3, 10.2)));
-
             Path yAxisPath = new Path();
             yAxisPath.StrokeThickness = 1.5;
             yAxisPath.Stroke = Brushes.Black;
             yAxisPath.Data = yAxisGeometryGroup;
 
             this.canvas.Children.Add(yAxisPath);
+
+            // Y labels
+            TextBlock yMinusTextBlock = new TextBlock()
+            {
+                Text = "-10",
+                FontSize = this.coordinateHelper.ConvertXLength(0.8),
+                Foreground = Brushes.Black,
+            };
+            Point yMinusPoint = this.coordinateHelper.ConvertCoordinates(0.5, -9.5);
+            Canvas.SetLeft(yMinusTextBlock, yMinusPoint.X);
+            Canvas.SetTop(yMinusTextBlock, yMinusPoint.Y);
+            this.canvas.Children.Add(yMinusTextBlock);
+
+            TextBlock yPlusTextBlock = new TextBlock()
+            {
+                Text = "10",
+                FontSize = this.coordinateHelper.ConvertXLength(0.8),
+                Foreground = Brushes.Black,
+            };
+            Point yPlusPoint = this.coordinateHelper.ConvertCoordinates(0.5, 10.5);
+            Canvas.SetLeft(yPlusTextBlock, yPlusPoint.X);
+            Canvas.SetTop(yPlusTextBlock, yPlusPoint.Y);
+            this.canvas.Children.Add(yPlusTextBlock);
         }
 
         private void DrawGraphs()

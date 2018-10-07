@@ -34,7 +34,7 @@ namespace PollyFoundation
 
         public double ConvertXLength(double input)
         {
-            return input * this.xFactor;
+            return Math.Abs(input * this.xFactor);
         }
 
         private void Initialize()

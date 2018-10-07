@@ -4,7 +4,6 @@ using Backend.BusinessLogic;
 using Backend.BusinessLogic.Expressions;
 using Backend.BusinessLogic.Expressions.SingleArgumentFunctions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using PollyNom.View;
 using PollyNomTest.Helper;
 
 namespace PollyNomTest
@@ -15,44 +14,6 @@ namespace PollyNomTest
     [TestClass]
     public class PointListGenerationTest
     {
-        /// <summary>
-        /// Tests the correct evaluation of a constant to unscaled points.
-        /// </summary>
-        [TestMethod]
-        public void Constant_HasOneListAndTheCorrectValue()
-        {
-            // Arrange
-            IExpression constant = new Constant(1.3);
-            PointListGenerator pointList = new PointListGenerator(constant, -1.0, 1.0, 1000.0);
-
-            // Act
-            List<List<PointF>> result = PollyFormHelper.ConvertToScaledPoints(pointList.ObtainListsOfLogicalPoints());
-
-            // Assert
-            Assert.AreEqual(1, result.Count);
-            Assert.IsTrue(result[0].Count >= 1);
-            Assert.IsTrue(Helper.DoubleEquality.IsApproximatelyEqual(1.3, result[0][0].Y));
-        }
-
-        /// <summary>
-        /// Tests the correct evaluation of a constant to scaled points.
-        /// </summary>
-        [TestMethod]
-        public void Constant_HasOneListAndTheCorrectScaledValue()
-        {
-            // Arrange
-            IExpression constant = new Constant(1.3);
-            PointListGenerator pointList = new PointListGenerator(constant, -1.0, 1.0, 1000.0);
-
-            // Act
-            List<List<PointF>> result = PollyFormHelper.ConvertToScaledPoints(pointList.ObtainListsOfLogicalPoints(), 0.5f, 2.0f);
-
-            // Assert
-            Assert.AreEqual(1, result.Count);
-            Assert.IsTrue(result[0].Count >= 1);
-            Assert.IsTrue(Helper.DoubleEquality.IsApproximatelyEqual(2.6, result[0][0].Y));
-        }
-
         /// <summary>
         /// Tests the evaluation of x^2 into a single list.
         /// </summary>

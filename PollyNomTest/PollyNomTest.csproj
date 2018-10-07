@@ -82,10 +82,6 @@
       <Project>{e346d732-c0d6-4712-b4c5-a7f95afa8f53}</Project>
       <Name>PollyFoundation</Name>
     </ProjectReference>
-    <ProjectReference Include="..\PollyNom\PollyNom.csproj">
-      <Project>{054c6fb2-2654-41c8-ac10-c771bbfc8741}</Project>
-      <Name>PollyNom</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

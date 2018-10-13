@@ -60,8 +60,11 @@ namespace PollyFoundation
                 button.Click += this.Button_Click;
             }
 
-            this.textBoxes[0].PreviewKeyDown += this.TextBox0_KeyDown;
-            this.textBoxes[0].TextChanged += this.TextBox0_TextChanged;
+            foreach (var textBox in this.textBoxes)
+            {
+                textBox.PreviewKeyDown += this.TextBox_KeyDown;
+                textBox.TextChanged += this.TextBox_TextChanged;
+            }
 
             this.SizeChanged += this.HandleSizeChanged;
             this.dpForCanvas.SizeChanged += this.HandleSizeChanged;
@@ -191,17 +194,24 @@ namespace PollyFoundation
             this.RedrawAll();
         }
 
-        private async void TextBox0_TextChanged(object sender, TextChangedEventArgs e)
+        private async void TextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
             try
             {
                 await this.controllerMutex.WaitAsync();
-                string input = this.textBoxes[0].Text;
+
+                var theTextBox = sender as TextBox;
+                if (theTextBox == null)
+                {
+                    return;
+                }
+
+                string input = theTextBox.Text;
                 bool parseable = await Task.Run(() =>
                 {
                     return string.IsNullOrWhiteSpace(input) || this.controller.TestExpression(input);
                 });
-                this.textBoxes[0].Foreground = parseable ? SystemColors.WindowTextBrush : this.errorSolidBrush;
+                theTextBox.Foreground = parseable ? SystemColors.WindowTextBrush : this.errorSolidBrush;
             }
             finally
             {
@@ -209,7 +219,7 @@ namespace PollyFoundation
             }
         }
 
-        private async void TextBox0_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
+        private async void TextBox_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
         {
             if (e.Key == Key.Return)
             {

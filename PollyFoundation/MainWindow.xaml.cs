@@ -257,17 +257,10 @@ namespace PollyFoundation
                     Task[] tasks = new Task[this.numberOfExpressions];
                     for (int expressionIndex = 0; expressionIndex < this.numberOfExpressions; expressionIndex++)
                     {
+                        var localIndex = expressionIndex;
                         string input = this.textBoxes[expressionIndex].Text;
-                        if (string.IsNullOrWhiteSpace(input))
-                        {
-                            tasks[expressionIndex] = Task.CompletedTask;
-                        }
-                        else
-                        {
-                            var localIndex = expressionIndex;
-                            tasks[expressionIndex] = new Task(() => this.controller.SetExpressionAtIndex(localIndex, input));
-                            tasks[expressionIndex].Start();
-                        }
+                        tasks[expressionIndex] = new Task(() => this.controller.SetExpressionAtIndex(localIndex, input));
+                        tasks[expressionIndex].Start();
                     }
 
                     await Task.WhenAll(tasks);

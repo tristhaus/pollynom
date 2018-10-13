@@ -8,6 +8,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Shapes;
 using Backend.Controller;
+using System.Linq;
 
 namespace PollyFoundation
 {
@@ -238,18 +239,41 @@ namespace PollyFoundation
             {
                 await this.controllerMutex.WaitAsync();
                 this.SetEnabledOnMenuItems(false);
-                string input = this.textBoxes[0].Text;
-                bool parseable = await Task.Run(() =>
-                {
-                    return string.IsNullOrWhiteSpace(input) || this.controller.TestExpression(input);
-                });
 
-                if (parseable)
+                while (this.controller.ExpressionCount > 0)
                 {
-                    if ((parseable && this.controller.ExpressionCount < 5) || string.IsNullOrWhiteSpace(input))
+                    await Task.Run(() => this.controller.UpdateExpression(string.Empty));
+                }
+
+                bool[] parseable = new bool[NumberOfControls];
+
+                for (int i = 0; i < NumberOfControls; ++i)
+                {
+                    string input = this.textBoxes[i].Text;
+                    parseable[i] = await Task.Run(() =>
                     {
-                        await Task.Run(() => this.controller.UpdateExpression(input));
+                        return string.IsNullOrWhiteSpace(input) || this.controller.TestExpression(input);
+                    });
+                }
+
+                if (parseable.All(x => x == true))
+                {
+                    Task[] tasks = new Task[NumberOfControls];
+                    for (int i = 0; i < NumberOfControls; ++i)
+                    {
+                        string input = this.textBoxes[i].Text;
+                        if (string.IsNullOrWhiteSpace(input))
+                        {
+                            tasks[i] = Task.CompletedTask;
+                        }
+                        else
+                        {
+                            tasks[i] = new Task(() => this.controller.UpdateExpression(input));
+                            tasks[i].Start();
+                        }
                     }
+
+                    await Task.WhenAll(tasks);
 
                     this.RedrawAll();
                 }
@@ -265,8 +289,15 @@ namespace PollyFoundation
 
         private void SetEnabledOnMenuItems(bool newValue)
         {
-            this.buttons[0].IsEnabled = newValue;
-            this.textBoxes[0].IsEnabled = newValue;
+            foreach (var button in this.buttons)
+            {
+                button.IsEnabled = newValue;
+            }
+
+            foreach (var textBox in this.textBoxes)
+            {
+                textBox.IsEnabled = newValue;
+            }
         }
 
         private void RedrawAll()

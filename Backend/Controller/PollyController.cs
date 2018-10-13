@@ -107,7 +107,7 @@ namespace Backend.Controller
         }
 
         /// <summary>
-        /// Gets the number of expressions currently handled by this controller.
+        /// Gets the maximum number of expressions handled by this controller.
         /// </summary>
         public int MaxExpressionCount
         {

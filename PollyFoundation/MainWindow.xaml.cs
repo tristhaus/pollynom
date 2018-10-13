@@ -17,33 +17,114 @@ namespace PollyFoundation
     /// </summary>
     public sealed partial class MainWindow : Window, IDisposable
     {
+        /// <summary>
+        /// Margin to be used in the canvas.
+        /// </summary>
         private const double CanvasMargin = 10;
+
+        /// <summary>
+        /// Prefix to be used in the title text of the main window.
+        /// </summary>
         private const string TitlePrefix = "PollyNom - Score: ";
+
+        /// <summary>
+        /// Label text to be used on the button(s).
+        /// </summary>
         private const string ButtonLabelText = "Calc";
 
+        /// <summary>
+        /// Colors to be used for the graphs.
+        /// </summary>
         private readonly Color[] graphColors = { Colors.Black, Colors.Blue, Colors.Green, Colors.Pink, Colors.Brown };
+
+        /// <summary>
+        /// Brush to be used for error state of a text box.
+        /// </summary>
         private readonly SolidColorBrush errorSolidBrush = new SolidColorBrush(Colors.Red);
+
+        /// <summary>
+        /// Brush to be used for painting good dots that HAVE been hit.
+        /// </summary>
         private readonly SolidColorBrush goodDotActiveSolidBrush = new SolidColorBrush(Colors.LightBlue);
+
+        /// <summary>
+        /// Brush to be used for painting good dots that have NOT been hit.
+        /// </summary>
         private readonly SolidColorBrush goodDotAsleepSolidBrush = new SolidColorBrush(Colors.DarkBlue);
 
+        /// <summary>
+        /// The total number of expressions supported by the <see cref="PollyController"/> instance.
+        /// </summary>
         private readonly int numberOfExpressions;
 
-        private bool disposedValue = false;
-        private CoordinateHelper coordinateHelper;
-        private PollyController controller;
-        private SemaphoreSlim controllerMutex;
+        /// <summary>
+        /// The controller instance.
+        /// </summary>
+        private readonly PollyController controller;
 
+        /// <summary>
+        /// The mutex implementation serializing access to the <see cref="this.controller"/></see>.
+        /// </summary>
+        private readonly SemaphoreSlim controllerMutex;
+
+        /// <summary>
+        /// Helper value needed for the <see cref="IDisposable"/> implementation.
+        /// </summary>
+        private bool disposedValue = false;
+
+        /// <summary>
+        /// The instance helping with coordinate transformation.
+        /// </summary>
+        private CoordinateHelper coordinateHelper;
+
+        /// <summary>
+        /// The collection of labels to be used in the UI.
+        /// </summary>
         private Label[] labels;
-        private Button[] buttons;
+
+        /// <summary>
+        /// The collection of text boxes to be used in the UI.
+        /// </summary>
         private TextBox[] textBoxes;
+
+        /// <summary>
+        /// The collection of buttons to be used in the UI.
+        /// </summary>
+        private Button[] buttons;
+
+        /// <summary>
+        /// The collection of containers holding <see cref="this.labels"/>, <see cref="this.textBoxes"/>, <see cref="this.buttons"/>.
+        /// </summary>
         private DockPanel[] controlContainers;
-        private ScrollViewer scrollViewer;
+
+        /// <summary>
+        /// The grid holding the controlContainers, encapsulating for <see cref="ScrollViewer.Content"/>.
+        /// </summary>
         private UniformGrid controlsGrid;
 
+        /// <summary>
+        /// The scroll viewer holding the input controls.
+        /// </summary>
+        private ScrollViewer scrollViewer;
+
+        /// <summary>
+        /// The canvas on which output is drawn.
+        /// </summary>
         private Canvas canvas;
+
+        /// <summary>
+        /// The grid holding the canvas such that resizing is easier.
+        /// </summary>
         private Grid gridForCanvas;
+
+        /// <summary>
+        /// The container holding the output grid.
+        /// </summary>
         private DockPanel dpForCanvas;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="MainWindow"/> class.
+        /// </summary>
         public MainWindow()
         {
             this.controller = new PollyController();
@@ -72,11 +153,16 @@ namespace PollyFoundation
             this.dpForCanvas.SizeChanged += this.HandleSizeChanged;
         }
 
+        /// <inheritdoc />
         public void Dispose()
         {
             this.Dispose(true);
         }
 
+        /// <summary>
+        /// Helper method to implement a MS disposing pattern.
+        /// </summary>
+        /// <param name="disposing">Flag indicating whether the held resources are really to be disposed.</param>
         private void Dispose(bool disposing)
         {
             if (!this.disposedValue)
@@ -90,6 +176,9 @@ namespace PollyFoundation
             }
         }
 
+        /// <summary>
+        /// Constructs the UI.
+        /// </summary>
         private void ConstructLayout()
         {
             this.labels = new Label[this.numberOfExpressions];
@@ -191,11 +280,21 @@ namespace PollyFoundation
             this.AdjustCanvasSize();
         }
 
+        /// <summary>
+        /// Handle a SizeChangedEvent by resizing and redrawing the canvas.
+        /// </summary>
+        /// <param name="sender">The sending object</param>
+        /// <param name="e">The EventArgs.</param>
         private void HandleSizeChanged(object sender, SizeChangedEventArgs e)
         {
             this.RedrawAll();
         }
 
+        /// <summary>
+        /// Handle a TextChangedEvent by checking the appropriate textbox for parseability and updating the UI.
+        /// </summary>
+        /// <param name="sender">The sending object</param>
+        /// <param name="e">The EventArgs.</param>
         private async void TextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
             try
@@ -221,20 +320,34 @@ namespace PollyFoundation
             }
         }
 
+        /// <summary>
+        /// Handle a TextChangedEvent by checking for the Enter key to set input.
+        /// </summary>
+        /// <param name="sender">The sending object</param>
+        /// <param name="e">The EventArgs.</param>
         private async void TextBox_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
         {
             if (e.Key == Key.Return)
             {
-                await this.HandleUpdate();
+                await this.HandleUpdateAsync();
             }
         }
 
+        /// <summary>
+        /// Handle a ButtonClickEvent to set input.
+        /// </summary>
+        /// <param name="sender">The sending object</param>
+        /// <param name="e">The EventArgs.</param>
         private async void Button_Click(object sender, RoutedEventArgs e)
         {
-            await this.HandleUpdate();
+            await this.HandleUpdateAsync();
         }
 
-        private async Task HandleUpdate()
+        /// <summary>
+        /// Performs the update of the controller input and eventually the UI.
+        /// </summary>
+        /// <returns>An awaitable task.</returns>
+        private async Task HandleUpdateAsync()
         {
             try
             {
@@ -278,6 +391,10 @@ namespace PollyFoundation
             }
         }
 
+        /// <summary>
+        /// Enable or disables all relevant UI items.
+        /// </summary>
+        /// <param name="newValue">The new value to be applied to the <c>Enabled</c> property.</param>
         private void SetEnabledOnMenuItems(bool newValue)
         {
             foreach (var button in this.buttons)
@@ -291,6 +408,9 @@ namespace PollyFoundation
             }
         }
 
+        /// <summary>
+        /// Redraws/Updates all of the output area.
+        /// </summary>
         private void RedrawAll()
         {
             this.UpdateLayout();
@@ -304,6 +424,9 @@ namespace PollyFoundation
             this.UpdateWindowTitle();
         }
 
+        /// <summary>
+        /// Change the canvas size such that it is a fitting square.
+        /// </summary>
         private void AdjustCanvasSize()
         {
             this.gridForCanvas.Height = this.dpForCanvas.ActualHeight < this.dpForCanvas.ActualWidth ? this.dpForCanvas.ActualHeight : this.dpForCanvas.ActualWidth;
@@ -311,6 +434,9 @@ namespace PollyFoundation
             this.coordinateHelper = new CoordinateHelper(this.canvas.ActualWidth, this.canvas.ActualHeight, CanvasMargin, 21.2);
         }
 
+        /// <summary>
+        /// Draw a coordinate system on the canvas.
+        /// </summary>
         private void DrawCoordinateSystem()
         {
             // X axis and ticks
@@ -397,6 +523,9 @@ namespace PollyFoundation
             this.canvas.Children.Add(yPlusTextBlock);
         }
 
+        /// <summary>
+        /// Draw the graphs on the canvas.
+        /// </summary>
         private void DrawGraphs()
         {
             for (int expressionIndex = 0; expressionIndex < this.controller.MaxExpressionCount; expressionIndex++)
@@ -419,6 +548,9 @@ namespace PollyFoundation
             }
         }
 
+        /// <summary>
+        /// Draw the dots on the canvas.
+        /// </summary>
         private void DrawDots()
         {
             GeometryGroup goodDotsHitGeometryGroup = new GeometryGroup();
@@ -451,6 +583,9 @@ namespace PollyFoundation
             this.canvas.Children.Add(goodDotMissedPath);
         }
 
+        /// <summary>
+        /// Change the window title to reflect the current score.
+        /// </summary>
         private void UpdateWindowTitle()
         {
             this.Title = TitlePrefix + this.controller.Score.ToString();

@@ -18,6 +18,10 @@ namespace PollyFoundation
     {
         private const double CanvasMargin = 10;
         private const string TitlePrefix = "PollyNom - Score: ";
+        private const string ButtonLabelText = "Calc";
+        private const string FuncLabelText = "y =";
+        private const int NumberOfControls = 5;
+
         private readonly Color[] graphColors = { Colors.Black, Colors.Blue, Colors.Green, Colors.Pink, Colors.Brown };
         private readonly SolidColorBrush errorSolidBrush = new SolidColorBrush(Colors.Red);
         private readonly SolidColorBrush goodDotActiveSolidBrush = new SolidColorBrush(Colors.LightBlue);
@@ -28,10 +32,11 @@ namespace PollyFoundation
         private PollyController controller;
         private SemaphoreSlim controllerMutex;
 
-        private Label label0;
-        private Button button0;
-        private TextBox textBox0;
-        private DockPanel controls0;
+        private Label[] labels;
+        private Button[] buttons;
+        private TextBox[] textBoxes;
+        private DockPanel[] controlContainers;
+        private ScrollViewer scrollViewer;
         private UniformGrid controlsGrid;
 
         private Canvas canvas;
@@ -48,11 +53,18 @@ namespace PollyFoundation
             this.SetEnabledOnMenuItems(true);
             this.RedrawAll();
 
-            this.button0.Click += this.Button0_Click;
+            this.textBoxes[0].Text = "(x)*(x-1)*(x+1)";
+
+            foreach (var button in this.buttons)
+            {
+                button.Click += this.Button_Click;
+            }
+
+            this.textBoxes[0].PreviewKeyDown += this.TextBox0_KeyDown;
+            this.textBoxes[0].TextChanged += this.TextBox0_TextChanged;
+
             this.SizeChanged += this.HandleSizeChanged;
             this.dpForCanvas.SizeChanged += this.HandleSizeChanged;
-            this.textBox0.PreviewKeyDown += this.TextBox0_KeyDown;
-            this.textBox0.TextChanged += this.TextBox0_TextChanged;
         }
 
         public void Dispose()
@@ -75,46 +87,12 @@ namespace PollyFoundation
 
         private void ConstructLayout()
         {
-            this.label0 = new Label()
-            {
-                Content = "y =",
-                VerticalAlignment = VerticalAlignment.Center,
-                HorizontalAlignment = HorizontalAlignment.Left,
-            };
-            DockPanel.SetDock(this.label0, Dock.Left);
+            this.labels = new Label[NumberOfControls];
+            this.buttons = new Button[NumberOfControls];
+            this.textBoxes = new TextBox[NumberOfControls];
+            this.controlContainers = new DockPanel[NumberOfControls];
 
-            this.button0 = new Button()
-            {
-                Content = "Calc",
-                Height = 20,
-            };
-            DockPanel.SetDock(this.button0, Dock.Right);
-
-            this.textBox0 = new TextBox()
-            {
-                Text = "(x)*(x-1)*(x+1)",
-                Height = 20,
-                TextWrapping = TextWrapping.NoWrap,
-                VerticalAlignment = VerticalAlignment.Center
-            };
-
-            this.controls0 = new DockPanel()
-            {
-                Margin = new Thickness()
-                {
-                    Bottom = 0,
-                    Right = 0,
-                    Top = 0,
-                    Left = 0,
-                },
-                LastChildFill = true,
-            };
-
-            this.controls0.Children.Add(this.label0);
-            this.controls0.Children.Add(this.button0);
-            this.controls0.Children.Add(this.textBox0);
-
-            this.controlsGrid = new UniformGrid()
+            this.scrollViewer = new ScrollViewer()
             {
                 Margin = new Thickness()
                 {
@@ -123,9 +101,59 @@ namespace PollyFoundation
                     Top = 6,
                     Left = 6,
                 },
+                Height = 40,
             };
-            this.controlsGrid.Children.Add(this.controls0);
-            DockPanel.SetDock(this.controlsGrid, Dock.Bottom);
+            DockPanel.SetDock(this.scrollViewer, Dock.Bottom);
+
+            this.controlsGrid = new UniformGrid()
+            {
+                Rows = NumberOfControls,
+                Columns = 1,
+            };
+
+            for (int i = 0; i < NumberOfControls; ++i)
+            {
+                this.labels[i] = new Label()
+                {
+                    Content = FuncLabelText,
+                    VerticalAlignment = VerticalAlignment.Center,
+                    HorizontalAlignment = HorizontalAlignment.Left,
+                };
+
+                this.buttons[i] = new Button()
+                {
+                    Content = ButtonLabelText,
+                    Height = 20,
+                };
+                DockPanel.SetDock(this.buttons[i], Dock.Right);
+
+                this.textBoxes[i] = new TextBox()
+                {
+                    Height = 20,
+                    TextWrapping = TextWrapping.NoWrap,
+                    VerticalAlignment = VerticalAlignment.Center
+                };
+
+                this.controlContainers[i] = new DockPanel()
+                {
+                    Margin = new Thickness()
+                    {
+                        Bottom = 0,
+                        Right = 0,
+                        Top = 0,
+                        Left = 0,
+                    },
+                    LastChildFill = true,
+                };
+
+                this.controlContainers[i].Children.Add(this.labels[i]);
+                this.controlContainers[i].Children.Add(this.buttons[i]);
+                this.controlContainers[i].Children.Add(this.textBoxes[i]);
+
+                this.controlsGrid.Children.Add(this.controlContainers[i]);
+            }
+
+            this.scrollViewer.Content = this.controlsGrid;
 
             this.canvas = new Canvas()
             {
@@ -151,7 +179,7 @@ namespace PollyFoundation
             };
             this.dpForCanvas.Children.Add(this.gridForCanvas);
 
-            this.mainDockPanel.Children.Add(this.controlsGrid);
+            this.mainDockPanel.Children.Add(this.scrollViewer);
             this.mainDockPanel.Children.Add(this.dpForCanvas);
 
             this.UpdateLayout();
@@ -168,12 +196,12 @@ namespace PollyFoundation
             try
             {
                 await this.controllerMutex.WaitAsync();
-                string input = this.textBox0.Text;
+                string input = this.textBoxes[0].Text;
                 bool parseable = await Task.Run(() =>
                 {
                     return string.IsNullOrWhiteSpace(input) || this.controller.TestExpression(input);
                 });
-                this.textBox0.Foreground = parseable ? SystemColors.WindowTextBrush : this.errorSolidBrush;
+                this.textBoxes[0].Foreground = parseable ? SystemColors.WindowTextBrush : this.errorSolidBrush;
             }
             finally
             {
@@ -189,7 +217,7 @@ namespace PollyFoundation
             }
         }
 
-        private async void Button0_Click(object sender, RoutedEventArgs e)
+        private async void Button_Click(object sender, RoutedEventArgs e)
         {
             await this.HandleUpdate();
         }
@@ -200,7 +228,7 @@ namespace PollyFoundation
             {
                 await this.controllerMutex.WaitAsync();
                 this.SetEnabledOnMenuItems(false);
-                string input = this.textBox0.Text;
+                string input = this.textBoxes[0].Text;
                 bool parseable = await Task.Run(() =>
                 {
                     return string.IsNullOrWhiteSpace(input) || this.controller.TestExpression(input);
@@ -219,16 +247,16 @@ namespace PollyFoundation
             finally
             {
                 this.SetEnabledOnMenuItems(true);
-                this.textBox0.Focus();
-                Keyboard.Focus(this.textBox0);
+                this.textBoxes[0].Focus();
+                Keyboard.Focus(this.textBoxes[0]);
                 this.controllerMutex.Release();
             }
         }
 
         private void SetEnabledOnMenuItems(bool newValue)
         {
-            this.button0.IsEnabled = newValue;
-            this.textBox0.IsEnabled = newValue;
+            this.buttons[0].IsEnabled = newValue;
+            this.textBoxes[0].IsEnabled = newValue;
         }
 
         private void RedrawAll()

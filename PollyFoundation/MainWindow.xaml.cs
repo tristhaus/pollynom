@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
@@ -8,7 +9,6 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Shapes;
 using Backend.Controller;
-using System.Linq;
 
 namespace PollyFoundation
 {
@@ -20,13 +20,13 @@ namespace PollyFoundation
         private const double CanvasMargin = 10;
         private const string TitlePrefix = "PollyNom - Score: ";
         private const string ButtonLabelText = "Calc";
-        private const string FuncLabelText = "y =";
-        private const int NumberOfControls = 5;
 
         private readonly Color[] graphColors = { Colors.Black, Colors.Blue, Colors.Green, Colors.Pink, Colors.Brown };
         private readonly SolidColorBrush errorSolidBrush = new SolidColorBrush(Colors.Red);
         private readonly SolidColorBrush goodDotActiveSolidBrush = new SolidColorBrush(Colors.LightBlue);
         private readonly SolidColorBrush goodDotAsleepSolidBrush = new SolidColorBrush(Colors.DarkBlue);
+
+        private readonly int numberOfExpressions;
 
         private bool disposedValue = false;
         private CoordinateHelper coordinateHelper;
@@ -48,6 +48,7 @@ namespace PollyFoundation
         {
             this.controller = new PollyController();
             this.controllerMutex = new SemaphoreSlim(1, 1);
+            this.numberOfExpressions = this.controller.MaxExpressionCount;
             this.InitializeComponent();
 
             this.ConstructLayout();
@@ -91,10 +92,10 @@ namespace PollyFoundation
 
         private void ConstructLayout()
         {
-            this.labels = new Label[NumberOfControls];
-            this.buttons = new Button[NumberOfControls];
-            this.textBoxes = new TextBox[NumberOfControls];
-            this.controlContainers = new DockPanel[NumberOfControls];
+            this.labels = new Label[this.numberOfExpressions];
+            this.buttons = new Button[this.numberOfExpressions];
+            this.textBoxes = new TextBox[this.numberOfExpressions];
+            this.controlContainers = new DockPanel[this.numberOfExpressions];
 
             this.scrollViewer = new ScrollViewer()
             {
@@ -105,40 +106,40 @@ namespace PollyFoundation
                     Top = 6,
                     Left = 6,
                 },
-                Height = 40,
+                Height = 60,
             };
             DockPanel.SetDock(this.scrollViewer, Dock.Bottom);
 
             this.controlsGrid = new UniformGrid()
             {
-                Rows = NumberOfControls,
+                Rows = this.numberOfExpressions,
                 Columns = 1,
             };
 
-            for (int i = 0; i < NumberOfControls; ++i)
+            for (int controlIndex = 0; controlIndex < this.numberOfExpressions; ++controlIndex)
             {
-                this.labels[i] = new Label()
+                this.labels[controlIndex] = new Label()
                 {
-                    Content = FuncLabelText,
+                    Content = $"y{controlIndex + 1} =",
                     VerticalAlignment = VerticalAlignment.Center,
                     HorizontalAlignment = HorizontalAlignment.Left,
                 };
 
-                this.buttons[i] = new Button()
+                this.buttons[controlIndex] = new Button()
                 {
                     Content = ButtonLabelText,
                     Height = 20,
                 };
-                DockPanel.SetDock(this.buttons[i], Dock.Right);
+                DockPanel.SetDock(this.buttons[controlIndex], Dock.Right);
 
-                this.textBoxes[i] = new TextBox()
+                this.textBoxes[controlIndex] = new TextBox()
                 {
                     Height = 20,
                     TextWrapping = TextWrapping.NoWrap,
                     VerticalAlignment = VerticalAlignment.Center
                 };
 
-                this.controlContainers[i] = new DockPanel()
+                this.controlContainers[controlIndex] = new DockPanel()
                 {
                     Margin = new Thickness()
                     {
@@ -150,11 +151,11 @@ namespace PollyFoundation
                     LastChildFill = true,
                 };
 
-                this.controlContainers[i].Children.Add(this.labels[i]);
-                this.controlContainers[i].Children.Add(this.buttons[i]);
-                this.controlContainers[i].Children.Add(this.textBoxes[i]);
+                this.controlContainers[controlIndex].Children.Add(this.labels[controlIndex]);
+                this.controlContainers[controlIndex].Children.Add(this.buttons[controlIndex]);
+                this.controlContainers[controlIndex].Children.Add(this.textBoxes[controlIndex]);
 
-                this.controlsGrid.Children.Add(this.controlContainers[i]);
+                this.controlsGrid.Children.Add(this.controlContainers[controlIndex]);
             }
 
             this.scrollViewer.Content = this.controlsGrid;
@@ -240,17 +241,12 @@ namespace PollyFoundation
                 await this.controllerMutex.WaitAsync();
                 this.SetEnabledOnMenuItems(false);
 
-                while (this.controller.ExpressionCount > 0)
-                {
-                    await Task.Run(() => this.controller.UpdateExpression(string.Empty));
-                }
+                bool[] parseable = new bool[this.numberOfExpressions];
 
-                bool[] parseable = new bool[NumberOfControls];
-
-                for (int i = 0; i < NumberOfControls; ++i)
+                for (int expressionIndex = 0; expressionIndex < this.numberOfExpressions; ++expressionIndex)
                 {
-                    string input = this.textBoxes[i].Text;
-                    parseable[i] = await Task.Run(() =>
+                    string input = this.textBoxes[expressionIndex].Text;
+                    parseable[expressionIndex] = await Task.Run(() =>
                     {
                         return string.IsNullOrWhiteSpace(input) || this.controller.TestExpression(input);
                     });
@@ -258,22 +254,24 @@ namespace PollyFoundation
 
                 if (parseable.All(x => x == true))
                 {
-                    Task[] tasks = new Task[NumberOfControls];
-                    for (int i = 0; i < NumberOfControls; ++i)
+                    Task[] tasks = new Task[this.numberOfExpressions];
+                    for (int expressionIndex = 0; expressionIndex < this.numberOfExpressions; expressionIndex++)
                     {
-                        string input = this.textBoxes[i].Text;
+                        string input = this.textBoxes[expressionIndex].Text;
                         if (string.IsNullOrWhiteSpace(input))
                         {
-                            tasks[i] = Task.CompletedTask;
+                            tasks[expressionIndex] = Task.CompletedTask;
                         }
                         else
                         {
-                            tasks[i] = new Task(() => this.controller.UpdateExpression(input));
-                            tasks[i].Start();
+                            var localIndex = expressionIndex;
+                            tasks[expressionIndex] = new Task(() => this.controller.SetExpressionAtIndex(localIndex, input));
+                            tasks[expressionIndex].Start();
                         }
                     }
 
                     await Task.WhenAll(tasks);
+                    await Task.Run(() => this.controller.UpdateData());
 
                     this.RedrawAll();
                 }
@@ -408,11 +406,11 @@ namespace PollyFoundation
 
         private void DrawGraphs()
         {
-            for (int i = 0; i < this.controller.ExpressionCount; i++)
+            for (int expressionIndex = 0; expressionIndex < this.controller.MaxExpressionCount; expressionIndex++)
             {
-                Brush brush = new SolidColorBrush(this.graphColors[i]);
+                Brush brush = new SolidColorBrush(this.graphColors[expressionIndex]);
 
-                var lists = this.controller.GetListsOfLogicalPointsByIndex(i);
+                var lists = this.controller.GetListsOfLogicalPointsByIndex(expressionIndex);
                 foreach (var list in lists)
                 {
                     Polyline polyLine = new Polyline();

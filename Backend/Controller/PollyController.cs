@@ -25,6 +25,11 @@ namespace Backend.Controller
         /// </summary>
         private const float Limits = 1000f;
 
+        /// <summary>
+        /// Maximum number of expressions supported by this controller class.
+        /// </summary>
+        private const int MaxExpressions = 5;
+
         private readonly CoordinateSystemInfo coordinateSystemInfo = new CoordinateSystemInfo()
         {
             StartX = PollyController.StartX,
@@ -42,12 +47,12 @@ namespace Backend.Controller
         /// <summary>
         /// The expression currently active.
         /// </summary>
-        private List<IExpression> expressions;
+        private IExpression[] expressions;
 
         /// <summary>
         /// The lists of points.
         /// </summary>
-        private List<List<ListPointLogical>> points;
+        private List<ListPointLogical>[] points;
 
         /// <summary>
         /// The list of logical dots.
@@ -70,8 +75,8 @@ namespace Backend.Controller
         /// <param name="dots">A list of dots that shall be respected by the <see cref="PollyController"/> instance.</param>
         public PollyController(List<IDot> dots = null)
         {
-            this.expressions = new List<IExpression>(5);
-            this.points = new List<List<ListPointLogical>>(5);
+            this.expressions = new IExpression[MaxExpressions];
+            this.points = new List<ListPointLogical>[MaxExpressions];
             this.dots = dots ?? new GoodDotsGenerator(8).Generate();
 
             this.parser = new Parser();
@@ -104,11 +109,11 @@ namespace Backend.Controller
         /// <summary>
         /// Gets the number of expressions currently handled by this controller.
         /// </summary>
-        public int ExpressionCount
+        public int MaxExpressionCount
         {
             get
             {
-                return this.expressions.Count;
+                return MaxExpressions;
             }
         }
 
@@ -123,24 +128,13 @@ namespace Backend.Controller
         }
 
         /// <summary>
-        /// Updates the expression and triggers the updating of the resulting data.
+        /// Updates the expression at the index and triggers the updating of the resulting data.
         /// </summary>
+        /// <param name="index">The index to be updated.</param>
         /// <param name="textRepresentation">The textual representation of the expression.</param>
-        public void UpdateExpression(string textRepresentation)
+        public void SetExpressionAtIndex(int index, string textRepresentation)
         {
-            if (string.IsNullOrWhiteSpace(textRepresentation))
-            {
-                if (this.expressions.Count > 0)
-                {
-                    this.expressions.RemoveAt(this.expressions.Count - 1);
-                }
-            }
-            else
-            {
-                this.expressions.Add(this.parser.Parse(textRepresentation));
-            }
-
-            this.UpdateData();
+            this.expressions[index] = string.IsNullOrWhiteSpace(textRepresentation) ? null : this.parser.Parse(textRepresentation);
         }
 
         /// <summary>
@@ -150,7 +144,7 @@ namespace Backend.Controller
         /// <returns>A list of point list, in terms of business logic units.</returns>
         public List<ListPointLogical> GetListsOfLogicalPointsByIndex(int index)
         {
-            if (this.points.Count > index)
+            if (this.expressions[index] != null && !this.expressions[index].Equals(new BusinessLogic.Expressions.InvalidExpression()))
             {
                 return this.points[index];
             }
@@ -172,7 +166,7 @@ namespace Backend.Controller
         /// <summary>
         /// Drives the updating process by delegating to other private methods.
         /// </summary>
-        private void UpdateData()
+        public void UpdateData()
         {
             this.UpdateGraphs();
             this.UpdateDotsAndScore();
@@ -180,11 +174,19 @@ namespace Backend.Controller
 
         private void UpdateGraphs()
         {
-            this.points = new List<List<ListPointLogical>>(this.expressions.Count);
-            foreach (var expression in this.expressions)
+            this.points = new List<ListPointLogical>[MaxExpressions];
+
+            for (int expressionIndex = 0; expressionIndex < MaxExpressions; ++expressionIndex)
             {
-                PointListGenerator pointListGenerator = new PointListGenerator(expression, PollyController.StartX, PollyController.EndX, PollyController.Limits);
-                this.points.Add(pointListGenerator.ObtainListsOfLogicalPoints());
+                if (this.expressions[expressionIndex] != null && !this.expressions[expressionIndex].Equals(new BusinessLogic.Expressions.InvalidExpression()))
+                {
+                    PointListGenerator pointListGenerator = new PointListGenerator(this.expressions[expressionIndex], PollyController.StartX, PollyController.EndX, PollyController.Limits);
+                    this.points[expressionIndex] = pointListGenerator.ObtainListsOfLogicalPoints();
+                }
+                else
+                {
+                    this.points[expressionIndex] = new List<ListPointLogical>(0);
+                }
             }
         }
 
@@ -195,26 +197,29 @@ namespace Backend.Controller
 
             this.dots.ForEach(x => this.drawDots.Add(new DrawDot(x.Position.Item1, x.Position.Item2, x.Radius, x.GetType() == typeof(GoodDot) ? DrawDotKind.GoodDot : DrawDotKind.BadDot)));
 
-            for (int expressionIndex = 0; expressionIndex < this.expressions.Count; ++expressionIndex)
+            for (int expressionIndex = 0; expressionIndex < MaxExpressions; ++expressionIndex)
             {
                 var expression = this.expressions[expressionIndex];
 
-                int countOfHits = 0;
-                for (int dotIndex = 0; dotIndex < this.drawDots.Count; ++dotIndex)
+                if (expression != null && !expression.Equals(new BusinessLogic.Expressions.InvalidExpression()))
                 {
-                    DrawDot drawDot = this.drawDots[dotIndex] as DrawDot;
-                    if (!drawDot.IsHit)
+                    int countOfHits = 0;
+                    for (int dotIndex = 0; dotIndex < this.drawDots.Count; ++dotIndex)
                     {
-                        bool isHit = this.dots[dotIndex].IsHit(expression, this.points[expressionIndex]);
-                        if (isHit)
+                        DrawDot drawDot = this.drawDots[dotIndex] as DrawDot;
+                        if (!drawDot.IsHit)
                         {
-                            ++countOfHits;
-                            drawDot.IsHit = true;
+                            bool isHit = this.dots[dotIndex].IsHit(expression, this.points[expressionIndex]);
+                            if (isHit)
+                            {
+                                ++countOfHits;
+                                drawDot.IsHit = true;
+                            }
                         }
                     }
-                }
 
-                numbersOfHits.Add(countOfHits);
+                    numbersOfHits.Add(countOfHits);
+                }
             }
 
             this.score = ScoreCalculator.CalculateScore(numbersOfHits);

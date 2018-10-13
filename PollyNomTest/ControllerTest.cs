@@ -26,11 +26,16 @@ namespace PollyNomTest
             IExpression exprConst = new Constant(0.0);
 
             // Act
-            controller.UpdateExpression(exprX.Print().Value);
+            controller.SetExpressionAtIndex(0, exprX.Print().Value);
+            controller.UpdateData();
             int score1 = controller.Score;
-            controller.UpdateExpression(exprConst.Print().Value);
+
+            controller.SetExpressionAtIndex(1, exprConst.Print().Value);
+            controller.UpdateData();
             int score2 = controller.Score;
-            controller.UpdateExpression(string.Empty);
+
+            controller.SetExpressionAtIndex(1, string.Empty);
+            controller.UpdateData();
             int score3 = controller.Score;
 
             // Assert

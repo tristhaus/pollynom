@@ -35,7 +35,7 @@ namespace PollyFoundation
         /// <summary>
         /// Colors to be used for the graphs.
         /// </summary>
-        private readonly Color[] graphColors = { Colors.Black, Colors.Blue, Colors.Green, Colors.Pink, Colors.Brown };
+        private readonly Color[] graphColors = { Colors.Black, Colors.Blue, Colors.DarkViolet, Colors.Brown, Colors.PowderBlue, };
 
         /// <summary>
         /// Brush to be used for error state of a text box.
@@ -78,9 +78,14 @@ namespace PollyFoundation
         private CoordinateHelper coordinateHelper;
 
         /// <summary>
-        /// The collection of labels to be used in the UI.
+        /// The collection of labels indicating the color of the graphs in the UI.
         /// </summary>
-        private Label[] labels;
+        private Label[] colorLabels;
+
+        /// <summary>
+        /// The collection of 'yn =' labels to be used in the UI.
+        /// </summary>
+        private Label[] yLabels;
 
         /// <summary>
         /// The collection of text boxes to be used in the UI.
@@ -181,7 +186,8 @@ namespace PollyFoundation
         /// </summary>
         private void ConstructLayout()
         {
-            this.labels = new Label[this.numberOfExpressions];
+            this.yLabels = new Label[this.numberOfExpressions];
+            this.colorLabels = new Label[this.numberOfExpressions];
             this.buttons = new Button[this.numberOfExpressions];
             this.textBoxes = new TextBox[this.numberOfExpressions];
             this.controlContainers = new DockPanel[this.numberOfExpressions];
@@ -207,7 +213,15 @@ namespace PollyFoundation
 
             for (int controlIndex = 0; controlIndex < this.numberOfExpressions; ++controlIndex)
             {
-                this.labels[controlIndex] = new Label()
+                this.colorLabels[controlIndex] = new Label()
+                {
+                    Content = "⬤",
+                    VerticalAlignment = VerticalAlignment.Center,
+                    HorizontalAlignment = HorizontalAlignment.Left,
+                    Foreground = new SolidColorBrush(this.graphColors[controlIndex]),
+                };
+
+                this.yLabels[controlIndex] = new Label()
                 {
                     Content = $"y{controlIndex + 1} =",
                     VerticalAlignment = VerticalAlignment.Center,
@@ -240,7 +254,8 @@ namespace PollyFoundation
                     LastChildFill = true,
                 };
 
-                this.controlContainers[controlIndex].Children.Add(this.labels[controlIndex]);
+                this.controlContainers[controlIndex].Children.Add(this.colorLabels[controlIndex]);
+                this.controlContainers[controlIndex].Children.Add(this.yLabels[controlIndex]);
                 this.controlContainers[controlIndex].Children.Add(this.buttons[controlIndex]);
                 this.controlContainers[controlIndex].Children.Add(this.textBoxes[controlIndex]);
 

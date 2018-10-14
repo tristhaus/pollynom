@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Backend.BusinessLogic.Expressions;
 
 namespace Backend.BusinessLogic
 {
@@ -59,9 +60,9 @@ namespace Backend.BusinessLogic
         /// <param name="limits">The absolute maximum y-value to be considered.</param>
         public PointListGenerator(IExpression expression, double initialX, double finalX, double limits)
         {
-            if (expression == null)
+            if (expression.IsNullOrInvalidExpression())
             {
-                throw new ArgumentNullException(nameof(expression));
+                throw new ArgumentException(nameof(expression));
             }
 
             if (initialX >= finalX)

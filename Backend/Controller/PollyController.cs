@@ -2,6 +2,7 @@
 
 using Backend.BusinessLogic;
 using Backend.BusinessLogic.Dots;
+using Backend.BusinessLogic.Expressions;
 
 namespace Backend.Controller
 {
@@ -62,7 +63,7 @@ namespace Backend.Controller
         /// <summary>
         /// The list of drawable dots.
         /// </summary>
-        private List<IDrawDot> drawDots = null;
+        private List<IDrawDot> drawDots;
 
         /// <summary>
         /// The current score.
@@ -144,7 +145,7 @@ namespace Backend.Controller
         /// <returns>A list of point list, in terms of business logic units.</returns>
         public List<ListPointLogical> GetListsOfLogicalPointsByIndex(int index)
         {
-            if (this.expressions[index] != null && !this.expressions[index].Equals(new BusinessLogic.Expressions.InvalidExpression()))
+            if (!this.expressions[index].IsNullOrInvalidExpression())
             {
                 return this.points[index];
             }
@@ -178,7 +179,7 @@ namespace Backend.Controller
 
             for (int expressionIndex = 0; expressionIndex < MaxExpressions; ++expressionIndex)
             {
-                if (this.expressions[expressionIndex] != null && !this.expressions[expressionIndex].Equals(new BusinessLogic.Expressions.InvalidExpression()))
+                if (!this.expressions[expressionIndex].IsNullOrInvalidExpression())
                 {
                     PointListGenerator pointListGenerator = new PointListGenerator(this.expressions[expressionIndex], PollyController.StartX, PollyController.EndX, PollyController.Limits);
                     this.points[expressionIndex] = pointListGenerator.ObtainListsOfLogicalPoints();
@@ -201,7 +202,7 @@ namespace Backend.Controller
             {
                 var expression = this.expressions[expressionIndex];
 
-                if (expression != null && !expression.Equals(new BusinessLogic.Expressions.InvalidExpression()))
+                if (!expression.IsNullOrInvalidExpression())
                 {
                     int countOfHits = 0;
                     for (int dotIndex = 0; dotIndex < this.drawDots.Count; ++dotIndex)

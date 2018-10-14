@@ -48,6 +48,7 @@
     <Compile Include="BusinessLogic\Expressions\Add.cs" />
     <Compile Include="BusinessLogic\Expressions\BaseX.cs" />
     <Compile Include="BusinessLogic\Expressions\Constant.cs" />
+    <Compile Include="BusinessLogic\Expressions\ExpressionExtension.cs" />
     <Compile Include="BusinessLogic\Expressions\InvalidExpression.cs" />
     <Compile Include="BusinessLogic\Expressions\Multiply.cs" />
     <Compile Include="BusinessLogic\Expressions\Power.cs" />

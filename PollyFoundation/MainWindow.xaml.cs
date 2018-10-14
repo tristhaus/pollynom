@@ -78,6 +78,26 @@ namespace PollyFoundation
         private CoordinateHelper coordinateHelper;
 
         /// <summary>
+        /// The canvas on which output is drawn.
+        /// </summary>
+        private Canvas canvas;
+
+        /// <summary>
+        /// The grid holding the canvas such that resizing is easier.
+        /// </summary>
+        private Grid gridForCanvas;
+
+        /// <summary>
+        /// The container holding the output grid.
+        /// </summary>
+        private DockPanel dpForCanvas;
+
+        /// <summary>
+        /// The grid splitter to resize input area.
+        /// </summary>
+        private GridSplitter gridSplitter;
+
+        /// <summary>
         /// The collection of labels indicating the color of the graphs in the UI.
         /// </summary>
         private Label[] colorLabels;
@@ -111,21 +131,6 @@ namespace PollyFoundation
         /// The scroll viewer holding the input controls.
         /// </summary>
         private ScrollViewer scrollViewer;
-
-        /// <summary>
-        /// The canvas on which output is drawn.
-        /// </summary>
-        private Canvas canvas;
-
-        /// <summary>
-        /// The grid holding the canvas such that resizing is easier.
-        /// </summary>
-        private Grid gridForCanvas;
-
-        /// <summary>
-        /// The container holding the output grid.
-        /// </summary>
-        private DockPanel dpForCanvas;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="MainWindow"/> class.
@@ -201,7 +206,6 @@ namespace PollyFoundation
                     Top = 6,
                     Left = 6,
                 },
-                Height = 60,
             };
             DockPanel.SetDock(this.scrollViewer, Dock.Bottom);
 
@@ -219,6 +223,7 @@ namespace PollyFoundation
                     VerticalAlignment = VerticalAlignment.Center,
                     HorizontalAlignment = HorizontalAlignment.Left,
                     Foreground = new SolidColorBrush(this.graphColors[controlIndex]),
+                    Margin = new Thickness(1, 0, 1, 0), // LTRB
                 };
 
                 this.yLabels[controlIndex] = new Label()
@@ -226,12 +231,14 @@ namespace PollyFoundation
                     Content = $"y{controlIndex + 1} =",
                     VerticalAlignment = VerticalAlignment.Center,
                     HorizontalAlignment = HorizontalAlignment.Left,
+                    Margin = new Thickness(1, 0, 1, 0), // LTRB
                 };
 
                 this.buttons[controlIndex] = new Button()
                 {
                     Content = ButtonLabelText,
                     Height = 20,
+                    Margin = new Thickness(1, 0, 1, 0), // LTRB
                 };
                 DockPanel.SetDock(this.buttons[controlIndex], Dock.Right);
 
@@ -239,18 +246,13 @@ namespace PollyFoundation
                 {
                     Height = 20,
                     TextWrapping = TextWrapping.NoWrap,
-                    VerticalAlignment = VerticalAlignment.Center
+                    VerticalAlignment = VerticalAlignment.Center,
+                    Margin = new Thickness(1, 0, 1, 0), // LTRB
                 };
 
                 this.controlContainers[controlIndex] = new DockPanel()
                 {
-                    Margin = new Thickness()
-                    {
-                        Bottom = 0,
-                        Right = 0,
-                        Top = 0,
-                        Left = 0,
-                    },
+                    Margin = new Thickness(2, 0, 2, 0), // LTRB
                     LastChildFill = true,
                 };
 
@@ -288,8 +290,27 @@ namespace PollyFoundation
             };
             this.dpForCanvas.Children.Add(this.gridForCanvas);
 
-            this.mainDockPanel.Children.Add(this.scrollViewer);
-            this.mainDockPanel.Children.Add(this.dpForCanvas);
+            this.gridSplitter = new GridSplitter()
+            {
+                HorizontalAlignment = HorizontalAlignment.Stretch,
+            };
+
+            this.mainGrid.RowDefinitions.Add(new RowDefinition() { Height = new GridLength(1, GridUnitType.Star) });
+            this.mainGrid.RowDefinitions.Add(new RowDefinition() { Height = new GridLength(5, GridUnitType.Pixel) });
+            this.mainGrid.RowDefinitions.Add(new RowDefinition()
+            {
+                Height = new GridLength(60, GridUnitType.Pixel),
+                MinHeight = 50,
+                MaxHeight = 150,
+            });
+
+            Grid.SetRow(this.dpForCanvas, 0);
+            Grid.SetRow(this.gridSplitter, 1);
+            Grid.SetRow(this.scrollViewer, 2);
+
+            this.mainGrid.Children.Add(this.dpForCanvas);
+            this.mainGrid.Children.Add(this.gridSplitter);
+            this.mainGrid.Children.Add(this.scrollViewer);
 
             this.UpdateLayout();
             this.AdjustCanvasSize();
@@ -471,12 +492,13 @@ namespace PollyFoundation
             xAxisPath.Stroke = Brushes.Black;
             xAxisPath.Data = xAxisGeometryGroup;
             this.canvas.Children.Add(xAxisPath);
+            var calculatedFontSize = Math.Max(0.1D, this.coordinateHelper.ConvertXLength(0.8));
 
             // X labels
             TextBlock xMinusTextBlock = new TextBlock()
             {
                 Text = "-10",
-                FontSize = this.coordinateHelper.ConvertXLength(0.8),
+                FontSize = calculatedFontSize,
                 Foreground = Brushes.Black,
             };
             Point xMinusPoint = this.coordinateHelper.ConvertCoordinates(-10.5, -0.5);
@@ -487,7 +509,7 @@ namespace PollyFoundation
             TextBlock xPlusTextBlock = new TextBlock()
             {
                 Text = "10",
-                FontSize = this.coordinateHelper.ConvertXLength(0.8),
+                FontSize = calculatedFontSize,
                 Foreground = Brushes.Black,
             };
             Point xPlusPoint = this.coordinateHelper.ConvertCoordinates(9.5, -0.5);
@@ -518,7 +540,7 @@ namespace PollyFoundation
             TextBlock yMinusTextBlock = new TextBlock()
             {
                 Text = "-10",
-                FontSize = this.coordinateHelper.ConvertXLength(0.8),
+                FontSize = calculatedFontSize,
                 Foreground = Brushes.Black,
             };
             Point yMinusPoint = this.coordinateHelper.ConvertCoordinates(0.5, -9.5);
@@ -529,7 +551,7 @@ namespace PollyFoundation
             TextBlock yPlusTextBlock = new TextBlock()
             {
                 Text = "10",
-                FontSize = this.coordinateHelper.ConvertXLength(0.8),
+                FontSize = calculatedFontSize,
                 Foreground = Brushes.Black,
             };
             Point yPlusPoint = this.coordinateHelper.ConvertCoordinates(0.5, 10.5);

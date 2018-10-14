@@ -16,6 +16,7 @@ namespace PollyNomTest
         /// Tests simple expressions.
         /// </summary>
         [TestMethod]
+        [TestCategory(TestInfrastructure.TestCategories.UnitTest)]
         public void SimpleTests()
         {
             // Arrange
@@ -48,6 +49,7 @@ namespace PollyNomTest
         /// Tests whether single addition terms evaluate to Constant, regardless of sign.
         /// </summary>
         [TestMethod]
+        [TestCategory(TestInfrastructure.TestCategories.UnitTest)]
         public void SingleAdditionTermAsConstant()
         {
             // Arrange
@@ -68,6 +70,7 @@ namespace PollyNomTest
         /// Tests whether a simple expression parses to an <see cref="Add"/> instance.
         /// </summary>
         [TestMethod]
+        [TestCategory(TestInfrastructure.TestCategories.UnitTest)]
         public void SingleXasAdd()
         {
             // Arrange
@@ -85,6 +88,7 @@ namespace PollyNomTest
         /// Tests the correct parsing of simple additive terms.
         /// </summary>
         [TestMethod]
+        [TestCategory(TestInfrastructure.TestCategories.UnitTest)]
         public void SimpleAddition01()
         {
             // Arrange
@@ -103,6 +107,7 @@ namespace PollyNomTest
         /// Tests the correct parsing of simple additive terms involving negative signs.
         /// </summary>
         [TestMethod]
+        [TestCategory(TestInfrastructure.TestCategories.UnitTest)]
         public void SimpleAddition02()
         {
             // Arrange
@@ -123,6 +128,7 @@ namespace PollyNomTest
         /// Tests the correct parsing of simple additive terms involving parentheses.
         /// </summary>
         [TestMethod]
+        [TestCategory(TestInfrastructure.TestCategories.UnitTest)]
         public void SimpleAddition03()
         {
             // Arrange
@@ -141,6 +147,7 @@ namespace PollyNomTest
         /// Tests the correct parsing of simple additive terms involving alternating signs.
         /// </summary>
         [TestMethod]
+        [TestCategory(TestInfrastructure.TestCategories.UnitTest)]
         public void SimpleAddition04()
         {
             // Arrange
@@ -162,6 +169,7 @@ namespace PollyNomTest
         /// Tests the correct parsing of simple additive terms involving alternating signs and parentheses.
         /// </summary>
         [TestMethod]
+        [TestCategory(TestInfrastructure.TestCategories.UnitTest)]
         public void SimpleAddition05()
         {
             // Arrange
@@ -187,6 +195,7 @@ namespace PollyNomTest
         /// Tests the correct parsing of simple multiplicative terms.
         /// </summary>
         [TestMethod]
+        [TestCategory(TestInfrastructure.TestCategories.UnitTest)]
         public void SimpleMultiplication01()
         {
             // Arrange
@@ -205,6 +214,7 @@ namespace PollyNomTest
         /// Tests the correct parsing of simple multiplicative terms involving division.
         /// </summary>
         [TestMethod]
+        [TestCategory(TestInfrastructure.TestCategories.UnitTest)]
         public void SimpleMultiplication02()
         {
             // Arrange
@@ -225,6 +235,7 @@ namespace PollyNomTest
         /// Tests the correct parsing of simple multiplicative terms involving parentheses.
         /// </summary>
         [TestMethod]
+        [TestCategory(TestInfrastructure.TestCategories.UnitTest)]
         public void SimpleMultiplication03()
         {
             // Arrange
@@ -243,6 +254,7 @@ namespace PollyNomTest
         /// Tests the correct parsing of simple multiplicative terms involving alternating "signs".
         /// </summary>
         [TestMethod]
+        [TestCategory(TestInfrastructure.TestCategories.UnitTest)]
         public void SimpleMultiplication04()
         {
             // Arrange
@@ -264,6 +276,7 @@ namespace PollyNomTest
         /// Tests the correct parsing of simple multiplicative terms involving alternating "signs" and parentheses.
         /// </summary>
         [TestMethod]
+        [TestCategory(TestInfrastructure.TestCategories.UnitTest)]
         public void SimpleMultiplication05()
         {
             // Arrange
@@ -289,6 +302,7 @@ namespace PollyNomTest
         /// Tests the correct parsing of mixed addition and multiplication.
         /// </summary>
         [TestMethod]
+        [TestCategory(TestInfrastructure.TestCategories.UnitTest)]
         public void AddMultiplyMix01()
         {
             // Arrange
@@ -313,6 +327,7 @@ namespace PollyNomTest
         /// Tests the correct parsing of mixed addition and multiplication involving a leading sign.
         /// </summary>
         [TestMethod]
+        [TestCategory(TestInfrastructure.TestCategories.UnitTest)]
         public void AddMultiplyMix02()
         {
             // Arrange
@@ -337,6 +352,7 @@ namespace PollyNomTest
         /// Tests the correct parsing of mixed addition and multiplication a leading sign and parentheses.
         /// </summary>
         [TestMethod]
+        [TestCategory(TestInfrastructure.TestCategories.UnitTest)]
         public void AddMultiplyMix03()
         {
             // Arrange
@@ -365,6 +381,7 @@ namespace PollyNomTest
         /// Tests the correct parsing of mixed addition and multiplication a contained sign and parentheses.
         /// </summary>
         [TestMethod]
+        [TestCategory(TestInfrastructure.TestCategories.UnitTest)]
         public void AddMultiplyMix04()
         {
             // Arrange
@@ -393,6 +410,7 @@ namespace PollyNomTest
         /// Tests the correct parsing of a simple power.
         /// </summary>
         [TestMethod]
+        [TestCategory(TestInfrastructure.TestCategories.UnitTest)]
         public void SimplePower01()
         {
             // Arrange
@@ -411,6 +429,7 @@ namespace PollyNomTest
         /// Tests the correct parsing of a simple power involving a negative sign.
         /// </summary>
         [TestMethod]
+        [TestCategory(TestInfrastructure.TestCategories.UnitTest)]
         public void SimplePower02()
         {
             // Arrange
@@ -429,6 +448,7 @@ namespace PollyNomTest
         /// Tests the correctly failing parsing of a simple power involving a negative sign.
         /// </summary>
         [TestMethod]
+        [TestCategory(TestInfrastructure.TestCategories.UnitTest)]
         public void SimplePower03()
         {
             // Arrange
@@ -447,6 +467,7 @@ namespace PollyNomTest
         /// Tests the correct parsing of a simple power.
         /// </summary>
         [TestMethod]
+        [TestCategory(TestInfrastructure.TestCategories.UnitTest)]
         public void SimplePower04()
         {
             // Arrange
@@ -465,6 +486,7 @@ namespace PollyNomTest
         /// Tests the correct parsing of a simple power involving a sign.
         /// </summary>
         [TestMethod]
+        [TestCategory(TestInfrastructure.TestCategories.UnitTest)]
         public void SimplePower05()
         {
             // Arrange
@@ -485,6 +507,7 @@ namespace PollyNomTest
         /// Tests the correct parsing of a complex power.
         /// </summary>
         [TestMethod]
+        [TestCategory(TestInfrastructure.TestCategories.UnitTest)]
         public void LessSimplePower()
         {
             // Arrange
@@ -513,6 +536,7 @@ namespace PollyNomTest
         /// Tests the correct parsing of a power tower - basically, start at the back.
         /// </summary>
         [TestMethod]
+        [TestCategory(TestInfrastructure.TestCategories.UnitTest)]
         public void PowerTower()
         {
             // Arrange
@@ -531,6 +555,7 @@ namespace PollyNomTest
         /// Tests that a non-recognized function yields an <see cref="InvalidExpression"/>.
         /// </summary>
         [TestMethod]
+        [TestCategory(TestInfrastructure.TestCategories.UnitTest)]
         public void NonRecognizedFunction()
         {
             // Arrange
@@ -549,6 +574,7 @@ namespace PollyNomTest
         /// Tests the parsing of exponential and natural logarithm.
         /// </summary>
         [TestMethod]
+        [TestCategory(TestInfrastructure.TestCategories.UnitTest)]
         public void SimpleExponentialAndNaturalLogarithm()
         {
             // Arrange
@@ -572,6 +598,7 @@ namespace PollyNomTest
         /// Tests a complicated expression inside an exponential.
         /// </summary>
         [TestMethod]
+        [TestCategory(TestInfrastructure.TestCategories.UnitTest)]
         public void ComplicatedExponential1()
         {
             // Arrange
@@ -602,6 +629,7 @@ namespace PollyNomTest
         /// Tests a complicated expression inside an exponential and some decorators.
         /// </summary>
         [TestMethod]
+        [TestCategory(TestInfrastructure.TestCategories.UnitTest)]
         public void ComplicatedExponential2()
         {
             // Arrange
@@ -640,6 +668,7 @@ namespace PollyNomTest
         /// Tests the parsing of trigonometric functions.
         /// </summary>
         [TestMethod]
+        [TestCategory(TestInfrastructure.TestCategories.UnitTest)]
         public void SimpleTrigonometricFunctions()
         {
             // Arrange
@@ -668,6 +697,7 @@ namespace PollyNomTest
         /// Tests the parsing of the absolute value function.
         /// </summary>
         [TestMethod]
+        [TestCategory(TestInfrastructure.TestCategories.UnitTest)]
         public void SimpleAbsoluteValue()
         {
             // Arrange
@@ -686,6 +716,7 @@ namespace PollyNomTest
         /// Roundtrip test on the members of <see cref="Helper.TestExpressionBuilder"/>
         /// </summary>
         [TestMethod]
+        [TestCategory(TestInfrastructure.TestCategories.UnitTest)]
         public void Complex01()
         {
             // Arrange
@@ -704,6 +735,7 @@ namespace PollyNomTest
         /// Roundtrip test on the members of <see cref="Helper.TestExpressionBuilder"/>
         /// </summary>
         [TestMethod]
+        [TestCategory(TestInfrastructure.TestCategories.UnitTest)]
         public void Complex02()
         {
             // Arrange
@@ -722,6 +754,7 @@ namespace PollyNomTest
         /// Roundtrip test on the members of <see cref="Helper.TestExpressionBuilder"/>
         /// </summary>
         [TestMethod]
+        [TestCategory(TestInfrastructure.TestCategories.UnitTest)]
         public void Complex03()
         {
             // Arrange
@@ -740,6 +773,7 @@ namespace PollyNomTest
         /// Roundtrip test on the members of <see cref="Helper.TestExpressionBuilder"/>
         /// </summary>
         [TestMethod]
+        [TestCategory(TestInfrastructure.TestCategories.UnitTest)]
         public void Complex04()
         {
             // Arrange
@@ -758,6 +792,7 @@ namespace PollyNomTest
         /// Roundtrip test on the members of <see cref="Helper.TestExpressionBuilder"/>
         /// </summary>
         [TestMethod]
+        [TestCategory(TestInfrastructure.TestCategories.UnitTest)]
         public void Complex05()
         {
             // Arrange
@@ -776,6 +811,7 @@ namespace PollyNomTest
         /// Roundtrip test on the members of <see cref="Helper.TestExpressionBuilder"/>
         /// </summary>
         [TestMethod]
+        [TestCategory(TestInfrastructure.TestCategories.UnitTest)]
         public void Complex06()
         {
             // Arrange
@@ -794,6 +830,7 @@ namespace PollyNomTest
         /// Roundtrip test on the members of <see cref="Helper.TestExpressionBuilder"/>
         /// </summary>
         [TestMethod]
+        [TestCategory(TestInfrastructure.TestCategories.UnitTest)]
         public void Complex07()
         {
             // Arrange
@@ -812,6 +849,7 @@ namespace PollyNomTest
         /// Roundtrip test on the members of <see cref="Helper.TestExpressionBuilder"/>
         /// </summary>
         [TestMethod]
+        [TestCategory(TestInfrastructure.TestCategories.UnitTest)]
         public void Complex08()
         {
             // Arrange
@@ -830,6 +868,7 @@ namespace PollyNomTest
         /// Tests the correct result of the parseability evaluation.
         /// </summary>
         [TestMethod]
+        [TestCategory(TestInfrastructure.TestCategories.UnitTest)]
         public void SimpleParseabilityTests()
         {
             // Arrange
@@ -866,6 +905,7 @@ namespace PollyNomTest
         /// and yields the correct result for a specific case.
         /// </summary>
         [TestMethod]
+        [TestCategory(TestInfrastructure.TestCategories.UnitTest)]
         public void ParseabilityShouldNotThrowExceptions()
         {
             // Arrange

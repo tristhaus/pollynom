@@ -14,6 +14,7 @@ namespace PollyNomTest
         /// Tests about X and invalid expressions, using the method.
         /// </summary>
         [TestMethod]
+        [TestCategory(TestInfrastructure.TestCategories.UnitTest)]
         public void XInvalidPerMethod()
         {
             var xA = new BaseX();
@@ -36,6 +37,7 @@ namespace PollyNomTest
         /// Tests about X and invalid expressions, using the operator.
         /// </summary>
         [TestMethod]
+        [TestCategory(TestInfrastructure.TestCategories.UnitTest)]
         public void XInvalidPerOperator()
         {
             var xA = new BaseX();
@@ -61,6 +63,7 @@ namespace PollyNomTest
         /// Tests about constant expressions, using the method.
         /// </summary>
         [TestMethod]
+        [TestCategory(TestInfrastructure.TestCategories.UnitTest)]
         public void ConstantEqualPerMethod()
         {
             var a = new Constant(0.5);
@@ -75,6 +78,7 @@ namespace PollyNomTest
         /// Tests about constant expressions, using the method.
         /// </summary>
         [TestMethod]
+        [TestCategory(TestInfrastructure.TestCategories.UnitTest)]
         public void ConstantUnequalPerMethod()
         {
             var a = new Constant(0.5);
@@ -88,6 +92,7 @@ namespace PollyNomTest
         /// Tests about constant expressions, using the operator.
         /// </summary>
         [TestMethod]
+        [TestCategory(TestInfrastructure.TestCategories.UnitTest)]
         public void ConstantEqualPerOperator()
         {
             var a = new Constant(0.5);
@@ -103,6 +108,7 @@ namespace PollyNomTest
         /// Tests about constant expressions, using the operator.
         /// </summary>
         [TestMethod]
+        [TestCategory(TestInfrastructure.TestCategories.UnitTest)]
         public void ConstantUnequalPerOperator()
         {
             var a = new Constant(0.5);
@@ -116,6 +122,7 @@ namespace PollyNomTest
         /// Tests about addition expressions, using the operator.
         /// </summary>
         [TestMethod]
+        [TestCategory(TestInfrastructure.TestCategories.UnitTest)]
         public void AddEqualPerOperator()
         {
             // 0.5 + 0.3 + 1.2
@@ -130,6 +137,7 @@ namespace PollyNomTest
         /// Tests about addition expressions, using the operator.
         /// </summary>
         [TestMethod]
+        [TestCategory(TestInfrastructure.TestCategories.UnitTest)]
         public void AddUnequalPerOperator()
         {
             // 0.5 + 0.3 + 1.2
@@ -144,6 +152,7 @@ namespace PollyNomTest
         /// Tests about addition expressions involving different <see cref="Add.AddExpression.Signs"/>, using the operator.
         /// </summary>
         [TestMethod]
+        [TestCategory(TestInfrastructure.TestCategories.UnitTest)]
         public void AddUnequalSignsPerOperator()
         {
             // 0.5 + 0.3 - 1.2
@@ -160,6 +169,7 @@ namespace PollyNomTest
         /// Tests about addition expressions involving different order of terms, using the operator.
         /// </summary>
         [TestMethod]
+        [TestCategory(TestInfrastructure.TestCategories.UnitTest)]
         public void AddEqualReorderedPerOperator()
         {
             // 0.5 + 0.3 + 1.2
@@ -176,6 +186,7 @@ namespace PollyNomTest
         /// Tests about addition expressions involving duplicated terms, using the operator.
         /// </summary>
         [TestMethod]
+        [TestCategory(TestInfrastructure.TestCategories.UnitTest)]
         public void AddEqualDuplicatePerOperator()
         {
             // 0.3 + 0.3 + 1.2
@@ -190,6 +201,7 @@ namespace PollyNomTest
         /// Tests about addition expressions involving duplicated terms of different classes, using the operator.
         /// </summary>
         [TestMethod]
+        [TestCategory(TestInfrastructure.TestCategories.UnitTest)]
         public void AddEqualMixedPerOperator()
         {
             var a = new Add(new Add.AddExpression(Add.AddExpression.Signs.Plus, new Constant(0.3)), new Add.AddExpression(Add.AddExpression.Signs.Plus, new BaseX()), new Add.AddExpression(Add.AddExpression.Signs.Plus, new Constant(1.2)));
@@ -203,6 +215,7 @@ namespace PollyNomTest
         /// Tests about multiply expressions, using the operator.
         /// </summary>
         [TestMethod]
+        [TestCategory(TestInfrastructure.TestCategories.UnitTest)]
         public void MultiplyEqualPerOperator()
         {
             // 0.5 * 0.3 * 1.2
@@ -217,6 +230,7 @@ namespace PollyNomTest
         /// Tests about multiply expressions, using the operator.
         /// </summary>
         [TestMethod]
+        [TestCategory(TestInfrastructure.TestCategories.UnitTest)]
         public void MultiplyUnequalPerOperator()
         {
             // 0.5 * 0.3 * 1.2
@@ -233,6 +247,7 @@ namespace PollyNomTest
         /// Tests about multiply expressions, using the operator.
         /// </summary>
         [TestMethod]
+        [TestCategory(TestInfrastructure.TestCategories.UnitTest)]
         public void MultiplyUnequalSignsPerOperator()
         {
             // 0.5 * 0.3 / 1.2
@@ -249,6 +264,7 @@ namespace PollyNomTest
         /// Tests about multiply expressions involving different order of terms, using the operator.
         /// </summary>
         [TestMethod]
+        [TestCategory(TestInfrastructure.TestCategories.UnitTest)]
         public void MultiplyEqualReorderedPerOperator()
         {
             // 0.5 * 0.3 * 1.2
@@ -265,6 +281,7 @@ namespace PollyNomTest
         /// Tests about multiply expressions involving duplicated terms, using the operator.
         /// </summary>
         [TestMethod]
+        [TestCategory(TestInfrastructure.TestCategories.UnitTest)]
         public void MultiplyEqualDuplicatePerOperator()
         {
             // 0.3 * 0.3 * 1.2
@@ -279,6 +296,7 @@ namespace PollyNomTest
         /// Tests about multiply expressions involving duplicated terms of different classes, using the operator.
         /// </summary>
         [TestMethod]
+        [TestCategory(TestInfrastructure.TestCategories.UnitTest)]
         public void MultiplyXEqualPerOperator()
         {
             // 0.3 * X * 1.2
@@ -295,6 +313,7 @@ namespace PollyNomTest
         /// Tests about multiply and addition expressions involving reordering, using the operator.
         /// </summary>
         [TestMethod]
+        [TestCategory(TestInfrastructure.TestCategories.UnitTest)]
         public void MultiplyAddEqualPerOperator()
         {
             // (X + 4.2) / (X)
@@ -315,6 +334,7 @@ namespace PollyNomTest
         /// Tests about multiply and addition expressions, using the operator.
         /// </summary>
         [TestMethod]
+        [TestCategory(TestInfrastructure.TestCategories.UnitTest)]
         public void MultiplyAddUnequalPerOperator()
         {
             // (X + 4.2) / (X)
@@ -335,6 +355,7 @@ namespace PollyNomTest
         /// Tests about multiply expressions involving reordering, using the method.
         /// </summary>
         [TestMethod]
+        [TestCategory(TestInfrastructure.TestCategories.UnitTest)]
         public void MultiplySignAndOrderPerMethod()
         {
             var aa = new Multiply(
@@ -356,6 +377,7 @@ namespace PollyNomTest
         /// Tests about power expressions, involving reordering, using the operator.
         /// </summary>
         [TestMethod]
+        [TestCategory(TestInfrastructure.TestCategories.UnitTest)]
         public void PowerEqualPerOperator()
         {
             var exponentA = new Multiply(
@@ -382,6 +404,7 @@ namespace PollyNomTest
         /// Tests about power expressions, involving different constants, using the operator.
         /// </summary>
         [TestMethod]
+        [TestCategory(TestInfrastructure.TestCategories.UnitTest)]
         public void PowerUnequalPerOperator()
         {
             var exponentA = new Multiply(
@@ -408,6 +431,7 @@ namespace PollyNomTest
         /// Tests about power expressions, involving different constants, using the method.
         /// </summary>
         [TestMethod]
+        [TestCategory(TestInfrastructure.TestCategories.UnitTest)]
         public void PowerPerMethod()
         {
             var exponentA = new BaseX();
@@ -437,6 +461,7 @@ namespace PollyNomTest
         /// Tests about exponential function, using the method.
         /// </summary>
         [TestMethod]
+        [TestCategory(TestInfrastructure.TestCategories.UnitTest)]
         public void ExponentialPerMethod()
         {
             var argumentA = new BaseX();
@@ -461,6 +486,7 @@ namespace PollyNomTest
         /// Tests about exponential function, using the operator.
         /// </summary>
         [TestMethod]
+        [TestCategory(TestInfrastructure.TestCategories.UnitTest)]
         public void ExponentialPerOperator()
         {
             var argumentA = new BaseX();
@@ -485,6 +511,7 @@ namespace PollyNomTest
         /// Tests about logarithm function, using the method.
         /// </summary>
         [TestMethod]
+        [TestCategory(TestInfrastructure.TestCategories.UnitTest)]
         public void LogarithmPerMethod()
         {
             var argumentA = new BaseX();
@@ -509,6 +536,7 @@ namespace PollyNomTest
         /// Tests about logarithm function, using the operator.
         /// </summary>
         [TestMethod]
+        [TestCategory(TestInfrastructure.TestCategories.UnitTest)]
         public void LogarithmPerOperator()
         {
             var argumentA = new BaseX();
@@ -533,6 +561,7 @@ namespace PollyNomTest
         /// Tests about sine function, using both the operator and the method.
         /// </summary>
         [TestMethod]
+        [TestCategory(TestInfrastructure.TestCategories.UnitTest)]
         public void SinePerOperatorAndPerMethod()
         {
             var argumentA = new BaseX();
@@ -561,6 +590,7 @@ namespace PollyNomTest
         /// Tests about cosine function, using both the operator and the method.
         /// </summary>
         [TestMethod]
+        [TestCategory(TestInfrastructure.TestCategories.UnitTest)]
         public void CosinePerOperatorAndPerMethod()
         {
             var argumentA = new BaseX();
@@ -589,6 +619,7 @@ namespace PollyNomTest
         /// Tests about tangent function, using both the operator and the method.
         /// </summary>
         [TestMethod]
+        [TestCategory(TestInfrastructure.TestCategories.UnitTest)]
         public void TangentPerOperatorAndPerMethod()
         {
             var argumentA = new BaseX();
@@ -617,6 +648,7 @@ namespace PollyNomTest
         /// Tests about absolute value function, using both the operator and the method.
         /// </summary>
         [TestMethod]
+        [TestCategory(TestInfrastructure.TestCategories.UnitTest)]
         public void AbsoluteValuePerOperatorAndPerMethod()
         {
             var argumentA = new BaseX();
@@ -645,6 +677,7 @@ namespace PollyNomTest
         /// Tests about nontrivial equality, involving recursion (for reordered expression) and hash map challenges.
         /// </summary>
         [TestMethod]
+        [TestCategory(TestInfrastructure.TestCategories.UnitTest)]
         public void NontrivialMultiplyAddMix()
         {
             // ( -2.1 * (X + 3.1) ) + 1.1

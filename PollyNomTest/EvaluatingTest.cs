@@ -4,6 +4,7 @@ using Backend.BusinessLogic.Expressions;
 using Backend.BusinessLogic.Expressions.SingleArgumentFunctions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using PollyNomTest.Helper;
+using TestInfrastructure;
 
 namespace PollyNomTest
 {
@@ -18,6 +19,7 @@ namespace PollyNomTest
         /// Tests the evaluation of <see cref="TestExpressionBuilder.Expression01"/>.
         /// </summary>
         [TestMethod]
+        [TestCategory(TestInfrastructure.TestCategories.UnitTest)]
         public void Evaluate01()
         {
             // Arrange
@@ -37,6 +39,7 @@ namespace PollyNomTest
         /// Tests the evaluation of <see cref="TestExpressionBuilder.Expression02"/>.
         /// </summary>
         [TestMethod]
+        [TestCategory(TestInfrastructure.TestCategories.UnitTest)]
         public void Evaluate02()
         {
             // Arrange
@@ -56,6 +59,7 @@ namespace PollyNomTest
         /// Tests the evaluation of <see cref="TestExpressionBuilder.Expression03"/>.
         /// </summary>
         [TestMethod]
+        [TestCategory(TestInfrastructure.TestCategories.UnitTest)]
         public void Evaluate03()
         {
             // Arrange
@@ -75,6 +79,7 @@ namespace PollyNomTest
         /// Tests the evaluation of <see cref="TestExpressionBuilder.Expression04"/>.
         /// </summary>
         [TestMethod]
+        [TestCategory(TestInfrastructure.TestCategories.UnitTest)]
         public void Evaluate04()
         {
             // Arrange
@@ -94,6 +99,7 @@ namespace PollyNomTest
         /// Tests the evaluation of <see cref="TestExpressionBuilder.Expression05"/>.
         /// </summary>
         [TestMethod]
+        [TestCategory(TestInfrastructure.TestCategories.UnitTest)]
         public void Evaluate05()
         {
             // Arrange
@@ -113,6 +119,7 @@ namespace PollyNomTest
         /// Tests the evaluation of <see cref="TestExpressionBuilder.Expression06"/>.
         /// </summary>
         [TestMethod]
+        [TestCategory(TestInfrastructure.TestCategories.UnitTest)]
         public void Evaluate06()
         {
             // Arrange
@@ -132,6 +139,7 @@ namespace PollyNomTest
         /// Tests the evaluation of <see cref="TestExpressionBuilder.Expression07"/>.
         /// </summary>
         [TestMethod]
+        [TestCategory(TestInfrastructure.TestCategories.UnitTest)]
         public void Evaluate07()
         {
             // Arrange
@@ -151,6 +159,7 @@ namespace PollyNomTest
         /// Tests the evaluation of <see cref="TestExpressionBuilder.Expression08"/>.
         /// </summary>
         [TestMethod]
+        [TestCategory(TestInfrastructure.TestCategories.UnitTest)]
         public void Evaluate08()
         {
             // Arrange
@@ -170,6 +179,7 @@ namespace PollyNomTest
         /// Tests the evaluation of the exponential function and the natural logarithm.
         /// </summary>
         [TestMethod]
+        [TestCategory(TestInfrastructure.TestCategories.UnitTest)]
         public void EvaluateExponentialAndLogarithm()
         {
             // Arrange
@@ -209,6 +219,7 @@ namespace PollyNomTest
         /// Tests the evaluation of trigonometric functions.
         /// </summary>
         [TestMethod]
+        [TestCategory(TestInfrastructure.TestCategories.UnitTest)]
         public void EvaluateTrigonometricFunctions()
         {
             // Arrange
@@ -244,6 +255,7 @@ namespace PollyNomTest
         /// Tests the evaluationo of the absolute value function.
         /// </summary>
         [TestMethod]
+        [TestCategory(TestInfrastructure.TestCategories.UnitTest)]
         public void EvaluateAbsoluteValue()
         {
             // Arrange

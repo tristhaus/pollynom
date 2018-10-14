@@ -1,5 +1,5 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using PollyNomTest.Helper;
+using TestInfrastructure;
 
 namespace PollyNomTest
 {
@@ -13,6 +13,7 @@ namespace PollyNomTest
         /// Tests that two instances of <see cref="double"/> match.
         /// </summary>
         [TestMethod]
+        [TestCategory(TestInfrastructure.TestCategories.UnitTest)]
         public void DoubleMatch()
         {
             // Arrange
@@ -30,6 +31,7 @@ namespace PollyNomTest
         /// Tests that two instances of <see cref="double"/> do not match.
         /// </summary>
         [TestMethod]
+        [TestCategory(TestInfrastructure.TestCategories.UnitTest)]
         public void DoubleMismatch()
         {
             // Arrange

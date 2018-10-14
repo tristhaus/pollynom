@@ -1,7 +1,7 @@
 ﻿using System.Windows;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using PollyFoundation;
-using PollyNomTest.Helper;
+using TestInfrastructure;
 
 namespace PollyNomTest.PollyFoundation
 {
@@ -15,6 +15,7 @@ namespace PollyNomTest.PollyFoundation
         /// Simple tests on a square canvas.
         /// </summary>
         [TestMethod]
+        [TestCategory(TestInfrastructure.TestCategories.UnitTest)]
         public void SquareSimple()
         {
             // Arrange
@@ -51,6 +52,7 @@ namespace PollyNomTest.PollyFoundation
         /// Simple tests on a landscape rectangle.
         /// </summary>
         [TestMethod]
+        [TestCategory(TestInfrastructure.TestCategories.UnitTest)]
         public void RectangleLandscapeSimple()
         {
             // Arrange
@@ -88,6 +90,7 @@ namespace PollyNomTest.PollyFoundation
         /// Simple tests on a portrait rectangle.
         /// </summary>
         [TestMethod]
+        [TestCategory(TestInfrastructure.TestCategories.UnitTest)]
         public void RectanglePortraitSimple()
         {
             // Arrange
@@ -125,6 +128,7 @@ namespace PollyNomTest.PollyFoundation
         /// Simple tests on a landscape rectangle.
         /// </summary>
         [TestMethod]
+        [TestCategory(TestInfrastructure.TestCategories.UnitTest)]
         public void RectangleLandscapeMargin()
         {
             // Arrange
@@ -162,6 +166,7 @@ namespace PollyNomTest.PollyFoundation
         /// Tests on a portrait rectangle with a margin.
         /// </summary>
         [TestMethod]
+        [TestCategory(TestInfrastructure.TestCategories.UnitTest)]
         public void RectanglePortraitMargin()
         {
             // Arrange

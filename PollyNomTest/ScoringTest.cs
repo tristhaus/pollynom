@@ -14,6 +14,7 @@ namespace PollyNomTest
         /// Single list with 3 hits should give 7.
         /// </summary>
         [TestMethod]
+        [TestCategory(TestInfrastructure.TestCategories.UnitTest)]
         public void SimpleCase()
         {
             // Arrange
@@ -30,6 +31,7 @@ namespace PollyNomTest
         /// A list with no hits should give 0.
         /// </summary>
         [TestMethod]
+        [TestCategory(TestInfrastructure.TestCategories.UnitTest)]
         public void NoHitsList()
         {
             // Arrange
@@ -46,6 +48,7 @@ namespace PollyNomTest
         /// An empty list should give 0.
         /// </summary>
         [TestMethod]
+        [TestCategory(TestInfrastructure.TestCategories.UnitTest)]
         public void EmptyList()
         {
             // Arrange
@@ -62,6 +65,7 @@ namespace PollyNomTest
         /// A more complicated case.
         /// </summary>
         [TestMethod]
+        [TestCategory(TestInfrastructure.TestCategories.UnitTest)]
         public void CombinedCase()
         {
             // Arrange

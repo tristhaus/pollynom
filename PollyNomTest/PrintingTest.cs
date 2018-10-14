@@ -17,6 +17,7 @@ namespace PollyNomTest
         /// Tests the printing of <see cref="TestExpressionBuilder.Expression01"/>.
         /// </summary>
         [TestMethod]
+        [TestCategory(TestInfrastructure.TestCategories.UnitTest)]
         public void Print01()
         {
             // Arrange
@@ -33,6 +34,7 @@ namespace PollyNomTest
         /// Tests the printing of <see cref="TestExpressionBuilder.Expression02"/>.
         /// </summary>
         [TestMethod]
+        [TestCategory(TestInfrastructure.TestCategories.UnitTest)]
         public void Print02()
         {
             // Arrange
@@ -49,6 +51,7 @@ namespace PollyNomTest
         /// Tests the printing of <see cref="TestExpressionBuilder.Expression03"/>.
         /// </summary>
         [TestMethod]
+        [TestCategory(TestInfrastructure.TestCategories.UnitTest)]
         public void Print03()
         {
             // Arrange
@@ -65,6 +68,7 @@ namespace PollyNomTest
         /// Tests the printing of <see cref="TestExpressionBuilder.Expression04"/>.
         /// </summary>
         [TestMethod]
+        [TestCategory(TestInfrastructure.TestCategories.UnitTest)]
         public void Print04()
         {
             // Arrange
@@ -81,6 +85,7 @@ namespace PollyNomTest
         /// Tests the printing of <see cref="TestExpressionBuilder.Expression05"/>.
         /// </summary>
         [TestMethod]
+        [TestCategory(TestInfrastructure.TestCategories.UnitTest)]
         public void Print05()
         {
             // Arrange
@@ -97,6 +102,7 @@ namespace PollyNomTest
         /// Tests the printing of <see cref="TestExpressionBuilder.Expression06"/>.
         /// </summary>
         [TestMethod]
+        [TestCategory(TestInfrastructure.TestCategories.UnitTest)]
         public void Print06()
         {
             // Arrange
@@ -113,6 +119,7 @@ namespace PollyNomTest
         /// Tests the printing of <see cref="TestExpressionBuilder.Expression07"/>.
         /// </summary>
         [TestMethod]
+        [TestCategory(TestInfrastructure.TestCategories.UnitTest)]
         public void Print07()
         {
             // Arrange
@@ -129,6 +136,7 @@ namespace PollyNomTest
         /// Tests the printing of <see cref="TestExpressionBuilder.Expression08"/>.
         /// </summary>
         [TestMethod]
+        [TestCategory(TestInfrastructure.TestCategories.UnitTest)]
         public void Print08()
         {
             // Arrange
@@ -145,6 +153,7 @@ namespace PollyNomTest
         /// Tests the printing of an exponential function and natural logarithm.
         /// </summary>
         [TestMethod]
+        [TestCategory(TestInfrastructure.TestCategories.UnitTest)]
         public void PrintExponentialAndLogarithm()
         {
             // Arrange
@@ -167,6 +176,7 @@ namespace PollyNomTest
         /// Tests the printing of the sine function.
         /// </summary>
         [TestMethod]
+        [TestCategory(TestInfrastructure.TestCategories.UnitTest)]
         public void PrintSine()
         {
             // Arrange
@@ -183,6 +193,7 @@ namespace PollyNomTest
         /// Tests the printing of the cosine function.
         /// </summary>
         [TestMethod]
+        [TestCategory(TestInfrastructure.TestCategories.UnitTest)]
         public void PrintCosine()
         {
             // Arrange
@@ -199,6 +210,7 @@ namespace PollyNomTest
         /// Tests the printing of the tangent function.
         /// </summary>
         [TestMethod]
+        [TestCategory(TestInfrastructure.TestCategories.UnitTest)]
         public void PrintTangent()
         {
             // Arrange
@@ -215,6 +227,7 @@ namespace PollyNomTest
         /// Tests the printing of the absolute value function.
         /// </summary>
         [TestMethod]
+        [TestCategory(TestInfrastructure.TestCategories.UnitTest)]
         public void PrintAbsoluteValue()
         {
             // Arrange

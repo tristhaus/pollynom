@@ -1,10 +1,8 @@
-﻿using System.Collections.Generic;
-using System.Drawing;
-using Backend.BusinessLogic;
+﻿using Backend.BusinessLogic;
 using Backend.BusinessLogic.Expressions;
 using Backend.BusinessLogic.Expressions.SingleArgumentFunctions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using PollyNomTest.Helper;
+using TestInfrastructure;
 
 namespace PollyNomTest
 {
@@ -18,6 +16,7 @@ namespace PollyNomTest
         /// Tests the evaluation of x^2 into a single list.
         /// </summary>
         [TestMethod]
+        [TestCategory(TestInfrastructure.TestCategories.UnitTest)]
         public void XSquared_HasOneList()
         {
             // Arrange
@@ -36,6 +35,7 @@ namespace PollyNomTest
         /// Tests the evaluation of 1/x into two lists.
         /// </summary>
         [TestMethod]
+        [TestCategory(TestInfrastructure.TestCategories.UnitTest)]
         public void OneOverX_HasTwoLists()
         {
             // Arrange
@@ -55,6 +55,7 @@ namespace PollyNomTest
         /// Tests the evaluation of x^(0.5) into a single list and a decent starting value.
         /// </summary>
         [TestMethod]
+        [TestCategory(TestInfrastructure.TestCategories.UnitTest)]
         public void RootX_HasOneList()
         {
             // Arrange
@@ -75,6 +76,7 @@ namespace PollyNomTest
         /// Tests the evaluation of ln(x) into a single list with a decent starting value.
         /// </summary>
         [TestMethod]
+        [TestCategory(TestInfrastructure.TestCategories.UnitTest)]
         public void LnX_HasOneListAndStartsSufficientlyLow()
         {
             // Arrange

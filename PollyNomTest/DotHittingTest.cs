@@ -3,7 +3,7 @@ using Backend.BusinessLogic;
 using Backend.BusinessLogic.Dots;
 using Backend.BusinessLogic.Expressions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using PollyNomTest.Helper;
+using TestInfrastructure;
 
 namespace PollyNomTest
 {
@@ -21,6 +21,7 @@ namespace PollyNomTest
         /// Tests hitting of a dot at tangential points
         /// </summary>
         [TestMethod]
+        [TestCategory(TestInfrastructure.TestCategories.UnitTest)]
         public void TrivialBorderCases()
         {
             // Arrange
@@ -79,6 +80,7 @@ namespace PollyNomTest
         /// Non-trivial case of a singularity
         /// </summary>
         [TestMethod]
+        [TestCategory(TestInfrastructure.TestCategories.UnitTest)]
         public void Singularity1()
         {
             // Arrange
@@ -101,6 +103,7 @@ namespace PollyNomTest
         /// Non-trivial case of a singularity
         /// </summary>
         [TestMethod]
+        [TestCategory(TestInfrastructure.TestCategories.UnitTest)]
         public void Singularity2()
         {
             // Arrange

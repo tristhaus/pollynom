@@ -17,6 +17,7 @@ namespace PollyNomTest
         /// Tests the sequential addition and removal of expressions.
         /// </summary>
         [TestMethod]
+        [TestCategory(TestInfrastructure.TestCategories.UnitTest)]
         public void TestSequentialAdditionAndRemoval()
         {
             // Arrange

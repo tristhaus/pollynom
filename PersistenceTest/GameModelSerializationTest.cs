@@ -14,6 +14,7 @@ namespace PersistenceTest
         /// Test the serialization of a <see cref="DotModel"/>.
         /// </summary>
         [TestMethod]
+        [TestCategory(TestInfrastructure.TestCategories.UnitTest)]
         public void DotSerialization()
         {
             // Arrange
@@ -34,6 +35,7 @@ namespace PersistenceTest
         /// Test the deserialization of a <see cref="DotModel"/>.
         /// </summary>
         [TestMethod]
+        [TestCategory(TestInfrastructure.TestCategories.UnitTest)]
         public void DotDeserialization()
         {
             // Arrange
@@ -57,6 +59,7 @@ namespace PersistenceTest
         /// Test the serialization of a filled <see cref="GameModel"/>.
         /// </summary>
         [TestMethod]
+        [TestCategory(TestInfrastructure.TestCategories.UnitTest)]
         public void FilledGameSerialization()
         {
             // Arrange
@@ -83,6 +86,7 @@ namespace PersistenceTest
         /// Test the deserialization of a filled <see cref="GameModel"/>.
         /// </summary>
         [TestMethod]
+        [TestCategory(TestInfrastructure.TestCategories.UnitTest)]
         public void FilledGameDeserialization()
         {
             // Arrange
@@ -116,6 +120,7 @@ namespace PersistenceTest
         /// Test the serialization of an empty <see cref="GameModel"/>.
         /// </summary>
         [TestMethod]
+        [TestCategory(TestInfrastructure.TestCategories.UnitTest)]
         public void EmptyGameSerialization()
         {
             // Arrange
@@ -132,6 +137,7 @@ namespace PersistenceTest
         /// Test the deserialization of an empty <see cref="GameModel"/>.
         /// </summary>
         [TestMethod]
+        [TestCategory(TestInfrastructure.TestCategories.UnitTest)]
         public void EmptyGameDeserialization()
         {
             // Arrange

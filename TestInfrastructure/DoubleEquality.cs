@@ -1,11 +1,11 @@
 ﻿using System;
 
-namespace PollyNomTest.Helper
+namespace TestInfrastructure
 {
     /// <summary>
     /// Allows to compare two doubles for approximate equality.
     /// </summary>
-    internal static class DoubleEquality
+    public static class DoubleEquality
     {
         /// <summary>
         /// Threshold below which the absolute difference must be for equality.

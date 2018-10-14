@@ -74,6 +74,10 @@
       <Project>{1b86ed8a-d6b1-42ae-b8bb-2f3914ac538e}</Project>
       <Name>Persistence</Name>
     </ProjectReference>
+    <ProjectReference Include="..\TestInfrastructure\TestInfrastructure.csproj">
+      <Project>{f0541973-f7e3-4a92-a363-1d1765f62fbf}</Project>
+      <Name>TestInfrastructure</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

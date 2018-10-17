@@ -7,7 +7,7 @@ namespace Persistence.Models
     /// <summary>
     /// Represents a game for persistence.
     /// </summary>
-    [JsonObject]
+    [JsonObject(ItemRequired = Required.Always)]
     public class GameModel
     {
         private List<DotModel> dotModels = new List<DotModel>();
@@ -15,7 +15,7 @@ namespace Persistence.Models
         /// <summary>
         /// Gets or sets the collection of dots contained in the game.
         /// </summary>
-        [JsonProperty("DotModels")]
+        [JsonProperty("DotModels", Required = Required.Always)]
         public List<DotModel> DotModels
         {
             get

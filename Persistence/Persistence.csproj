@@ -47,6 +47,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="IGameRepository.cs" />
     <Compile Include="Models\DotModel.cs" />
     <Compile Include="Models\GameModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

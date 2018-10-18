@@ -64,6 +64,7 @@
     <Compile Include="Helper\GameModelEqualityCheckerTest.cs" />
     <Compile Include="InmemoryGameRepository.cs" />
     <Compile Include="InmemoryGameRepositoryTest.cs" />
+    <Compile Include="OnDiskGameRepositoryTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

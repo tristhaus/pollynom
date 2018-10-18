@@ -5,10 +5,19 @@ using PersistenceTest.Helper;
 
 namespace PersistenceTest
 {
+    /// <summary>
+    /// Implements tests to be re-used by <see cref="IGameRepository"/> implementations.
+    /// </summary>
     public abstract class GameRepositoryTestBase
     {
+        /// <summary>
+        /// Gets the implementation used in the tests, unless injected in the call.
+        /// </summary>
         protected abstract IGameRepository GameRepository { get; }
 
+        /// <summary>
+        /// Tests the roundtrip saving and loading of a game.
+        /// </summary>
         protected virtual void ShouldPerformRoundTripSavingLoading()
         {
             // Arrange
@@ -33,6 +42,9 @@ namespace PersistenceTest
             Assert.IsTrue(GameModelEqualityChecker.AreApproximatelyEqual(model, retrievedModel));
         }
 
+        /// <summary>
+        /// Tests the overwriting of a game by saving twice.
+        /// </summary>
         protected virtual void ShouldAllowOverwriting()
         {
             // Arrange
@@ -70,6 +82,9 @@ namespace PersistenceTest
             Assert.IsTrue(GameModelEqualityChecker.AreApproximatelyEqual(model2, retrievedModel));
         }
 
+        /// <summary>
+        /// Tests the exception thrown when trying to load from a non-existent file.
+        /// </summary>
         protected virtual void ShouldThrowForNonExistentFile()
         {
             // Arrange
@@ -82,6 +97,10 @@ namespace PersistenceTest
             // Exception thrown
         }
 
+        /// <summary>
+        /// Tests the exception thrown if the file cannot be deserialized.
+        /// </summary>
+        /// <param name="specialGameRepository">The specially prepared <see cref="IGameRepository"/> implementation to be used.</param>
         protected virtual void ShouldThrowForNonCompatibleFileContent(IGameRepository specialGameRepository)
         {
             // Arrange

@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.IO;
-using Newtonsoft.Json;
 using Persistence;
 using Persistence.Models;
 
@@ -11,22 +10,17 @@ namespace PersistenceTest
     /// </summary>
     public class InmemoryGameRepository : IGameRepository
     {
-        private static readonly JsonSerializerSettings SettingsForJson = new JsonSerializerSettings()
-        {
-            CheckAdditionalContent = true,
-            MissingMemberHandling = MissingMemberHandling.Error,
-            DefaultValueHandling = DefaultValueHandling.Include,
-            ObjectCreationHandling = ObjectCreationHandling.Auto,
-        };
+        private readonly Serializer<GameModel> serializer;
 
-        private Dictionary<string, string> fileSystemStub;
+        private Dictionary<string, byte[]> fileSystemStub;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="InmemoryGameRepository"/> class.
         /// </summary>
         public InmemoryGameRepository()
         {
-            this.fileSystemStub = new Dictionary<string, string>();
+            this.serializer = new Serializer<GameModel>();
+            this.fileSystemStub = new Dictionary<string, byte[]>();
         }
 
         /// <summary>
@@ -34,11 +28,11 @@ namespace PersistenceTest
         /// Accepts the storage of content under the given path.
         /// </summary>
         /// <param name="path">The storage key under which to store content.</param>
-        /// <param name="content">The content to store.</param>
-        internal InmemoryGameRepository(string path, string content)
+        /// <param name="buffer">The content to store.</param>
+        internal InmemoryGameRepository(string path, byte[] buffer)
             : this()
         {
-            this.fileSystemStub[path] = content;
+            this.fileSystemStub[path] = buffer;
         }
 
         /// <inheritdoc />
@@ -49,13 +43,13 @@ namespace PersistenceTest
                 throw new FileNotFoundException("file not found in " + this.GetType().ToString(), path);
             }
 
-            return JsonConvert.DeserializeObject<GameModel>(this.fileSystemStub[path], SettingsForJson);
+            return this.serializer.Deserialize(this.fileSystemStub[path]);
         }
 
         /// <inheritdoc />
         public void SaveGame(GameModel gameModel, string path)
         {
-            this.fileSystemStub[path] = JsonConvert.SerializeObject(gameModel, SettingsForJson);
+            this.fileSystemStub[path] = this.serializer.Serialize(gameModel);
         }
     }
 }

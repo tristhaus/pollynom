@@ -1,6 +1,4 @@
 ﻿using System.IO;
-using System.Text;
-using Newtonsoft.Json;
 using Persistence.Models;
 
 namespace Persistence
@@ -10,15 +8,24 @@ namespace Persistence
     /// </summary>
     public class OnDiskGameRepository : IGameRepository
     {
-        private static readonly System.Text.Encoding Encoding = System.Text.Encoding.UTF8;
+        private readonly Serializer<GameModel> serializer;
 
-        private static readonly JsonSerializerSettings SettingsForJson = new JsonSerializerSettings()
+        public OnDiskGameRepository()
         {
-            CheckAdditionalContent = true,
-            MissingMemberHandling = MissingMemberHandling.Error,
-            DefaultValueHandling = DefaultValueHandling.Include,
-            ObjectCreationHandling = ObjectCreationHandling.Auto,
-        };
+            this.serializer = new Serializer<GameModel>();
+        }
+
+        /// <inheritdoc />
+        public void SaveGame(GameModel gameModel, string path)
+        {
+            byte[] buffer = this.serializer.Serialize(gameModel);
+
+            using (var fileStream = File.Open(path, FileMode.Create))
+            {
+                fileStream.Write(buffer, 0, (int)buffer.Length);
+                fileStream.Flush();
+            }
+        }
 
         /// <inheritdoc />
         public GameModel LoadGame(string path)
@@ -27,22 +34,8 @@ namespace Persistence
             {
                 byte[] buffer = new byte[fileStream.Length];
                 fileStream.Read(buffer, 0, (int)fileStream.Length);
-                string content = Encoding.GetString(buffer);
 
-                return JsonConvert.DeserializeObject<GameModel>(content, SettingsForJson);
-            }
-        }
-
-        /// <inheritdoc />
-        public void SaveGame(GameModel gameModel, string path)
-        {
-            string content = JsonConvert.SerializeObject(gameModel, SettingsForJson);
-
-            using (var fileStream = File.Open(path, FileMode.Create))
-            {
-                byte[] buffer = Encoding.GetBytes(content);
-                fileStream.Write(buffer, 0, (int)buffer.Length);
-                fileStream.Flush();
+                return this.serializer.Deserialize(buffer);
             }
         }
     }

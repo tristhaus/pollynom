@@ -110,6 +110,10 @@
       <Project>{dca01706-4651-4248-b9b6-c8b9967b0b98}</Project>
       <Name>Backend</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Persistence\Persistence.csproj">
+      <Project>{1b86ed8a-d6b1-42ae-b8bb-2f3914ac538e}</Project>
+      <Name>Persistence</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Analyzer Include="..\packages\StyleCop.Analyzers.1.0.2\analyzers\dotnet\cs\StyleCop.Analyzers.CodeFixes.dll" />

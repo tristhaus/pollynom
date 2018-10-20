@@ -77,6 +77,14 @@
       <Project>{dca01706-4651-4248-b9b6-c8b9967b0b98}</Project>
       <Name>Backend</Name>
     </ProjectReference>
+    <ProjectReference Include="..\PersistenceTest\PersistenceTest.csproj">
+      <Project>{3e2e0edd-b3a3-4640-b601-8eb9ab4061c7}</Project>
+      <Name>PersistenceTest</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Persistence\Persistence.csproj">
+      <Project>{1b86ed8a-d6b1-42ae-b8bb-2f3914ac538e}</Project>
+      <Name>Persistence</Name>
+    </ProjectReference>
     <ProjectReference Include="..\PollyFoundation\PollyFoundation.csproj">
       <Project>{e346d732-c0d6-4712-b4c5-a7f95afa8f53}</Project>
       <Name>PollyFoundation</Name>

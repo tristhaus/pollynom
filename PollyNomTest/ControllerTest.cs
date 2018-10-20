@@ -4,6 +4,7 @@ using Backend.BusinessLogic.Dots;
 using Backend.BusinessLogic.Expressions;
 using Backend.Controller;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using PersistenceTest;
 
 namespace PollyNomTest
 {
@@ -43,6 +44,35 @@ namespace PollyNomTest
             Assert.AreEqual(score1, 1);
             Assert.AreEqual(score2, 2);
             Assert.AreEqual(score3, 1);
+        }
+
+        [TestMethod]
+        [TestCategory(TestInfrastructure.TestCategories.UnitTest)]
+        public void TestSavingAndLoadingGame()
+        {
+            // Arrange
+            List<IDot> testDots = new List<IDot> { new GoodDot(0.0, 0.0), new GoodDot(1.0, 1.0) };
+            PollyController controller = new PollyController(testDots, new InmemoryGameRepository());
+            IExpression exprX = new BaseX();
+            const string path = @"C:\temp\roundtripController.json";
+
+            // Act
+            controller.SetExpressionAtIndex(0, exprX.Print().Value);
+            controller.UpdateData();
+            controller.SaveGame(path);
+            int score1 = controller.Score;
+
+            controller.LoadGame(path);
+            int score2 = controller.Score;
+
+            controller.SetExpressionAtIndex(0, exprX.Print().Value);
+            controller.UpdateData();
+            int score3 = controller.Score;
+
+            // Assert
+            Assert.AreEqual(score1, 3);
+            Assert.AreEqual(score2, 0);
+            Assert.AreEqual(score3, 3);
         }
     }
 }

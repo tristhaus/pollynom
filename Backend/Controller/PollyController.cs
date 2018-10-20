@@ -1,8 +1,11 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 
 using Backend.BusinessLogic;
 using Backend.BusinessLogic.Dots;
 using Backend.BusinessLogic.Expressions;
+using Persistence;
+using Persistence.Models;
 
 namespace Backend.Controller
 {
@@ -41,6 +44,11 @@ namespace Backend.Controller
         };
 
         /// <summary>
+        /// The game repository for obtaining persisted games.
+        /// </summary>
+        private IGameRepository gameRepository;
+
+        /// <summary>
         /// The parser for textual representations of <see cref="IExpression"/>.
         /// </summary>
         private Parser parser;
@@ -74,13 +82,14 @@ namespace Backend.Controller
         /// Initializes a new instance of the <see cref="PollyController"/> class.
         /// </summary>
         /// <param name="dots">A list of dots that shall be respected by the <see cref="PollyController"/> instance.</param>
-        public PollyController(List<IDot> dots = null)
+        /// <param name="gameRepository">The game repository to be used, default used if null.</param>
+        public PollyController(List<IDot> dots = null, IGameRepository gameRepository = null)
         {
-            this.expressions = new IExpression[MaxExpressions];
-            this.points = new List<ListPointLogical>[MaxExpressions];
-            this.dots = dots ?? new GoodDotsGenerator(8).Generate();
-
+            this.gameRepository = gameRepository ?? new OnDiskGameRepository();
             this.parser = new Parser();
+
+            this.ClearInput();
+            this.dots = dots ?? new GoodDotsGenerator(8).Generate();
 
             this.UpdateData();
         }
@@ -116,6 +125,47 @@ namespace Backend.Controller
             {
                 return MaxExpressions;
             }
+        }
+
+        /// <summary>
+        /// Initialize a new random game.
+        /// </summary>
+        public void NewRandomGame()
+        {
+            this.ClearInput();
+            this.dots = new GoodDotsGenerator(8).Generate();
+
+            this.UpdateData();
+        }
+
+        /// <summary>
+        /// Save the currently held game under the given path.
+        /// </summary>
+        /// <param name="path">The path to save/overwrite in.</param>
+        public void SaveGame(string path)
+        {
+            GameModel gameModel = new GameModel();
+            gameModel.DotModels.AddRange(
+                this.dots.Select(d => new DotModel()
+                {
+                    X = d.Position.Item1,
+                    Y = d.Position.Item2
+                }));
+
+            this.gameRepository.SaveGame(gameModel, path);
+        }
+
+        /// <summary>
+        /// Load game from the given path.
+        /// </summary>
+        /// <param name="path">The path to load from.</param>
+        public void LoadGame(string path)
+        {
+            this.ClearInput();
+            var model = this.gameRepository.LoadGame(path);
+            this.dots = new List<IDot>(model.DotModels.Select(dm => new GoodDot(dm.X, dm.Y)));
+
+            this.UpdateData();
         }
 
         /// <summary>
@@ -224,6 +274,12 @@ namespace Backend.Controller
             }
 
             this.score = ScoreCalculator.CalculateScore(numbersOfHits);
+        }
+
+        private void ClearInput()
+        {
+            this.expressions = new IExpression[MaxExpressions];
+            this.points = new List<ListPointLogical>[MaxExpressions];
         }
     }
 }

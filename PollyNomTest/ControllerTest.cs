@@ -54,7 +54,7 @@ namespace PollyNomTest
             List<IDot> testDots = new List<IDot> { new GoodDot(0.0, 0.0), new GoodDot(1.0, 1.0) };
             PollyController controller = new PollyController(testDots, new InmemoryGameRepository());
             IExpression exprX = new BaseX();
-            const string path = @"C:\temp\roundtripController.json";
+            const string path = @"F:\temp\roundtripController.json";
 
             // Act
             controller.SetExpressionAtIndex(0, exprX.Print().Value);

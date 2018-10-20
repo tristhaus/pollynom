@@ -32,7 +32,7 @@ namespace PersistenceTest
                 X = -5.6,
                 Y = -7.8,
             });
-            const string path = @"C:\temp\test.json";
+            const string path = @"F:\temp\test.json";
 
             // Act
             this.GameRepository.SaveGame(model, path);
@@ -71,7 +71,7 @@ namespace PersistenceTest
                 X = -4.4,
                 Y = -4.4,
             });
-            const string path = @"C:\temp\test.json";
+            const string path = @"F:\temp\test.json";
 
             // Act
             this.GameRepository.SaveGame(model1, path);
@@ -88,7 +88,7 @@ namespace PersistenceTest
         protected virtual void ShouldThrowForNonExistentFile()
         {
             // Arrange
-            const string path = @"C:\temp\neverExists.json";
+            const string path = @"F:\temp\neverExists.json";
 
             // Act
             GameModel retrievedModel = this.GameRepository.LoadGame(path);
@@ -104,7 +104,7 @@ namespace PersistenceTest
         protected virtual void ShouldThrowForNonCompatibleFileContent(IGameRepository specialGameRepository)
         {
             // Arrange
-            const string path = @"C:\temp\synchronizedNameOfBadFile.json";
+            const string path = @"F:\temp\synchronizedNameOfBadFile.json";
 
             // Act
             GameModel retrievedModel = specialGameRepository.LoadGame(path);

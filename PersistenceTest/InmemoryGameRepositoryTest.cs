@@ -67,7 +67,7 @@ namespace PersistenceTest
         public void ShouldThrowForNonCompatibleFileContent()
         {
             // special setup: create bad file
-            const string path = @"C:\temp\synchronizedNameOfBadFile.json";
+            const string path = @"F:\temp\synchronizedNameOfBadFile.json";
             const string badJson = @"{ ""someKey"": ""someContent""}";
             byte[] buffer = System.Text.Encoding.UTF8.GetBytes(badJson);
             IGameRepository specialGameRepository = new InmemoryGameRepository(path, buffer);

@@ -62,7 +62,7 @@ namespace PersistenceTest
         public void ShouldThrowForNonCompatibleFileContent()
         {
             // special setup: create bad file
-            const string path = @"C:\temp\synchronizedNameOfBadFile.json";
+            const string path = @"F:\temp\synchronizedNameOfBadFile.json";
             const string badJson = @"{ ""someKey"": ""someContent""}";
 
             System.Text.Encoding encoding = System.Text.Encoding.UTF8;

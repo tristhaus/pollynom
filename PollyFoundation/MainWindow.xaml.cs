@@ -93,6 +93,16 @@ namespace PollyFoundation
         private MenuItem newGameMenuItem;
 
         /// <summary>
+        /// The open existing game menu item, found under <see cref="this.fileMenuItem"/>.
+        /// </summary>
+        private MenuItem openGameMenuItem;
+
+        /// <summary>
+        /// The save current game menu item, found under <see cref="this.fileMenuItem"/>.
+        /// </summary>
+        private MenuItem saveGameMenuItem;
+
+        /// <summary>
         /// The canvas on which output is drawn.
         /// </summary>
         private Canvas canvas;
@@ -183,6 +193,8 @@ namespace PollyFoundation
             this.dpForCanvas.SizeChanged += this.HandleSizeChanged;
 
             this.newGameMenuItem.Click += this.NewGameMenuItem_Click;
+            this.openGameMenuItem.Click += this.OpenGameMenuItem_Click;
+            this.saveGameMenuItem.Click += this.SaveGameMenuItem_Click;
         }
 
        /// <inheritdoc />
@@ -339,10 +351,14 @@ namespace PollyFoundation
             this.mainMenu = new Menu();
             DockPanel.SetDock(this.mainMenu, Dock.Top);
             this.fileMenuItem = new MenuItem() { Header = "_File", };
-            this.newGameMenuItem = new MenuItem() { Header = "_New Game" };
+            this.newGameMenuItem = new MenuItem() { Header = "_New Game", };
+            this.openGameMenuItem = new MenuItem() { Header = "_Open Game", };
+            this.saveGameMenuItem = new MenuItem() { Header = "_Save Game", };
 
             this.mainMenu.Items.Add(this.fileMenuItem);
             this.fileMenuItem.Items.Add(this.newGameMenuItem);
+            this.fileMenuItem.Items.Add(this.openGameMenuItem);
+            this.fileMenuItem.Items.Add(this.saveGameMenuItem);
 
             this.basePanel.Children.Add(this.mainMenu);
             this.basePanel.Children.Add(this.inputOutputGrid);
@@ -673,6 +689,50 @@ namespace PollyFoundation
             this.controller.NewRandomGame();
             this.controller.UpdateData();
             this.RedrawAll();
+        }
+
+        /// <summary>
+        /// Load a game from disk.
+        /// </summary>
+        /// <param name="sender">The sender object.</param>
+        /// <param name="e">The even args.</param>
+        private void OpenGameMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            Microsoft.Win32.OpenFileDialog dialog = new Microsoft.Win32.OpenFileDialog();
+
+            dialog.DefaultExt = ".json";
+            dialog.Filter = "Game JSON Files (*.json)|*.json;";
+
+            bool? result = dialog.ShowDialog();
+
+            if (result == true)
+            {
+                string path = dialog.FileName;
+                this.controller.LoadGame(path);
+                this.RedrawAll();
+            }
+        }
+
+        /// <summary>
+        /// Save a game to disk.
+        /// </summary>
+        /// <param name="sender">The sender object.</param>
+        /// <param name="e">The even args.</param>
+        private void SaveGameMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            Microsoft.Win32.SaveFileDialog dialog = new Microsoft.Win32.SaveFileDialog();
+
+            dialog.DefaultExt = ".json";
+            dialog.Filter = "Game JSON Files (*.json)|*.json;";
+
+            bool? result = dialog.ShowDialog();
+
+            if (result == true)
+            {
+                string path = dialog.FileName;
+                this.controller.SaveGame(path);
+                this.RedrawAll();
+            }
         }
     }
 }

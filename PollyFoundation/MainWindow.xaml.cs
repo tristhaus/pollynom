@@ -78,6 +78,21 @@ namespace PollyFoundation
         private CoordinateHelper coordinateHelper;
 
         /// <summary>
+        /// The main menu (strip) at the top of the window.
+        /// </summary>
+        private Menu mainMenu;
+
+        /// <summary>
+        /// The first-level file menu enty.
+        /// </summary>
+        private MenuItem fileMenuItem;
+
+        /// <summary>
+        /// The new game menu item, found under <see cref="this.fileMenuItem"/>.
+        /// </summary>
+        private MenuItem newGameMenuItem;
+
+        /// <summary>
         /// The canvas on which output is drawn.
         /// </summary>
         private Canvas canvas;
@@ -133,6 +148,11 @@ namespace PollyFoundation
         private ScrollViewer scrollViewer;
 
         /// <summary>
+        /// The grid definining the main input and output area.
+        /// </summary>
+        private Grid inputOutputGrid;
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="MainWindow"/> class.
         /// </summary>
         public MainWindow()
@@ -161,9 +181,11 @@ namespace PollyFoundation
 
             this.SizeChanged += this.HandleSizeChanged;
             this.dpForCanvas.SizeChanged += this.HandleSizeChanged;
+
+            this.newGameMenuItem.Click += this.NewGameMenuItem_Click;
         }
 
-        /// <inheritdoc />
+       /// <inheritdoc />
         public void Dispose()
         {
             this.Dispose(true);
@@ -295,9 +317,11 @@ namespace PollyFoundation
                 HorizontalAlignment = HorizontalAlignment.Stretch,
             };
 
-            this.mainGrid.RowDefinitions.Add(new RowDefinition() { Height = new GridLength(1, GridUnitType.Star) });
-            this.mainGrid.RowDefinitions.Add(new RowDefinition() { Height = new GridLength(5, GridUnitType.Pixel) });
-            this.mainGrid.RowDefinitions.Add(new RowDefinition()
+            this.inputOutputGrid = new Grid();
+
+            this.inputOutputGrid.RowDefinitions.Add(new RowDefinition() { Height = new GridLength(1, GridUnitType.Star) });
+            this.inputOutputGrid.RowDefinitions.Add(new RowDefinition() { Height = new GridLength(5, GridUnitType.Pixel) });
+            this.inputOutputGrid.RowDefinitions.Add(new RowDefinition()
             {
                 Height = new GridLength(60, GridUnitType.Pixel),
                 MinHeight = 50,
@@ -308,9 +332,20 @@ namespace PollyFoundation
             Grid.SetRow(this.gridSplitter, 1);
             Grid.SetRow(this.scrollViewer, 2);
 
-            this.mainGrid.Children.Add(this.dpForCanvas);
-            this.mainGrid.Children.Add(this.gridSplitter);
-            this.mainGrid.Children.Add(this.scrollViewer);
+            this.inputOutputGrid.Children.Add(this.dpForCanvas);
+            this.inputOutputGrid.Children.Add(this.gridSplitter);
+            this.inputOutputGrid.Children.Add(this.scrollViewer);
+
+            this.mainMenu = new Menu();
+            DockPanel.SetDock(this.mainMenu, Dock.Top);
+            this.fileMenuItem = new MenuItem() { Header = "_File", };
+            this.newGameMenuItem = new MenuItem() { Header = "_New Game" };
+
+            this.mainMenu.Items.Add(this.fileMenuItem);
+            this.fileMenuItem.Items.Add(this.newGameMenuItem);
+
+            this.basePanel.Children.Add(this.mainMenu);
+            this.basePanel.Children.Add(this.inputOutputGrid);
 
             this.UpdateLayout();
             this.AdjustCanvasSize();
@@ -626,6 +661,18 @@ namespace PollyFoundation
         private void UpdateWindowTitle()
         {
             this.Title = TitlePrefix + this.controller.Score.ToString();
+        }
+
+        /// <summary>
+        /// Create a new random game.
+        /// </summary>
+        /// <param name="sender">The sender object.</param>
+        /// <param name="e">The event args.</param>
+        private void NewGameMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            this.controller.NewRandomGame();
+            this.controller.UpdateData();
+            this.RedrawAll();
         }
     }
 }

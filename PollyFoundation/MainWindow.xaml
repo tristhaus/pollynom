@@ -12,5 +12,5 @@
         MinWidth="200"
         WindowStartupLocation="CenterScreen"
         >
-    <Grid x:Name="mainGrid"/>
+    <DockPanel x:Name="basePanel"></DockPanel>
 </Window>

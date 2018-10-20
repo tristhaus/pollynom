@@ -10,6 +10,9 @@ namespace Persistence
     {
         private readonly Serializer<GameModel> serializer;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="OnDiskGameRepository"/> class.
+        /// </summary>
         public OnDiskGameRepository()
         {
             this.serializer = new Serializer<GameModel>();

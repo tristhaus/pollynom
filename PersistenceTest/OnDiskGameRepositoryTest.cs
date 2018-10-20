@@ -20,6 +20,7 @@ namespace PersistenceTest
             this.gameRepository = new OnDiskGameRepository();
         }
 
+        /// <inheritdoc />
         protected override IGameRepository GameRepository => this.gameRepository;
 
         /// <summary>

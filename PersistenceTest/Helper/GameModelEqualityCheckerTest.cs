@@ -3,9 +3,15 @@ using Persistence.Models;
 
 namespace PersistenceTest.Helper
 {
+    /// <summary>
+    /// Collects test related to the <see cref="GameModel"/> equality check helper.
+    /// </summary>
     [TestClass]
     public class GameModelEqualityCheckerTest
     {
+        /// <summary>
+        /// Check two identical game models.
+        /// </summary>
         [TestMethod]
         [TestCategory(TestInfrastructure.TestCategories.UnitTest)]
         public void ShouldGiveTrueForIdenticalGameModels()
@@ -42,6 +48,9 @@ namespace PersistenceTest.Helper
             Assert.IsTrue(result);
         }
 
+        /// <summary>
+        /// Check two models differing in number of dots contained.
+        /// </summary>
         [TestMethod]
         [TestCategory(TestInfrastructure.TestCategories.UnitTest)]
         public void ShouldGiveFalseForDifferentNumberOfDots()
@@ -73,6 +82,9 @@ namespace PersistenceTest.Helper
             Assert.IsFalse(result);
         }
 
+        /// <summary>
+        /// Check two models differing in a dot contained.
+        /// </summary>
         [TestMethod]
         [TestCategory(TestInfrastructure.TestCategories.UnitTest)]
         public void ShouldGiveFalseForDifferentDots()

@@ -4,28 +4,23 @@ using Persistence;
 namespace PersistenceTest
 {
     /// <summary>
-    /// Collects tests related to the mock-like <see cref="InmemoryGameRepository"/>.
+    /// Collects tests related to the mock-like <see cref="InMemoryGameRepository"/>.
     /// </summary>
     [TestClass]
-    public class InmemoryGameRepositoryTest : GameRepositoryTestBase
+    public class InMemoryGameRepositoryTest : GameRepositoryTestBase
     {
         private IGameRepository gameRepository;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="InmemoryGameRepositoryTest"/> class.
+        /// Initializes a new instance of the <see cref="InMemoryGameRepositoryTest"/> class.
         /// </summary>
-        public InmemoryGameRepositoryTest()
+        public InMemoryGameRepositoryTest()
         {
-            this.gameRepository = new InmemoryGameRepository();
+            this.gameRepository = new InMemoryGameRepository();
         }
 
-        protected override IGameRepository GameRepository
-        {
-            get
-            {
-                return this.gameRepository;
-            }
-        }
+        /// <inheritdoc />
+        protected override IGameRepository GameRepository => this.gameRepository;
 
         /// <summary>
         /// Compare <see cref="GameRepositoryTestBase.ShouldPerformRoundTripSavingLoading"/>.
@@ -70,7 +65,7 @@ namespace PersistenceTest
             const string path = @"F:\temp\synchronizedNameOfBadFile.json";
             const string badJson = @"{ ""someKey"": ""someContent""}";
             byte[] buffer = System.Text.Encoding.UTF8.GetBytes(badJson);
-            IGameRepository specialGameRepository = new InmemoryGameRepository(path, buffer);
+            IGameRepository specialGameRepository = new InMemoryGameRepository(path, buffer);
 
             base.ShouldThrowForNonCompatibleFileContent(specialGameRepository);
         }

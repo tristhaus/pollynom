@@ -52,7 +52,7 @@ namespace PollyNomTest
         {
             // Arrange
             List<IDot> testDots = new List<IDot> { new GoodDot(0.0, 0.0), new GoodDot(1.0, 1.0) };
-            PollyController controller = new PollyController(testDots, new InmemoryGameRepository());
+            PollyController controller = new PollyController(testDots, new InMemoryGameRepository());
             IExpression exprX = new BaseX();
             const string path = @"F:\temp\roundtripController.json";
 

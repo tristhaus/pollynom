@@ -197,7 +197,7 @@ namespace PollyFoundation
             this.saveGameMenuItem.Click += this.SaveGameMenuItem_Click;
         }
 
-       /// <inheritdoc />
+        /// <inheritdoc />
         public void Dispose()
         {
             this.Dispose(true);

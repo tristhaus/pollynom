@@ -1,4 +1,8 @@
 Michael suggests to switch to pixel/graphic based dot hitting
+Introduce "Bad Dots", leading to a total score of negative infinity
+Localization, testable on work laptop etc.
+ID, Signature, hash: ID + content -> hash; hash XOR ID -> display
+UI/Performance improvements
 
 +----------------------------------------------------------------------------------------------------------------------+
 

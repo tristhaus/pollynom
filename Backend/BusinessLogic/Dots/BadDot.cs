@@ -1,21 +1,21 @@
 ﻿namespace Backend.BusinessLogic.Dots
 {
     /// <summary>
-    /// Represents a dot that should be hit.
+    /// Represents a dot that should not be hit.
     /// </summary>
-    public class GoodDot : DotBase
+    public class BadDot : DotBase
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="GoodDot"/> class from the coordinates given.
+        /// Initializes a new instance of the <see cref="BadDot"/> class from the coordinates given.
         /// </summary>
         /// <param name="x">X-coordinate of the dot in implied logical business units.</param>
         /// <param name="y">Y-coordinate of the dot in implied logical business units.</param>
-        public GoodDot(double x, double y)
+        public BadDot(double x, double y)
             : base(x, y)
         {
         }
 
         /// <inheritdoc />
-        public override DotKind Kind => DotKind.Good;
+        public override DotKind Kind => DotKind.Bad;
     }
 }

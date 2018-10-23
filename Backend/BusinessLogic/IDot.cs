@@ -15,6 +15,11 @@ namespace Backend.BusinessLogic
         Tuple<double, double> Position { get; }
 
         /// <summary>
+        /// Gets the kind of the dot.
+        /// </summary>
+        DotKind Kind { get; }
+
+        /// <summary>
         /// Gets the radius of the dot in logical business units.
         /// </summary>
         double Radius { get; }

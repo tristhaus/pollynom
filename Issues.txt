@@ -5,9 +5,8 @@ UI/Performance improvements
 
 +----------------------------------------------------------------------------------------------------------------------+
 
-PROG Introduce "Bad Dots", leading to a total score of negative infinity
-
 +----------------------------------------------------------------------------------------------------------------------+
 
 DONE Switch UI/Controller communication to delegates and/or Tasks
 DONE Spice up the UI
+DONE Introduce "Bad Dots", leading to a total score of negative infinity

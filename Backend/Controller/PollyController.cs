@@ -89,7 +89,7 @@ namespace Backend.Controller
             this.parser = new Parser();
 
             this.ClearInput();
-            this.dots = dots ?? new GoodDotsGenerator(8).Generate();
+            this.dots = dots ?? new RandomDotsGenerator(8, 2).Generate();
 
             this.UpdateData();
         }
@@ -133,7 +133,7 @@ namespace Backend.Controller
         public void NewRandomGame()
         {
             this.ClearInput();
-            this.dots = new GoodDotsGenerator(8).Generate();
+            this.dots = new RandomDotsGenerator(8, 2).Generate();
 
             this.UpdateData();
         }
@@ -244,9 +244,10 @@ namespace Backend.Controller
         private void UpdateDotsAndScore()
         {
             this.drawDots = new List<IDrawDot>(this.dots.Count);
-            List<int> numbersOfHits = new List<int>(1);
+            List<int> numbersOfGoodHits = new List<int>(MaxExpressions);
+            List<int> numbersOfBadHits = new List<int>(MaxExpressions);
 
-            this.dots.ForEach(x => this.drawDots.Add(new DrawDot(x.Position.Item1, x.Position.Item2, x.Radius, x.GetType() == typeof(GoodDot) ? DrawDotKind.GoodDot : DrawDotKind.BadDot)));
+            this.dots.ForEach(x => this.drawDots.Add(new DrawDot(x.Position.Item1, x.Position.Item2, x.Radius, x.Kind == DotKind.Good ? DrawDotKind.GoodDot : DrawDotKind.BadDot)));
 
             for (int expressionIndex = 0; expressionIndex < MaxExpressions; ++expressionIndex)
             {
@@ -254,7 +255,8 @@ namespace Backend.Controller
 
                 if (!expression.IsNullOrInvalidExpression())
                 {
-                    int countOfHits = 0;
+                    int countOfGoodHits = 0;
+                    int countOfBadHits = 0;
                     for (int dotIndex = 0; dotIndex < this.drawDots.Count; ++dotIndex)
                     {
                         DrawDot drawDot = this.drawDots[dotIndex] as DrawDot;
@@ -263,17 +265,25 @@ namespace Backend.Controller
                             bool isHit = this.dots[dotIndex].IsHit(expression, this.points[expressionIndex]);
                             if (isHit)
                             {
-                                ++countOfHits;
                                 drawDot.IsHit = true;
+                                if (this.dots[dotIndex].Kind == DotKind.Good)
+                                {
+                                    ++countOfGoodHits;
+                                }
+                                else
+                                {
+                                    ++countOfBadHits;
+                                }
                             }
                         }
                     }
 
-                    numbersOfHits.Add(countOfHits);
+                    numbersOfGoodHits.Add(countOfGoodHits);
+                    numbersOfBadHits.Add(countOfBadHits);
                 }
             }
 
-            this.score = ScoreCalculator.CalculateScore(numbersOfHits, new List<int>(0));
+            this.score = ScoreCalculator.CalculateScore(numbersOfGoodHits, numbersOfBadHits);
         }
 
         private void ClearInput()

@@ -8,20 +8,23 @@ namespace Backend.BusinessLogic
     /// <summary>
     /// Initializes good dots on a grid in a random manner.
     /// </summary>
-    public class GoodDotsGenerator
+    public class RandomDotsGenerator
     {
         private static Random rng = new Random();
 
-        private int targetNumberOfDots;
+        private int targetNumberOfGoodDots;
+        private int targetNumberOfBadDots;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="GoodDotsGenerator"/> class
-        /// that will generate <paramref name="targetNumberOfDots"/> dots.
+        /// Initializes a new instance of the <see cref="RandomDotsGenerator"/> class
+        /// that will generate <paramref name="targetNumberOfGoodDots"/>+<paramref name="targetNumberOfBadDots"/> dots.
         /// </summary>
-        /// <param name="targetNumberOfDots">Number of dots to be generated.</param>
-        public GoodDotsGenerator(int targetNumberOfDots = 10)
+        /// <param name="targetNumberOfGoodDots">Number of good dots to be generated.</param>
+        /// <param name="targetNumberOfBadDots">Number of bad dots to be generated.</param>
+        public RandomDotsGenerator(int targetNumberOfGoodDots = 10, int targetNumberOfBadDots = 2)
         {
-            this.targetNumberOfDots = targetNumberOfDots;
+            this.targetNumberOfGoodDots = targetNumberOfGoodDots;
+            this.targetNumberOfBadDots = targetNumberOfBadDots;
         }
 
         /// <summary>
@@ -41,12 +44,22 @@ namespace Backend.BusinessLogic
 
             int candidateCount = candidates.Count;
             List<IDot> list = new List<IDot>();
-            while (list.Count < this.targetNumberOfDots)
+            while (list.Count < this.targetNumberOfGoodDots)
             {
                 CandidateDot candidate = candidates[rng.Next(candidateCount)];
                 if (!candidate.Picked)
                 {
                     list.Add(new GoodDot(candidate.X, candidate.Y));
+                    candidate.Picked = true;
+                }
+            }
+
+            while (list.Count < this.targetNumberOfBadDots + this.targetNumberOfGoodDots)
+            {
+                CandidateDot candidate = candidates[rng.Next(candidateCount)];
+                if (!candidate.Picked)
+                {
+                    list.Add(new BadDot(candidate.X, candidate.Y));
                     candidate.Picked = true;
                 }
             }

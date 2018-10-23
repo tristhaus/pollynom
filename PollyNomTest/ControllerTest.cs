@@ -74,5 +74,34 @@ namespace PollyNomTest
             Assert.AreEqual(score2, 0);
             Assert.AreEqual(score3, 3);
         }
+
+        [TestMethod]
+        [TestCategory(TestInfrastructure.TestCategories.UnitTest)]
+        public void TestHandlingOfBadDots()
+        {
+            // Arrange
+            List<IDot> testDots = new List<IDot> { new GoodDot(0.0, 0.0), new BadDot(4.0, 0.0) };
+            PollyController controller = new PollyController(testDots);
+            IExpression exprX = new BaseX();
+            IExpression exprConst = new Constant(0.0);
+
+            // Act
+            controller.SetExpressionAtIndex(0, exprX.Print().Value);
+            controller.UpdateData();
+            int score1 = controller.Score;
+
+            controller.SetExpressionAtIndex(1, exprConst.Print().Value);
+            controller.UpdateData();
+            int score2 = controller.Score;
+
+            controller.SetExpressionAtIndex(1, string.Empty);
+            controller.UpdateData();
+            int score3 = controller.Score;
+
+            // Assert
+            Assert.AreEqual(score1, 1);
+            Assert.AreEqual(score2, -1);
+            Assert.AreEqual(score3, 1);
+        }
     }
 }

@@ -53,6 +53,16 @@ namespace PollyFoundation
         private readonly SolidColorBrush goodDotAsleepSolidBrush = new SolidColorBrush(Colors.DarkBlue);
 
         /// <summary>
+        /// Brush to be used for painting bad dots that HAVE been hit.
+        /// </summary>
+        private readonly SolidColorBrush badDotActiveSolidBrush = new SolidColorBrush(Colors.OrangeRed);
+
+        /// <summary>
+        /// Brush to be used for painting bad dots that have NOT been hit.
+        /// </summary>
+        private readonly SolidColorBrush badDotAsleepSolidBrush = new SolidColorBrush(Colors.LightPink);
+
+        /// <summary>
         /// The total number of expressions supported by the <see cref="PollyController"/> instance.
         /// </summary>
         private readonly int numberOfExpressions;
@@ -643,18 +653,34 @@ namespace PollyFoundation
         {
             GeometryGroup goodDotsHitGeometryGroup = new GeometryGroup();
             GeometryGroup goodDotMissedGeometryGroup = new GeometryGroup();
+            GeometryGroup badDotsHitGeometryGroup = new GeometryGroup();
+            GeometryGroup badDotMissedGeometryGroup = new GeometryGroup();
 
-            foreach (var goodDot in this.controller.GetDrawDots())
+            foreach (var dot in this.controller.GetDrawDots())
             {
-                double radius = this.coordinateHelper.ConvertXLength(goodDot.Radius);
-                EllipseGeometry ellipseGeometry = new EllipseGeometry(this.coordinateHelper.ConvertCoordinates(goodDot.Position.Item1, goodDot.Position.Item2), radius, radius);
-                if (goodDot.IsHit)
+                double radius = this.coordinateHelper.ConvertXLength(dot.Radius);
+                EllipseGeometry ellipseGeometry = new EllipseGeometry(this.coordinateHelper.ConvertCoordinates(dot.Position.Item1, dot.Position.Item2), radius, radius);
+                if (dot.IsHit)
                 {
-                    goodDotsHitGeometryGroup.Children.Add(ellipseGeometry);
+                    if (dot.Kind == DrawDotKind.GoodDot)
+                    {
+                        goodDotsHitGeometryGroup.Children.Add(ellipseGeometry);
+                    }
+                    else
+                    {
+                        badDotsHitGeometryGroup.Children.Add(ellipseGeometry);
+                    }
                 }
                 else
                 {
-                    goodDotMissedGeometryGroup.Children.Add(ellipseGeometry);
+                    if (dot.Kind == DrawDotKind.GoodDot)
+                    {
+                        goodDotMissedGeometryGroup.Children.Add(ellipseGeometry);
+                    }
+                    else
+                    {
+                        badDotMissedGeometryGroup.Children.Add(ellipseGeometry);
+                    }
                 }
             }
 
@@ -669,6 +695,18 @@ namespace PollyFoundation
             goodDotMissedPath.Fill = this.goodDotAsleepSolidBrush;
             goodDotMissedPath.Data = goodDotMissedGeometryGroup;
             this.canvas.Children.Add(goodDotMissedPath);
+
+            Path badDotsHitPath = new Path();
+            badDotsHitPath.StrokeThickness = 0.0;
+            badDotsHitPath.Fill = this.badDotActiveSolidBrush;
+            badDotsHitPath.Data = badDotsHitGeometryGroup;
+            this.canvas.Children.Add(badDotsHitPath);
+
+            Path badDotMissedPath = new Path();
+            badDotMissedPath.StrokeThickness = 0.0;
+            badDotMissedPath.Fill = this.badDotAsleepSolidBrush;
+            badDotMissedPath.Data = badDotMissedGeometryGroup;
+            this.canvas.Children.Add(badDotMissedPath);
         }
 
         /// <summary>

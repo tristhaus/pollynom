@@ -18,10 +18,11 @@ namespace PollyNomTest
         public void SimpleCase()
         {
             // Arrange
-            List<int> list = new List<int>() { 3 };
+            List<int> goodList = new List<int>() { 3 };
+            List<int> badList = new List<int>(1);
 
             // Act
-            int score = ScoreCalculator.CalculateScore(list);
+            int score = ScoreCalculator.CalculateScore(goodList, badList);
 
             // Assert
             Assert.IsTrue(score == 7);
@@ -35,10 +36,11 @@ namespace PollyNomTest
         public void NoHitsList()
         {
             // Arrange
-            List<int> list = new List<int>() { 0 };
+            List<int> goodList = new List<int>() { 0 };
+            List<int> badList = new List<int>(1);
 
             // Act
-            int score = ScoreCalculator.CalculateScore(list);
+            int score = ScoreCalculator.CalculateScore(goodList, badList);
 
             // Assert
             Assert.IsTrue(score == 0);
@@ -52,10 +54,11 @@ namespace PollyNomTest
         public void EmptyList()
         {
             // Arrange
-            List<int> list = new List<int>(0);
+            List<int> goodList = new List<int>(0);
+            List<int> badList = new List<int>(1);
 
             // Act
-            int score = ScoreCalculator.CalculateScore(list);
+            int score = ScoreCalculator.CalculateScore(goodList, badList);
 
             // Assert
             Assert.IsTrue(score == 0);
@@ -69,13 +72,32 @@ namespace PollyNomTest
         public void CombinedCase()
         {
             // Arrange
-            List<int> list = new List<int>() { 4, 0, 2 };
+            List<int> goodList = new List<int>() { 4, 0, 2 };
+            List<int> badList = new List<int>(1);
 
             // Act
-            int score = ScoreCalculator.CalculateScore(list);
+            int score = ScoreCalculator.CalculateScore(goodList, badList);
 
             // Assert
             Assert.IsTrue(score == 15 + 3);
+        }
+
+        /// <summary>
+        /// A more complicated case that also has a bad dot hit.
+        /// </summary>
+        [TestMethod]
+        [TestCategory(TestInfrastructure.TestCategories.UnitTest)]
+        public void CombinedCaseWithBadDots()
+        {
+            // Arrange
+            List<int> goodList = new List<int>() { 4, 0, 2 };
+            List<int> badList = new List<int>() { 0, 1, 0 };
+
+            // Act
+            int score = ScoreCalculator.CalculateScore(goodList, badList);
+
+            // Assert
+            Assert.IsTrue(score == -1);
         }
     }
 }

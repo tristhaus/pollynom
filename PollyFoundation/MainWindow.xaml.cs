@@ -676,7 +676,8 @@ namespace PollyFoundation
         /// </summary>
         private void UpdateWindowTitle()
         {
-            this.Title = TitlePrefix + this.controller.Score.ToString();
+            string score = this.controller.Score >= 0 ? this.controller.Score.ToString() : "-∞";
+            this.Title = TitlePrefix + score;
         }
 
         /// <summary>

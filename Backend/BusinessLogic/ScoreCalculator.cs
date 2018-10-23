@@ -12,11 +12,17 @@ namespace Backend.BusinessLogic
         /// <summary>
         /// Calculates the score according to the series of numbers of hits.
         /// </summary>
-        /// <param name="numbersOfHits">List of hit series.</param>
+        /// <param name="numbersOfGoodHits">List of good hit series.</param>
+        /// <param name="numbersOfBadHits">List of bad hit series.</param>
         /// <returns>The calculated score.</returns>
-        public static int CalculateScore(List<int> numbersOfHits)
+        public static int CalculateScore(List<int> numbersOfGoodHits, List<int> numbersOfBadHits)
         {
-            return numbersOfHits.Where(x => (x > 0)).Select(x => ((int)Math.Pow(2, x) - 1)).Sum();
+            if (numbersOfBadHits.Any(x => x > 0))
+            {
+                return -1;
+            }
+
+            return numbersOfGoodHits.Where(x => (x > 0)).Select(x => ((int)Math.Pow(2, x) - 1)).Sum();
         }
     }
 }

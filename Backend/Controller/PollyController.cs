@@ -273,7 +273,7 @@ namespace Backend.Controller
                 }
             }
 
-            this.score = ScoreCalculator.CalculateScore(numbersOfHits);
+            this.score = ScoreCalculator.CalculateScore(numbersOfHits, new List<int>(0));
         }
 
         private void ClearInput()

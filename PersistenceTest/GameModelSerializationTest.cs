@@ -20,6 +20,7 @@ namespace PersistenceTest
             // Arrange
             DotModel model = new DotModel()
             {
+                Kind = DotModel.DotKind.Good,
                 X = 1.2,
                 Y = 2.3,
             };
@@ -28,7 +29,7 @@ namespace PersistenceTest
             string modelJson = JsonConvert.SerializeObject(model);
 
             // Assert
-            Assert.AreEqual(@"{""X"":1.2,""Y"":2.3}", modelJson.Replace(" ", string.Empty));
+            Assert.AreEqual(@"{""Kind"":""Good"",""X"":1.2,""Y"":2.3}", modelJson.Replace(" ", string.Empty));
         }
 
         /// <summary>
@@ -39,7 +40,7 @@ namespace PersistenceTest
         public void DotDeserialization()
         {
             // Arrange
-            string modelJson = @"{""X"":3.2,""Y"":4.3}";
+            string modelJson = @"{""Kind"":""Good"",""X"":3.2,""Y"":4.3}";
 
             // Act
             DotModel actualModel = JsonConvert.DeserializeObject<DotModel>(modelJson);
@@ -53,6 +54,7 @@ namespace PersistenceTest
 
             Assert.AreEqual(expectedModel.X, actualModel.X);
             Assert.AreEqual(expectedModel.Y, actualModel.Y);
+            Assert.AreEqual(expectedModel.Kind, actualModel.Kind);
         }
 
         /// <summary>
@@ -66,11 +68,13 @@ namespace PersistenceTest
             GameModel model = new GameModel();
             model.DotModels.Add(new DotModel()
             {
+                Kind = DotModel.DotKind.Good,
                 X = 1.2,
                 Y = 2.3,
             });
             model.DotModels.Add(new DotModel()
             {
+                Kind = DotModel.DotKind.Bad,
                 X = 4.2,
                 Y = 4.3,
             });
@@ -79,7 +83,7 @@ namespace PersistenceTest
             string modelJson = JsonConvert.SerializeObject(model);
 
             // Assert
-            Assert.AreEqual(@"{""DotModels"":[{""X"":1.2,""Y"":2.3},{""X"":4.2,""Y"":4.3}]}", modelJson.Replace(" ", string.Empty));
+            Assert.AreEqual(@"{""DotModels"":[{""Kind"":""Good"",""X"":1.2,""Y"":2.3},{""Kind"":""Bad"",""X"":4.2,""Y"":4.3}]}", modelJson.Replace(" ", string.Empty));
         }
 
         /// <summary>
@@ -90,7 +94,7 @@ namespace PersistenceTest
         public void FilledGameDeserialization()
         {
             // Arrange
-            string modelJson = @"{""DotModels"":[{""X"":-1.4,""Y"":-2.5},{""X"":4.4,""Y"":4.5}]}";
+            string modelJson = @"{""DotModels"":[{""Kind"":""Good"",""X"":-1.4,""Y"":-2.5},{""Kind"":""Bad"",""X"":4.4,""Y"":4.5}]}";
 
             // Act
             GameModel actualModel = JsonConvert.DeserializeObject<GameModel>(modelJson);
@@ -99,11 +103,13 @@ namespace PersistenceTest
             GameModel expectedModel = new GameModel();
             expectedModel.DotModels.Add(new DotModel()
             {
+                Kind = DotModel.DotKind.Good,
                 X = -1.4,
                 Y = -2.5,
             });
             expectedModel.DotModels.Add(new DotModel()
             {
+                Kind = DotModel.DotKind.Bad,
                 X = +4.4,
                 Y = +4.5,
             });
@@ -111,6 +117,7 @@ namespace PersistenceTest
             Assert.AreEqual(expectedModel.DotModels.Count, actualModel.DotModels.Count);
             for (int i = 0; i < expectedModel.DotModels.Count; i++)
             {
+                Assert.AreEqual(expectedModel.DotModels[i].Kind, actualModel.DotModels[i].Kind);
                 Assert.AreEqual(expectedModel.DotModels[i].X, actualModel.DotModels[i].X);
                 Assert.AreEqual(expectedModel.DotModels[i].Y, actualModel.DotModels[i].Y);
             }
@@ -150,11 +157,6 @@ namespace PersistenceTest
             GameModel expectedModel = new GameModel();
 
             Assert.AreEqual(expectedModel.DotModels.Count, actualModel.DotModels.Count);
-            for (int i = 0; i < expectedModel.DotModels.Count; i++)
-            {
-                Assert.AreEqual(expectedModel.DotModels[i].X, actualModel.DotModels[i].X);
-                Assert.AreEqual(expectedModel.DotModels[i].Y, actualModel.DotModels[i].Y);
-            }
         }
     }
 }

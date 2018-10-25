@@ -24,11 +24,13 @@ namespace PersistenceTest
             GameModel model = new GameModel();
             model.DotModels.Add(new DotModel()
             {
+                Kind = DotModel.DotKind.Good,
                 X = 1.2,
                 Y = 3.4,
             });
             model.DotModels.Add(new DotModel()
             {
+                Kind = DotModel.DotKind.Bad,
                 X = -5.6,
                 Y = -7.8,
             });
@@ -51,11 +53,13 @@ namespace PersistenceTest
             GameModel model1 = new GameModel();
             model1.DotModels.Add(new DotModel()
             {
+                Kind = DotModel.DotKind.Good,
                 X = 1.2,
                 Y = 3.4,
             });
             model1.DotModels.Add(new DotModel()
             {
+                Kind = DotModel.DotKind.Bad,
                 X = -5.6,
                 Y = -7.8,
             });
@@ -63,11 +67,13 @@ namespace PersistenceTest
             GameModel model2 = new GameModel();
             model2.DotModels.Add(new DotModel()
             {
+                Kind = DotModel.DotKind.Bad,
                 X = 1.2,
                 Y = 3.4,
             });
             model2.DotModels.Add(new DotModel()
             {
+                Kind = DotModel.DotKind.Good,
                 X = -4.4,
                 Y = -4.4,
             });

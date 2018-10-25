@@ -1,4 +1,5 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using System.Collections.Generic;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
 using Persistence.Models;
 
@@ -66,6 +67,7 @@ namespace PersistenceTest
         {
             // Arrange
             GameModel model = new GameModel();
+            model.ExpressionStrings = new List<string>() { "exp(x)", "x^2" };
             model.DotModels.Add(new DotModel()
             {
                 Kind = DotModel.DotKind.Good,
@@ -83,7 +85,7 @@ namespace PersistenceTest
             string modelJson = JsonConvert.SerializeObject(model);
 
             // Assert
-            Assert.AreEqual(@"{""DotModels"":[{""Kind"":""Good"",""X"":1.2,""Y"":2.3},{""Kind"":""Bad"",""X"":4.2,""Y"":4.3}]}", modelJson.Replace(" ", string.Empty));
+            Assert.AreEqual(@"{""ExpressionStrings"":[""exp(x)"",""x^2""],""DotModels"":[{""Kind"":""Good"",""X"":1.2,""Y"":2.3},{""Kind"":""Bad"",""X"":4.2,""Y"":4.3}]}", modelJson.Replace(" ", string.Empty));
         }
 
         /// <summary>
@@ -94,13 +96,14 @@ namespace PersistenceTest
         public void FilledGameDeserialization()
         {
             // Arrange
-            string modelJson = @"{""DotModels"":[{""Kind"":""Good"",""X"":-1.4,""Y"":-2.5},{""Kind"":""Bad"",""X"":4.4,""Y"":4.5}]}";
+            string modelJson = @"{""ExpressionStrings"":[""exp(x)"",""x^2""],""DotModels"":[{""Kind"":""Good"",""X"":-1.4,""Y"":-2.5},{""Kind"":""Bad"",""X"":4.4,""Y"":4.5}]}";
 
             // Act
             GameModel actualModel = JsonConvert.DeserializeObject<GameModel>(modelJson);
 
             // Assert
             GameModel expectedModel = new GameModel();
+            expectedModel.ExpressionStrings = new List<string>() { "exp(x)", "x^2" };
             expectedModel.DotModels.Add(new DotModel()
             {
                 Kind = DotModel.DotKind.Good,
@@ -113,6 +116,12 @@ namespace PersistenceTest
                 X = +4.4,
                 Y = +4.5,
             });
+
+            Assert.AreEqual(expectedModel.ExpressionStrings.Count, actualModel.ExpressionStrings.Count);
+            for (int i = 0; i < expectedModel.ExpressionStrings.Count; i++)
+            {
+                Assert.AreEqual(expectedModel.ExpressionStrings[i], actualModel.ExpressionStrings[i]);
+            }
 
             Assert.AreEqual(expectedModel.DotModels.Count, actualModel.DotModels.Count);
             for (int i = 0; i < expectedModel.DotModels.Count; i++)
@@ -137,7 +146,7 @@ namespace PersistenceTest
             string modelJson = JsonConvert.SerializeObject(model);
 
             // Assert
-            Assert.AreEqual(@"{""DotModels"":[]}", modelJson.Replace(" ", string.Empty));
+            Assert.AreEqual(@"{""ExpressionStrings"":[],""DotModels"":[]}", modelJson.Replace(" ", string.Empty));
         }
 
         /// <summary>
@@ -148,7 +157,7 @@ namespace PersistenceTest
         public void EmptyGameDeserialization()
         {
             // Arrange
-            string modelJson = @"{""DotModels"":[]}";
+            string modelJson = @"{""ExpressionStrings"":[],""DotModels"":[]}";
 
             // Act
             GameModel actualModel = JsonConvert.DeserializeObject<GameModel>(modelJson);

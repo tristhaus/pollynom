@@ -68,11 +68,13 @@ namespace PollyNomTest
             controller.SetExpressionAtIndex(0, exprX.Print().Value);
             controller.UpdateData();
             int score3 = controller.Score;
+            string expression3 = controller.ExpressionStrings[0];
 
             // Assert
             Assert.AreEqual(score1, 3);
             Assert.AreEqual(score2, 0);
             Assert.AreEqual(score3, 3);
+            Assert.AreEqual(expression3, "x");
         }
 
         [TestMethod]

@@ -1,4 +1,5 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using System.Collections.Generic;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Persistence;
 using Persistence.Models;
 using PersistenceTest.Helper;
@@ -22,6 +23,7 @@ namespace PersistenceTest
         {
             // Arrange
             GameModel model = new GameModel();
+            model.ExpressionStrings = new List<string>() { "exp(x)", "x^2" };
             model.DotModels.Add(new DotModel()
             {
                 Kind = DotModel.DotKind.Good,
@@ -51,6 +53,7 @@ namespace PersistenceTest
         {
             // Arrange
             GameModel model1 = new GameModel();
+            model1.ExpressionStrings = new List<string>() { "exp(x)", "x^2" };
             model1.DotModels.Add(new DotModel()
             {
                 Kind = DotModel.DotKind.Good,
@@ -65,6 +68,7 @@ namespace PersistenceTest
             });
 
             GameModel model2 = new GameModel();
+            model2.ExpressionStrings = new List<string>() { "sin(x)", "x^0.5" };
             model2.DotModels.Add(new DotModel()
             {
                 Kind = DotModel.DotKind.Bad,

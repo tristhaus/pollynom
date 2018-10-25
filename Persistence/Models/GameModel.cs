@@ -10,7 +10,25 @@ namespace Persistence.Models
     [JsonObject(ItemRequired = Required.Always)]
     public class GameModel
     {
+        private List<string> expressionStrings = new List<string>(); 
         private List<DotModel> dotModels = new List<DotModel>();
+
+        /// <summary>
+        /// Gets or sets the collection of dots contained in the game.
+        /// </summary>
+        [JsonProperty("ExpressionStrings", Required = Required.Always)]
+        public List<string> ExpressionStrings
+        {
+            get
+            {
+                return this.expressionStrings;
+            }
+
+            set
+            {
+                this.expressionStrings = value;
+            }
+        }
 
         /// <summary>
         /// Gets or sets the collection of dots contained in the game.

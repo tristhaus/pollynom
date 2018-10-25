@@ -719,6 +719,17 @@ namespace PollyFoundation
         }
 
         /// <summary>
+        /// Load the expression strings from the controller into the textboxes.
+        /// </summary>
+        private void LoadExpressionStrings()
+        {
+            for (int i = 0; i < this.textBoxes.Length && i < this.controller.MaxExpressionCount; i++)
+            {
+                this.textBoxes[i].Text = this.controller.ExpressionStrings[i];
+            }
+        }
+
+        /// <summary>
         /// Create a new random game.
         /// </summary>
         /// <param name="sender">The sender object.</param>
@@ -726,6 +737,7 @@ namespace PollyFoundation
         private void NewGameMenuItem_Click(object sender, RoutedEventArgs e)
         {
             this.controller.NewRandomGame();
+            this.LoadExpressionStrings();
             this.controller.UpdateData();
             this.RedrawAll();
         }
@@ -748,6 +760,8 @@ namespace PollyFoundation
             {
                 string path = dialog.FileName;
                 this.controller.LoadGame(path);
+                this.LoadExpressionStrings();
+
                 this.RedrawAll();
             }
         }

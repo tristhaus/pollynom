@@ -54,6 +54,11 @@ namespace Backend.Controller
         private Parser parser;
 
         /// <summary>
+        /// Textual representation of expressions.
+        /// </summary>
+        private string[] expressionStrings;
+
+        /// <summary>
         /// The expression currently active.
         /// </summary>
         private IExpression[] expressions;
@@ -110,6 +115,11 @@ namespace Backend.Controller
         public int MaxExpressionCount => MaxExpressions;
 
         /// <summary>
+        /// Gets the textual representations of expressions contained.
+        /// </summary>
+        public string[] ExpressionStrings => this.expressionStrings;
+
+        /// <summary>
         /// Initialize a new random game.
         /// </summary>
         public void NewRandomGame()
@@ -127,6 +137,7 @@ namespace Backend.Controller
         public void SaveGame(string path)
         {
             GameModel gameModel = new GameModel();
+            gameModel.ExpressionStrings = this.expressionStrings.ToList();
             gameModel.DotModels.AddRange(
                 this.dots.Select(d => new DotModel()
                 {
@@ -146,6 +157,7 @@ namespace Backend.Controller
         {
             this.ClearInput();
             var model = this.gameRepository.LoadGame(path);
+            this.expressionStrings = model.ExpressionStrings.ToArray();
             this.dots = new List<IDot>(model.DotModels.Select(dm => { return dm.Kind == DotModel.DotKind.Good ? new GoodDot(dm.X, dm.Y) as IDot : new BadDot(dm.X, dm.Y) as IDot; }));
 
             this.UpdateData();
@@ -168,6 +180,7 @@ namespace Backend.Controller
         /// <param name="textRepresentation">The textual representation of the expression.</param>
         public void SetExpressionAtIndex(int index, string textRepresentation)
         {
+            this.expressionStrings[index] = string.IsNullOrWhiteSpace(textRepresentation) ? string.Empty : textRepresentation;
             this.expressions[index] = string.IsNullOrWhiteSpace(textRepresentation) ? null : this.parser.Parse(textRepresentation);
         }
 
@@ -271,6 +284,12 @@ namespace Backend.Controller
 
         private void ClearInput()
         {
+            this.expressionStrings = new string[MaxExpressions];
+            for (int i = 0; i < MaxExpressions; i++)
+            {
+                this.expressionStrings[i] = string.Empty;
+            }
+
             this.expressions = new IExpression[MaxExpressions];
             this.points = new List<ListPointLogical>[MaxExpressions];
         }

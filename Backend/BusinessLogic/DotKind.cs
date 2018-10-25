@@ -1,5 +1,8 @@
 ﻿namespace Backend.BusinessLogic
 {
+    /// <summary>
+    /// Enumerates the kinds of dots available.
+    /// </summary>
     public enum DotKind
     {
         /// <summary>

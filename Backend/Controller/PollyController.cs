@@ -97,35 +97,17 @@ namespace Backend.Controller
         /// <summary>
         /// Gets the information as needed for the drawing of the coordinate system.
         /// </summary>
-        public CoordinateSystemInfo CoordinateSystemInfo
-        {
-            get
-            {
-                return this.coordinateSystemInfo;
-            }
-        }
+        public CoordinateSystemInfo CoordinateSystemInfo => this.coordinateSystemInfo;
 
         /// <summary>
         /// Gets the current score.
         /// </summary>
-        public int Score
-        {
-            get
-            {
-                return this.score;
-            }
-        }
+        public int Score => this.score;
 
         /// <summary>
         /// Gets the maximum number of expressions handled by this controller.
         /// </summary>
-        public int MaxExpressionCount
-        {
-            get
-            {
-                return MaxExpressions;
-            }
-        }
+        public int MaxExpressionCount => MaxExpressions;
 
         /// <summary>
         /// Initialize a new random game.
@@ -148,6 +130,7 @@ namespace Backend.Controller
             gameModel.DotModels.AddRange(
                 this.dots.Select(d => new DotModel()
                 {
+                    Kind = d.Kind == DotKind.Good ? DotModel.DotKind.Good : DotModel.DotKind.Bad,
                     X = d.Position.Item1,
                     Y = d.Position.Item2
                 }));
@@ -163,7 +146,7 @@ namespace Backend.Controller
         {
             this.ClearInput();
             var model = this.gameRepository.LoadGame(path);
-            this.dots = new List<IDot>(model.DotModels.Select(dm => new GoodDot(dm.X, dm.Y)));
+            this.dots = new List<IDot>(model.DotModels.Select(dm => { return dm.Kind == DotModel.DotKind.Good ? new GoodDot(dm.X, dm.Y) as IDot : new BadDot(dm.X, dm.Y) as IDot; }));
 
             this.UpdateData();
         }

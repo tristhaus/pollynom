@@ -178,6 +178,11 @@ namespace PollyFoundation
         private Grid inputOutputGrid;
 
         /// <summary>
+        /// Tooltip displayed when <see cref="saveGameMenuItem"/> is disabled.
+        /// </summary>
+        private ToolTip savingNotPossibleToolTip;
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="MainWindow"/> class.
         /// </summary>
         public MainWindow()
@@ -371,6 +376,7 @@ namespace PollyFoundation
             this.newGameMenuItem = new MenuItem() { Header = "_New Game", };
             this.openGameMenuItem = new MenuItem() { Header = "_Open Game", };
             this.saveGameMenuItem = new MenuItem() { Header = "_Save Game", };
+            ToolTipService.SetShowOnDisabled(this.saveGameMenuItem, true);
 
             this.mainMenu.Items.Add(this.fileMenuItem);
             this.fileMenuItem.Items.Add(this.newGameMenuItem);
@@ -379,6 +385,9 @@ namespace PollyFoundation
 
             this.basePanel.Children.Add(this.mainMenu);
             this.basePanel.Children.Add(this.inputOutputGrid);
+
+            this.savingNotPossibleToolTip = new ToolTip();
+            this.savingNotPossibleToolTip.Content = "Saving possible only after graphing expressions";
 
             this.UpdateLayout();
             this.AdjustCanvasSize();
@@ -522,6 +531,7 @@ namespace PollyFoundation
         private void SetTextBoxContentsAreNotInController()
         {
             this.saveGameMenuItem.IsEnabled = false;
+            this.saveGameMenuItem.ToolTip = this.savingNotPossibleToolTip;
         }
 
         /// <summary>
@@ -530,6 +540,7 @@ namespace PollyFoundation
         private void SetTextBoxContentsAreInController()
         {
             this.saveGameMenuItem.IsEnabled = true;
+            this.saveGameMenuItem.ClearValue(MenuItem.ToolTipProperty);
             foreach (var textBox in this.textBoxes)
             {
                 if (!string.IsNullOrWhiteSpace(textBox.Text))

@@ -44,7 +44,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BusinessLogic\DotKind.cs" />
     <Compile Include="BusinessLogic\Dots\BadDot.cs" />
     <Compile Include="BusinessLogic\Dots\DotBase.cs" />
     <Compile Include="BusinessLogic\Dots\GoodDot.cs" />

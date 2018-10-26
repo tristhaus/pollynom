@@ -10,7 +10,7 @@ namespace Persistence.Models
     [JsonObject(ItemRequired = Required.Always)]
     public class GameModel
     {
-        private List<string> expressionStrings = new List<string>(); 
+        private List<string> expressionStrings = new List<string>();
         private List<DotModel> dotModels = new List<DotModel>();
 
         /// <summary>

@@ -9,6 +9,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Shapes;
 using Backend.Controller;
+using Persistence.Models;
 
 namespace PollyFoundation
 {
@@ -707,7 +708,7 @@ namespace PollyFoundation
                 EllipseGeometry ellipseGeometry = new EllipseGeometry(this.coordinateHelper.ConvertCoordinates(dot.Position.Item1, dot.Position.Item2), radius, radius);
                 if (dot.IsHit)
                 {
-                    if (dot.Kind == DrawDotKind.GoodDot)
+                    if (dot.Kind == DotKind.Good)
                     {
                         goodDotsHitGeometryGroup.Children.Add(ellipseGeometry);
                     }
@@ -718,7 +719,7 @@ namespace PollyFoundation
                 }
                 else
                 {
-                    if (dot.Kind == DrawDotKind.GoodDot)
+                    if (dot.Kind == DotKind.Good)
                     {
                         goodDotMissedGeometryGroup.Children.Add(ellipseGeometry);
                     }

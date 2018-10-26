@@ -1,4 +1,5 @@
 ﻿using System;
+using Persistence.Models;
 
 namespace Backend.Controller
 {
@@ -10,7 +11,7 @@ namespace Backend.Controller
         private readonly double xCoordinate;
         private readonly double yCoordinate;
         private readonly double radius;
-        private readonly DrawDotKind kind;
+        private readonly DotKind kind;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DrawDot"/> class.
@@ -19,7 +20,7 @@ namespace Backend.Controller
         /// <param name="yCoordinate">Y-coordinate of the dot.</param>
         /// <param name="radius">Radius of the dot.</param>
         /// <param name="kind">The kind of the dot.</param>
-        public DrawDot(double xCoordinate, double yCoordinate, double radius, DrawDotKind kind)
+        public DrawDot(double xCoordinate, double yCoordinate, double radius, DotKind kind)
         {
             this.xCoordinate = xCoordinate;
             this.yCoordinate = yCoordinate;
@@ -59,7 +60,7 @@ namespace Backend.Controller
         /// <summary>
         /// Gets the kind of the dot.
         /// </summary>
-        public DrawDotKind Kind
+        public DotKind Kind
         {
             get
             {

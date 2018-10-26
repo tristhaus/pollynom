@@ -10,27 +10,11 @@ namespace Persistence.Models
     public class DotModel
     {
         /// <summary>
-        /// Enumerates the kinds of dots available.
-        /// </summary>
-        public enum DotKind
-        {
-            /// <summary>
-            /// A good dot that the player wants to hit.
-            /// </summary>
-            Good,
-
-            /// <summary>
-            /// A bad dot that the player does not want to hit.
-            /// </summary>
-            Bad,
-        }
-
-        /// <summary>
         /// Gets or sets the kind of the dot.
         /// </summary>
         [JsonProperty("Kind", Required = Required.Always)]
         [JsonConverter(typeof(StringEnumConverter))]
-        public DotModel.DotKind Kind { get; set; }
+        public DotKind Kind { get; set; }
 
         /// <summary>
         /// Gets or sets x-coordinate of the dot.

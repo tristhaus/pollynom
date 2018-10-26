@@ -1,4 +1,6 @@
-﻿namespace Backend.BusinessLogic.Dots
+﻿using Persistence.Models;
+
+namespace Backend.BusinessLogic.Dots
 {
     /// <summary>
     /// Represents a dot that should be hit.

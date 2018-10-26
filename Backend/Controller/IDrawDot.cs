@@ -1,4 +1,5 @@
 ﻿using System;
+using Persistence.Models;
 
 namespace Backend.Controller
 {
@@ -19,14 +20,14 @@ namespace Backend.Controller
         double Radius { get; }
 
         /// <summary>
-        /// Indicates whether the dot was hit.
+        /// Gets a value indicating whether the dot was hit.
         /// </summary>
         /// <returns><c>true</c> if hit, <c>false</c> otherwise.</returns>
         bool IsHit { get; }
 
         /// <summary>
-        /// The kind of the dot, as defined in <see cref="DrawDotKind"/>.
+        ///  Gets the kind of the dot, as defined in <see cref="DotKind"/>.
         /// </summary>
-        DrawDotKind Kind { get; }
+        DotKind Kind { get; }
     }
 }

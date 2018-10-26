@@ -1,4 +1,4 @@
-﻿namespace Backend.BusinessLogic
+﻿namespace Persistence.Models
 {
     /// <summary>
     /// Enumerates the kinds of dots available.

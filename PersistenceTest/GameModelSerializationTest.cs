@@ -21,7 +21,7 @@ namespace PersistenceTest
             // Arrange
             DotModel model = new DotModel()
             {
-                Kind = DotModel.DotKind.Good,
+                Kind = DotKind.Good,
                 X = 1.2,
                 Y = 2.3,
             };
@@ -70,13 +70,13 @@ namespace PersistenceTest
             model.ExpressionStrings = new List<string>() { "exp(x)", "x^2" };
             model.DotModels.Add(new DotModel()
             {
-                Kind = DotModel.DotKind.Good,
+                Kind = DotKind.Good,
                 X = 1.2,
                 Y = 2.3,
             });
             model.DotModels.Add(new DotModel()
             {
-                Kind = DotModel.DotKind.Bad,
+                Kind = DotKind.Bad,
                 X = 4.2,
                 Y = 4.3,
             });
@@ -106,13 +106,13 @@ namespace PersistenceTest
             expectedModel.ExpressionStrings = new List<string>() { "exp(x)", "x^2" };
             expectedModel.DotModels.Add(new DotModel()
             {
-                Kind = DotModel.DotKind.Good,
+                Kind = DotKind.Good,
                 X = -1.4,
                 Y = -2.5,
             });
             expectedModel.DotModels.Add(new DotModel()
             {
-                Kind = DotModel.DotKind.Bad,
+                Kind = DotKind.Bad,
                 X = +4.4,
                 Y = +4.5,
             });

@@ -141,7 +141,7 @@ namespace Backend.Controller
             gameModel.DotModels.AddRange(
                 this.dots.Select(d => new DotModel()
                 {
-                    Kind = d.Kind == DotKind.Good ? DotModel.DotKind.Good : DotModel.DotKind.Bad,
+                    Kind = d.Kind,
                     X = d.Position.Item1,
                     Y = d.Position.Item2
                 }));
@@ -158,7 +158,13 @@ namespace Backend.Controller
             this.ClearInput();
             var model = this.gameRepository.LoadGame(path);
             this.expressionStrings = model.ExpressionStrings.ToArray();
-            this.dots = new List<IDot>(model.DotModels.Select(dm => { return dm.Kind == DotModel.DotKind.Good ? new GoodDot(dm.X, dm.Y) as IDot : new BadDot(dm.X, dm.Y) as IDot; }));
+            this.dots = new List<IDot>(model.DotModels.Select(
+                dm =>
+                {
+                    return dm.Kind == DotKind.Good
+                    ? new GoodDot(dm.X, dm.Y) as IDot
+                    : new BadDot(dm.X, dm.Y) as IDot;
+                }));
 
             this.UpdateData();
         }
@@ -243,7 +249,7 @@ namespace Backend.Controller
             List<int> numbersOfGoodHits = new List<int>(MaxExpressions);
             List<int> numbersOfBadHits = new List<int>(MaxExpressions);
 
-            this.dots.ForEach(x => this.drawDots.Add(new DrawDot(x.Position.Item1, x.Position.Item2, x.Radius, x.Kind == DotKind.Good ? DrawDotKind.GoodDot : DrawDotKind.BadDot)));
+            this.dots.ForEach(x => this.drawDots.Add(new DrawDot(x.Position.Item1, x.Position.Item2, x.Radius, x.Kind)));
 
             for (int expressionIndex = 0; expressionIndex < MaxExpressions; ++expressionIndex)
             {

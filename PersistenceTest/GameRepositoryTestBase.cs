@@ -26,13 +26,13 @@ namespace PersistenceTest
             model.ExpressionStrings = new List<string>() { "exp(x)", "x^2" };
             model.DotModels.Add(new DotModel()
             {
-                Kind = DotModel.DotKind.Good,
+                Kind = DotKind.Good,
                 X = 1.2,
                 Y = 3.4,
             });
             model.DotModels.Add(new DotModel()
             {
-                Kind = DotModel.DotKind.Bad,
+                Kind = DotKind.Bad,
                 X = -5.6,
                 Y = -7.8,
             });
@@ -56,13 +56,13 @@ namespace PersistenceTest
             model1.ExpressionStrings = new List<string>() { "exp(x)", "x^2" };
             model1.DotModels.Add(new DotModel()
             {
-                Kind = DotModel.DotKind.Good,
+                Kind = DotKind.Good,
                 X = 1.2,
                 Y = 3.4,
             });
             model1.DotModels.Add(new DotModel()
             {
-                Kind = DotModel.DotKind.Bad,
+                Kind = DotKind.Bad,
                 X = -5.6,
                 Y = -7.8,
             });
@@ -71,13 +71,13 @@ namespace PersistenceTest
             model2.ExpressionStrings = new List<string>() { "sin(x)", "x^0.5" };
             model2.DotModels.Add(new DotModel()
             {
-                Kind = DotModel.DotKind.Bad,
+                Kind = DotKind.Bad,
                 X = 1.2,
                 Y = 3.4,
             });
             model2.DotModels.Add(new DotModel()
             {
-                Kind = DotModel.DotKind.Good,
+                Kind = DotKind.Good,
                 X = -4.4,
                 Y = -4.4,
             });

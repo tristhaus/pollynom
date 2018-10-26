@@ -62,6 +62,7 @@
     <Compile Include="BusinessLogic\Expressions\SingleArgumentFunctions\Sine.cs" />
     <Compile Include="BusinessLogic\Expressions\SingleArgumentFunctions\Tangent.cs" />
     <Compile Include="BusinessLogic\FixedGoodDotsGenerator.cs" />
+    <Compile Include="BusinessLogic\Game.cs" />
     <Compile Include="BusinessLogic\RandomDotsGenerator.cs" />
     <Compile Include="BusinessLogic\Helper\MathHelper.cs" />
     <Compile Include="BusinessLogic\IDot.cs" />

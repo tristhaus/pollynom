@@ -62,6 +62,7 @@
     <Compile Include="DotHittingTest.cs" />
     <Compile Include="EqualityTest.cs" />
     <Compile Include="EvaluatingTest.cs" />
+    <Compile Include="GameTest.cs" />
     <Compile Include="HelperTests.cs" />
     <Compile Include="Helper\ExpressionPrinter.cs" />
     <Compile Include="PointListGenerationTest.cs" />

@@ -43,6 +43,11 @@ namespace PollyFoundation
         private readonly SolidColorBrush errorSolidBrush = new SolidColorBrush(Colors.Red);
 
         /// <summary>
+        /// Brush to be used to indicate that the content of a textbox has been graphed.
+        /// </summary>
+        private readonly SolidColorBrush hasBeenGraphedSolidBrush = new SolidColorBrush(Colors.PowderBlue);
+
+        /// <summary>
         /// Brush to be used for painting good dots that HAVE been hit.
         /// </summary>
         private readonly SolidColorBrush goodDotActiveSolidBrush = new SolidColorBrush(Colors.LightBlue);
@@ -185,6 +190,8 @@ namespace PollyFoundation
             this.ConstructLayout();
             this.SetEnabledOnMenuItems(true);
             this.RedrawAll();
+
+            this.SetTextBoxContentsAreNotInController();
 
             this.textBoxes[0].Text = "(x)*(x-1)*(x+1)";
 
@@ -404,6 +411,9 @@ namespace PollyFoundation
                     return;
                 }
 
+                this.SetTextBoxContentsAreNotInController();
+                theTextBox.ClearValue(TextBox.BackgroundProperty);
+
                 string input = theTextBox.Text;
                 bool parseable = await Task.Run(() =>
                 {
@@ -476,6 +486,7 @@ namespace PollyFoundation
                     await Task.WhenAll(tasks);
                     await Task.Run(() => this.controller.UpdateData());
 
+                    this.SetTextBoxContentsAreInController();
                     this.RedrawAll();
                 }
             }
@@ -502,6 +513,29 @@ namespace PollyFoundation
             foreach (var textBox in this.textBoxes)
             {
                 textBox.IsEnabled = newValue;
+            }
+        }
+
+        /// <summary>
+        /// Called to indicate that not all textbox contents have been put into the controller.
+        /// </summary>
+        private void SetTextBoxContentsAreNotInController()
+        {
+            this.saveGameMenuItem.IsEnabled = false;
+        }
+
+        /// <summary>
+        /// Called to indicate that all textbox contents have been put into the controller.
+        /// </summary>
+        private void SetTextBoxContentsAreInController()
+        {
+            this.saveGameMenuItem.IsEnabled = true;
+            foreach (var textBox in this.textBoxes)
+            {
+                if (!string.IsNullOrWhiteSpace(textBox.Text))
+                {
+                    textBox.Background = this.hasBeenGraphedSolidBrush;
+                }
             }
         }
 
@@ -739,6 +773,8 @@ namespace PollyFoundation
             this.controller.NewRandomGame();
             this.LoadExpressionStrings();
             this.controller.UpdateData();
+            this.SetTextBoxContentsAreInController();
+
             this.RedrawAll();
         }
 
@@ -747,7 +783,7 @@ namespace PollyFoundation
         /// </summary>
         /// <param name="sender">The sender object.</param>
         /// <param name="e">The even args.</param>
-        private void OpenGameMenuItem_Click(object sender, RoutedEventArgs e)
+        private async void OpenGameMenuItem_Click(object sender, RoutedEventArgs e)
         {
             Microsoft.Win32.OpenFileDialog dialog = new Microsoft.Win32.OpenFileDialog();
 
@@ -761,6 +797,8 @@ namespace PollyFoundation
                 string path = dialog.FileName;
                 this.controller.LoadGame(path);
                 this.LoadExpressionStrings();
+                await this.HandleUpdateAsync();
+                this.SetTextBoxContentsAreInController();
 
                 this.RedrawAll();
             }

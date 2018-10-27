@@ -23,7 +23,7 @@ namespace PollyNomTest
             var game = Game.NewRandom();
 
             // Assert
-            Assert.IsTrue(game.HasValue);
+            Assert.IsTrue(game != null);
         }
 
         /// <summary>
@@ -81,6 +81,49 @@ namespace PollyNomTest
 
             // Assert
             Assert.IsFalse(game.HasValue);
+        }
+
+        /// <summary>
+        /// Test that a roundtrip starting from a valid model works.
+        /// </summary>
+        [TestMethod]
+        [TestCategory(TestInfrastructure.TestCategories.UnitTest)]
+        public void ShouldRoundTripFromValidModel()
+        {
+            // Arrange
+            const string expression0 = "exp(x)";
+            const string expression2 = "x*x";
+            var gameModel = new GameModel()
+            {
+                ExpressionStrings = new List<string>() { expression0, string.Empty, expression2, string.Empty, string.Empty, },
+                DotModels = new List<DotModel>()
+                {
+                    new DotModel()
+                    {
+                        Kind = DotKind.Bad,
+                        X = 0.1,
+                        Y = -0.2,
+                    },
+                },
+            };
+
+            // Act
+            var game = Game.FromModel(gameModel);
+            var resultModel = game.HasValue ? game.Value.GetModel() : null;
+
+            // Assert
+            Assert.IsTrue(game.HasValue);
+            Assert.IsNotNull(resultModel);
+
+            Assert.AreEqual(expression0, resultModel.ExpressionStrings[0]);
+            Assert.AreEqual(string.Empty, resultModel.ExpressionStrings[1]);
+            Assert.AreEqual(expression2, resultModel.ExpressionStrings[2]);
+            Assert.AreEqual(string.Empty, resultModel.ExpressionStrings[3]);
+            Assert.AreEqual(string.Empty, resultModel.ExpressionStrings[4]);
+
+            Assert.AreEqual(DotKind.Bad, resultModel.DotModels[0].Kind);
+            Assert.AreEqual(0.1, resultModel.DotModels[0].X);
+            Assert.AreEqual(-0.2, resultModel.DotModels[0].Y);
         }
     }
 }

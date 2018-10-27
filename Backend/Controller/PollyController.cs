@@ -1,8 +1,7 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-
+﻿using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using Backend.BusinessLogic;
-using Backend.BusinessLogic.Dots;
 using Backend.BusinessLogic.Expressions;
 using Persistence;
 using Persistence.Models;
@@ -29,11 +28,6 @@ namespace Backend.Controller
         /// </summary>
         private const float Limits = 1000f;
 
-        /// <summary>
-        /// Maximum number of expressions supported by this controller class.
-        /// </summary>
-        private const int MaxExpressions = 5;
-
         private readonly CoordinateSystemInfo coordinateSystemInfo = new CoordinateSystemInfo()
         {
             StartX = PollyController.StartX,
@@ -42,6 +36,11 @@ namespace Backend.Controller
             EndY = PollyController.EndY,
             TickInterval = PollyController.TickInterval,
         };
+
+        /// <summary>
+        /// The game currently in progress.
+        /// </summary>
+        private Game game;
 
         /// <summary>
         /// The game repository for obtaining persisted games.
@@ -54,11 +53,6 @@ namespace Backend.Controller
         private Parser parser;
 
         /// <summary>
-        /// Textual representation of expressions.
-        /// </summary>
-        private string[] expressionStrings;
-
-        /// <summary>
         /// The expression currently active.
         /// </summary>
         private IExpression[] expressions;
@@ -67,11 +61,6 @@ namespace Backend.Controller
         /// The lists of points.
         /// </summary>
         private List<ListPointLogical>[] points;
-
-        /// <summary>
-        /// The list of logical dots.
-        /// </summary>
-        private List<IDot> dots;
 
         /// <summary>
         /// The list of drawable dots.
@@ -86,15 +75,15 @@ namespace Backend.Controller
         /// <summary>
         /// Initializes a new instance of the <see cref="PollyController"/> class.
         /// </summary>
-        /// <param name="dots">A list of dots that shall be respected by the <see cref="PollyController"/> instance.</param>
+        /// <param name="game">A game that shall be respected by the <see cref="PollyController"/> instance.</param>
         /// <param name="gameRepository">The game repository to be used, default used if null.</param>
-        public PollyController(List<IDot> dots = null, IGameRepository gameRepository = null)
+        public PollyController(Game game = null, IGameRepository gameRepository = null)
         {
             this.gameRepository = gameRepository ?? new OnDiskGameRepository();
             this.parser = new Parser();
 
             this.ClearInput();
-            this.dots = dots ?? new RandomDotsGenerator(8, 2).Generate();
+            this.game = game ?? Game.NewRandom();
 
             this.UpdateData();
         }
@@ -112,12 +101,17 @@ namespace Backend.Controller
         /// <summary>
         /// Gets the maximum number of expressions handled by this controller.
         /// </summary>
-        public int MaxExpressionCount => MaxExpressions;
+        public int MaxExpressionCount => Game.MaxExpressionCount;
 
         /// <summary>
         /// Gets the textual representations of expressions contained.
         /// </summary>
-        public string[] ExpressionStrings => this.expressionStrings;
+        public ReadOnlyCollection<string> ExpressionStrings => new ReadOnlyCollection<string>(this.game.ExpressionStrings);
+
+        /// <summary>
+        /// Gets the drawable dots.
+        /// </summary>
+        public ReadOnlyCollection<IDrawDot> DrawDots => new ReadOnlyCollection<IDrawDot>(this.drawDots ?? new List<IDrawDot>(0));
 
         /// <summary>
         /// Initialize a new random game.
@@ -125,7 +119,7 @@ namespace Backend.Controller
         public void NewRandomGame()
         {
             this.ClearInput();
-            this.dots = new RandomDotsGenerator(8, 2).Generate();
+            this.game = Game.NewRandom();
 
             this.UpdateData();
         }
@@ -136,16 +130,7 @@ namespace Backend.Controller
         /// <param name="path">The path to save/overwrite in.</param>
         public void SaveGame(string path)
         {
-            GameModel gameModel = new GameModel();
-            gameModel.ExpressionStrings = this.expressionStrings.ToList();
-            gameModel.DotModels.AddRange(
-                this.dots.Select(d => new DotModel()
-                {
-                    Kind = d.Kind,
-                    X = d.Position.Item1,
-                    Y = d.Position.Item2
-                }));
-
+            var gameModel = this.game.GetModel();
             this.gameRepository.SaveGame(gameModel, path);
         }
 
@@ -156,15 +141,20 @@ namespace Backend.Controller
         public void LoadGame(string path)
         {
             this.ClearInput();
+
             var model = this.gameRepository.LoadGame(path);
-            this.expressionStrings = model.ExpressionStrings.ToArray();
-            this.dots = new List<IDot>(model.DotModels.Select(
-                dm =>
-                {
-                    return dm.Kind == DotKind.Good
-                    ? new GoodDot(dm.X, dm.Y) as IDot
-                    : new BadDot(dm.X, dm.Y) as IDot;
-                }));
+            var maybeGame = Game.FromModel(model);
+
+            if (maybeGame.HasValue)
+            {
+                this.game = maybeGame.Value;
+            }
+            else
+            {
+                throw new InvalidOperationException($"{path} did not contain a valid game");
+            }
+
+            this.LoadStringExpressionsFromGame();
 
             this.UpdateData();
         }
@@ -186,7 +176,7 @@ namespace Backend.Controller
         /// <param name="textRepresentation">The textual representation of the expression.</param>
         public void SetExpressionAtIndex(int index, string textRepresentation)
         {
-            this.expressionStrings[index] = string.IsNullOrWhiteSpace(textRepresentation) ? string.Empty : textRepresentation;
+            this.game.ExpressionStrings[index] = string.IsNullOrWhiteSpace(textRepresentation) ? string.Empty : textRepresentation;
             this.expressions[index] = string.IsNullOrWhiteSpace(textRepresentation) ? null : this.parser.Parse(textRepresentation);
         }
 
@@ -208,15 +198,6 @@ namespace Backend.Controller
         }
 
         /// <summary>
-        /// Get the drawable dots.
-        /// </summary>
-        /// <returns>A list of drawable dots.</returns>
-        public List<IDrawDot> GetDrawDots()
-        {
-            return this.drawDots ?? new List<IDrawDot>(0);
-        }
-
-        /// <summary>
         /// Drives the updating process by delegating to other private methods.
         /// </summary>
         public void UpdateData()
@@ -227,9 +208,9 @@ namespace Backend.Controller
 
         private void UpdateGraphs()
         {
-            this.points = new List<ListPointLogical>[MaxExpressions];
+            this.points = new List<ListPointLogical>[Game.MaxExpressionCount];
 
-            for (int expressionIndex = 0; expressionIndex < MaxExpressions; ++expressionIndex)
+            for (int expressionIndex = 0; expressionIndex < Game.MaxExpressionCount; ++expressionIndex)
             {
                 if (!this.expressions[expressionIndex].IsNullOrInvalidExpression())
                 {
@@ -245,13 +226,16 @@ namespace Backend.Controller
 
         private void UpdateDotsAndScore()
         {
-            this.drawDots = new List<IDrawDot>(this.dots.Count);
-            List<int> numbersOfGoodHits = new List<int>(MaxExpressions);
-            List<int> numbersOfBadHits = new List<int>(MaxExpressions);
+            this.drawDots = new List<IDrawDot>(this.game.Dots.Count);
+            List<int> numbersOfGoodHits = new List<int>(Game.MaxExpressionCount);
+            List<int> numbersOfBadHits = new List<int>(Game.MaxExpressionCount);
 
-            this.dots.ForEach(x => this.drawDots.Add(new DrawDot(x.Position.Item1, x.Position.Item2, x.Radius, x.Kind)));
+            foreach (var dot in this.game.Dots)
+            {
+                this.drawDots.Add(new DrawDot(dot.Position.Item1, dot.Position.Item2, dot.Radius, dot.Kind));
+            }
 
-            for (int expressionIndex = 0; expressionIndex < MaxExpressions; ++expressionIndex)
+            for (int expressionIndex = 0; expressionIndex < Game.MaxExpressionCount; ++expressionIndex)
             {
                 var expression = this.expressions[expressionIndex];
 
@@ -264,11 +248,11 @@ namespace Backend.Controller
                         DrawDot drawDot = this.drawDots[dotIndex] as DrawDot;
                         if (!drawDot.IsHit)
                         {
-                            bool isHit = this.dots[dotIndex].IsHit(expression, this.points[expressionIndex]);
+                            bool isHit = this.game.Dots[dotIndex].IsHit(expression, this.points[expressionIndex]);
                             if (isHit)
                             {
                                 drawDot.IsHit = true;
-                                if (this.dots[dotIndex].Kind == DotKind.Good)
+                                if (this.game.Dots[dotIndex].Kind == DotKind.Good)
                                 {
                                     ++countOfGoodHits;
                                 }
@@ -290,14 +274,16 @@ namespace Backend.Controller
 
         private void ClearInput()
         {
-            this.expressionStrings = new string[MaxExpressions];
-            for (int i = 0; i < MaxExpressions; i++)
-            {
-                this.expressionStrings[i] = string.Empty;
-            }
+            this.expressions = new IExpression[Game.MaxExpressionCount];
+            this.points = new List<ListPointLogical>[Game.MaxExpressionCount];
+        }
 
-            this.expressions = new IExpression[MaxExpressions];
-            this.points = new List<ListPointLogical>[MaxExpressions];
+        private void LoadStringExpressionsFromGame()
+        {
+            for (int i = 0; i < this.game.ExpressionStrings.Length; i++)
+            {
+                this.SetExpressionAtIndex(i, this.game.ExpressionStrings[i] ?? string.Empty);
+            }
         }
     }
 }

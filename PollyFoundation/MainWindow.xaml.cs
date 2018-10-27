@@ -702,7 +702,7 @@ namespace PollyFoundation
             GeometryGroup badDotsHitGeometryGroup = new GeometryGroup();
             GeometryGroup badDotMissedGeometryGroup = new GeometryGroup();
 
-            foreach (var dot in this.controller.GetDrawDots())
+            foreach (var dot in this.controller.DrawDots)
             {
                 double radius = this.coordinateHelper.ConvertXLength(dot.Radius);
                 EllipseGeometry ellipseGeometry = new EllipseGeometry(this.coordinateHelper.ConvertCoordinates(dot.Position.Item1, dot.Position.Item2), radius, radius);

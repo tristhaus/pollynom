@@ -65,7 +65,7 @@ namespace Backend.BusinessLogic
                 model.ExpressionStrings.ToArray(),
                 model.Id);
 
-            return game.signature == model.Signature
+            return game.signature.ToLowerInvariant() == model.Signature.ToLowerInvariant()
                 ? new Some<Game>(game) as IMaybe<Game>
                 : new None<Game>() as IMaybe<Game>;
         }
@@ -122,13 +122,8 @@ namespace Backend.BusinessLogic
 
             SHA256Managed hashstring = new SHA256Managed();
             byte[] hash = hashstring.ComputeHash(bytes.ToArray());
-            string hashString = string.Empty;
-            foreach (byte x in hash)
-            {
-                hashString += string.Format("{0:x2}", x);
-            }
 
-            this.signature = hashString;
+            this.signature = BitConverter.ToString(hash).Replace("-", string.Empty);
         }
     }
 }

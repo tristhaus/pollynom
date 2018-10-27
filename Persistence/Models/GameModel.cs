@@ -12,54 +12,41 @@ namespace Persistence.Models
     [JsonObject(ItemRequired = Required.Always)]
     public class GameModel : IEquatable<GameModel>
     {
-        private List<string> expressionStrings = new List<string>();
-        private List<DotModel> dotModels = new List<DotModel>();
+        [JsonProperty("Id", Required = Required.Always)]
+        public Guid Id { get; set; }
+
+        [JsonProperty("Signature", Required = Required.Always)]
+        public string Signature { get; set; }
 
         /// <summary>
         /// Gets or sets the collection of dots contained in the game.
         /// </summary>
         [JsonProperty("ExpressionStrings", Required = Required.Always)]
-        public List<string> ExpressionStrings
-        {
-            get
-            {
-                return this.expressionStrings;
-            }
-
-            set
-            {
-                this.expressionStrings = value;
-            }
-        }
+        public List<string> ExpressionStrings { get; set; } = new List<string>();
 
         /// <summary>
         /// Gets or sets the collection of dots contained in the game.
         /// </summary>
         [JsonProperty("DotModels", Required = Required.Always)]
-        public List<DotModel> DotModels
-        {
-            get
-            {
-                return this.dotModels;
-            }
-
-            set
-            {
-                this.dotModels = value;
-            }
-        }
+        public List<DotModel> DotModels { get; set; } = new List<DotModel>();
 
         /// <inheritdoc />
         public bool Equals(GameModel other)
         {
-            if (this.expressionStrings.Count != other.expressionStrings.Count
-                || !this.expressionStrings.Zip(other.expressionStrings, (a, b) => { return a.Equals(b); }).All(x => x))
+            if (this.Id != other.Id
+                || this.Signature != other.Signature)
             {
                 return false;
             }
 
-            if (this.dotModels.Count != other.dotModels.Count
-                || !this.dotModels.Zip(other.dotModels, (a, b) => { return a.Equals(b); }).All(x => x))
+            if (this.ExpressionStrings.Count != other.ExpressionStrings.Count
+                || !this.ExpressionStrings.Zip(other.ExpressionStrings, (a, b) => { return a.Equals(b); }).All(x => x))
+            {
+                return false;
+            }
+
+            if (this.DotModels.Count != other.DotModels.Count
+                || !this.DotModels.Zip(other.DotModels, (a, b) => { return a.Equals(b); }).All(x => x))
             {
                 return false;
             }
@@ -86,12 +73,12 @@ namespace Persistence.Models
             {
                 int finalHash = 17;
 
-                foreach (var expressionString in this.expressionStrings)
+                foreach (var expressionString in this.ExpressionStrings)
                 {
                     finalHash = finalHash * 23 + expressionString.GetHashCode();
                 }
 
-                foreach (var dotModel in this.dotModels)
+                foreach (var dotModel in this.DotModels)
                 {
                     finalHash = finalHash * 23 + dotModel.GetHashCode();
                 }

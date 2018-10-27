@@ -1,9 +1,10 @@
 Michael suggests to switch to pixel/graphic based dot hitting
 Localization, testable on work laptop etc.
-ID, Signature, hash: ID + content -> hash; hash XOR ID -> display
 UI/Performance improvements
 
 +----------------------------------------------------------------------------------------------------------------------+
+
+PROG ID, Signature, hash: ID + content -> hash; hash XOR ID -> display
 
 +----------------------------------------------------------------------------------------------------------------------+
 

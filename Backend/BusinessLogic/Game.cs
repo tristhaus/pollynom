@@ -1,6 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Security.Cryptography;
+using System.Text;
 using Backend.BusinessLogic.Dots;
 using Persistence.Models;
 
@@ -11,27 +14,24 @@ namespace Backend.BusinessLogic
     /// </summary>
     public class Game
     {
+        /// <summary>
+        /// The maximum number of expressions possible in a game.
+        /// </summary>
         public const int MaxExpressionCount = 5;
-        private static Parser parser = new Parser();
+        private const string PrivateKey = "aa9442f85ecaf18816b0f4ea1d561538109e6fa37171a545ed81b22b463bb375";
 
+        private Guid id;
+        private string signature;
         private List<IDot> dots;
-        private IExpression[] expressions;
         private string[] expressionStrings;
 
-        private Game(List<IDot> dots, string[] expressionStrings)
+        private Game(List<IDot> dots, string[] expressionStrings, Guid? id = null)
         {
             this.dots = dots;
             this.expressionStrings = expressionStrings;
+            this.id = id ?? Guid.NewGuid();
 
-            this.expressions = new IExpression[MaxExpressionCount];
-            for (int i = 0; i < this.expressions.Length; i++)
-            {
-                var expressionString = this.expressionStrings[i];
-                if (!string.IsNullOrEmpty(expressionString) && parser.IsParseable(expressionString))
-                {
-                    this.expressions[i] = Game.parser.Parse(expressionString);
-                }
-            }
+            this.FillSignature();
         }
 
         /// <summary>
@@ -62,9 +62,12 @@ namespace Backend.BusinessLogic
                     ? new GoodDot(dm.X, dm.Y) as IDot
                     : new BadDot(dm.X, dm.Y) as IDot)
                     .ToList(),
-                model.ExpressionStrings.ToArray());
+                model.ExpressionStrings.ToArray(),
+                model.Id);
 
-            return new Some<Game>(game);
+            return game.signature == model.Signature
+                ? new Some<Game>(game) as IMaybe<Game>
+                : new None<Game>() as IMaybe<Game>;
         }
 
         /// <summary>
@@ -77,7 +80,7 @@ namespace Backend.BusinessLogic
         {
             var generator = new RandomDotsGenerator(goodDotsNumber, badDotsNumber);
 
-            var game = new Game(generator.Generate(), new string[MaxExpressionCount]);
+            var game = new Game(generator.Generate(), new string[] { string.Empty, string.Empty, string.Empty, string.Empty, string.Empty, });
 
             return game;
         }
@@ -88,7 +91,11 @@ namespace Backend.BusinessLogic
         /// <returns>The model underlying this game.</returns>
         public GameModel GetModel()
         {
-            GameModel gameModel = new GameModel();
+            GameModel gameModel = new GameModel()
+            {
+                Id = this.id,
+                Signature = this.signature,
+            };
             gameModel.ExpressionStrings = this.expressionStrings.ToList();
             gameModel.DotModels.AddRange(
                 this.dots.Select(d => new DotModel()
@@ -99,6 +106,29 @@ namespace Backend.BusinessLogic
                 }));
 
             return gameModel;
+        }
+
+        private void FillSignature()
+        {
+            var bytes = Encoding.UTF8.GetBytes(Game.PrivateKey).ToList();
+            bytes.AddRange(this.id.ToByteArray());
+
+            foreach (var dot in this.dots)
+            {
+                bytes.AddRange(Encoding.UTF8.GetBytes(dot.Kind.ToString()));
+                bytes.AddRange(BitConverter.GetBytes(dot.Position.Item1));
+                bytes.AddRange(BitConverter.GetBytes(dot.Position.Item2));
+            }
+
+            SHA256Managed hashstring = new SHA256Managed();
+            byte[] hash = hashstring.ComputeHash(bytes.ToArray());
+            string hashString = string.Empty;
+            foreach (byte x in hash)
+            {
+                hashString += string.Format("{0:x2}", x);
+            }
+
+            this.signature = hashString;
         }
     }
 }

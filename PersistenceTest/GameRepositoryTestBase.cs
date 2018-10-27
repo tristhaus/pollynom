@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Persistence;
 using Persistence.Models;
@@ -21,7 +22,11 @@ namespace PersistenceTest
         protected virtual void ShouldPerformRoundTripSavingLoading()
         {
             // Arrange
-            GameModel model = new GameModel();
+            GameModel model = new GameModel()
+            {
+                Id = Guid.Parse("990a6482-3d44-44d1-8dd2-4eb1f86db0e7"),
+                Signature = "someSignature1",
+            };
             model.ExpressionStrings = new List<string>() { "exp(x)", "x^2" };
             model.DotModels.Add(new DotModel()
             {
@@ -51,7 +56,11 @@ namespace PersistenceTest
         protected virtual void ShouldAllowOverwriting()
         {
             // Arrange
-            GameModel model1 = new GameModel();
+            GameModel model1 = new GameModel()
+            {
+                Id = Guid.Parse("990a6482-3d44-44d1-8dd2-aaaaaaaaaaaa"),
+                Signature = "someSignature1",
+            };
             model1.ExpressionStrings = new List<string>() { "exp(x)", "x^2" };
             model1.DotModels.Add(new DotModel()
             {
@@ -66,7 +75,11 @@ namespace PersistenceTest
                 Y = -7.8,
             });
 
-            GameModel model2 = new GameModel();
+            GameModel model2 = new GameModel()
+            {
+                Id = Guid.Parse("990a6482-3d44-44d1-8dd2-bbbbbbbbbbbb"),
+                Signature = "someSignature2",
+            };
             model2.ExpressionStrings = new List<string>() { "sin(x)", "x^0.5" };
             model2.DotModels.Add(new DotModel()
             {

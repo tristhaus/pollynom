@@ -82,7 +82,7 @@ namespace Backend.BusinessLogic
         {
             // check unsupported characters
             {
-                Regex regex = new Regex("^[-0-9.+/*^()abceilnopstxX]+$", RegexOptions.Compiled);
+                Regex regex = new Regex("^[-0-9.,+/*^()abceilnopstxX]+$", RegexOptions.Compiled);
                 if (!regex.IsMatch(s))
                 {
                     return false;
@@ -160,7 +160,7 @@ namespace Backend.BusinessLogic
             }
 
             // deal with a simple case: a numerical constant
-            if (Regex.IsMatch(s, @"^[+-]?[0-9]+.?[0-9]*$", RegexOptions.Compiled))
+            if (Regex.IsMatch(s, @"^[+-]?[0-9]+[.,]?[0-9]*$", RegexOptions.Compiled))
             {
                 return this.ParseToConstant(s);
             }
@@ -221,7 +221,7 @@ namespace Backend.BusinessLogic
         private IExpression ParseToConstant(string s)
         {
             double result;
-            if (double.TryParse(s, NumberStyles.Any, new CultureInfo("en-US"), out result))
+            if (double.TryParse(s.Replace(',', '.'), NumberStyles.Any, new CultureInfo("en-US"), out result))
             {
                 return new Constant(result);
             }

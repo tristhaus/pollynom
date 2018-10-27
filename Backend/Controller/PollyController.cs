@@ -114,6 +114,11 @@ namespace Backend.Controller
         public ReadOnlyCollection<IDrawDot> DrawDots => new ReadOnlyCollection<IDrawDot>(this.drawDots ?? new List<IDrawDot>(0));
 
         /// <summary>
+        /// Gets the textual representation of the current game id.
+        /// </summary>
+        public string GameId => this.game.Id;
+
+        /// <summary>
         /// Initialize a new random game.
         /// </summary>
         public void NewRandomGame()

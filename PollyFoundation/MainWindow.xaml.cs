@@ -99,24 +99,24 @@ namespace PollyFoundation
         private Menu mainMenu;
 
         /// <summary>
-        /// The first-level file menu enty.
-        /// </summary>
-        private MenuItem fileMenuItem;
-
-        /// <summary>
-        /// The new game menu item, found under <see cref="this.fileMenuItem"/>.
+        /// The new game menu item.
         /// </summary>
         private MenuItem newGameMenuItem;
 
         /// <summary>
-        /// The open existing game menu item, found under <see cref="this.fileMenuItem"/>.
+        /// The open existing game menu item.
         /// </summary>
         private MenuItem openGameMenuItem;
 
         /// <summary>
-        /// The save current game menu item, found under <see cref="this.fileMenuItem"/>.
+        /// The save current game menu item.
         /// </summary>
         private MenuItem saveGameMenuItem;
+
+        /// <summary>
+        /// The info menu enty.
+        /// </summary>
+        private MenuItem infoMenuItem;
 
         /// <summary>
         /// The canvas on which output is drawn.
@@ -218,6 +218,7 @@ namespace PollyFoundation
             this.newGameMenuItem.Click += this.NewGameMenuItem_Click;
             this.openGameMenuItem.Click += this.OpenGameMenuItem_Click;
             this.saveGameMenuItem.Click += this.SaveGameMenuItem_Click;
+            this.infoMenuItem.Click += this.InfoMenuItem_Click;
         }
 
         /// <inheritdoc />
@@ -373,16 +374,16 @@ namespace PollyFoundation
 
             this.mainMenu = new Menu();
             DockPanel.SetDock(this.mainMenu, Dock.Top);
-            this.fileMenuItem = new MenuItem() { Header = "_File", };
-            this.newGameMenuItem = new MenuItem() { Header = "_New Game", };
-            this.openGameMenuItem = new MenuItem() { Header = "_Open Game", };
-            this.saveGameMenuItem = new MenuItem() { Header = "_Save Game", };
+            this.newGameMenuItem = new MenuItem() { Header = "_New", };
+            this.openGameMenuItem = new MenuItem() { Header = "_Open", };
+            this.saveGameMenuItem = new MenuItem() { Header = "_Save", };
             ToolTipService.SetShowOnDisabled(this.saveGameMenuItem, true);
+            this.infoMenuItem = new MenuItem() { Header = "Info", };
 
-            this.mainMenu.Items.Add(this.fileMenuItem);
-            this.fileMenuItem.Items.Add(this.newGameMenuItem);
-            this.fileMenuItem.Items.Add(this.openGameMenuItem);
-            this.fileMenuItem.Items.Add(this.saveGameMenuItem);
+            this.mainMenu.Items.Add(this.newGameMenuItem);
+            this.mainMenu.Items.Add(this.openGameMenuItem);
+            this.mainMenu.Items.Add(this.saveGameMenuItem);
+            this.mainMenu.Items.Add(this.infoMenuItem);
 
             this.basePanel.Children.Add(this.mainMenu);
             this.basePanel.Children.Add(this.inputOutputGrid);
@@ -836,6 +837,11 @@ namespace PollyFoundation
                 this.controller.SaveGame(path);
                 this.RedrawAll();
             }
+        }
+
+        private void InfoMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBox.Show($"PollyNom - a math game\r\n\r\nGame Id: {this.controller.GameId}\r\nCurrent score: {this.controller.Score}", "Info", MessageBoxButton.OK);
         }
     }
 }

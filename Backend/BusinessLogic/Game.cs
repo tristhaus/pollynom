@@ -45,6 +45,11 @@ namespace Backend.BusinessLogic
         public string[] ExpressionStrings => this.expressionStrings;
 
         /// <summary>
+        /// Gets the textual representation of the game id.
+        /// </summary>
+        public string Id => this.id.ToString("N");
+
+        /// <summary>
         /// Given a valid model, provides a game from it.
         /// </summary>
         /// <param name="model">The model to use as a  basis for the game.</param>

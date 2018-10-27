@@ -4,10 +4,9 @@ UI/Performance improvements
 
 +----------------------------------------------------------------------------------------------------------------------+
 
-PROG ID, Signature, hash: ID + content -> hash; hash XOR ID -> display
-
 +----------------------------------------------------------------------------------------------------------------------+
 
 DONE Switch UI/Controller communication to delegates and/or Tasks
 DONE Spice up the UI
 DONE Introduce "Bad Dots", leading to a total score of negative infinity
+DONE ID, Signature, hash: ID + content -> hash; hash XOR ID -> display

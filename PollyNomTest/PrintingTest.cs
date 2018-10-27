@@ -27,7 +27,7 @@ namespace PollyNomTest
             string result = ExpressionPrinter.PrintExpression(expr);
 
             // Assert
-            Assert.AreEqual<string>($"{2.0}*x", result);
+            Assert.AreEqual<string>($"2*x", result);
         }
 
         /// <summary>
@@ -44,7 +44,7 @@ namespace PollyNomTest
             string result = ExpressionPrinter.PrintExpression(expr);
 
             // Assert
-            Assert.AreEqual<string>($"{2}*x^{3}/(x-{2}^x)", result);
+            Assert.AreEqual<string>($"2*x^3/(x-2^x)", result);
         }
 
         /// <summary>
@@ -61,7 +61,7 @@ namespace PollyNomTest
             string result = ExpressionPrinter.PrintExpression(expr);
 
             // Assert
-            Assert.AreEqual<string>($"{2}*(x+{1})", result);
+            Assert.AreEqual<string>($"2*(x+1)", result);
         }
 
         /// <summary>
@@ -78,7 +78,7 @@ namespace PollyNomTest
             string result = ExpressionPrinter.PrintExpression(expr);
 
             // Assert
-            Assert.AreEqual<string>($"(x+{1})^{2}", result);
+            Assert.AreEqual<string>($"(x+1)^2", result);
         }
 
         /// <summary>
@@ -95,7 +95,7 @@ namespace PollyNomTest
             string result = ExpressionPrinter.PrintExpression(expr);
 
             // Assert
-            Assert.AreEqual<string>($"(x+{1})^(x/{3})", result);
+            Assert.AreEqual<string>($"(x+1)^(x/3)", result);
         }
 
         /// <summary>
@@ -112,7 +112,7 @@ namespace PollyNomTest
             string result = ExpressionPrinter.PrintExpression(expr);
 
             // Assert
-            Assert.AreEqual<string>($"x-{1}+{2}-{3}", result);
+            Assert.AreEqual<string>($"x-1+2-3", result);
         }
 
         /// <summary>
@@ -129,7 +129,7 @@ namespace PollyNomTest
             string result = ExpressionPrinter.PrintExpression(expr);
 
             // Assert
-            Assert.AreEqual<string>($"x+{1}-{2}+{3}", result);
+            Assert.AreEqual<string>($"x+1-2+3", result);
         }
 
         /// <summary>
@@ -146,7 +146,7 @@ namespace PollyNomTest
             string result = ExpressionPrinter.PrintExpression(expr);
 
             // Assert
-            Assert.AreEqual<string>($"x+{1}-{4}+{7}", result);
+            Assert.AreEqual<string>($"x+1-4+7", result);
         }
 
         /// <summary>

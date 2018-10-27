@@ -60,8 +60,7 @@
   <ItemGroup>
     <Compile Include="GameModelSerializationTest.cs" />
     <Compile Include="GameRepositoryTestBase.cs" />
-    <Compile Include="Helper\GameModelEqualityChecker.cs" />
-    <Compile Include="Helper\GameModelEqualityCheckerTest.cs" />
+    <Compile Include="GameModelEqualityTest.cs" />
     <Compile Include="InMemoryGameRepository.cs" />
     <Compile Include="InMemoryGameRepositoryTest.cs" />
     <Compile Include="OnDiskGameRepositoryTest.cs" />

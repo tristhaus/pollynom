@@ -2,7 +2,6 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Persistence;
 using Persistence.Models;
-using PersistenceTest.Helper;
 
 namespace PersistenceTest
 {
@@ -43,7 +42,7 @@ namespace PersistenceTest
             GameModel retrievedModel = this.GameRepository.LoadGame(path);
 
             // Assert
-            Assert.IsTrue(GameModelEqualityChecker.AreApproximatelyEqual(model, retrievedModel));
+            Assert.IsTrue(model.Equals(retrievedModel));
         }
 
         /// <summary>
@@ -89,7 +88,7 @@ namespace PersistenceTest
             GameModel retrievedModel = this.GameRepository.LoadGame(path);
 
             // Assert
-            Assert.IsTrue(GameModelEqualityChecker.AreApproximatelyEqual(model2, retrievedModel));
+            Assert.IsTrue(model2.Equals(retrievedModel));
         }
 
         /// <summary>

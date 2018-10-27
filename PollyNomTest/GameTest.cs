@@ -114,16 +114,7 @@ namespace PollyNomTest
             // Assert
             Assert.IsTrue(game.HasValue);
             Assert.IsNotNull(resultModel);
-
-            Assert.AreEqual(expression0, resultModel.ExpressionStrings[0]);
-            Assert.AreEqual(string.Empty, resultModel.ExpressionStrings[1]);
-            Assert.AreEqual(expression2, resultModel.ExpressionStrings[2]);
-            Assert.AreEqual(string.Empty, resultModel.ExpressionStrings[3]);
-            Assert.AreEqual(string.Empty, resultModel.ExpressionStrings[4]);
-
-            Assert.AreEqual(DotKind.Bad, resultModel.DotModels[0].Kind);
-            Assert.AreEqual(0.1, resultModel.DotModels[0].X);
-            Assert.AreEqual(-0.2, resultModel.DotModels[0].Y);
+            Assert.IsTrue(gameModel.Equals(resultModel));
         }
     }
 }

@@ -4,7 +4,6 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
-using Backend.BusinessLogic.Dots;
 using Persistence.Models;
 
 namespace Backend.BusinessLogic
@@ -62,10 +61,8 @@ namespace Backend.BusinessLogic
             }
 
             var game = new Game(
-                model.DotModels.Select(
-                    dm => dm.Kind == DotKind.Good
-                    ? new GoodDot(dm.X, dm.Y) as IDot
-                    : new BadDot(dm.X, dm.Y) as IDot)
+                model.DotModels
+                    .Select(dm => new Dot(dm) as IDot)
                     .ToList(),
                 model.ExpressionStrings.ToArray(),
                 model.Id);
@@ -103,12 +100,7 @@ namespace Backend.BusinessLogic
             };
             gameModel.ExpressionStrings = this.expressionStrings.ToList();
             gameModel.DotModels.AddRange(
-                this.dots.Select(d => new DotModel()
-                {
-                    Kind = d.Kind,
-                    X = d.Position.Item1,
-                    Y = d.Position.Item2
-                }));
+                this.dots.Select(d => d.GetModel()));
 
             return gameModel;
         }

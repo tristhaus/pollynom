@@ -44,9 +44,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BusinessLogic\Dots\BadDot.cs" />
-    <Compile Include="BusinessLogic\Dots\DotBase.cs" />
-    <Compile Include="BusinessLogic\Dots\GoodDot.cs" />
+    <Compile Include="BusinessLogic\Dot.cs" />
     <Compile Include="BusinessLogic\Expressions\Add.cs" />
     <Compile Include="BusinessLogic\Expressions\BaseX.cs" />
     <Compile Include="BusinessLogic\Expressions\Constant.cs" />

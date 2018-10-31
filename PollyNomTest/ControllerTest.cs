@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using Backend.BusinessLogic;
-using Backend.BusinessLogic.Dots;
 using Backend.BusinessLogic.Expressions;
 using Backend.Controller;
 using Microsoft.VisualStudio.TestTools.UnitTesting;

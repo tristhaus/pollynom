@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using Backend.BusinessLogic;
-using Backend.BusinessLogic.Dots;
 using Backend.BusinessLogic.Expressions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Persistence.Models;
 using TestInfrastructure;
 
 namespace PollyNomTest
@@ -25,7 +25,7 @@ namespace PollyNomTest
         public void TrivialBorderCases()
         {
             // Arrange
-            GoodDot originDot = new GoodDot(0.0, 0.0);
+            IDot originDot = new Dot(DotKind.Good, 0.0, 0.0);
 
             IExpression top = new Constant(0.25);
             IExpression bottom = new Constant(-0.25);
@@ -84,7 +84,7 @@ namespace PollyNomTest
         public void Singularity1()
         {
             // Arrange
-            GoodDot originDot = new GoodDot(0.0, 0.0);
+            IDot originDot = new Dot(DotKind.Good, 0.0, 0.0);
 
             IExpression plainOneOverX = new Multiply(new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Multiply, new Constant(1.0)), new Multiply.MultiplyExpression(Multiply.MultiplyExpression.Signs.Divide, new BaseX()));
 
@@ -107,7 +107,7 @@ namespace PollyNomTest
         public void Singularity2()
         {
             // Arrange
-            GoodDot originDot = new GoodDot(0.0, 0.0);
+            IDot originDot = new Dot(DotKind.Good, 0.0, 0.0);
 
             IExpression oneOverXMinus10 = new Add(
                 new Add.AddExpression(

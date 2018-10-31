@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using Persistence.Models;
 
-namespace Backend.BusinessLogic.Dots
+namespace Backend.BusinessLogic
 {
-    public abstract class DotBase : IDot
+    public class Dot : IDot
     {
         /// <summary>
         /// Radius of the dot in implied logical business units.
@@ -27,12 +27,23 @@ namespace Backend.BusinessLogic.Dots
         private readonly double y;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="DotBase"/> class from the coordinates given.
+        /// Initializes a new instance of the <see cref="Dot"/> class from the model given.
         /// </summary>
+        /// <param name="model">The model representing this dot.</param>
+        public Dot(DotModel model)
+            : this(model.Kind, model.X, model.Y)
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Dot"/> class from the kind and coordinates given.
+        /// </summary>
+        /// <param name="kind">The kind of the dot.</param>
         /// <param name="x">X-coordinate of the dot in implied logical business units.</param>
         /// <param name="y">Y-coordinate of the dot in implied logical business units.</param>
-        protected DotBase(double x, double y)
+        public Dot(DotKind kind, double x, double y)
         {
+            this.Kind = kind;
             this.x = x;
             this.y = y;
         }
@@ -47,16 +58,10 @@ namespace Backend.BusinessLogic.Dots
         }
 
         /// <inheritdoc />
-        public abstract DotKind Kind { get; }
+        public DotKind Kind { get; }
 
         /// <inheritdoc />
-        public double Radius
-        {
-            get
-            {
-                return DotBase.RadiusValue;
-            }
-        }
+        public double Radius => Dot.RadiusValue;
 
         /// <inheritdoc />
         public bool IsHit(IExpression expression, List<ListPointLogical> tupleLists)
@@ -67,6 +72,11 @@ namespace Backend.BusinessLogic.Dots
             }
 
             return this.HitImplementationListBased(tupleLists) || this.HitImplementationGreedy(expression);
+        }
+
+        public DotModel GetModel()
+        {
+            return new DotModel() { Kind = this.Kind, X = this.x, Y = this.y };
         }
 
         private bool HitImplementationListBased(List<ListPointLogical> tupleLists)
@@ -197,7 +207,7 @@ namespace Backend.BusinessLogic.Dots
                 }
 
                 // if everything else fails, pick a new random Mid somewhere in the dot
-                double rand = DotBase.rng.NextDouble();
+                double rand = Dot.rng.NextDouble();
                 mid = this.x + this.Radius * 0.75 * (rand - 0.5);
             }
 

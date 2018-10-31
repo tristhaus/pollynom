@@ -32,5 +32,11 @@ namespace Backend.BusinessLogic
         /// <param name="logicalPointLists">Lists of pre-evaluated points</param>
         /// <returns><c>true</c> if hit, <c>false</c> otherwise.</returns>
         bool IsHit(IExpression expression, List<ListPointLogical> logicalPointLists);
+
+        /// <summary>
+        /// Provides the model representing this dot.
+        /// </summary>
+        /// <returns>The model.</returns>
+        DotModel GetModel();
     }
 }

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-using Backend.BusinessLogic.Dots;
+using Persistence.Models;
 
 namespace Backend.BusinessLogic
 {
@@ -49,7 +49,7 @@ namespace Backend.BusinessLogic
                 CandidateDot candidate = candidates[rng.Next(candidateCount)];
                 if (!candidate.Picked)
                 {
-                    list.Add(new GoodDot(candidate.X, candidate.Y));
+                    list.Add(new Dot(DotKind.Good, candidate.X, candidate.Y));
                     candidate.Picked = true;
                 }
             }
@@ -59,7 +59,7 @@ namespace Backend.BusinessLogic
                 CandidateDot candidate = candidates[rng.Next(candidateCount)];
                 if (!candidate.Picked)
                 {
-                    list.Add(new BadDot(candidate.X, candidate.Y));
+                    list.Add(new Dot(DotKind.Bad, candidate.X, candidate.Y));
                     candidate.Picked = true;
                 }
             }

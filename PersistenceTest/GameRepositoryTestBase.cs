@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Persistence;
 using Persistence.Models;
@@ -40,7 +41,8 @@ namespace PersistenceTest
                 X = -5.6,
                 Y = -7.8,
             });
-            const string path = @"F:\temp\test.json";
+            const string filename = @"test.json";
+            var path = CreateTempFilename(filename);
 
             // Act
             this.GameRepository.SaveGame(model, path);
@@ -93,7 +95,8 @@ namespace PersistenceTest
                 X = -4.4,
                 Y = -4.4,
             });
-            const string path = @"F:\temp\test.json";
+            const string filename = @"test.json";
+            var path = CreateTempFilename(filename);
 
             // Act
             this.GameRepository.SaveGame(model1, path);
@@ -110,10 +113,11 @@ namespace PersistenceTest
         protected virtual void ShouldThrowForNonExistentFile()
         {
             // Arrange
-            const string path = @"F:\temp\neverExists.json";
+            const string filename = @"neverExists.json";
+            string path = CreateTempFilename(filename);
 
             // Act
-            GameModel retrievedModel = this.GameRepository.LoadGame(path);
+            _ = this.GameRepository.LoadGame(path);
 
             // Assert
             // Exception thrown
@@ -126,13 +130,25 @@ namespace PersistenceTest
         protected virtual void ShouldThrowForNonCompatibleFileContent(IGameRepository specialGameRepository)
         {
             // Arrange
-            const string path = @"F:\temp\synchronizedNameOfBadFile.json";
+            // special setup: create bad file
+            // must be kept in sync with other tests
+            const string filename = @"synchronizedNameOfBadFile.json";
+
+            string path = CreateTempFilename(filename);
 
             // Act
-            GameModel retrievedModel = specialGameRepository.LoadGame(path);
+            _ = specialGameRepository.LoadGame(path);
 
             // Assert
             // Exception thrown
+        }
+
+        private static string CreateTempFilename(string filename)
+        {
+            var tempPath = Path.GetTempPath();
+
+            string path = Path.Combine(tempPath, filename);
+            return path;
         }
     }
 }

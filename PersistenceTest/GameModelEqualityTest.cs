@@ -152,6 +152,7 @@ namespace PersistenceTest
         /// <summary>
         /// Check two game models differing in terms of expressions contained.
         /// </summary>
+        [TestMethod]
         [TestCategory(TestInfrastructure.TestCategories.UnitTest)]
         public void ShouldGiveFalseForGameModelsDifferingInExpressions()
         {

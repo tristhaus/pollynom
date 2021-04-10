@@ -11,8 +11,7 @@ namespace PersistenceTest
     public class InMemoryGameRepository : IGameRepository
     {
         private readonly Serializer<GameModel> serializer;
-
-        private Dictionary<string, byte[]> fileSystemStub;
+        private readonly Dictionary<string, byte[]> fileSystemStub;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="InMemoryGameRepository"/> class.

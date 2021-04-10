@@ -1,4 +1,5 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using System.IO;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Persistence;
 
 namespace PersistenceTest
@@ -9,7 +10,7 @@ namespace PersistenceTest
     [TestClass]
     public class InMemoryGameRepositoryTest : GameRepositoryTestBase
     {
-        private IGameRepository gameRepository;
+        private readonly IGameRepository gameRepository;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="InMemoryGameRepositoryTest"/> class.
@@ -62,7 +63,12 @@ namespace PersistenceTest
         public void ShouldThrowForNonCompatibleFileContent()
         {
             // special setup: create bad file
-            const string path = @"F:\temp\synchronizedNameOfBadFile.json";
+            var tempPath = Path.GetTempPath();
+
+            // must be kept in sync with other tests
+            const string filename = @"synchronizedNameOfBadFile.json";
+
+            string path = Path.Combine(tempPath, filename);
             const string badJson = @"{ ""someKey"": ""someContent""}";
             byte[] buffer = System.Text.Encoding.UTF8.GetBytes(badJson);
             IGameRepository specialGameRepository = new InMemoryGameRepository(path, buffer);

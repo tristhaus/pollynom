@@ -10,7 +10,7 @@ namespace PersistenceTest
     [TestClass]
     public class OnDiskGameRepositoryTest : GameRepositoryTestBase
     {
-        private IGameRepository gameRepository;
+        private readonly IGameRepository gameRepository;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="OnDiskGameRepositoryTest"/> class.
@@ -63,7 +63,12 @@ namespace PersistenceTest
         public void ShouldThrowForNonCompatibleFileContent()
         {
             // special setup: create bad file
-            const string path = @"F:\temp\synchronizedNameOfBadFile.json";
+            var tempPath = Path.GetTempPath();
+
+            // must be kept in sync with other tests
+            const string filename = @"synchronizedNameOfBadFile.json";
+
+            string path = Path.Combine(tempPath, filename);
             const string badJson = @"{ ""someKey"": ""someContent""}";
 
             System.Text.Encoding encoding = System.Text.Encoding.UTF8;

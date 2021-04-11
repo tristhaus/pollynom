@@ -13,21 +13,22 @@ namespace Backend.BusinessLogic
     public class Parser
     {
         private readonly InvalidExpression invalidExpressionSample = new InvalidExpression();
-
-        private Dictionary<string, Type> functions;
+        private readonly Dictionary<string, Type> functions;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Parser"/> class.
         /// </summary>
         public Parser()
         {
-            this.functions = new Dictionary<string, Type>();
-            this.functions.Add(NaturalLogarithm.Symbol, typeof(NaturalLogarithm));
-            this.functions.Add(Exponential.Symbol, typeof(Exponential));
-            this.functions.Add(Sine.Symbol, typeof(Sine));
-            this.functions.Add(Cosine.Symbol, typeof(Cosine));
-            this.functions.Add(Tangent.Symbol, typeof(Tangent));
-            this.functions.Add(AbsoluteValue.Symbol, typeof(AbsoluteValue));
+            this.functions = new Dictionary<string, Type>
+            {
+                { NaturalLogarithm.Symbol, typeof(NaturalLogarithm) },
+                { Exponential.Symbol, typeof(Exponential) },
+                { Sine.Symbol, typeof(Sine) },
+                { Cosine.Symbol, typeof(Cosine) },
+                { Tangent.Symbol, typeof(Tangent) },
+                { AbsoluteValue.Symbol, typeof(AbsoluteValue) }
+            };
         }
 
         /// <summary>
@@ -49,8 +50,8 @@ namespace Backend.BusinessLogic
         {
             try
             {
-                s = this.PrepareString(s);
-                if (!this.ValidateInput(s))
+                s = PrepareString(s);
+                if (!ValidateInput(s))
                 {
                     return this.invalidExpressionSample;
                 }
@@ -68,9 +69,19 @@ namespace Backend.BusinessLogic
         /// </summary>
         /// <param name="s">The string to be prepared.</param>
         /// <returns>The prepared string.</returns>
-        private string PrepareString(string s)
+        private static string PrepareString(string s)
         {
             return s.Replace(" ", string.Empty);
+        }
+
+        /// <summary>
+        /// Checks the character for being a mathematical operator.
+        /// </summary>
+        /// <param name="c">The character to be checked.</param>
+        /// <returns><c>true</c> if character is an operator.</returns>
+        private static bool IsOperatorChar(char c)
+        {
+            return c == '-' || c == '+' || c == '*' || c == '/' || c == '^';
         }
 
         /// <summary>
@@ -78,7 +89,7 @@ namespace Backend.BusinessLogic
         /// </summary>
         /// <param name="s">The string to be checked.</param>
         /// <returns><c>true</c> if valid.</returns>
-        private bool ValidateInput(string s)
+        private static bool ValidateInput(string s)
         {
             // check unsupported characters
             {
@@ -135,6 +146,117 @@ namespace Backend.BusinessLogic
             return true;
         }
 
+
+        /// <summary>
+        /// Finds the parenthesis in the string matching the one at the given index.
+        /// </summary>
+        /// <param name="s">The string to be worked on.</param>
+        /// <param name="pos">The index of the parenthesis that needs to be matched.</param>
+        /// <returns>The index of the matching parenthesis.</returns>
+        private static int FindMatchingBrace(string s, int pos)
+        {
+            if (pos < 0 || pos > s.Length - 1)
+            {
+                throw new ArgumentOutOfRangeException(nameof(pos), nameof(pos) + " must be within " + nameof(s));
+            }
+
+            bool lookForClosing;
+            if (s[pos] == '(')
+            {
+                lookForClosing = true;
+            }
+            else if (s[pos] == ')')
+            {
+                lookForClosing = false;
+            }
+            else
+            {
+                return -1;
+            }
+
+            int count = 0;
+            if (lookForClosing)
+            {
+                for (int index = pos; index < s.Length; index++)
+                {
+                    char c = s[index];
+                    if (c == '(')
+                    {
+                        count++;
+                    }
+                    else if (c == ')')
+                    {
+                        count--;
+                    }
+
+                    if (count == 0)
+                    {
+                        return index;
+                    }
+                }
+            }
+            else
+            {
+                for (int index = pos; index >= 0; index--)
+                {
+                    char c = s[index];
+                    if (c == ')')
+                    {
+                        count++;
+                    }
+                    else if (c == '(')
+                    {
+                        count--;
+                    }
+
+                    if (count == 0)
+                    {
+                        return index;
+                    }
+                }
+            }
+
+            return -1;
+        }
+
+        /// <summary>
+        /// Fill the provided lists with operands and operators.
+        /// </summary>
+        /// <param name="s">The input string.</param>
+        /// <param name="tokens">Output slot for lists of operands.</param>
+        /// <param name="ops">Output slot for lists of operators.</param>
+        private static void Tokenize(string s, List<string> tokens, List<string> ops)
+        {
+            string token = string.Empty;
+            for (int index = 0; index < s.Length; index++)
+            {
+                char c = s[index];
+
+                if (c == '(')
+                {
+                    int endIndex = FindMatchingBrace(s, index);
+                    token += s.Substring(index, endIndex - index + 1);
+                    index = endIndex;
+                    continue;
+                }
+
+                if (IsOperatorChar(c) && token.Length > 0)
+                {
+                    tokens.Add(token);
+                    token = string.Empty;
+                    ops.Add(c.ToString());
+                    continue;
+                }
+
+                token += c;
+            }
+
+            if (token.Length > 0)
+            {
+                tokens.Add(token);
+            }
+        }
+
         /// <summary>
         /// Internal parsing (post validation). Supports recursion when given prepared and validated strings.
         /// </summary>
@@ -142,13 +264,13 @@ namespace Backend.BusinessLogic
         /// <returns>The expression, which can be <see cref="InvalidExpression"/>.</returns>
         private IExpression InternalParse(string s)
         {
-            if (!this.ValidateInput(s))
+            if (!ValidateInput(s))
             {
                 return this.invalidExpressionSample;
             }
 
             // if fully enclosed in braces, we remove them
-            if (s[0] == '(' && s.Length - 1 == this.FindMatchingBrace(s, 0))
+            if (s[0] == '(' && s.Length - 1 == FindMatchingBrace(s, 0))
             {
                 return this.InternalParse(s.Substring(1, s.Length - 2));
             }
@@ -169,7 +291,7 @@ namespace Backend.BusinessLogic
             List<string> tokens = new List<string>();
             List<string> ops = new List<string>();
 
-            this.Tokenize(s, tokens, ops);
+            Tokenize(s, tokens, ops);
 
             // deal with a signed single token
             if (Regex.IsMatch(s, @"^[+-]", RegexOptions.Compiled) && tokens.Count == 1)
@@ -220,62 +342,12 @@ namespace Backend.BusinessLogic
         /// <returns>The expression, which can be <see cref="InvalidExpression"/>.</returns>
         private IExpression ParseToConstant(string s)
         {
-            double result;
-            if (double.TryParse(s.Replace(',', '.'), NumberStyles.Any, new CultureInfo("en-US"), out result))
+            if (double.TryParse(s.Replace(',', '.'), NumberStyles.Any, new CultureInfo("en-US"), out var result))
             {
                 return new Constant(result);
             }
 
             return this.invalidExpressionSample;
-        }
-
-        /// <summary>
-        /// Fill the provided lists with operands and operators.
-        /// </summary>
-        /// <param name="s">The input string.</param>
-        /// <param name="tokens">Output slot for lists of operands.</param>
-        /// <param name="ops">Output slot for lists of operators.</param>
-        private void Tokenize(string s, List<string> tokens, List<string> ops)
-        {
-            string token = string.Empty;
-            for (int index = 0; index < s.Length; index++)
-            {
-                char c = s[index];
-
-                if (c == '(')
-                {
-                    int endIndex = this.FindMatchingBrace(s, index);
-                    token += s.Substring(index, endIndex - index + 1);
-                    index = endIndex;
-                    continue;
-                }
-
-                if (this.IsOperatorChar(c) && token.Length > 0)
-                {
-                    tokens.Add(token);
-                    token = string.Empty;
-                    ops.Add(c.ToString());
-                    continue;
-                }
-
-                token += c;
-            }
-
-            if (token.Length > 0)
-            {
-                tokens.Add(token);
-                token = string.Empty;
-            }
-        }
-
-        /// <summary>
-        /// Checks the character for being a mathematical operator.
-        /// </summary>
-        /// <param name="c">The character to be checked.</param>
-        /// <returns><c>true</c> if character is an operator.</returns>
-        private bool IsOperatorChar(char c)
-        {
-            return c == '-' || c == '+' || c == '*' || c == '/' || c == '^';
         }
 
         /// <summary>
@@ -329,7 +401,6 @@ namespace Backend.BusinessLogic
                 }
 
                 targetList.Add(new Add.AddExpression(sign, expression));
-                token = string.Empty;
             }
 
             return new Add(targetList);
@@ -386,7 +457,6 @@ namespace Backend.BusinessLogic
                 }
 
                 targetList.Add(new Multiply.MultiplyExpression(sign, expression));
-                token = string.Empty;
             }
 
             return new Multiply(targetList);
@@ -462,78 +532,6 @@ namespace Backend.BusinessLogic
             }
 
             return Activator.CreateInstance(functionType, argumentExpression) as IExpression;
-        }
-
-        /// <summary>
-        /// Finds the parenthesis in the string matching the one at the given index.
-        /// </summary>
-        /// <param name="s">The string to be worked on.</param>
-        /// <param name="pos">The index of the parenthesis that needs to be matched.</param>
-        /// <returns>The index of the matching parenthesis.</returns>
-        private int FindMatchingBrace(string s, int pos)
-        {
-            if (pos < 0 || pos > s.Length - 1)
-            {
-                throw new ArgumentOutOfRangeException(nameof(pos) + "must be within" + nameof(s));
-            }
-
-            bool lookForClosing;
-            if (s[pos] == '(')
-            {
-                lookForClosing = true;
-            }
-            else if (s[pos] == ')')
-            {
-                lookForClosing = false;
-            }
-            else
-            {
-                return -1;
-            }
-
-            int count = 0;
-            if (lookForClosing)
-            {
-                for (int index = pos; index < s.Length; index++)
-                {
-                    char c = s[index];
-                    if (c == '(')
-                    {
-                        count++;
-                    }
-                    else if (c == ')')
-                    {
-                        count--;
-                    }
-
-                    if (count == 0)
-                    {
-                        return index;
-                    }
-                }
-            }
-            else
-            {
-                for (int index = pos; index >= 0; index--)
-                {
-                    char c = s[index];
-                    if (c == ')')
-                    {
-                        count++;
-                    }
-                    else if (c == '(')
-                    {
-                        count--;
-                    }
-
-                    if (count == 0)
-                    {
-                        return index;
-                    }
-                }
-            }
-
-            return -1;
         }
     }
 }

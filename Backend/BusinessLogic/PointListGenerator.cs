@@ -33,22 +33,22 @@ namespace Backend.BusinessLogic
         /// <summary>
         /// The expression to be evaluated.
         /// </summary>
-        private IExpression expression;
+        private readonly IExpression expression;
 
         /// <summary>
         /// The inputted start of x.
         /// </summary>
-        private double initialX;
+        private readonly double initialX;
 
         /// <summary>
         /// The inputted end of x.
         /// </summary>
-        private double finalX;
+        private readonly double finalX;
 
         /// <summary>
         /// The inputted limits.
         /// </summary>
-        private double limits;
+        private readonly double limits;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="PointListGenerator"/> class,

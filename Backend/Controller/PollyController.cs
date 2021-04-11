@@ -45,12 +45,12 @@ namespace Backend.Controller
         /// <summary>
         /// The game repository for obtaining persisted games.
         /// </summary>
-        private IGameRepository gameRepository;
+        private readonly IGameRepository gameRepository;
 
         /// <summary>
         /// The parser for textual representations of <see cref="IExpression"/>.
         /// </summary>
-        private Parser parser;
+        private readonly Parser parser;
 
         /// <summary>
         /// The expression currently active.

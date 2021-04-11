@@ -12,7 +12,7 @@ namespace Backend.BusinessLogic.Expressions
     /// </typeparam>
     public abstract class SingleArgumentFunctionBase<T> : IExpression, IEquatable<SingleArgumentFunctionBase<T>>
     {
-        private IExpression containedExpression;
+        private readonly IExpression containedExpression;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SingleArgumentFunctionBase{T}"/> class.

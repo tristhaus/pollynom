@@ -10,10 +10,10 @@ namespace Backend.BusinessLogic
     /// </summary>
     public class RandomDotsGenerator
     {
-        private static Random rng = new Random();
+        private static readonly Random rng = new Random();
 
-        private int targetNumberOfGoodDots;
-        private int targetNumberOfBadDots;
+        private readonly int targetNumberOfGoodDots;
+        private readonly int targetNumberOfBadDots;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="RandomDotsGenerator"/> class

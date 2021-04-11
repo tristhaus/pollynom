@@ -9,7 +9,7 @@ namespace Backend.BusinessLogic.Expressions
     /// </summary>
     public sealed class Multiply : IExpression, IEquatable<Multiply>
     {
-        private List<MultiplyExpression> list;
+        private readonly List<MultiplyExpression> list;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Multiply"/> class.
@@ -216,7 +216,7 @@ namespace Backend.BusinessLogic.Expressions
         /// </summary>
         public sealed class MultiplyExpression : IExpression, IEquatable<MultiplyExpression>
         {
-            private IExpression expression;
+            private readonly IExpression expression;
 
             /// <summary>
             /// Initializes a new instance of the <see cref="MultiplyExpression"/> class.

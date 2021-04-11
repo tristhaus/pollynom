@@ -7,7 +7,7 @@ namespace Backend.BusinessLogic
     /// </summary>
     public class ListPointLogical
     {
-        private List<PointLogical> list;
+        private readonly List<PointLogical> list;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ListPointLogical"/> class.

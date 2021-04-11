@@ -21,8 +21,8 @@ namespace Backend.BusinessLogic
 
         private Guid id;
         private string signature;
-        private List<IDot> dots;
-        private string[] expressionStrings;
+        private readonly List<IDot> dots;
+        private readonly string[] expressionStrings;
 
         private Game(List<IDot> dots, string[] expressionStrings, Guid? id = null)
         {

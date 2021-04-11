@@ -5,10 +5,10 @@ namespace PollyFoundation
 {
     public class CoordinateHelper
     {
-        private double canvasWidth;
-        private double canvasHeight;
-        private double fullInterval;
-        private double margin;
+        private readonly double canvasWidth;
+        private readonly double canvasHeight;
+        private readonly double fullInterval;
+        private readonly double margin;
 
         private double xAnchor;
         private double yAnchor;

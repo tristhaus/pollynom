@@ -7,8 +7,8 @@ namespace Backend.BusinessLogic.Expressions
     /// </summary>
     public sealed class Constant : IExpression, IEquatable<Constant>
     {
-        private static IFormatProvider formatProvider = new System.Globalization.CultureInfo("en-US") as IFormatProvider;
-        private double a;
+        private static readonly IFormatProvider formatProvider = new System.Globalization.CultureInfo("en-US") as IFormatProvider;
+        private readonly double a;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Constant"/> class.

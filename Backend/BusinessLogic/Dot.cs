@@ -14,7 +14,7 @@ namespace Backend.BusinessLogic
         /// <summary>
         /// Random number generator
         /// </summary>
-        private static Random rng = new Random();
+        private static readonly Random rng = new Random();
 
         /// <summary>
         /// X-coordinate of the dot in implied logical business units.

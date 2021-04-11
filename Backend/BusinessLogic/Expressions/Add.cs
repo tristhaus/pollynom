@@ -9,7 +9,7 @@ namespace Backend.BusinessLogic.Expressions
     /// </summary>
     public sealed class Add : IExpression, IEquatable<Add>
     {
-        private List<AddExpression> list;
+        private readonly List<AddExpression> list;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Add"/> class.
@@ -204,7 +204,7 @@ namespace Backend.BusinessLogic.Expressions
         /// </summary>
         public sealed class AddExpression : IExpression, IEquatable<AddExpression>
         {
-            private IExpression expression;
+            private readonly IExpression expression;
 
             /// <summary>
             /// Initializes a new instance of the <see cref="AddExpression"/> class.

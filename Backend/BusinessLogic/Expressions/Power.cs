@@ -7,8 +7,8 @@ namespace Backend.BusinessLogic.Expressions
     /// </summary>
     public sealed class Power : IExpression, IEquatable<Power>
     {
-        private IExpression @base;
-        private IExpression exponent;
+        private readonly IExpression @base;
+        private readonly IExpression exponent;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Power"/> class.

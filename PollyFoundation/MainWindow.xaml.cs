@@ -388,8 +388,10 @@ namespace PollyFoundation
             this.basePanel.Children.Add(this.mainMenu);
             this.basePanel.Children.Add(this.inputOutputGrid);
 
-            this.savingNotPossibleToolTip = new ToolTip();
-            this.savingNotPossibleToolTip.Content = "Saving possible only after graphing expressions";
+            this.savingNotPossibleToolTip = new ToolTip
+            {
+                Content = "Saving possible only after graphing expressions"
+            };
 
             this.UpdateLayout();
             this.AdjustCanvasSize();
@@ -416,8 +418,7 @@ namespace PollyFoundation
             {
                 await this.controllerMutex.WaitAsync();
 
-                var theTextBox = sender as TextBox;
-                if (theTextBox == null)
+                if (!(sender is TextBox theTextBox))
                 {
                     return;
                 }
@@ -595,10 +596,12 @@ namespace PollyFoundation
 
             xAxisGeometryGroup.Children.Add(new LineGeometry(this.coordinateHelper.ConvertCoordinates(10.5, 0.0), this.coordinateHelper.ConvertCoordinates(10.2, -0.3)));
             xAxisGeometryGroup.Children.Add(new LineGeometry(this.coordinateHelper.ConvertCoordinates(10.5, 0.0), this.coordinateHelper.ConvertCoordinates(10.2, +0.3)));
-            Path xAxisPath = new Path();
-            xAxisPath.StrokeThickness = 1;
-            xAxisPath.Stroke = Brushes.Black;
-            xAxisPath.Data = xAxisGeometryGroup;
+            Path xAxisPath = new Path
+            {
+                StrokeThickness = 1,
+                Stroke = Brushes.Black,
+                Data = xAxisGeometryGroup
+            };
             this.canvas.Children.Add(xAxisPath);
             var calculatedFontSize = Math.Max(0.1D, this.coordinateHelper.ConvertXLength(0.8));
 
@@ -637,10 +640,12 @@ namespace PollyFoundation
 
             yAxisGeometryGroup.Children.Add(new LineGeometry(this.coordinateHelper.ConvertCoordinates(0.0, 10.5), this.coordinateHelper.ConvertCoordinates(-0.3, 10.2)));
             yAxisGeometryGroup.Children.Add(new LineGeometry(this.coordinateHelper.ConvertCoordinates(0.0, 10.5), this.coordinateHelper.ConvertCoordinates(+0.3, 10.2)));
-            Path yAxisPath = new Path();
-            yAxisPath.StrokeThickness = 1.5;
-            yAxisPath.Stroke = Brushes.Black;
-            yAxisPath.Data = yAxisGeometryGroup;
+            Path yAxisPath = new Path
+            {
+                StrokeThickness = 1.5,
+                Stroke = Brushes.Black,
+                Data = yAxisGeometryGroup
+            };
 
             this.canvas.Children.Add(yAxisPath);
 
@@ -731,28 +736,36 @@ namespace PollyFoundation
                 }
             }
 
-            Path goodDotsHitPath = new Path();
-            goodDotsHitPath.StrokeThickness = 0.0;
-            goodDotsHitPath.Fill = this.goodDotActiveSolidBrush;
-            goodDotsHitPath.Data = goodDotsHitGeometryGroup;
+            Path goodDotsHitPath = new Path
+            {
+                StrokeThickness = 0.0,
+                Fill = this.goodDotActiveSolidBrush,
+                Data = goodDotsHitGeometryGroup
+            };
             this.canvas.Children.Add(goodDotsHitPath);
 
-            Path goodDotMissedPath = new Path();
-            goodDotMissedPath.StrokeThickness = 0.0;
-            goodDotMissedPath.Fill = this.goodDotAsleepSolidBrush;
-            goodDotMissedPath.Data = goodDotMissedGeometryGroup;
+            Path goodDotMissedPath = new Path
+            {
+                StrokeThickness = 0.0,
+                Fill = this.goodDotAsleepSolidBrush,
+                Data = goodDotMissedGeometryGroup
+            };
             this.canvas.Children.Add(goodDotMissedPath);
 
-            Path badDotsHitPath = new Path();
-            badDotsHitPath.StrokeThickness = 0.0;
-            badDotsHitPath.Fill = this.badDotActiveSolidBrush;
-            badDotsHitPath.Data = badDotsHitGeometryGroup;
+            Path badDotsHitPath = new Path
+            {
+                StrokeThickness = 0.0,
+                Fill = this.badDotActiveSolidBrush,
+                Data = badDotsHitGeometryGroup
+            };
             this.canvas.Children.Add(badDotsHitPath);
 
-            Path badDotMissedPath = new Path();
-            badDotMissedPath.StrokeThickness = 0.0;
-            badDotMissedPath.Fill = this.badDotAsleepSolidBrush;
-            badDotMissedPath.Data = badDotMissedGeometryGroup;
+            Path badDotMissedPath = new Path
+            {
+                StrokeThickness = 0.0,
+                Fill = this.badDotAsleepSolidBrush,
+                Data = badDotMissedGeometryGroup
+            };
             this.canvas.Children.Add(badDotMissedPath);
         }
 
@@ -798,10 +811,11 @@ namespace PollyFoundation
         /// <param name="e">The even args.</param>
         private async void OpenGameMenuItem_Click(object sender, RoutedEventArgs e)
         {
-            Microsoft.Win32.OpenFileDialog dialog = new Microsoft.Win32.OpenFileDialog();
-
-            dialog.DefaultExt = ".json";
-            dialog.Filter = "Game JSON Files (*.json)|*.json;";
+            Microsoft.Win32.OpenFileDialog dialog = new Microsoft.Win32.OpenFileDialog
+            {
+                DefaultExt = ".json",
+                Filter = "Game JSON Files (*.json)|*.json;"
+            };
 
             bool? result = dialog.ShowDialog();
 
@@ -824,10 +838,11 @@ namespace PollyFoundation
         /// <param name="e">The even args.</param>
         private void SaveGameMenuItem_Click(object sender, RoutedEventArgs e)
         {
-            Microsoft.Win32.SaveFileDialog dialog = new Microsoft.Win32.SaveFileDialog();
-
-            dialog.DefaultExt = ".json";
-            dialog.Filter = "Game JSON Files (*.json)|*.json;";
+            Microsoft.Win32.SaveFileDialog dialog = new Microsoft.Win32.SaveFileDialog
+            {
+                DefaultExt = ".json",
+                Filter = "Game JSON Files (*.json)|*.json;"
+            };
 
             bool? result = dialog.ShowDialog();
 

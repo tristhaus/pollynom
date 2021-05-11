@@ -43,7 +43,7 @@
         /// <summary>
         /// Prints the expression as a human-readable and machine-parseable string.
         /// </summary>
-        /// <returns>A <see cref="IMaybe{double}"/> representing the printed string.</returns>
+        /// <returns>A <see cref="IMaybe{string}"/> representing the printed string.</returns>
         IMaybe<string> Print();
     }
 }

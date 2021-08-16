@@ -24,7 +24,7 @@ Currently supported functions/operations are:
 | Exponential function to base *e* | `exp` |
 | Natural logarithm, base *e* | `ln` |
 
-The named functions require that the argument be placed in parenthesis. A valid function is thus:
+The named functions require that the argument be placed in parentheses. A valid function is thus:
 
     abs(x^2.3 + x*(sin(x)))
 

@@ -16,7 +16,8 @@
  * 
  */
 
-﻿using Backend.BusinessLogic;
+using System.Linq;
+using Backend.BusinessLogic;
 using Backend.BusinessLogic.Expressions;
 using Backend.BusinessLogic.Expressions.SingleArgumentFunctions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -108,6 +109,28 @@ namespace PollyNomTest
             Assert.AreEqual(1, result.Count);
             Assert.IsTrue(result[0].Count >= 1);
             Assert.IsTrue(result[0].Points[0].Y < -10);
+        }
+
+        /// <summary>
+        /// Tests the evaluation of x^x into a single list.
+        /// </summary>
+        [TestMethod]
+        [TestCategory(TestInfrastructure.TestCategories.UnitTest)]
+        public void XToTheXth_HasOneList()
+        {
+            // Arrange
+            IExpression xToTheXth = new Power(new BaseX(), new BaseX());
+            PointListGenerator pointList = new PointListGenerator(xToTheXth, -1.0, 2.0, 1000.0);
+
+            // Act
+            var result = pointList.ObtainListsOfLogicalPoints();
+
+            // Assert
+            Assert.AreEqual(1, result.Count);
+            Assert.IsTrue(100 < result[0].Count);
+            Assert.IsTrue(result[0].Points[0].X < 0.001 && result[0].Points[0].X > 0.0);
+            var lastPoint = result[0].Points.Last();
+            Assert.IsTrue(lastPoint.X > 1.99 && lastPoint.X < 2.0);
         }
     }
 }
